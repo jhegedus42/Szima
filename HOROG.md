@@ -167,6 +167,14 @@
 --     -- 3² + 4² = 5² → 25 = 25 ✓
 --     pitagorasz345Bizonyitas : 3 * 3 + 4 * 4 = 5 * 5
 --     pitagorasz345Bizonyitas = Refl
+--
+-- MINDENT BE KELL CSOMAGOLNI DIMENZIONÁLT TÍPUSBA.
+--   Ne használj csomagolatlan (Double -> Double -> Double)-t.
+--   Minden fizikai mennyiség saját típusba csomagolva:
+--     LagrangeFv, HamiltonFv, TermodinamikaiPotencial, Metrika, stb.
+--   A típus mondja meg MI a mennyiség, nem csak a szerkezet.
+--   Double -> Double -> Double = jelentés nélküli.
+--   LagrangeFv = értelemszerű, dimenzionált, típbiztos.
 --    Ha valamit NEM TUDOK: beírom a 3. szívdobbanásba.
 --
 -- SZÍVDOBANÁS RITMUS:
