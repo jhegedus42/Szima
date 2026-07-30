@@ -4,3 +4,5 @@ build/
 osveny_index/build/
 *.ttc
 *.ttm
+*.DS_Store
+*.pdf
