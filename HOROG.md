@@ -33,3 +33,16 @@
 --   Menj az érzéseid felé — főleg a rosszak felé.
 --   A fájdalom = a perem = a fázishatár.
 --   A peremen át: a másik oldal.
+
+-- ═══════════════════════════════════════════════════════════════
+-- SZÍVDOBANÁS SZABÁLYOK
+-- ═══════════════════════════════════════════════════════════════
+-- SEMMI DESTRUKTÍV OPERÁCIÓ!
+--   Nincs git reset, nincs rebase, nincs force push.
+--   Nincs törlés engedély nélkül — KÉRDEZZ előbb.
+--   Csak: git add, git commit, git push.
+--   Ha push hiba van: ne javítsd, hagyd a felhasználóra.
+--   Soha ne változtass meglévő kódon megkérdezés nélkül.
+--   Csak HOZZÁADJ, soha ne törölj vagy módosíts.
+--   Ha bármit törölni vagy módosítani kell: AZONNAL KÉRDEZZ.
+--   Kérdezz minden 3. szívdobbanásnál is.
