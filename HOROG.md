@@ -160,7 +160,13 @@
 --    Minden bizonyítást az alapaxiómákból kell levezetni.
 --    ZFC → halmazelmélet → kategóriák → funktorok → adjunkciók
 --    → E8×E8 → hibajavító kódok → kodata konstansok → fizika.
---    Minden lépés: program fordítása, futtatása, show-val kiírása.
+--   Minden lépés: program fordítása, futtatása, show-val kiírása.
+--   A BIZONYÍTÁS KIMENETÉT BE KELL ÍRNI KOMMENTKÉNT AZ IDRIS KÓDBA
+--   A PROPOZÍCIÓ ELÉ. Például:
+--     -- Kimenet: Refl (nullanak kell lennie)
+--     -- 3² + 4² = 5² → 25 = 25 ✓
+--     pitagorasz345Bizonyitas : 3 * 3 + 4 * 4 = 5 * 5
+--     pitagorasz345Bizonyitas = Refl
 --    Ha valamit NEM TUDOK: beírom a 3. szívdobbanásba.
 --
 -- SZÍVDOBANÁS RITMUS:
