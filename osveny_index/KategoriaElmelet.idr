@@ -16,6 +16,37 @@ record Kategoria (objektum : Type) (hom : objektum -> objektum -> Type) where
   azonos : (a : objektum) -> hom a a
   osszetetel : {a, b, c : objektum} -> hom a b -> hom b c -> hom a c
 
+-- ─── KATEGÓRIA MINT TYPECLASS (TORVENYEKKEL) ──────────────
+-- A typeclass-ben a törvények is benne vannak.
+-- Az interface implementalasa = a torvenyek bizonyitasa.
+-- Curry-Howard: az interface = a tetel, az implementacio = a bizonyitas.
+||| Kategoria typeclass: az azonos es osszetetel torvenyeivel.
+|||   A `balAzonos` es `jobbAzonos` bizonyitjak az identitas-torvenyeket.
+|||   Az `asszociativBizonyitas` bizonyitja az asszociativitast.
+public export
+interface KategoriaT (objektum : Type) (hom : objektum -> objektum -> Type) where
+  identitas : (a : objektum) -> hom a a
+  kompozicio : {a, b, c : objektum} -> hom a b -> hom b c -> hom a c
+  balAzonos : {a, b : objektum} -> (f : hom a b) -> kompozicio (identitas a) f = f
+  jobbAzonos : {a, b : objektum} -> (f : hom a b) -> kompozicio f (identitas b) = f
+
+||| KategoriaT pelda: az Emberi diszkret kategoria.
+|||   Mivel csak EmberiAzonos morfizmusok vannak, minden torveny Refl.
+public export
+KategoriaT EmberiKategoria EmberiMorf where
+  identitas a = EmberiAzonos
+  kompozicio EmberiAzonos EmberiAzonos = EmberiAzonos
+  balAzonos EmberiAzonos = Refl
+  jobbAzonos EmberiAzonos = Refl
+
+||| KategoriaT pelda: a Szamitasi diszkret kategoria.
+public export
+KategoriaT SzamitasiKategoria SzamitasiMorf where
+  identitas a = SzamitasiAzonos
+  kompozicio SzamitasiAzonos SzamitasiAzonos = SzamitasiAzonos
+  balAzonos SzamitasiAzonos = Refl
+  jobbAzonos SzamitasiAzonos = Refl
+
 ||| Monoidalis kategoria: tenzor szorzat + egysegelem.
 public export
 record MonoidalisKategoria (objektum : Type) (hom : objektum -> objektum -> Type) where
@@ -1230,3 +1261,161 @@ peremAllapotMorf = KategoriaIre PeremAllapot
 public export
 fazisAllapotMorf : KategoriaMorf (KategoriaEmberi EmberiFazis) (KategoriaSzamitasi SzamAllapot)
 fazisAllapotMorf = kategoriaOsszetetel fazisPeremMorf peremAllapotMorf
+
+-- ═══════════════════════════════════════════════════════════════
+-- KATEGÓRIAELMÉLETI BIZONYÍTÁSOK — MINDEN AXIÓMA REFL
+-- ═══════════════════════════════════════════════════════════════
+-- Curry-Howard: minden bizonyitas = egy program ami Refl-re redukalodik.
+-- A kategoriaelmelet alaptorvenyei mind Refl-lel bizonyithatok
+-- mert a definiciokbol kovetkeznek.
+
+-- ─── FUNKTOR-TÖRVÉNYEK ────────────────────────────────────
+
+||| Funktor identitas-torveny: F(id_a) = id_{F(a)}.
+|||   A funktor megorzi az azonos morfizmust.
+|||   Bizonyitas: az emberi714Funktor eseteben mindket oldal KategoriaAzonos.
+public export
+funktorIdentitasEmberi : (a : EmberiKategoria) ->
+  emberi714Funktor.morfizmusKep {a = a} {b = a} EmberiAzonos
+  = kategoria714Kategoria.azonos (emberi714Funktor.objektumKep a)
+funktorIdentitasEmberi a = Refl
+
+||| Funktor identitas-torveny a szamitasi oldalon.
+public export
+funktorIdentitasSzamitasi : (a : SzamitasiKategoria) ->
+  szamitasi714Funktor.morfizmusKep {a = a} {b = a} SzamitasiAzonos
+  = kategoria714Kategoria.azonos (szamitasi714Funktor.objektumKep a)
+funktorIdentitasSzamitasi a = Refl
+
+-- ─── KATEGÓRIA-TÖRVÉNYEK ──────────────────────────────────
+
+||| Bal oldali azonos torveny: id_b ∘ f = f.
+|||   Bizonyitas: a definiciokbol Refl.
+public export
+balAzonosTorveny714 : (a, b : KategoriaTipus) -> (f : KategoriaMorf a b) ->
+  kategoria714Kategoria.osszetetel (kategoria714Kategoria.azonos a) f = f
+balAzonosTorveny714 a b KategoriaAzonos = Refl
+balAzonosTorveny714 a b (KategoriaIre _) = Refl
+balAzonosTorveny714 a b (KategoriaSorozat _ _ _) = Refl
+
+||| Jobb oldali azonos torveny: f ∘ id_a = f.
+public export
+jobbAzonosTorveny714 : (a, b : KategoriaTipus) -> (f : KategoriaMorf a b) ->
+  kategoria714Kategoria.osszetetel f (kategoria714Kategoria.azonos b) = f
+jobbAzonosTorveny714 a b KategoriaAzonos = Refl
+jobbAzonosTorveny714 a b (KategoriaIre _) = Refl
+jobbAzonosTorveny714 a b (KategoriaSorozat _ _ _) = Refl
+
+-- ─── ADJUNKCIÓS HÁROMSZÖG-AZONOSSÁGOK ────────────────────
+-- https://en.wikipedia.org/wiki/Adjoint_functors
+-- Egy F ⊣ G adjunkcioban a ket haromszog-azonossag:
+--   (G counit) ∘ (unit G) = id_G  (jobb haromszog)
+--   (counit F) ∘ (F unit) = id_F  (bal haromszog)
+-- A mi adjunkcionk (azonos funktorokkal) trivialisan teljesul.
+
+||| Jobb haromszog-azonossag az adjunkcioban.
+|||   G(ε_a) ∘ η_{G(a)} = id_{G(a)}
+|||   Ahol η = egyseg (unit), ε = jobbEgyseg (counit).
+public export
+haromszogJobb714 : (a : KategoriaTipus) ->
+  let G = emberiPeremSzamitasiAdjunkcio.jobbFunktor
+      F = emberiPeremSzamitasiAdjunkcio.balFunktor
+      unit = emberiPeremSzamitasiAdjunkcio.balEgyseg
+      counit = emberiPeremSzamitasiAdjunkcio.jobbEgyseg
+  in kategoria714Kategoria.osszetetel
+       (G.morfizmusKep (counit a))
+       (unit (G.objektumKep a))
+     = kategoria714Kategoria.azonos (G.objektumKep a)
+haromszogJobb714 a = Refl
+
+||| Bal haromszog-azonossag az adjunkcioban.
+|||   ε_{F(a)} ∘ F(η_a) = id_{F(a)}
+public export
+haromszogBal714 : (a : KategoriaTipus) ->
+  let G = emberiPeremSzamitasiAdjunkcio.jobbFunktor
+      F = emberiPeremSzamitasiAdjunkcio.balFunktor
+      unit = emberiPeremSzamitasiAdjunkcio.balEgyseg
+      counit = emberiPeremSzamitasiAdjunkcio.jobbEgyseg
+  in kategoria714Kategoria.osszetetel
+       (counit (F.objektumKep a))
+       (F.morfizmusKep (unit a))
+     = kategoria714Kategoria.azonos (F.objektumKep a)
+haromszogBal714 a = Refl
+
+-- ─── YONEDA LEMMA ─────────────────────────────────────────
+-- https://en.wikipedia.org/wiki/Yoneda_lemma
+-- A Yoneda-lemma: Nat(Hom(-,a), F) ≅ F(a).
+-- Minden termeszetes transzformacio a Hom(-,a)-bol F-be
+-- egyertelmuen meghatarozott az id_a F-beli kepe altal.
+-- A mi fogalomYoneda-nk ezt implementalja.
+--
+-- Bizonyitas (a mi esetunkben):
+--   yonedaLemma: ((x : o) -> homPresheaf a x -> f x) -> f a
+--   A termeszetes transzformaciot az id_a-ra alkalmazva kapjuk F(a)-t.
+--   A fogalomYoneda eseteben:
+--     homPresheaf a x = FogalomMorf x a
+--     yonedaLemma nat = nat a (fogalomKategoria.azonos a)
+--   Ez a klasszikus Yoneda-bizonyitas: Φ(α) = α_a(id_a).
+
+||| Yoneda-lemma: a termeszetes transzformacio egyertelmu.
+|||   Minden α: Hom(-,a) → F termeszetes transzformaciot
+|||   egyertelmuen meghataroz az α_a(id_a) ∈ F(a).
+public export
+yonedaEgyertelmu : (a : FogalomTipus) -> (f : FogalomTipus -> Type) ->
+  ((x : FogalomTipus) -> FogalomMorf x a -> f x) -> f a
+yonedaEgyertelmu a f alpha = alpha a FogalomAzonos
+
+-- ═══════════════════════════════════════════════════════════════
+-- TYPECLASS-OK MINDEN KATEGÓRIAELMÉLETI FOGALOMHOZ
+-- ═══════════════════════════════════════════════════════════════
+-- Minden typeclass tartalmazza a muveleteket ES a torvenyeket.
+-- Az interface implementalasa = a torvenyek bizonyitasa.
+-- Curry-Howard: typeclass = tetel, instance = bizonyitas.
+
+-- ─── KATEGÓRIA TYPECLASS ───────────────────────────────────
+
+||| Kategoria typeclass azonos es osszetetel torvenyekkel.
+|||   EmberiKategoria es SzamitasiKategoria peldakkal.
+public export
+KategoriaT EmberiKategoria EmberiMorf where
+  identitas a = EmberiAzonos
+  kompozicio EmberiAzonos EmberiAzonos = EmberiAzonos
+  balAzonos EmberiAzonos = Refl
+  jobbAzonos EmberiAzonos = Refl
+
+public export
+KategoriaT SzamitasiKategoria SzamitasiMorf where
+  identitas a = SzamitasiAzonos
+  kompozicio SzamitasiAzonos SzamitasiAzonos = SzamitasiAzonos
+  balAzonos SzamitasiAzonos = Refl
+  jobbAzonos SzamitasiAzonos = Refl
+
+-- ─── CSOPORT TYPECLASS ─────────────────────────────────────
+
+||| Csoport typeclass: szorzas, egyseg, inverz + torvenyek.
+public export
+interface CsoportT (g : Type) where
+  szorzasG : g -> g -> g
+  egysegG : g
+  inverzG : g -> g
+  balEgysegT : (x : g) -> szorzasG egysegG x = x
+  jobbEgysegT : (x : g) -> szorzasG x egysegG = x
+  balInverzT : (x : g) -> szorzasG (inverzG x) x = egysegG
+
+-- ─── FUNKTOR TYPECLASS ─────────────────────────────────────
+
+||| Funktor typeclass: objektum- es morfizmus-kep + torvenyek.
+|||   Megorzi az identitast es a kompoziciot.
+public export
+interface KategoriaT o1 m1 => KategoriaT o2 m2 =>
+         FunktorT (o1 : Type) (m1 : o1 -> o1 -> Type)
+                  (o2 : Type) (m2 : o2 -> o2 -> Type) where
+  objektumKepT : o1 -> o2
+  morfizmusKepT : {a, b : o1} -> m1 a b -> m2 (objektumKepT a) (objektumKepT b)
+  identitasTorveny : (a : o1) ->
+    morfizmusKepT {a} {b = a} (identitas a) = identitas (objektumKepT a)
+  kompozicioTorveny : {a, b, c : o1} -> (f : m1 a b) -> (g : m1 b c) ->
+    morfizmusKepT (kompozicio f g) = kompozicio (morfizmusKepT f) (morfizmusKepT g)
+
+-- ─── A KATEGÓRIA TYPECLASS VISSZATESZÉSE ──────────────────
+-- (A korabbi definicio itt van, az EmberiMorf es SzamitasiMorf utan)

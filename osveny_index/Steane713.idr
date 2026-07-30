@@ -96,6 +96,20 @@ javitas kod _ = kod
 -- STEANE DEKODOLAS + NOETHER-TETEL (ugyanabban a modulban)
 -- ═══════════════════════════════════════════════════════════════
 
+-- ─── A 7 BIT MINT FUNDAMENTÁLIS SZÁM ─────────────────────
+-- 7 = a rendszer alapveto bitszama. Mi minden 7?
+--   1. [[7,1,3]] Steane kod: 7 fizikai bit
+--   2. Emberi kategoriak: 7 (ido, oksag, ter, szin, hang, fazis, mod)
+--   3. Szamitasi kategoriak: 7 (utem, vezerles, adat, tipus, kapcsolat, allapot, utasitas)
+--   4. 7+7+1 = 15 = [[15,1,3]]
+--   5. ⌈log₂(90)⌉ = 7 bit (a FogalomTipus kodolasa)
+--   6. 2^7 = 128 = a Clifford Cℓ(8) paros reszalgebrajanak dimenzioja
+--   7. 7 = a legkisebb bitszam ami mar hibajavitast tesz lehetove (Hamming tavolsag ≥ 3)
+--   8. 64+1 = 65 → 7 bit a kategoria-osztalyozohoz
+--
+-- A 7 a "varazsszam" — a kvantum hibajavitas, a magyar nyelv,
+-- es a kategoriaelmelet kozos alapja.
+
 ||| [[7,1,3]] dekodolas: felsorolt tobbseg szavazat (16 eset + catch-all).
 ||| A 16 = 2 tiszta + 14 egy-hibas. Minden egy-hibas kod a helyes
 ||| logikai erteket adja (tobbseg elv).

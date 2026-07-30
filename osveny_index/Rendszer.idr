@@ -345,4 +345,29 @@ main = do
   -- 15. Emberi kategoriak es CPT
   putStrLn $ "Emberi CPT: C (Ido), P (Oksag), T (Ter) OK"
 
+  -- 16. Fizikai allandok es szarmaztatott mennyisegek
+  putStrLn $ "\n=== FIZIKAI ALLANDOK (CODATA 2019, SI 2019) ==="
+  putStrLn $ "c  = " ++ show fenysebesseg ++ " m/s"
+  putStrLn $ "h  = " ++ show planckAllando ++ " J·s"
+  putStrLn $ "G  = " ++ show gravitaciosAllando ++ " m³/(kg·s²)"
+  putStrLn $ "kB = " ++ show boltzmannAllando ++ " J/K"
+  putStrLn $ "NA = " ++ show avogadroSzam ++ " mol⁻¹"
+  putStrLn $ "e  = " ++ show elemiToltes ++ " C"
+  putStrLn $ "alpha = " ++ show finomszerkezetiAllando
+
+  putStrLn $ "\n=== SZARMAZTATOTT PLANCK EGYSEGEK ==="
+  putStrLn $ "mP = " ++ show planckTomeg ++ " kg  (ref: 2.176e-8)"
+  putStrLn $ "lP = " ++ show planckHossz ++ " m  (ref: 1.616e-35)"
+  putStrLn $ "tP = " ++ show planckIdo ++ " s  (ref: 5.391e-44)"
+  putStrLn $ "TP = " ++ show planckHomerselet ++ " K  (ref: 1.417e32)"
+  putStrLn $ "EP = " ++ show planckEnergia ++ " J  (ref: 1.956e9)"
+
+  putStrLn $ "\n=== KAPCSOLODO MENNYISEGEK ==="
+  putStrLn $ "Foton E(10^14 Hz) = " ++ show (fotonEnergia 1.0e14) ++ " J"
+  putStrLn $ "Compton lambda(e) = " ++ show (comptonHullamhossz 9.10938356e-31) ++ " m  (ref: 2.426e-12)"
+  putStrLn $ "Schwarzschild(NAp) = " ++ show (schwarzschildSugar 1.989e30) ++ " m  (ref: 2953)"
+  putStrLn $ "Hubble H0 = " ++ show (hubbleAllando * 3.085677581e19) ++ " km/s/Mpc  (ref: 67.4)"
+  putStrLn $ "Lambda = " ++ show kozmologiaiKonstans ++ " m⁻²  (ref: ~1.1e-52)"
+  putStrLn $ "Landauer E(300K) = " ++ show (landauerEnergia 300.0 1.0) ++ " J/bit  (ref: 2.87e-21)"
+
 

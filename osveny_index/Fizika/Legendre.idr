@@ -90,6 +90,18 @@ fundamentalTetelKetto x =
   derivalt (\y => antiderivalt (\t => t * t) y) x - x * x
 
 -- ─── PEREM (a Legendre magja = integralas per partes) ──────────────
+-- https://en.wikipedia.org/wiki/Legendre_transformation
+-- https://en.wikipedia.org/wiki/Integration_by_parts
+-- A Legendre-transzformacio: f*(p) = sup_x (p·x - f(x)).
+-- Ket ekvivalens leiras kozotti atvaltas:
+--   L(q,q̇) = Lagrange-fuggveny (geometriai, erintobundel TQ)
+--   H(q,p) = Hamilton-fuggveny (idobeli, kotangens T*Q)
+--   Kapcsolat: H(q,p) = p·q̇ - L(q,q̇)
+-- A perem (p·q̇) a Yoneda-parositas: ⟨p, q̇⟩.
+-- Integralas per partes: ∫ u dv = u·v - ∫ v du
+--   u ← p, dv ← dq̇ (a q̇ integralja)  -- H oldal
+--   v ← q̇, du ← dp (a p integralja)   -- L oldal
+-- A Legendre = a dual adjunkcio a C es C^op kozott.
 
 ||| Perem: u·v = a Yoneda-parositas.
 |||   Az integralas per partes formulajaban:
@@ -135,23 +147,46 @@ paritasFazis : (Double -> Double -> Double) -> (Double -> Double -> Double)
 paritasFazis hamiltonFv hely impulzus = hamiltonFv hely (-impulzus)
 
 -- ─── 1. MECHANIKA ─────────────────────────────────────────────────
+-- https://en.wikipedia.org/wiki/Lagrangian_mechanics
+-- https://en.wikipedia.org/wiki/Hamiltonian_mechanics
+-- A klasszikus mechanika ket ekvivalens leirasa:
+--   Lagrange: L(q, q̇) = T(q̇) - V(q)  — kinetikai minusz potencialis energia.
+--     A konfiguracios ter (q-k tere) + erintovektorok (q̇).
+--     A hatas: S = ∫ L dt. A valosagos palya az, amire δS = 0 (legkisebb hatas elve).
+--   Hamilton: H(q, p) = p·q̇ - L(q, q̇)  — a Legendre-transzformalt.
+--     A fazister (q-k es p-k tere) + idofejlesztes.
+--     Hamilton-egyenletek: q̇ = ∂H/∂p, ṗ = -∂H/∂q.
+--     Noether-tetel: minden szimmetriahoz megmarado mennyiseg tartozik.
+-- A ket leiras kozott a Legendre-transzformacio teremt kapcsolatot:
+--   H(q, p) = sup_q̇ (p·q̇ - L(q, q̇))
 
 ||| Lagrange: L(q, q̇) = T - V
+|||   Egyszeru harmonikus oszcillator: T = ½q̇², V = ½q².
+|||   L = ½q̇² - ½q²
 public export
 lagrangeMechanika : (hely : Double) -> (sebesseg : Double) -> Double
 lagrangeMechanika q qdot = 0.5 * qdot * qdot - 0.5 * q * q
 
 ||| Kanonikus impulzus: p = ∂L/∂q̇
+|||   Az altalanos impulzus definicioja a Lagrange-formalizmusban.
+|||   p = ∂L/∂q̇ = q̇ (a harmonikus oszcillatorra).
+|||   Ez az a valtozo amit a Legendre kicserel: q̇ → p.
 public export
 kanonikusImpulzus : (hely : Double) -> (sebesseg : Double) -> Double
 kanonikusImpulzus q qdot = derivalt (\qd => lagrangeMechanika q qd) qdot
 
 ||| Hamilton: H(q, p) = p·q̇ - L = T + V
+|||   A Legendre-transzformalt: H = ½p² + ½q² (energia = T + V).
+|||   A Hamilton a teljes energia, idoben allando ha nincs disszipacio.
+|||   Hamilton-egyenletek: q̇ = ∂H/∂p = p, ṗ = -∂H/∂q = -q.
 public export
 hamiltonMechanika : (hely : Double) -> (impulzus : Double) -> Double
 hamiltonMechanika q p = 0.5 * p * p + 0.5 * q * q
 
 ||| Legendre: L → H (derivalas + perem)
+|||   Altalanos Legendre: tetszoleges L(q,q̇)-bol H(q,p) kepzese.
+|||   H(q, p) = p·q̇ - L(q, q̇)  ahol q̇ = g(q, p) az inverz relacio.
+|||   Ketzer alkalmazva visszaadja az eredetit: Legendre⁻¹(Legendre(f)) = f.
 public export
 legendreMechanika : (Double -> Double -> Double) -> (Double -> Double -> Double)
 legendreMechanika lagrangeFv hely impulzus =
@@ -159,6 +194,9 @@ legendreMechanika lagrangeFv hely impulzus =
   in perem impulzus qdot - lagrangeFv hely qdot
 
 ||| Inverz Legendre: H → L (derivalas + perem — szimmetrikus!)
+|||   A Legendre-transzformacio INVERZE onmaga (involucio):
+|||   Ha f* = Legendre(f), akkor f = Legendre(f*).
+|||   Ez a dualitas: L ↔ H ugyanaz a muvelet mindket iranyban.
 public export
 legendreInverzMechanika : (Double -> Double -> Double) -> (Double -> Double -> Double)
 legendreInverzMechanika hamiltonFv hely impulzus =
@@ -166,48 +204,72 @@ legendreInverzMechanika hamiltonFv hely impulzus =
   in perem impulzus qdot - hamiltonFv hely impulzus
 
 -- ─── 2. TERMODINAMIKA — entropia = idonyil, homerseklet = idosebesseg ──
+-- https://en.wikipedia.org/wiki/Thermodynamic_potential
+-- https://en.wikipedia.org/wiki/Legendre_transformation#Thermodynamics
+-- A termodinamikai potencialok a Legendre-transzformacio klasszikus peldai.
+-- Az U(S, V) belso energiahoz tartozo termodinamikai azonossag:
+--   dU = T·dS - p·dV  (homerseklet × entropiavaltozas - nyomas × terfogatvaltozas)
+-- A Legendre kicsereli a valtozokat: S → T, V → p.
+-- Harom termeszetes potencial:
+--   F(T,V) = U - T·S  (Helmholtz: S → T, termeszetes valtozok: T, V)
+--   H(S,p) = U + p·V  (Entalpia: V → p, termeszetes valtozok: S, p)
+--   G(T,p) = U - T·S + p·V  (Gibbs: S→T ES V→p, termeszetes valtozok: T, p)
+-- A masodik fotetel: dS/dt ≥ 0 — az entropia nem csokken (idonyil).
 
-||| Belso energia: U(S, V)
-|||   S = entropia = idonyil merteke (T = ∂U/∂S = homerseklet)
-|||   V = terfogat = geometriai meret (p = -∂U/∂V = nyomas)
+||| Belso energia: U(S, V) — a termodinamika alap-potencialja.
+|||   Az U teljes differencialja: dU = T·dS - p·dV.
+|||   S = entropia (a rendezetlenseg merteke, az idonyil hajtoereje).
+|||   V = terfogat (a geometriai kiterjedes).
+|||   A homogen idealis gazra: U = c_V·T (csak T-tol fugg).
 public export
 belsoEnergia : (entropia : Double) -> (terfogat : Double) -> Double
 belsoEnergia s v = 0.5 * s * s + v * v
 
-||| Homerseklet: T = ∂U/∂S
-|||   Az entropia "ido" derivaltja = homerseklet.
-|||   Minel magasabb a T, annal gyorsabb az idonyil.
+||| Homerseklet: T = ∂U/∂S — a Legendre konjugalt valtozo.
+|||   https://en.wikipedia.org/wiki/Temperature
+|||   A termodinamikai definicio: 1/T = ∂S/∂U (mikrokanonikus).
+|||   A homerseklet az energianak az entropia szerinti derivaltja.
+|||   Mas szoval: T azt mutatja, hogy mennyivel no az energia ha az entropia 1 egyseggel no.
+|||   A Legendre-peremben: T az "idosebesseg" — az entropia idobeli valtozasat meri.
 public export
 homerseklet : (entropia : Double) -> (terfogat : Double) -> Double
 homerseklet s v = derivalt (\se => belsoEnergia se v) s
 
-||| Nyomas: p = -∂U/∂V (negativ, mert a terfogat novekedese
-|||   csokkenti a belso energiat).
+||| Nyomas: p = -∂U/∂V — a Legendre konjugalt valtozo (negativ elojellel).
+|||   https://en.wikipedia.org/wiki/Pressure
+|||   p = -∂U/∂V mert a terfogat NOVEKEDESE csokkenti a belso energiat.
+|||   A nyomas a "geometriai ero" a termodinamikaban: a terfogat Legendre-konjugaltja.
 public export
 nyomas : (entropia : Double) -> (terfogat : Double) -> Double
 nyomas s v = (-1.0) * derivalt (\ve => belsoEnergia s ve) v
 
 ||| Helmholtz szabadenergia: F(T, V) = U - T·S
-|||   Legendre transzformacio: S → T (entropia → homerseklet)
-|||   A homerseklet az "ido" a termodinamikaban.
-|||   F = energia - hőmérséklet × entropia
-|||   = mechanikai analogia: H = energia + impulzus × sebesseg
+|||   https://en.wikipedia.org/wiki/Helmholtz_free_energy
+|||   Legendre: S → T. A termeszetes valtozok: (T, V).
+|||   dF = -S·dT - p·dV.
+|||   F = a maximalis hasznos munka allando homersekleten.
+|||   Mechanikai analogia: F olyan mint a Lagrange — homerseklet-fuggo potencial.
 public export
 helmholtzEnergia : (homerseklet : Double) -> (terfogat : Double) -> Double
 helmholtzEnergia t v = (-0.5) * t * t + v * v
 
 ||| Entalpia: H(S, p) = U + p·V
-|||   Legendre transzformacio: V → p (terfogat → nyomas)
-|||   A nyomas a "geometria" a termodinamikaban.
+|||   https://en.wikipedia.org/wiki/Enthalpy
+|||   Legendre: V → p. A termeszetes valtozok: (S, p).
+|||   dH = T·dS + V·dp.
+|||   H = a rendszer homennyisege allando nyomason.
+|||   Mechanikai analogia: H olyan mint a Hamilton — nyomas-fuggo potencial.
 public export
 entalpia : (entropia : Double) -> (nyomas : Double) -> Double
 entalpia s p = (-0.5) * s * s + p * p
 
 ||| Gibbs szabadenergia: G(T, p) = U - T·S + p·V
-|||   Legendre transzformacio: S → T, V → p (mindketto)
-|||   = energia - hőmérséklet×entropia + nyomas×terfogat
-|||   Ez a "teljes Legendre": a mechanikaban
-|||   H = p·q̇ - L = T + V, itt G = -T·S + p·V + U
+|||   https://en.wikipedia.org/wiki/Gibbs_free_energy
+|||   Dupla Legendre: S→T ES V→p. A termeszetes valtozok: (T, p).
+|||   dG = -S·dT + V·dp.
+|||   G = a maximalis hasznos munka allando homersekleten ES nyomason.
+|||   A kemiai potencial = ∂G/∂n. A fazisatmenetek G minimalizaljak.
+|||   A Legendre-peremben: G a "teljes Legendre" — mindket valtozo kicserelve.
 public export
 gibbsEnergia : (homerseklet : Double) -> (nyomas : Double) -> Double
 gibbsEnergia t p = (-0.5) * t * t + p * p
@@ -703,11 +765,25 @@ record LegendreLimeszAdjunkcio where
 -- ALAPVETŐ FIZIKAI ÁLLANDÓK (CODATA 2019, SI 2019)
 -- ═══════════════════════════════════════════════════════════════
 
+-- https://en.wikipedia.org/wiki/Speed_of_light
+-- A fenysebesseg (c) az SI rendszerben PONTOSAN definialt: 299792458 m/s.
+-- Ez a Specialis Relativitaselmelet alapveto allandoja: minden inerciarendszerben
+-- ugyanannyi. A feny a Legendre-transzformacio FIXPONTJA: m=0 eseten L=0, H=pc,
+-- a perem (p·c) az egyetlen tag — nincs kulonbseg a geometriai es az idobeli leiras kozott.
+-- A feny = a dualitas olvadaspontja.
+-- A fenysebesseg 1983 ota definicio szerint rogzitett; a meter ennek segitsegevel definialt.
 ||| Fénysebesség: c = 299 792 458 m/s (pontos, definíció szerint)
 public export
 fenysebesseg : Double
 fenysebesseg = 299792458.0
 
+-- https://en.wikipedia.org/wiki/Planck_constant
+-- A Planck-allando (h) a kvantummechanika alapveto allandoja.
+-- h = 6.62607015×10⁻³⁴ J·s (pontos, SI 2019 ota definicio szerint).
+-- Planck vezette be 1900-ban a feketetest-sugarzas magyarazatara: E = h·f.
+-- A hatas kvantuma: minden fizikai hatas egesz szamu tobbszorose h-nak.
+-- A redukalt Planck-allando: ℏ = h/2π (lentebb).
+-- Az SI 2019-es ujradefinicioja ota h erteke rogzitett, a kilogramm definiciojanak alapja.
 ||| Planck-állandó: h = 6.62607015e-34 J·Hz⁻¹ (pontos, SI 2019)
 public export
 planckAllando : Double

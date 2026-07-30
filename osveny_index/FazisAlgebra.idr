@@ -131,3 +131,88 @@ fazisFaktorialis tpi =
   in if ct && pt then 1.0
   else if ct || pt then 0.5
   else 0.0
+
+-- ─── FÁZISHATÁR = LEGENDRE-PEREM ──────────────────────────
+-- A fazishatar az a felulet ahol ket fazis talalkozik.
+-- A fizikaban: szilard/folyekony, folyekony/gaz, kvantum/klasszikus.
+-- A mi keretrendszerunkben: a fazishatar = a Legendre-perem.
+--   A peremen atlepve a rendszer egyik fazisbol a masikba megy at:
+--     komplex (kvantum) → fazishatar (perem, p·q̇) → valos (klasszikus)
+--     folytonos (∫) → fazishatar (perem) → diszkret (Σ)
+--     emberi (L) → fazishatar (perem) → szamitasi (H)
+--     gondolat → fazishatar (szaj) → beszed
+--
+-- A fazishatar a [[7,1,3]] kodban a 6. bit (fazis pozicio).
+-- A fazis bit donti el, hogy a kod melyik fazisban van.
+-- A fazishatar atlepese = a Legendre-transzformacio = a meres aktusa.
+
+||| Fazishatar: ket fazis kozti atmenet.
+|||   A fazishatar a perem — ahol a rendszer egyik allapotbol
+|||   a masikba valt. A Legendre-transzformacio = a fazishatar atlepese.
+public export
+record FazisHatar where
+  constructor FazisHatarKonstruktor
+  balFazis  : Fazis   -- a fazishatar elotti allapot
+  jobbFazis : Fazis   -- a fazishatar utani allapot
+  peremErtek : Double  -- a fazishatar erteke (p·q̇ = Legendre-perem)
+
+||| Fazisatalakulas a fazishataron keresztul.
+|||   Azonos → Ellentetes: a redundans informacio atadodik.
+|||   Kvantalt → Azonos: az osszefonodas feloldodik.
+|||   Ismeretlen → Kvantalt: az ismeretlenbol tudas lesz.
+public export
+fazisAtlepes : FazisHatar -> Fazis
+fazisAtlepes (FazisHatarKonstruktor _ jobb _) = jobb
+
+||| A fazishatar mint a Clifford-szorzat.
+|||   a·b (atfedes) → fazishatar (ha magas, redundans) → eldobas
+|||   a∧b (ujdonsag) → fazishatar (ha magas, informacio) → megtartas
+|||   A fazishatar = az atfedes es az ujdonsag kozti valasztas.
+public export
+fazisHatarClifford : Double -> Double -> Fazis
+fazisHatarClifford atfedes ujdonsag =
+  if atfedes > ujdonsag then Azonos else Kvantalt
+
+-- ─── ELSŐRENDŰ FÁZISÁTMENET ───────────────────────────────
+-- https://en.wikipedia.org/wiki/Phase_transition
+-- Elsorendu fazisatmenet: a szabadenergia ELSŐ derivaltja
+-- (entropia vagy terfogat) ugrik a fazishataron.
+-- Masodrendu: a MÁSODIK derivalt ugrik (pl. fajho).
+--
+-- A Legendre-transzformacio mint elsorendu fazisatmenet:
+--   U(S,V) → F(T,V): S → T csere. Az entropia S = -∂F/∂T
+--   ugrik a fazishataron (a latens ho).
+--   A perem p·q̇ = az ugras merteke.
+--
+-- Pelda: viz fagyasa 0°C-on.
+--   F_folyadek(T) ≠ F_jeg(T) a fazishataron.
+--   A kulonbseg = a latens ho = a perem.
+
+||| Elsorendu fazisatmenet: a potencial elso derivaltja ugrik.
+|||   A Legendre-perem a ket fazis kozotti kulonbseg.
+|||   dF = -S·dT - p·dV → az entropia (S) az elso derivalt.
+public export
+elsoRenduFazisAtmenet : Double -> Double -> Double
+elsoRenduFazisAtmenet f1 f2 = f2 - f1  -- a kulonbseg = a perem
+
+-- ─── ELSŐRENDŰ LOGIKA (CURRY-HOWARD) ─────────────────────
+-- Elsorendu logika: ∀ (minden) es ∃ (letezik) kvantorok.
+-- Curry-Howard: ∀ = Pi-tipus (fuggo szorzat), ∃ = Szigma-tipus (fuggo osszeg).
+-- Idris-ben: (x : A) -> B x a ∀, es (x : A ** B x) a ∃.
+-- A [[7,1,3]] Steane kod: ∀ k : Kubit. steaneDekodol(javitas(alapKod k, hiba)) = k.
+-- Ez a Noether-tetel mint elsorendu logikai allitas.
+
+||| Univerzalis kvantor (∀) mint Pi-tipus.
+|||   Curry-Howard: ∀x.P(x) = (x : A) -> P(x).
+|||   A tipus a bizonyitas: minden x-re P(x) teljesul.
+|||   A Steane kodban: ∀ k, ∀ hiba. dekodol(javit(kodol(k), hiba)) = k.
+public export
+minden : (a : Type) -> (p : a -> Type) -> Type
+minden a p = (x : a) -> p x
+
+||| Egzisztencialis kvantor (∃) mint Szigma-tipus.
+|||   Curry-Howard: ∃x.P(x) = (x : a ** P(x)).
+|||   A tanu (witness) x es a bizonyitas P(x).
+public export
+letezik : (a : Type) -> (p : a -> Type) -> Type
+letezik a p = (x : a ** p x)
