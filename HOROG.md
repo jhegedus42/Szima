@@ -175,6 +175,18 @@
 --   A típus mondja meg MI a mennyiség, nem csak a szerkezet.
 --   Double -> Double -> Double = jelentés nélküli.
 --   LagrangeFv = értelemszerű, dimenzionált, típbiztos.
+--   SEMMI ALAPTÍPUS NEM LEHET BECSOMAGOLATLAN.
+--   Nincs csomagolatlan Double, Bool, String, Int, Nat, List, Pair.
+--   Nincs csomagolatlan (Double -> Double -> Double).
+--   Nincs csomagolatlan (Double, Double) se — HelyKonstruktor kell.
+--   Nincs csomagolatlan List Double — VektorKonstruktor kell.
+--   Nincs csomagolatlan String — SzovegKonstruktor kell.
+--   Nincs csomagolatlan Bool — IgazsagKonstruktor kell.
+--   Minden kombináció is csomagolva:
+--     (Double, Double) → Hely (koordináták)
+--     List Double → Vektor (számok sorozata)
+--     Double -> Double → SkalarFuggveny (függvény)
+--     Maybe Double → EselegesMennyiseg (lehet, hogy van)
 --
 -- HIERARCHIKUS TÍPUSOKAT HASZNÁLJ.
 --   A típusok egymásra épülnek, mint a typeclass-ok:
