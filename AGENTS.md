@@ -1,6 +1,6 @@
 # AGENTS.md — Ügynök Szabályok / Agent Rules
 
-`/Users/joco/opencode` egy üres munkakönyvtár, **nem** git repository — használd vázlatként. Az alábbi tényeket 2026-07-29-én ellenőriztük.
+`/Users/joco/opencode` — Idris 2 kategorikus algebrai alapozás (kategóriaelmélet, E8×E8 Clifford algebra, Steane [[7,1,3]] kvantumhibajavítás). Git repository, GitHubon: https://github.com/jhegedus42/opencode. `gh` authentikálva (`jhegedus42`).
 
 ---
 

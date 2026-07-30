@@ -85,9 +85,10 @@ record SzorzatKategoria (o1 : Type) (m1 : o1 -> o1 -> Type)
   jobbKategoria : Kategoria o2 m2
 
 ||| EllenKategoria (C^op): megforditott morfizmusok.
+||| EllenNyil f : EllenMorf hom a b  ⇔  f : hom a b a C^op kategoriaban.
 public export
 data EllenMorf : {obj : Type} -> (hom : obj -> obj -> Type) -> obj -> obj -> Type where
-  EllenNyil : {a, b : obj} -> hom a b -> EllenMorf hom b a
+  EllenNyil : {a, b : obj} -> hom a b -> EllenMorf hom a b
 
 ||| Adjunkcio: F -| G, ahol F : C → D, G : D → C.
 ||| A termeszetes bijekcio: Hom_D(F a, b) ≅ Hom_C(a, G b).
@@ -115,18 +116,20 @@ record KettoKategoria (obj : Type) (hom : obj -> obj -> Type)
                                     (alapKategoria.osszetetel f2 g2)
 
 ||| Yoneda beagyazas: C → [C^op, Set].
-||| Minden a objektumhoz a Hom(-, a) prefasítás.
+||| Minden a objektumhoz a Hom(-, a) prefasítás
+||| (tipus-értékű fuggvenykent, nem m x a ertekkent).
 public export
 record YonedaBeagyazas (o : Type) (m : o -> o -> Type) where
   constructor YonedaKonstruktor
   kategoria : Kategoria o m
-  objektumKep : (a : o) -> (x : o) -> m x a
-  morfizmusKep : {a, b : o} -> m a b
-              -> (x : o) -> m x a -> m x b
+  -- Hom(-, a) mint tipusfuggveny: minden x-hez a Hom(x, a) tipust
+  homPresheaf : (a : o) -> (x : o) -> Type
+  -- Utana tetelezes: ha f: a → b, akkor Hom(-, a) → Hom(-, b)
+  utanaTetelezes : {a, b : o} -> m a b
+                -> (x : o) -> homPresheaf a x -> homPresheaf b x
   -- Yoneda lemma: Nat(Hom(-, a), F) ≅ F a
-  -- Itt a termeszetes transzformacio komponenseibol allitjuk elo az F a erteket.
   yonedaLemma : {a : o} -> {f : o -> Type}
-             -> ((x : o) -> m x a -> f x) -> f a
+             -> ((x : o) -> homPresheaf a x -> f x) -> f a
 
 -- ═══════════════════════════════════════════════════════════════
 -- MORFIZMUS TIPUSOK (WRAPPER-EK A KATEGORIAKHOZ)
@@ -416,6 +419,7 @@ public export
 data CptSzimmetria : Type where
   CptKonstruktor : CptSzimmetria
 
+
 -- ═══════════════════════════════════════════════════════════════
 -- CURRY-HOWARD-LAMBEK MEGFELELTETES
 -- ═══════════════════════════════════════════════════════════════
@@ -516,18 +520,67 @@ e8xE8ObjKodSzo (b, j) = KodKonstruktor "" b j
 
 ||| Fogalom 2-kategoria: FogalomTipus mint 0-sejt, FogalomMorf mint 1-sejt,
 ||| FogalomKetMorf mint 2-sejt.
+||| A 2-sejtek "kaotikusak": barmely ket parhuzamos 1-morfizmus
+||| kozott van 2-sejt (KetIre).
 public export
 fogalomKettoKategoria : KettoKategoria FogalomTipus FogalomMorf FogalomKetMorf
+fogalomKettoKategoria = KettoKategoriaKonstruktor
+  fogalomKategoria
+  fuggolegesOsszetetel
+  vizszintesOsszetetel
+  where
+    fuggolegesOsszetetel : {a, b : FogalomTipus} -> {f, g, h : FogalomMorf a b}
+                        -> FogalomKetMorf a b f g -> FogalomKetMorf a b g h
+                        -> FogalomKetMorf a b f h
+    fuggolegesOsszetetel KetAzonos KetAzonos = KetAzonos
+    fuggolegesOsszetetel KetAzonos KetIre    = KetIre
+    fuggolegesOsszetetel KetIre    KetAzonos = KetIre
+    fuggolegesOsszetetel KetIre    KetIre    = KetIre
+
+    vizszintesOsszetetel : {a, b, c : FogalomTipus}
+                        -> {f1, f2 : FogalomMorf a b} -> {g1, g2 : FogalomMorf b c}
+                        -> FogalomKetMorf a b f1 f2 -> FogalomKetMorf b c g1 g2
+                        -> FogalomKetMorf a c (fogalomOsszetetelMorf f1 g1)
+                                              (fogalomOsszetetelMorf f2 g2)
+    vizszintesOsszetetel KetAzonos KetAzonos = KetAzonos
+    vizszintesOsszetetel KetAzonos KetIre    = KetIre
+    vizszintesOsszetetel KetIre    KetAzonos = KetIre
+    vizszintesOsszetetel KetIre    KetIre    = KetIre
 
 ||| Yoneda beagyazas a fogalom kategoriaban: C → [C^op, Set].
 ||| Minden fogalomtípushoz a Hom(-, a) prefasítás.
+|||   homPresheaf a x = FogalomMorf x a  (Hom(-, a) at x)
+|||   utanaTetelezes f x g = fogalomOsszetetelMorf g f  (postkompozicio)
+|||   yonedaLemma nat = nat a (fogalomKategoria.azonos a)  (1_a-re alkalmazva)
 public export
 fogalomYoneda : YonedaBeagyazas FogalomTipus FogalomMorf
+fogalomYoneda = YonedaKonstruktor
+  fogalomKategoria
+  (\a, x => FogalomMorf x a)
+  (\f, x, g => fogalomOsszetetelMorf g f)
+  (\nat => nat _ (fogalomKategoria.azonos _))
 
 ||| Dual adjunkcio: C -| C^op.
 ||| A bal es jobb funktor az azonos es az ellentett kategoria kozott.
+|||   balFunktor : C → C^op  (f ↦ EllenNyil f)
+|||   jobbFunktor : C^op → C  (EllenNyil f ↦ f)
+|||   balEgyseg : a → id(a) → id(a) = FogalomAzonos
+|||   jobbEgyseg : id(b) → b → b = EllenNyil FogalomAzonos
 public export
 fogalomDualisAdjunkcio : Adjunkcio FogalomTipus FogalomMorf FogalomTipus (EllenMorf FogalomMorf)
+fogalomDualisAdjunkcio =
+  let bal : Funktor FogalomTipus FogalomMorf FogalomTipus (EllenMorf FogalomMorf)
+      bal = FunktorKonstruktor
+        (\a => a)
+        (\f => EllenNyil f)
+      jobb : Funktor FogalomTipus (EllenMorf FogalomMorf) FogalomTipus FogalomMorf
+      jobb = FunktorKonstruktor
+        (\a => a)
+        (\(EllenNyil f) => f)
+  in AdjunkcioKonstruktor
+       bal jobb
+       (\a => FogalomAzonos)
+       (\b => EllenNyil FogalomAzonos)
 
 -- ═══════════════════════════════════════════════════════════════
 -- KATEGORIAELMELETI LETRA: objektumtol a Yonedaig

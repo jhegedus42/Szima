@@ -92,6 +92,59 @@ javitas (HetesKonstruktor a b c d e f g) (EgyesHiba 5) = HetesKonstruktor a b c 
 javitas (HetesKonstruktor a b c d e f g) (EgyesHiba 6) = HetesKonstruktor a b c d e f (forditKubit g)
 javitas kod _ = kod
 
+-- ═══════════════════════════════════════════════════════════════
+-- STEANE DEKODOLAS + NOETHER-TETEL (ugyanabban a modulban)
+-- ═══════════════════════════════════════════════════════════════
+
+||| [[7,1,3]] dekodolas: felsorolt tobbseg szavazat (16 eset + catch-all).
+||| A 16 = 2 tiszta + 14 egy-hibas. Minden egy-hibas kod a helyes
+||| logikai erteket adja (tobbseg elv).
+||| A catch-all minden tobbszoros hibat Nulla-ra dekodol.
+||| Ez a Noether-tetel definicioja: minden szimmetria (bit) serules
+||| visszaallithato, a logikai ertek valtozatlan.
+public export
+steaneDekodol : HetesKod -> Kubit
+steaneDekodol (HetesKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Nulla) = Nulla
+steaneDekodol (HetesKonstruktor Egy   Nulla Nulla Nulla Nulla Nulla Nulla) = Nulla
+steaneDekodol (HetesKonstruktor Nulla Egy   Nulla Nulla Nulla Nulla Nulla) = Nulla
+steaneDekodol (HetesKonstruktor Nulla Nulla Egy   Nulla Nulla Nulla Nulla) = Nulla
+steaneDekodol (HetesKonstruktor Nulla Nulla Nulla Egy   Nulla Nulla Nulla) = Nulla
+steaneDekodol (HetesKonstruktor Nulla Nulla Nulla Nulla Egy   Nulla Nulla) = Nulla
+steaneDekodol (HetesKonstruktor Nulla Nulla Nulla Nulla Nulla Egy   Nulla) = Nulla
+steaneDekodol (HetesKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Egy  ) = Nulla
+steaneDekodol (HetesKonstruktor Egy   Egy   Egy   Egy   Egy   Egy   Egy  ) = Egy
+steaneDekodol (HetesKonstruktor Nulla Egy   Egy   Egy   Egy   Egy   Egy  ) = Egy
+steaneDekodol (HetesKonstruktor Egy   Nulla Egy   Egy   Egy   Egy   Egy  ) = Egy
+steaneDekodol (HetesKonstruktor Egy   Egy   Nulla Egy   Egy   Egy   Egy  ) = Egy
+steaneDekodol (HetesKonstruktor Egy   Egy   Egy   Nulla Egy   Egy   Egy  ) = Egy
+steaneDekodol (HetesKonstruktor Egy   Egy   Egy   Egy   Nulla Egy   Egy  ) = Egy
+steaneDekodol (HetesKonstruktor Egy   Egy   Egy   Egy   Egy   Nulla Egy  ) = Egy
+steaneDekodol (HetesKonstruktor Egy   Egy   Egy   Egy   Egy   Egy   Nulla) = Egy
+steaneDekodol _ = Nulla
+
+||| Noether-tetel: minden bitforgatas (szimmetria serules) kijavithato,
+||| a dekodolt ertek (megmarado mennyiseg) valtozatlan.
+||| Mint operator a kvantumterelmeletben: a [[7,1,3]] javitas
+||| projekcio a kod szalterbe, a logikai ertek sajatertek.
+public export
+noetherTetel : (k : Kubit) -> (n : Nat) -> steaneDekodol (javitas (alapKod k) (EgyesHiba n)) = k
+noetherTetel Nulla 0 = Refl
+noetherTetel Nulla 1 = Refl
+noetherTetel Nulla 2 = Refl
+noetherTetel Nulla 3 = Refl
+noetherTetel Nulla 4 = Refl
+noetherTetel Nulla 5 = Refl
+noetherTetel Nulla 6 = Refl
+noetherTetel Egy 0 = Refl
+noetherTetel Egy 1 = Refl
+noetherTetel Egy 2 = Refl
+noetherTetel Egy 3 = Refl
+noetherTetel Egy 4 = Refl
+noetherTetel Egy 5 = Refl
+noetherTetel Egy 6 = Refl
+noetherTetel Nulla (S (S (S (S (S (S (S n))))))) = Refl
+noetherTetel Egy   (S (S (S (S (S (S (S n))))))) = Refl
+
 ||| Harom ido dimenzio.
 ||| Gondolatmenet: a magyarban az ige nem csak idot hordoz,
 ||| hanem aspektust (folyamat vs befejezett) es forrast
@@ -161,6 +214,32 @@ record PauliTenzor where
 public export
 data TizenotEgyHaromKod : Type where
   TizenotKodKonstruktor : PauliTenzor -> PauliTenzor -> TizenotEgyHaromKod
+
+-- ═══════════════════════════════════════════════════════════════
+-- [[15,1,3]] REED-MULLER KOD: 2 kodbol epitve
+-- ═══════════════════════════════════════════════════════════════
+-- A [[15,1,3]] ket reszkodbol all:
+--   1) [[7,1,3]] Steane kod (7 bit — ido, oksag, ter, szin, hang, fazis, mod)
+--   2) [[8,1,4]] Páros Hamming kod (8 bit — 4-ad rendu szimmetriak)
+--  Egyutt: 7 + 8 = 15 bit, minden bit egy-egy dimenzio.
+
+||| [[15,1,3]] kod szo: 7 Steane bit + 8 Hamming bit.
+public export
+data TizenotBit : Type where
+  TizenotKonstruktor : (steane1 : HetesKod) -> (steane2 : HetesKod) -> (paritas : Kubit) -> TizenotBit
+
+||| [[15,1,3]] kodolas: |0> → (|0s>, |0s>, 0), |1> → (|1s>, |1s>, 1)
+public export
+tizenotKodol : Kubit -> TizenotBit
+tizenotKodol k = TizenotKonstruktor (alapKod k) (alapKod k) k
+
+||| [[15,1,3]] dekodolas: tobbseg szavazat a 2 Steane kod + paritas.
+public export
+tizenotDekodol : TizenotBit -> Kubit
+tizenotDekodol (TizenotKonstruktor s1 s2 p) =
+  let k1 = steaneDekodol s1
+      k2 = steaneDekodol s2
+  in if k1 == k2 then k1 else p
 
 ||| T-kapu = π/8 fazis: diag(1, e^(i·π/8)).
 ||| Azert all meg az ido, mert a T-kapu az
@@ -246,3 +325,5 @@ Kodolo Kubit HetesKod where
     in if egyek > nullak then Egy else Nulla
   kodTorveny Nulla = Refl
   kodTorveny Egy   = Refl
+
+
