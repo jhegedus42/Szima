@@ -118,6 +118,9 @@ data FogalomTipus = Gyoker | Cel | ReszCel | Feladat | ReszFeladat
                   | Allitas | Bizonyitas | GodelSzam | Konzisztencia | Onhivatkozas
                   | GodelElsoTetel | GodelMasodikTetel | DiagonaleLemma | Bizonyithatosag
                   | InkonzisztenciaVonal | WickForgatas | KomplexFazis | KettoMatematika
+                  -- Matematika alapaxiomak
+                  | Halmazelmelet | PeanoAxiomak | ZfcAxiomak | KivalasztasiAxioma
+                  | UresHalmaz | Szamossag | FolytonossagiHipotetikus
                   -- Fizika alapok — 4 dimenzio: ter, ido, energia, informaciomennyiseg
                   | FizikaiAllapot | Mezo | Ter | Ido | Energia | InformacioMennyiseg
                   -- Szimmetriak

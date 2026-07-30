@@ -114,6 +114,18 @@ data FogalomLogika : FogalomTipus -> FogalomTipus -> Type where
   KettoMatematikaAllitas    : FogalomLogika KettoMatematika Allitas
   GyokerInkonzisztencia     : FogalomLogika Gyoker InkonzisztenciaVonal
   GyokerWick                : FogalomLogika Gyoker WickForgatas
+  -- Matematika alapaxiomak
+  GyokerHalmazelmelet       : FogalomLogika Gyoker Halmazelmelet
+  HalmazelmeletUres         : FogalomLogika Halmazelmelet UresHalmaz
+  HalmazelmeletPeano        : FogalomLogika Halmazelmelet PeanoAxiomak
+  HalmazelmeletZfc          : FogalomLogika Halmazelmelet ZfcAxiomak
+  ZfcKivalasztas            : FogalomLogika ZfcAxiomak KivalasztasiAxioma
+  PeanoTermeszetes          : FogalomLogika PeanoAxiomak TermeszetesSzam
+  HalmazelmeletSzamossag    : FogalomLogika Halmazelmelet Szamossag
+  SzamossagFolytonossag     : FogalomLogika Szamossag FolytonossagiHipotetikus
+  UresHalmazVegtelen        : FogalomLogika UresHalmaz Vegtelen
+  GyokerPeano               : FogalomLogika Gyoker PeanoAxiomak
+  GyokerZfc                 : FogalomLogika Gyoker ZfcAxiomak
   -- 4 dimenzio
   GyokerTer              : FogalomLogika Gyoker Ter
   GyokerIdo              : FogalomLogika Gyoker Ido
