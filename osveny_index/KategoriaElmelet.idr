@@ -706,6 +706,7 @@ fogalomTipusKod Funktor = E8PontKonstruktor 1 0 0 0 0 1 1 1
 fogalomTipusKod TermeszetesSzam = E8PontKonstruktor 0 0 0 1 0 0 0 1
 fogalomTipusKod EgeszSzam = E8PontKonstruktor 0 0 0 1 0 0 1 0
 fogalomTipusKod RacionalisSzam = E8PontKonstruktor 0 0 0 1 0 0 1 1
+fogalomTipusKod Szam = E8PontKonstruktor 0 0 0 0 0 0 0 1
 fogalomTipusKod ValosSzam = E8PontKonstruktor 0 0 0 1 0 1 0 0
 fogalomTipusKod KomplexSzam = E8PontKonstruktor 0 0 0 1 0 1 0 1
 -- Matematika logika
@@ -908,6 +909,7 @@ fogalomNev Funktor = "funktor"
 fogalomNev TermeszetesSzam = "termeszetes szam"
 fogalomNev EgeszSzam = "egesz szam"
 fogalomNev RacionalisSzam = "racionalis szam"
+fogalomNev Szam = "szam"
 fogalomNev ValosSzam = "valos szam"
 fogalomNev KomplexSzam = "komplex szam"
 -- Matematika logika

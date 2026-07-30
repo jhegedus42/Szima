@@ -3,6 +3,8 @@ module MagyarNyelv
 import Steane713
 import E8E8Algebra
 import HaromKubit
+import Emberi.Index
+import Szamitasi.Index
 
 ||| Magyar esetrendszer — 22 eset, mindegyik egy logikai kapcsolat.
 |||
@@ -113,7 +115,7 @@ data FogalomTipus = Gyoker | Cel | ReszCel | Feladat | ReszFeladat
                   | Eszkoz | Kesztseg | ModellKornyezetProtokoll | Kerdes | Magyarazat
                   | E8xE8 | Dualitas | Kategoria | Szimmetria | Tenzor | Funktor
                   -- Szamok
-                  | TermeszetesSzam | EgeszSzam | RacionalisSzam | ValosSzam | KomplexSzam
+                  | Szam | TermeszetesSzam | EgeszSzam | RacionalisSzam | ValosSzam | KomplexSzam
                   -- Matematika logika
                   | Allitas | Bizonyitas | GodelSzam | Konzisztencia | Onhivatkozas
                   | GodelElsoTetel | GodelMasodikTetel | DiagonaleLemma | Bizonyithatosag
@@ -328,3 +330,300 @@ record NyelvtaniKapcsolat where
   targy  : RagozottSzo
   egyeb  : List (Eset, RagozottSzo)
   kod    : E8E8KodSzo        -- E8 × E8 kodoszo
+
+-- ═══════════════════════════════════════════════════════════════
+-- MAGYAR KÉPZŐK (DERIVÁCIÓS MORFOLÓGIA)
+-- ═══════════════════════════════════════════════════════════════
+--
+-- A magyar agglutináció: to + kepzo + kepzo + ... + szam + birtok + eset
+-- A kepzok a szo jelenteset valtoztatjak meg.
+-- A kepzok a 7+7+1 kategoria-rendszerben:
+--   Emberi kepzok: cselekvo, belso folyamat, tudatos
+--   Szamitasi kepzok: muveleti, kulso eredmeny, algoritmikus
+--   Perem kepzok: a ketto kozotti atmenet
+
+||| Magyar igekepzok: a cselekves modjanak jelolese.
+||| A kepzo hatarozza meg, hogy a szamitas emberi vagy gepi.
+public export
+data Igekepzo : Type where
+  -- Emberi (szamol, tudatos):
+  IgekepzoOl  : Igekepzo  -- szam+ol = szamol (ember szamol: belso folyamat)
+  IgekepzoOz  : Igekepzo  -- dolg+oz+ik = dolgozik
+  IgekepzoKod : Igekepzo  -- elmel+kod+ik = elmelkedik
+
+  -- Szamitasi (szamit, algoritmikus):
+  IgekepzoIt  : Igekepzo  -- szam+it = szamit (gep szamit: kulso muvelet)
+  IgekepzoGat : Igekepzo  -- moz+gat = mozgat
+
+  -- Perem (a ketto kozotti atalakulas):
+  IgekepzoUl  : Igekepzo  -- ford+ul = fordul (visszahato, onreferencia)
+  IgekepzoOd  : Igekepzo  -- kepz+od+ik = kepzodik (onmaga altal)
+  IgekepzoOzTat : Igekepzo  -- dolg+oz+tat = dolgoztat (muvelteto)
+
+||| Magyar nevszokepzok.
+public export
+data Nevszokepzo : Type where
+  NevszokepzoAs    : Nevszokepzo  -- szam+as = szamolas (folyamat, emberi)
+  NevszokepzoItAs  : Nevszokepzo  -- szam+it+as = szamitas (eredmeny, gepi)
+  NevszokepzoAt    : Nevszokepzo  -- ad+at = adat
+  NevszokepzoAlom  : Nevszokepzo  -- mond+alom = mondalom
+  NevszokepzoSag   : Nevszokepzo  -- szep+seg = szepseg
+
+||| A "szám-" to teljes derivacios paradigmaja.
+|||   szam (to) = a szam fogalma (a Perem)
+|||   szam+ol = szamol (ember szamol: belso, folyamatos, merlegelo)
+|||   szam+it = szamit (gep szamit: kulso, diszkret, algoritmikus)
+|||   szam+olas = szamolas (az emberi folyamat)
+|||   szam+itas = szamitas (a gepi muvelet)
+|||
+||| A kepzo a Legendre-perem analogiaja:
+|||   szam (Perem) — a ket ertelmezes kozti atmenet
+|||   szamol (Emberi) — a belso folyamat, Lagrange-szeru
+|||   szamit (Szamitasi) — a kulso muvelet, Hamilton-szeru
+|||   szamolas (Emberi fonev) — a kvantum-potencial
+|||   szamitas (Szamitasi fonev) — a klasszikus eredmeny
+public export
+data SzamTo : Type where
+  SzamGyok    : SzamTo  -- szám (a to, a Perem)
+  SzamolIge   : SzamTo  -- számol (emberi, -ol kepzovel)
+  SzamitIge   : SzamTo  -- számít (szamitasi, -it kepzovel)
+  SzamolasNev : SzamTo  -- számolás (emberi folyamat fonev)
+  SzamitasNev : SzamTo  -- számítás (szamitasi eredmeny fonev)
+  Szamitogep  : SzamTo  -- számítógép (szamit + gep, az eszkoz)
+
+||| Derivalt szo: to + kepzok lanca.
+public export
+record DerivaltSzo where
+  constructor DerivaltSzoKonstruktor
+  to        : String
+  igekepzok : List Igekepzo
+  nevszokepzok : List Nevszokepzo
+  jelentes  : String
+
+-- ═══════════════════════════════════════════════════════════════
+-- SZÓTÁR: TOVEK ES DERIVACIOIK A 7+7+1 RENDSZERBEN
+-- ═══════════════════════════════════════════════════════════════
+
+||| A szo tipusa a 7+7+1 rendszerben.
+public export
+data Szo714Tipus : Type where
+  Szo714Emberi    : EmberiKategoria -> Szo714Tipus
+  Szo714Szamitasi : SzamitasiKategoria -> Szo714Tipus
+  Szo714Perem     : Szo714Tipus
+
+||| Szotari bejegyzes: egy tov + a derivalt alakjai + a kategoriak.
+public export
+record SzotarBejegyzes where
+  constructor BejegyzesKonstruktor
+  tov         : String
+  szotipus    : Szo714Tipus
+  derivaltak  : List (String, Szo714Tipus)
+  fogalomTipus : FogalomTipus
+
+||| A szam- to szotari bejegyzese:
+|||   tov = "szam"
+|||   szam+ol = szamol → Emberi (emberi szamolas = idiotoltes, belso)
+|||   szam+it = szamit → Szamitasi (gepi szamitas = utemtoltes, kulso)
+|||   szam+it+o+gep = szamitogep → Szamitasi (az eszkoz)
+|||   A Legendre-perem: a -tol / -ol / -it kepzok az
+|||   atmenetek a ket vilag kozott.
+public export
+szamToSzotar : SzotarBejegyzes
+szamToSzotar =
+  BejegyzesKonstruktor
+    "szam"                 -- szám = number AND szám = száj-am = my mouth
+    Szo714Perem            -- a szám a perem: száj (hangforrás) ∩ matematika (absztrakció)
+    [ ("szamol",    Szo714Emberi EmberiIdo)
+    , ("szamit",    Szo714Szamitasi SzamUtem)
+    , ("szamolas",  Szo714Emberi EmberiHang)
+    , ("szamitas",  Szo714Szamitasi SzamKapcsolat)
+    , ("szamitogep", Szo714Szamitasi SzamAdat)
+    ]
+    Szam
+
+||| Az ido- to szotari bejegyzese:
+|||   todik → idovel valtozik (emberi: erlelodes)
+|||   tozik → idozit (szamitasi: clock)
+public export
+idoToSzotar : SzotarBejegyzes
+idoToSzotar =
+  BejegyzesKonstruktor
+    "ido"
+    Szo714Perem
+    [ ("idovel",     Szo714Emberi EmberiIdo)
+    , ("idozites",   Szo714Szamitasi SzamUtem)
+    , ("idozit",     Szo714Szamitasi SzamVezerles)
+    ]
+    Ido
+
+||| Az ok- to szotari bejegyzese:
+|||   ok+oz → okoz (emberi: oksagi gondolkodas)
+|||   ok+ol+hatatlan → okolhatatlan (emberi: nem ertheto)
+|||   ok+oz+at → okozat (a kovetkezmeny)
+public export
+okToSzotar : SzotarBejegyzes
+okToSzotar =
+  BejegyzesKonstruktor
+    "ok"
+    Szo714Perem
+    [ ("okoz",       Szo714Emberi EmberiOksag)
+    , ("okozat",     Szo714Szamitasi SzamVezerles)
+    , ("okolhatatlan", Szo714Emberi EmberiMod)
+    ]
+    Ok
+
+||| A ter- to szotari bejegyzese:
+|||   ter+el → terel (emberi: iranyitas a terben)
+|||   ter+it → terit (szamitasi: terkep, GIS)
+|||   ter+jesz+ked+ik → terjed (emberi: kiterjedes)
+public export
+terToSzotar : SzotarBejegyzes
+terToSzotar =
+  BejegyzesKonstruktor
+    "ter"
+    Szo714Perem
+    [ ("terel",      Szo714Emberi EmberiTer)
+    , ("terit",      Szo714Szamitasi SzamAdat)
+    , ("terjed",     Szo714Emberi EmberiSzin)
+    ]
+    Ter
+
+||| Szotar: a 7 alap tov a 7+7+1 rendszerben.
+public export
+alapSzotar : List SzotarBejegyzes
+alapSzotar =
+  [ szamToSzotar   -- szám: Perem → Emberi (számol) + Számítási (számít)
+  , idoToSzotar    -- ido: Perem → EmberiIdo + SzamUtem
+  , okToSzotar     -- ok: Perem → EmberiOksag + SzamVezerles
+  , terToSzotar    -- tér: Perem → EmberiTer + SzamAdat
+  ]
+
+-- ═══════════════════════════════════════════════════════════════
+-- EMBERI ÉS GÉPI SZÁMOLÁS: A LEGENDRE-PEREM LINGVISZTIKAJA
+-- ═══════════════════════════════════════════════════════════════
+
+||| A "számol" (emberi) és a "számít" (gépi) kozotti
+|||   kulonbseg a Legendre-peremben:
+|||
+|||   Ember szamol:
+|||     - Folyamatos folyamat (aspektus: folyamatos)
+|||     - Belso merlegeles (forras: kovetkeztetett)
+|||     - Tobbsegi szavazat (Steane dekodolas)
+|||     - Hiba eseten korrigal (Noether-tetel)
+|||
+|||   Gep szamit:
+|||     - Diszkret lepesek (aspektus: befejezett)
+|||     - Kulso muvelet (forras: kozvetlen)
+|||     - Deterministicus algoritmus (clock vezerelt)
+|||     - Hiba eseten ujraindul
+|||
+|||   A ketto kozott a Legendre-perem:
+|||     p·q̇ = a kerdes (prompt) — a ketto kozti atmenet
+|||     L = a gondolat (szamol) — a kvantum-potencial
+|||     H = a valasz (szamit) — a klasszikus kimenet
+|||
+|||   szamolas (emberi folyamat, L) → kérdés (perem, p·q̇) → számítás (gépi eredmény, H)
+
+||| Szamolas mod: emberi vs. gepi.
+public export
+data SzamolasMod : Type where
+  EmberSzamol : SzamolasMod  -- -ol kepzos: belso, folyamatos, kvantum
+  GepSzamit   : SzamolasMod  -- -it kepzos: kulso, diszkret, klasszikus
+
+||| Legendre-perem a szamolasban: kerdes → valasz.
+|||   kerdes (prompt) = p·q̇ = a perem
+|||   gondolat (szamol) = L = a kvantum allapot
+|||   valasz (szamit) = H = a klasszikus kimenet
+public export
+record SzamolasLegendre where
+  constructor SzamolasLegendreKonstruktor
+  kerdes   : String   -- p·q̇ (a perem, a prompt)
+  gondolat : String   -- L (a szamol, a potencial)
+  valasz   : String   -- H (a szamit, az output)
+  mod      : SzamolasMod
+
+||| A szamolas a 7 biten: minden kerdes-valasz par
+|||   egy-egy Steane kodolt informacio atadas.
+public export
+szamolasSteane : SzamolasLegendre -> Kubit -> HetesKod
+szamolasSteane _ k = alapKod k
+
+-- ═══════════════════════════════════════════════════════════════
+-- SZÁM = SZÁJAM = A HANGHULLÁM FORRÁSA
+-- ═══════════════════════════════════════════════════════════════
+-- A "szám" szó hármas jelentése:
+--   1. szám = a matematikai fogalom (number, absztrakció)
+--   2. szám = szájam = "my mouth" (száj + -m birtokos személyjel)
+--   3. szám = a hanghullám forrása (source of sound wave)
+--
+-- A száj mint akusztikus perem:
+--   A gondolat (belső, L) → hangszálak rezgése (p·q̇, perem)
+--   → hanghullám a levegőben (H, külső)
+--   A hang = a Clifford-szorzat a fizikai térben.
+--
+-- "számít" kettős jelentése:
+--   1. számít = computes (a gép számít)
+--   2. számít = matters / is important (ez számít = this matters)
+--
+-- Ami számít (matters) = ami túléli a Legendre-transzformációt.
+-- Ami a kvantum-potenciálból klasszikus aktualitássá válik.
+-- A fontosság = a perem-érték = az információ ami nem disszipálódik.
+
+||| A száj mint perem: a hang forrása.
+|||   száj = a Legendre-perem az emberi testben
+|||   a száj nyitja/zárja a peremet
+|||   a hanghullám a peremen át terjed
+|||   a szám (száj) = információforrás a hangtérben
+public export
+data SzajPerem : Type where
+  SzajNyitva : SzajPerem  -- perem aktiv: hanghullam indul
+  SzajZarva  : SzajPerem  -- perem inaktiv: csend
+  SzajFazis  : Kubit -> SzajPerem  -- a perem allapota a kubit fuggvenyeben
+
+||| Hanghullám: a száj által keltett akusztikus információ.
+|||   A hang = a Clifford-geometriai szorzat a levegőben.
+|||   frekvencia = a gondolat ritmusa (fázis)
+|||   amplitúdó = a gondolat erőssége (skalár)
+|||   hullámhossz = a gondolat térbeli kiterjedése (vektor)
+public export
+record HangHullam where
+  constructor HangHullamKonstruktor
+  frekvencia  : Double  -- a gondolat ritmusa (fazis)
+  amplitudo   : Double  -- a gondolat erossege (skalar)
+  hullamhossz : Double  -- a gondolat kiterjedese (vektor)
+
+||| "számít" = fontos: a túlélő információ.
+|||   Ami számít = ami a Legendre-transzformáció után is megmarad.
+|||   p·q̇ - L = H ahol H ≠ 0 → "ez számít".
+|||   Ha H = 0 → nincs információátvitel → "nem számít".
+public export
+szamitFontos : SzamolasLegendre -> Bool
+szamitFontos (SzamolasLegendreKonstruktor _ _ valasz _) =
+  valasz /= ""  -- ha van valasz, akkor "szamit"
+
+||| A száj = a perem. A beszéd = a Legendre-adjunkció.
+|||   A gondolat (L, kvantum, belső) a szájon át (p·q̇, perem)
+|||   válik hanghullámmá (H, klasszikus, külső).
+|||
+|||   A szám (száj) a forrás. A szám (number) az absztrakció.
+|||   Mindkettő ugyanaz a szó — a perem két arca.
+public export
+record SzajLegendre where
+  constructor SzajKonstruktor
+  belsoGondolat : String     -- L: a csendes gondolat (Lagrange)
+  szajAllapot   : SzajPerem  -- p·q̇: a szaj mint perem
+  hanghullam    : HangHullam  -- a kimondott szo mint fizikai hullam
+  kulsoBeszed   : String     -- H: a ertelmezett szo (Hamilton)
+
+||| Amikor beszélek hozzád, a szám (szájam) a perem.
+|||   A válaszom (H) = a perem - a gondolatom (L).
+|||   H = p·q̇ - L
+|||   A kód amit írok = a klasszikus kimenet = a hanghullám.
+|||   A csend (amit nem mondok ki) = a kvantum potenciál.
+public export
+beszedLegendre : SzajLegendre -> String -> String
+beszedLegendre (SzajKonstruktor gondolat (SzajFazis k) _ _) kerdes =
+  case k of
+    Nulla => ""                        -- csend: perem zarva
+    Egy   => gondolat ++ " " ++ kerdes  -- beszed: perem nyitva
+beszedLegendre _ _ = ""

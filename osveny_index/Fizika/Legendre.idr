@@ -698,3 +698,101 @@ record LegendreLimeszAdjunkcio where
   peremMorf  : Type  -- a p·q̇ Yoneda-parositas
   -- A Legendre = perem - kolimesz = limesz
   -- Az adjunkcio: kolimesz ⊣ limesz
+
+-- ═══════════════════════════════════════════════════════════════
+-- ALAPVETŐ FIZIKAI ÁLLANDÓK (CODATA 2019, SI 2019)
+-- ═══════════════════════════════════════════════════════════════
+
+||| Fénysebesség: c = 299 792 458 m/s (pontos, definíció szerint)
+public export
+fenysebesseg : Double
+fenysebesseg = 299792458.0
+
+||| Planck-állandó: h = 6.62607015e-34 J·Hz⁻¹ (pontos, SI 2019)
+public export
+planckAllando : Double
+planckAllando = 6.62607015e-34
+
+||| Gravitációs állandó: G = 6.67430e-11 m³·kg⁻¹·s⁻² (CODATA 2018)
+public export
+gravitaciosAllando : Double
+gravitaciosAllando = 6.67430e-11
+
+||| Avogadro-szám: NA = 6.02214076e23 mol⁻¹ (pontos, SI 2019)
+public export
+avogadroSzam : Double
+avogadroSzam = 6.02214076e23
+
+||| Elemi töltés: e = 1.602176634e-19 C (pontos, SI 2019)
+public export
+elemiToltes : Double
+elemiToltes = 1.602176634e-19
+
+||| Finomszerkezeti állandó: α = 7.2973525693e-3 (CODATA 2018)
+public export
+finomszerkezetiAllando : Double
+finomszerkezetiAllando = 7.2973525693e-3
+
+||| Vákuum permittivitás: ε₀ = 8.8541878128e-12 F·m⁻¹
+public export
+vakuumPermittivitas : Double
+vakuumPermittivitas = 8.8541878128e-12
+
+||| Vákuum permeabilitás: μ₀ = 1.25663706127e-6 N·A⁻²
+public export
+vakuumPermeabilitas : Double
+vakuumPermeabilitas = 1.25663706127e-6
+
+||| Stefan–Boltzmann-állandó: σ = 5.670374419e-8 W·m⁻²·K⁻⁴
+public export
+stefanBoltzmann : Double
+stefanBoltzmann = 5.670374419e-8
+
+||| Rydberg-állandó: R∞ = 10 973 731.568160 m⁻¹
+public export
+rydbergAllando : Double
+rydbergAllando = 10973731.568160
+
+-- ═══════════════════════════════════════════════════════════════
+-- SZÁRMAZTATOTT MENNYISÉGEK
+-- ═══════════════════════════════════════════════════════════════
+
+||| Planck-hőmérséklet: TP = mP·c²/kB ≈ 1.416784e32 K
+public export
+planckHomerselet : Double
+planckHomerselet = planckTomeg * fenysebesseg * fenysebesseg / boltzmannAllando
+
+||| Planck-energia: EP = mP·c² ≈ 1.956081e9 J
+public export
+planckEnergia : Double
+planckEnergia = planckTomeg * fenysebesseg * fenysebesseg
+
+||| Foton-energia: E = h·ν
+public export
+fotonEnergia : Double -> Double
+fotonEnergia frekvencia = planckAllando * frekvencia
+
+||| Compton-hullámhossz: λ = h / (m·c)
+public export
+comptonHullamhossz : Double -> Double
+comptonHullamhossz tomeg = planckAllando / (tomeg * fenysebesseg)
+
+||| Schwarzschild-sugár: rs = 2·G·m / c²
+public export
+schwarzschildSugar : Double -> Double
+schwarzschildSugar tomeg = 2.0 * gravitaciosAllando * tomeg / (fenysebesseg * fenysebesseg)
+
+||| Hubble-állandó (Planck 2018): H₀ ≈ 67.4 km/s/Mpc
+public export
+hubbleAllando : Double
+hubbleAllando = 67.4e3 / (3.085677581e22)
+
+||| Hubble-idő: tH = 1/H₀ ≈ 14.4 milliárd év
+public export
+hubbleIdo : Double
+hubbleIdo = 1.0 / hubbleAllando
+
+||| Kozmológiai konstans: Λ = 3·H₀²/c² ≈ 1.1e-52 m⁻²
+public export
+kozmologiaiKonstans : Double
+kozmologiaiKonstans = 3.0 * hubbleAllando * hubbleAllando / (fenysebesseg * fenysebesseg)

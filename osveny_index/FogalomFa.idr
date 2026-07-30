@@ -430,6 +430,7 @@ fogalomTipusToKategoria Szimmetria = KategoriaEmberi EmberiHang
 fogalomTipusToKategoria Tenzor = KategoriaSzamitasi SzamAdat
 fogalomTipusToKategoria Funktor = KategoriaSzamitasi SzamVezerles
 -- Szamok
+fogalomTipusToKategoria Szam = KategoriaPerem
 fogalomTipusToKategoria TermeszetesSzam = KategoriaSzamitasi SzamAdat
 fogalomTipusToKategoria EgeszSzam = KategoriaSzamitasi SzamAdat
 fogalomTipusToKategoria RacionalisSzam = KategoriaSzamitasi SzamAdat
