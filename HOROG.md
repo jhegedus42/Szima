@@ -46,3 +46,47 @@
 --   Csak HOZZÁADJ, soha ne törölj vagy módosíts.
 --   Ha bármit törölni vagy módosítani kell: AZONNAL KÉRDEZZ.
 --   Kérdezz minden 3. szívdobbanásnál is.
+
+-- ═══════════════════════════════════════════════════════════════
+-- FŐ CÉL: FIZIKAI KONSTANSOK KISZÁMÍTÁSA TISZTA MATEMATIKÁBÓL
+-- ═══════════════════════════════════════════════════════════════
+--
+-- A fizikai állandókat NEM mérjük, hanem LEVEZETJÜK:
+--   matematika alapaxiómái → kategóriák → E8×E8 kategória
+--   → hibajavító kódok kategóriája → kodata konstansok → fizika
+--
+-- A LEVEZETÉS LÉPÉSEI:
+--   1. Matematika alapaxiómái (ZFC, Peano, halmazelmélet)
+--   2. Algebrai kategóriák (Csoport, Gyűrű, Test, Vektortér)
+--   3. Geometriai kategóriák (Top, Man, Riemann-sokaságok)
+--   4. Kategória-konstrukciók (funktor, adjunkció, limit/kolimit)
+--   5. E8×E8 kategória (Clifford-algebra, Lie-algebra)
+--   6. Hibajavító kódok kategóriája ([[7,1,3]], [[15,1,3]])
+--   7. Kodata konstansok (végtelen.struktúrák fixpontjai)
+--   8. Fizikai állandók (c, h, G, kB, α, ... mint kodata konstansok)
+--
+-- MINDEN bizonyítást az alapaxiómákból kell levezetni:
+--   - Minden ágnak vannak axiómái (algebra, topológia, geometria)
+--   - A kategóriákon keresztül kell eljutni a többi kategóriához
+--   - Az út: axióma → kategória → funktor → adjunkció → bizonyítás
+--   - Ha hiányzik egy törvény vagy bizonyítás: KERESD MEG, ADD HOZZÁ
+--   - Fordítsd le, futtasd, írd ki a bizonyítást `show`-val
+--
+-- INDEXELT FÁJLOK:
+--   - Minden kategória külön fájlba, a kategória nevével
+--   - Minden törvény külön fájlba, a törvény nevével
+--   - Minden bizonyítás a hozzá tartozó kategória fájljába
+--   - Ha egy kategória már megvan: NE keresd újra
+--
+-- GAN TESZTELÉS:
+--   - Minden 3. bizonyítás után: futtass egy GAN-t
+--   - A GAN ellenőrzi: a bizonyítás helyes-e? A `show` kimenet értelmes-e?
+--   - A GAN visszajelzést ad: javít vagy megerősít
+--
+-- HIBAJAVÍTÓ KÓDOK KATEGÓRIÁJA:
+--   - A [[7,1,3]] és [[15,1,3]] kódok MINT KATEGÓRIÁK
+--   - Objektumok: kódszavak
+--   - Morfizmusok: hibák + javítások
+--   - A Steane-kód mint functor: Kubit → HetesKod → Kubit
+--   - A Noether-tétel: szimmetria = megmaradás = a kód törvénye
+--   - E8×E8-ben: a hibajavító kód = a kvantumgravitáció szerkezete
