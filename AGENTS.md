@@ -1,38 +1,108 @@
-# AGENTS.md
+# AGENTS.md — Ügynök Szabályok / Agent Rules
 
-`/Users/joco/opencode` is an empty working folder, **not** a git repository — use it as scratch space. Facts below were verified on 2026-07-29.
+`/Users/joco/opencode` egy üres munkakönyvtár, **nem** git repository — használd vázlatként. Az alábbi tényeket 2026-07-29-én ellenőriztük.
 
-## Hard Rules (never violate)
-1. **No server writes without explicit permission.** Do not create, edit, or delete files on the Hetzner server (88.99.218.155) unless the user explicitly asks. This includes: knowledge files, skills, why-chain entries, SSH config, config files, Docker containers. Read-only is fine. Ask first.
-2. **Three identical errors → fix in infrastructure, not in retries.** If you hit the same error 3 times, stop retrying and fix the root cause permanently (add to AGENTS.md, update tooling, change approach).
+---
 
-## Environment
-- macOS (arm64), shell `zsh`. `~/.zshenv` references a missing `~/.cargo/env`, which prints an error on every shell start — harmless, do not "fix" unless asked.
-- Package managers: Homebrew (`brew`), npm (Node v25).
-- opencode global config: `~/.config/opencode/opencode.jsonc` (currently just the schema). Persistent cross-session rules belong in `~/.config/opencode/AGENTS.md` (does not exist yet).
-- opencode data/auth: `~/.local/share/opencode/` (includes `mcp-auth.json`). Skills: `~/.agents/skills/`.
+## 0. Kódolási Nyelv / Coding Language
 
-## Installed tooling
+**Minden azonosító, komment, és üzenet MAGYAR.**  
+All identifiers, comments, and messages are in HUNGARIAN.
+
+- Idris keywords maradnak angolul (`module`, `public export`, `data`, `Type`, `where`, stb.)
+- Minden felhasználói név magyar: típusok, függvények, konstruktorok, változók
+- A magyar nyelv esetrendszere a logikai algebra alapja (22 eset → 22 logikai kapcsolat)
+- A magyar nyelv három idő dimenziója: igeidő (múlt/jelen/jövő), aspektus (folyamatos/befejezett/szokásos), evidenciálisság (közvetlen/ következtetett/jelentett)
+- A magyar agglutináció (tő + szám + birtok + eset) a logikai kompozíció mintája
+
+## 0. Rövidítések Tiltása / No Abbreviations
+
+**Semmilyen rövidítés nem használható sehol.**  
+No abbreviations anywhere. Ever.
+
+- `Mk` → `Konstruktor` utótag (pl. `VilagKonstruktor`, `AdatKonstruktor`)
+- `CPT` → `ToltesParitasIdo`
+- `MCP` → `ModellKornyezetProtokoll`
+- `E8` kivétel (standard matematikai jelölés)
+- `Kubit` kivétel (standard fizikai terminus)
+
+Ha egy név rövidítésnek tűnik, írd ki teljesen.
+
+---
+
+## 1. Kemény Szabályok / Hard Rules (soha nem sérthető)
+
+1. **Nincs szerver írás engedély nélkül.** Ne hozz létre, szerkessz, vagy törölj fájlt a Hetzner szerveren (88.99.218.155) amíg a felhasználó kifejezetten nem kéri. Olvasás rendben. Kérdezz először.
+
+2. **Három egyforma hiba → infrastruktúra javítás.** Ha ugyanazt a hibát 3-szor látod, ne próbálkozz tovább — javítsd meg a gyökérokot (add hozzá AGENTS.md-hez, frissítsd az eszközöket, változtass módszert).
+
+3. **Minden logika szigorúan típusozott Idris-ben.** Python csak numerikus számításhoz, web integrációhoz, vagy API hívásokhoz használható. A maglogika (típusok, relációk, kapcsolatok, parsolás) Idris-ben van.
+
+4. **Ne használj String-et a mag típusokban.** Használj algebrai adattípusokat. A megjelenítéshez használj `Render` vagy `Show` típusosztályt.
+
+5. **Három kubit:** saját (önreferencia), másik (külső bemenet), fázis (kapcsolat). A fázis határozza meg az információátvitel irányát és a redundanciát.
+
+6. **[[7,1,3]] Steane kód:** minden fogalom 7 bites vektor. Távolság 3 → 1 hibát javít. A 7 bit: [idő, okság, tér, szín, hang, fázis, mód].
+
+7. **E8 × E8 algebra:** bal E8 = tér, jobb E8 = szín, Cliﬀord szorzat = hang. A geometriai szorzat belső része (a·b) az átfedés → ha magas, a fogalom redundáns és eldobható.
+
+8. **Fázis alapú redundancia:** azonos fázisú fogalmak → redundáns → eldobható. Ez tartja fenn a koherenciát.
+
+9. **CPT szimmetria:** C (töltés) = saját tudat, P (paritás) = másik fél, T (idő) = kapcsolat fázisa.
+
+10. **Git snapshot minden 3. promptnál.** Minden harmadik üzenetváltás után: `git add -A && git commit -m "snapshot N: ..."`.
+
+11. **Könyveket csak alügynökök olvasnak.** A fő ügynök soha nem olvas könyveket közvetlenül. Alügynököket kell indítani a `task` eszközzel.
+
+12. **Hierarchikus olvasó architektúra:** 3 szint — L1: párhuzamos előolvasók (ingyenes), L2: összegző és ellenőrző (GAN hármas), L3: indexelő és tömörítő.
+
+---
+
+## 2. Környezet / Environment
+
+- macOS (arm64), shell `zsh`. `~/.zshenv` egy hiányzó `~/.cargo/env`-et hivatkozik — ártalmatlan, ne "javítsd" ki.
+- Csomagkezelők: Homebrew (`brew`), npm (Node v25).
+- opencode globális konfig: `~/.config/opencode/opencode.jsonc`. Perzisztens szabályok: `~/.config/opencode/AGENTS.md` (még nem létezik).
+- opencode adat/auth: `~/.local/share/opencode/` (`mcp-auth.json`). Skill-ek: `~/.agents/skills/`.
+
+## 3. Telepített Eszközök / Installed Tooling
+
 - `gws` (Google Workspace CLI) v0.22.5 — `brew install googleworkspace-cli`.
-- `gcloud` (Google Cloud SDK) — `brew install --cask google-cloud-sdk`. **Gotcha:** not on PATH until the SDK's `path.zsh.inc` is sourced in the shell profile; if `gcloud` isn't found in a fresh shell, source `/opt/homebrew/share/google-cloud-sdk/path.zsh.inc` first.
-- Skills installed: `bx`, `find-skills`, `firecrawl-research-index`, `research-agent`, `gws-gmail`.
-- MCP already authed: `exa-search`.
+- `gcloud` (Google Cloud SDK) — `brew install --cask google-cloud-sdk`. **Figyelem:** nincs PATH-on amíg a `path.zsh.inc` be nem töltődik; ha `gcloud` nem található, forrás: `/opt/homebrew/share/google-cloud-sdk/path.zsh.inc`.
+- Telepített skill-ek: `bx`, `find-skills`, `firecrawl-research-index`, `research-agent`, `gws-gmail`.
+- MCP authentikálva: `exa-search`.
+- Idris 2: `/opt/homebrew/bin/idris2` (0.8.0 verzió).
 
-## Gmail access (gws-gmail skill)
-- Needs the `gws` binary (installed) **plus** a one-time Google OAuth login.
-- `gws auth setup` is interactive (browser) and requires `gcloud`. For a `@gmail.com` account the unverified-app 25-scope limit applies, so log in with individual scopes: `gws auth login --scopes gmail`.
-- **Auth status: NOT yet completed.** Before assuming Gmail works, verify with `gws gmail users getProfile`.
-- Common usage: `gws gmail +triage`, `gws gmail +read`, `gws gmail +reply --message-id <id> --body "..."`.
+## 4. Gmail hozzáférés (gws-gmail skill)
 
-## Sensitive files — DO NOT read, print, or expose
-In the ProtonDrive root (`~/Library/CloudStorage/ProtonDrive-chickenloop42@proton.me-folder/`):
+- Szükséges: `gws` bináris (telepítve) + egyszeri Google OAuth bejelentkezés.
+- `gws auth setup` interaktív (böngésző) és `gcloud` kell hozzá. `@gmail.com` fióknál az ellenőrizetlen alkalmazás 25-scope korlát vonatkozik, ezért egyedi scope-okkal jelentkezz be: `gws auth login --scopes gmail`.
+- **Auth státusz: MÉG NEM KÉSZ.** Mielőtt feltételeznéd, hogy a Gmail működik, ellenőrizd: `gws gmail users getProfile`.
+- Használat: `gws gmail +triage`, `gws gmail +read`, `gws gmail +reply --message-id <id> --body "..."`.
+
+---
+
+## 5. Bizalmas Fájlok — NE olvasd, ne írd ki, ne tedd elérhetővé
+
+A ProtonDrive gyökérben (`~/Library/CloudStorage/ProtonDrive-chickenloop42@proton.me-folder/`):
 - `1Password*.zip`, `1password-credentials*.json`, `1PasswordExport-*.1pux`
 - `AccessKey.csv`, `RAM Access Key AliBaba.txt`, `R12.der`
 - `proton-recovery-phrase.pdf`, `ai/dev/secret_1pw.env`
-- Any `*.env`, recovery phrases, or credentials files in general.
+- Bármilyen `.env`, recovery kifejezés, vagy credentials fájl általában.
 
-If a task needs a secret, ask the user — do not hunt through these files.
+Ha egy feladat titkot igényel, kérdezd meg a felhasználót — ne kutakodj ezekben a fájlokban.
 
-## User's AI research (context; don't edit unless asked)
-- Active work under `…/ai/dev/` (Obsidian vault, opencode source) and a large research dump in `…/ai/` covering: complex-valued / temporal transformers (GPT-2 based), neural networks × QFT, and related arXiv drafts.
-- Works across many AI providers (DeepSeek, Kimi, Gemini, Claude, Z.ai/GLM).
+---
+
+## 6. Felhasználó AI Kutatása (kontextus; ne szerkeszd)
+
+- Aktív munka: `…/ai/dev/` (Obsidian vault, opencode forrás) és egy nagy kutatási dump `…/ai/` alatt: komplex értékű / temporális transzformerek (GPT-2 alapú), neurális hálózatok × QFT, és kapcsolódó arXiv preprint-ek.
+- Több AI szolgáltatónál dolgozik (DeepSeek, Kimi, Gemini, Claude, Z.ai/GLM).
+
+---
+
+## 7. Git Használat / Git Usage
+
+- `git init` megtörtént a `/Users/joco/opencode/` könyvtárban
+- Snapshot minden 3. prompt után: `git add -A && git commit -m "snapshot N: rövid leírás"`
+- `.gitignore`: `session-*.md`, `trail_index/build/`

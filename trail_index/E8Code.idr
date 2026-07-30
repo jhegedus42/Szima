@@ -1,5 +1,7 @@
 module E8Code
 
+import Data.Vect
+
 ||| E8 lattice coordinates as an 8-tuple of integers.
 public export
 record E8Vec where
@@ -8,38 +10,34 @@ record E8Vec where
   c5 : Int; c6 : Int; c7 : Int; c8 : Int
 
 ||| Clifford algebra Cl(8) blade indexed by 8-bit mask.
-||| ab = a·b + a∧b → inner product = overlap (redundant), outer = novelty.
+||| ab = a·b + a∧b → inner = overlap (redundant), outer = novelty.
 public export
 data Blade : Int -> Type where
   S  : Blade 0
   E1 : Blade 1;  E2 : Blade 2;  E3 : Blade 4;  E4 : Blade 8
   E5 : Blade 16; E6 : Blade 32; E7 : Blade 64; E8 : Blade 128
 
-||| A concept/relationship embedded in E8 with Cl(8) decomposition.
+||| A code word in the E8 lattice with Cl(8) decomposition.
 public export
 record CodeWord where
   constructor MkCW
   label : String
   embed : E8Vec
-  inner : Int      -- Cl(8) inner component (scalar + symmetric)
-  outer : Int      -- Cl(8) outer component (bivector + higher)
+  inner : Int
+  outer : Int
 
-||| Does B have high overlap with A? If so → redundant, drop B.
+||| Overlap threshold for redundancy detection.
 public export
 overlapThreshold : Double
 overlapThreshold = 0.8
 
-||| Decision after comparing two code words.
 public export
 data DropOrKeep = DropB | KeepBoth
 
-||| Redundancy decision based on overlap.
 public export
 decide : Double -> DropOrKeep
 decide o = if o > overlapThreshold then DropB else KeepBoth
 
-||| Geometric product computes overlap from two code words.
-||| High overlap → concept is redundant.
 public export
 overlap : CodeWord -> CodeWord -> Double
 overlap a b =
@@ -47,3 +45,39 @@ overlap a b =
       na  = a.inner * a.inner + a.outer * a.outer
       nb  = b.inner * b.inner + b.outer * b.outer
   in cast dot / cast (na + nb + 1)
+
+||| Convolutional code state: evolves at each step (not static).
+||| The case at step t depends on case at step t-1.
+public export
+record ConvState where
+  constructor MkState
+  prevInner : Int
+  prevOuter : Int
+  step      : Nat
+
+public export
+initState : ConvState
+initState = MkState 0 0 0
+
+||| E8 parity syndrome: 8-bit vector from parity-check.
+||| Classical code constraint: syndrome must be zero for valid code words.
+public export
+record Syndrome where
+  constructor MkSyn
+  bits : Vect 8 Int
+
+||| Convolutional step: encode (input, state) → (output, newState).
+||| The code is NOT static — output depends on accumulation of all prior inputs.
+public export
+record ConvStep where
+  constructor MkConv
+  input     : Int     -- case code (5 bits → sub-code of E8)
+  prevState : ConvState
+  output    : CodeWord
+  syndrome  : Syndrome
+  nextState : ConvState
+
+||| Validate that syndrome is zero (valid E8 code word).
+public export
+data ValidCode : CodeWord -> Type where
+  IsValid : Syndrome -> ValidCode cw

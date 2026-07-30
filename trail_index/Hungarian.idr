@@ -1,7 +1,17 @@
 module Hungarian
 
-||| Hungarian case suffixes as logical relation markers.
-||| Each case encodes a distinct grammatical → logical role.
+import OctonionLogic
+
+||| Opaque concept reference — not a string.
+public export
+data ConceptRef : Type where
+  MkRef : Nat -> ConceptRef
+
+public export
+Eq ConceptRef where
+  (==) (MkRef a) (MkRef b) = a == b
+
+||| Hungarian case suffixes.
 public export
 data Case = Nom | Acc | Dat | Ins | Com | Cau | Tra | Ter
           | Ill | Ine | Ela | All | Ade | Abl | Sup | Del | Sub
@@ -9,86 +19,91 @@ data Case = Nom | Acc | Dat | Ins | Com | Cau | Tra | Ter
 
 public export
 Show Case where
-  show Nom  = "∅";   show Acc  = "-t";   show Dat  = "-nak"
-  show Ins  = "-val"; show Com  = "-stul"; show Cau  = "-ért"
-  show Tra  = "-vá";  show Ter  = "-ig";   show Ill  = "-ba"
-  show Ine  = "-ban"; show Ela  = "-ból";  show All  = "-hoz"
-  show Ade  = "-nál"; show Abl  = "-tól";  show Sup  = "-n"
-  show Del  = "-ról"; show Sub  = "-ra";   show Tem  = "-kor"
-  show Soc  = "-ként"; show Dist = "-nként"; show Ess = "-ul"
-  show For  = "-ért"; show Mod  = "-lag";  show Cas  = "-képp"
+  show Nom  = "∅";    show Acc  = "-t";    show Dat  = "-nak/-nek"
+  show Ins  = "-val/-vel"; show Com = "-stul/-stül"; show Cau = "-ért"
+  show Tra  = "-vá/-vé";  show Ter  = "-ig"
+  show Ill  = "-ba/-be";  show Ine  = "-ban/-ben"
+  show Ela  = "-ból/-ből"; show All  = "-hoz/-hez/-höz"
+  show Ade  = "-nál/-nél"; show Abl  = "-tól/-től"
+  show Sup  = "-n/-on/-en/-ön"; show Del = "-ról/-ről"
+  show Sub  = "-ra/-re";  show Tem  = "-kor"
+  show Soc  = "-ként";    show Dist = "-nként"
+  show Ess  = "-ul/-ül";  show For  = "-ért"
+  show Mod  = "-lag/-leg"; show Cas = "-képp/-képpen"
 
-||| Each case maps to a logical relation.
-||| This IS the grammar → logic bridge.
+||| Number (plural suffix is a morpheme between stem and case).
+public export
+data Number = Singular | Plural
+
+||| Possessive suffix (between number and case in agglutination order).
+public export
+data Possession = NoPoss | P1Sg | P2Sg | P3Sg | P1Pl | P2Pl | P3Pl
+
+||| A fully agglutinated word: stem + number + possessive + case.
+||| No strings — ConceptRef replaces the stem.
+public export
+record Agglutinated where
+  constructor MkAgg
+  concept  : ConceptRef
+  number   : Number
+  possess  : Possession
+  case_    : Case
+
+||| A verb with its conjugation type (definite → R, indefinite → I1).
+public export
+data Conjugation = Definite | Indefinite
+
+||| A grammatical relation extracted from case marking.
+||| No strings — all roles are ConceptRefs.
+public export
+record CaseRelation where
+  constructor MkCaseRel
+  agent   : ConceptRef      -- NOM (subject)
+  verb    : ConceptRef      -- the action
+  patient : ConceptRef      -- ACC (object)
+  oblique : List (Case, ConceptRef)  -- all other cases
+  mode    : OctVal          -- truth mode from definiteness
+  conj    : Conjugation
+
+||| Each Hungarian case maps to a logical relation type.
+||| This IS the grammar → logic bridge, encoded in types.
 public export
 data CaseLogic : Case -> Type where
+  NomLogic  : CaseLogic Nom     -- agent / subject-of
+  AccLogic  : CaseLogic Acc     -- patient / object-of
+  CauLogic  : CaseLogic Cau     -- because-of / reason-for
+  TraLogic  : CaseLogic Tra     -- results-in / transforms-to
+  DatLogic  : CaseLogic Dat     -- recipient / caused-by
+  IllLogic  : CaseLogic Ill     -- becomes / specializes-to
+  IneLogic  : CaseLogic Ine     -- context-of / within
+  ElaLogic  : CaseLogic Ela     -- derived-from / source
+  AllLogic  : CaseLogic All     -- targets / implies
+  SubLogic  : CaseLogic Sub     -- applies-to / purpose
+  InsLogic  : CaseLogic Ins     -- via / using
+  ComLogic  : CaseLogic Com     -- conjoined-with
+  AdeLogic  : CaseLogic Ade     -- relative-to / compared-to
+  AblLogic  : CaseLogic Abl     -- originates-in / source-of
+  DelLogic  : CaseLogic Del     -- topic-of / references
+  SupLogic  : CaseLogic Sup     -- on / about
+  TemLogic  : CaseLogic Tem     -- at-time / when
+  TerLogic  : CaseLogic Ter     -- up-to / bounded-by
+  EssLogic  : CaseLogic Ess     -- in-role-of / as
 
-  -- Core grammatical roles
-  NomLogic  : CaseLogic Nom      -- subject / agent-of
-  AccLogic  : CaseLogic Acc      -- object / patient-of
-
-  -- Causal relations (matches Triggers from Ontology)
-  CauLogic  : CaseLogic Cau      -- cause → because-of
-  DatLogic  : CaseLogic Dat      -- recipient → caused-by
-
-  -- Transformative relations (matches Resolves from Ontology)
-  TraLogic  : CaseLogic Tra      -- transformation → results-in
-
-  -- Spatial → logical mappings
-  IllLogic  : CaseLogic Ill      -- into → becomes / specializes-to
-  IneLogic  : CaseLogic Ine      -- in → context-of
-  ElaLogic  : CaseLogic Ela      -- out-of → derived-from
-  AllLogic  : CaseLogic All      -- toward → targets / implies
-  SubLogic  : CaseLogic Sub      -- onto → applies-to / purpose
-
-  -- Instrumental
-  InsLogic  : CaseLogic Ins      -- with → via / using / by-means-of
-  ComLogic  : CaseLogic Com      -- together-with → conjoined-with
-
-  -- Relational
-  AdeLogic  : CaseLogic Ade      -- at → relative-to / compared-to
-  AblLogic  : CaseLogic Abl      -- from → originates-in / source-of
-  DelLogic  : CaseLogic Del      -- about → topic-of / references
-  SupLogic  : CaseLogic Sup      -- on → surface / topically
-
-  -- Temporal
-  TemLogic  : CaseLogic Tem      -- at-time → when
-
-  -- Limit / boundary
-  TerLogic  : CaseLogic Ter      -- until → up-to / bounded-by
-
-  -- Predicative
-  EssLogic  : CaseLogic Ess      -- as → in-role-of
-  SocLogic  : CaseLogic Soc      -- as → in-capacity-of
-
-||| Agglutination: a stem with a suffix stack.
-||| The stack builds compositionally, like logical formulas.
-public export
-data Word : Type where
-  Bare  : String -> Word
-  Suffix : Word -> Case -> Word
-
-||| A proposition in Hungarian case logic.
-||| Case marks the logical role of each concept in the relation.
-public export
-data CaseProp : Type where
-  MkCaseProp : (subject : String) -> (verb : String) 
-            -> (object : String) -> (cases : List (Case, String))
-            -> CaseProp
-
-||| Convert Hungarian case structure to OctonionLogic truth mode.
-||| Causative cases → Causal mode (I1).
-||| Transformative cases → Deductive mode (I2).
-||| Others map to the appropriate octonion dimension.
+||| Case → Octonion truth mode.
+||| Causative → I1 (causal), Transformative → I2 (deductive),
+||| Spatial/directional → I3-I7 (modal/hypothetical),
+||| Core cases (NOM, ACC) → R (definite truth).
 public export
 caseToMode : Case -> OctVal
-caseToMode Nom = R       -- definite truth
-caseToMode Acc = R       -- definite truth
-caseToMode Cau = I1      -- causal
-caseToMode Tra = I2      -- deductive
-caseToMode Dat = I3      -- hypothetical (purpose)
-caseToMode Sub = I4      -- temporal (goal-oriented)
-caseToMode Ela = I5      -- modal (origin/possibility)
-caseToMode Ill = I6      -- deontic (becoming)
-caseToMode Ine = I7      -- epistemic (context)
-caseToMode _   = R
+caseToMode Nom = R; caseToMode Acc = R
+caseToMode Cau = I1; caseToMode Tra = I2
+caseToMode Dat = I3; caseToMode Sub = I4
+caseToMode Ela = I5; caseToMode Ill = I6
+caseToMode Ine = I7; caseToMode All = I1
+caseToMode Ins = I2; caseToMode Com = I3
+caseToMode Ade = I4; caseToMode Abl = I5
+caseToMode Del = I6; caseToMode Sup = I7
+caseToMode Tem = R;  caseToMode Ter = I1
+caseToMode Ess = R;  caseToMode Soc = R
+caseToMode Dist = I2; caseToMode For = I1
+caseToMode Mod = I3;  caseToMode Cas = I4

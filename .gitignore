@@ -1,2 +1,6 @@
 session-*.md
 trail_index/build/
+build/
+osveny_index/build/
+*.ttc
+*.ttm
