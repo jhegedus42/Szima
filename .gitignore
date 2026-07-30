@@ -5,4 +5,6 @@ osveny_index/build/
 *.ttc
 *.ttm
 *.DS_Store
-*.pdf
+# bizonyitasok.pdf felmegy, tobbi PDF nem
+Category Theory*.pdf
+Mac Lane*.pdf
