@@ -104,6 +104,16 @@ data FogalomLogika : FogalomTipus -> FogalomTipus -> Type where
   AllitasBizonyithatosag : FogalomLogika Allitas Bizonyithatosag
   GyokerKonzisztencia    : FogalomLogika Gyoker Konzisztencia
   GyokerOnhivatkozas     : FogalomLogika Gyoker Onhivatkozas
+  -- Inkonzisztencia: egy vonal, ket oldalan 2 matematika, i-vel forgatva
+  GodelElsoInkonzisztencia : FogalomLogika GodelElsoTetel InkonzisztenciaVonal
+  GodelMasodikKonzisztencia : FogalomLogika GodelMasodikTetel InkonzisztenciaVonal
+  InkonzisztenciaVonalKetto : FogalomLogika InkonzisztenciaVonal KettoMatematika
+  InkonzisztenciaVonalWick  : FogalomLogika InkonzisztenciaVonal WickForgatas
+  WickForgatasKomplex       : FogalomLogika WickForgatas KomplexFazis
+  WickForgatasIdo           : FogalomLogika WickForgatas Ido
+  KettoMatematikaAllitas    : FogalomLogika KettoMatematika Allitas
+  GyokerInkonzisztencia     : FogalomLogika Gyoker InkonzisztenciaVonal
+  GyokerWick                : FogalomLogika Gyoker WickForgatas
   -- 4 dimenzio
   GyokerTer              : FogalomLogika Gyoker Ter
   GyokerIdo              : FogalomLogika Gyoker Ido
