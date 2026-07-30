@@ -6,6 +6,8 @@ import E8E8Algebra
 import FogalomFa
 import HaromKubit
 import FazisAlgebra
+import Emberi.Index
+import Szamitasi.Index
 
 ||| Kategoria: objektumok + morfizmusok + osszetetel + azonos.
 public export
@@ -1146,4 +1148,83 @@ vilagFaToltesParitasIdo vf = ToltesParitasIdoKonstruktor
   (VilagKonstruktor
     (if vf.fazis.bizalom > 0.5 then Egy else Nulla)
     (if vf.fazis.bizalom > 0.8 then Egy else Nulla)
-    (if length vf.fazis.hivatkozasok > 2 then Egy else Nulla))
+      (if length vf.fazis.hivatkozasok > 2 then Egy else Nulla))
+
+-- ═══════════════════════════════════════════════════════════════
+-- 7+7+1 KATEGORIA RENDSZER: Emberi (7) ↔ Perem (1) ↔ Szamitasi (7)
+-- ═══════════════════════════════════════════════════════════════
+
+||| Morfizmus a 7+7+1 kategoriak kozott.
+public export
+data KategoriaMorf : KategoriaTipus -> KategoriaTipus -> Type where
+  KategoriaAzonos  : KategoriaMorf a a
+  KategoriaIre     : FogalomLogika714 a b -> KategoriaMorf a b
+  KategoriaSorozat : (koztes : KategoriaTipus) -> KategoriaMorf a koztes -> KategoriaMorf koztes c -> KategoriaMorf a c
+
+||| Azonossag: minden KategoriaTipushoz az azonos morfizmus.
+public export
+kategoriaAzonos : (a : KategoriaTipus) -> KategoriaMorf a a
+kategoriaAzonos a = KategoriaAzonos
+
+||| Osszetetel: morfizmusok kompozicioja.
+public export
+kategoriaOsszetetel : {a, b, c : KategoriaTipus} -> KategoriaMorf a b -> KategoriaMorf b c -> KategoriaMorf a c
+kategoriaOsszetetel {a} {b} {c} f g = KategoriaSorozat b f g
+
+||| 7+7+1 kategoria peldany.
+public export
+kategoria714Kategoria : Kategoria KategoriaTipus KategoriaMorf
+kategoria714Kategoria = KategoriaKonstruktor kategoriaAzonos kategoriaOsszetetel
+
+||| EmberiKategoria diszkret kategoria: csak azonos morfizmusok.
+public export
+data EmberiMorf : EmberiKategoria -> EmberiKategoria -> Type where
+  EmberiAzonos : EmberiMorf a a
+
+||| SzamitasiKategoria diszkret kategoria: csak azonos morfizmusok.
+public export
+data SzamitasiMorf : SzamitasiKategoria -> SzamitasiKategoria -> Type where
+  SzamitasiAzonos : SzamitasiMorf a a
+
+||| Funktor: Emberi → Kategoria714.
+||| Minden EmberiKategoria egy KategoriaEmberi.
+public export
+emberi714Funktor : Funktor EmberiKategoria EmberiMorf KategoriaTipus KategoriaMorf
+emberi714Funktor = FunktorKonstruktor
+  KategoriaEmberi
+  (\f => case f of EmberiAzonos => KategoriaAzonos)
+
+||| Funktor: Szamitasi → Kategoria714.
+public export
+szamitasi714Funktor : Funktor SzamitasiKategoria SzamitasiMorf KategoriaTipus KategoriaMorf
+szamitasi714Funktor = FunktorKonstruktor
+  KategoriaSzamitasi
+  (\f => case f of SzamitasiAzonos => KategoriaAzonos)
+
+||| Adjunkcio: Kategoria714 ⊣ Kategoria714 (azonos funktorokkal).
+|||   A Perem (KategoriaPerem) a ket oldal (Emberi ↔ Szamitasi) kozotti
+|||   adjunkcio fixpontja: az azonos funktor-on keresztul.
+public export
+emberiPeremSzamitasiAdjunkcio : Adjunkcio KategoriaTipus KategoriaMorf
+                                        KategoriaTipus KategoriaMorf
+emberiPeremSzamitasiAdjunkcio =
+  let azonosFunktor : Funktor KategoriaTipus KategoriaMorf KategoriaTipus KategoriaMorf
+      azonosFunktor = FunktorKonstruktor id (\f => f)
+  in AdjunkcioKonstruktor azonosFunktor azonosFunktor
+       (\a => KategoriaAzonos)
+       (\b => KategoriaAzonos)
+
+||| A Legendre perem morfizmus: Emberi.Fazis → Perem.
+public export
+fazisPeremMorf : KategoriaMorf (KategoriaEmberi EmberiFazis) KategoriaPerem
+fazisPeremMorf = KategoriaIre FazisPerem
+
+||| A Legendre perem morfizmus: Perem → Szamitasi.Allapot.
+public export
+peremAllapotMorf : KategoriaMorf KategoriaPerem (KategoriaSzamitasi SzamAllapot)
+peremAllapotMorf = KategoriaIre PeremAllapot
+
+||| Teljes Legendre adjunkcio morfizmus: Emberi.Fazis → Szamitasi.Allapot.
+public export
+fazisAllapotMorf : KategoriaMorf (KategoriaEmberi EmberiFazis) (KategoriaSzamitasi SzamAllapot)
+fazisAllapotMorf = kategoriaOsszetetel fazisPeremMorf peremAllapotMorf

@@ -3,6 +3,9 @@ module FogalomFa
 import MagyarNyelv
 import HaromKubit
 import E8E8Algebra
+import Emberi.Index
+import Szamitasi.Index
+import Steane713
 
 ||| Fogalom hierarchia: mely tipusok lehetnek egy masik gyerekei.
 ||| Egesziti ki a FogalomTipus-t a logikai kapcsolatokkal.
@@ -347,3 +350,117 @@ public export
 gyerekekSzama : FogalomFa t -> Nat
 gyerekekSzama (Level _) = 0
 gyerekekSzama (Ag _ gyerekek) = length gyerekek
+
+-- ═══════════════════════════════════════════════════════════════
+-- 7+7+1 KATEGORIA RENDSZER
+-- ═══════════════════════════════════════════════════════════════
+
+||| 7+7+1 kategoria tipus: Emberi (7 kvantum), Szamitasi (7 klasszikus), Perem (1 Legendre).
+public export
+data KategoriaTipus : Type where
+  KategoriaEmberi   : EmberiKategoria -> KategoriaTipus
+  KategoriaSzamitasi : SzamitasiKategoria -> KategoriaTipus
+  KategoriaPerem    : KategoriaTipus
+
+||| Logikai kapcsolatok a 7+7+1 kategoriak kozott.
+|||   Emberi belso: Ido → Oksag → Ter → Szin → Hang → Fazis → Mod
+|||   Szamitasi belso: Utem → Vezerles → Adat → Tipus → Kapcsolat → Allapot → Utasitas
+|||   Perem: Fazis (emberi) ↔ Allapot (szamitasi) — Legendre adjunkcio
+public export
+data FogalomLogika714 : KategoriaTipus -> KategoriaTipus -> Type where
+  -- Emberi kategoriak kore: Ido → Oksag → Ter → Szin → Hang → Fazis → Mod
+  EmberiIdoOksag     : FogalomLogika714 (KategoriaEmberi EmberiIdo) (KategoriaEmberi EmberiOksag)
+  EmberiOksagTer     : FogalomLogika714 (KategoriaEmberi EmberiOksag) (KategoriaEmberi EmberiTer)
+  EmberiTerSzin      : FogalomLogika714 (KategoriaEmberi EmberiTer) (KategoriaEmberi EmberiSzin)
+  EmberiSzinHang     : FogalomLogika714 (KategoriaEmberi EmberiSzin) (KategoriaEmberi EmberiHang)
+  EmberiHangFazis    : FogalomLogika714 (KategoriaEmberi EmberiHang) (KategoriaEmberi EmberiFazis)
+  EmberiFazisMod     : FogalomLogika714 (KategoriaEmberi EmberiFazis) (KategoriaEmberi EmberiMod)
+
+  -- Szamitasi kategoriak kore: Utem → Vezerles → Adat → Tipus → Kapcsolat → Allapot → Utasitas
+  SzamUtemVezerles   : FogalomLogika714 (KategoriaSzamitasi SzamUtem) (KategoriaSzamitasi SzamVezerles)
+  SzamVezerlesAdat   : FogalomLogika714 (KategoriaSzamitasi SzamVezerles) (KategoriaSzamitasi SzamAdat)
+  SzamAdatTipus      : FogalomLogika714 (KategoriaSzamitasi SzamAdat) (KategoriaSzamitasi SzamTipus)
+  SzamTipusKapcsolat : FogalomLogika714 (KategoriaSzamitasi SzamTipus) (KategoriaSzamitasi SzamKapcsolat)
+  SzamKapcsolatAllapot : FogalomLogika714 (KategoriaSzamitasi SzamKapcsolat) (KategoriaSzamitasi SzamAllapot)
+  SzamAllapotUtasitas : FogalomLogika714 (KategoriaSzamitasi SzamAllapot) (KategoriaSzamitasi SzamUtasitas)
+
+  -- Perem: Legendre adjunkcio — Emberi.Fazis ↔ Perem ↔ Szamitasi.Allapot
+  FazisPerem         : FogalomLogika714 (KategoriaEmberi EmberiFazis) KategoriaPerem
+  PeremAllapot       : FogalomLogika714 KategoriaPerem (KategoriaSzamitasi SzamAllapot)
+
+  -- Kozvetlen Legendre parok: minden emberi kategoriaban van egy szamitasi parja
+  EmberiSzamitasiPar : (emberi : EmberiKategoria) -> (szamitasi : SzamitasiKategoria)
+                    -> FogalomLogika714 (KategoriaEmberi emberi) (KategoriaSzamitasi szamitasi)
+
+||| FogalomTipus → KategoriaTipus lekepezes.
+||| Minden FogalomTipus besorolhato a 7+7+1 rendszerbe.
+public export
+fogalomTipusToKategoria : FogalomTipus -> KategoriaTipus
+fogalomTipusToKategoria Gyoker = KategoriaEmberi EmberiIdo
+fogalomTipusToKategoria Cel = KategoriaEmberi EmberiOksag
+fogalomTipusToKategoria ReszCel = KategoriaEmberi EmberiTer
+fogalomTipusToKategoria Feladat = KategoriaEmberi EmberiTer
+fogalomTipusToKategoria ReszFeladat = KategoriaEmberi EmberiTer
+fogalomTipusToKategoria Cselekves = KategoriaEmberi EmberiSzin
+fogalomTipusToKategoria Eredmeny = KategoriaEmberi EmberiHang
+fogalomTipusToKategoria Megfigyeles = KategoriaEmberi EmberiFazis
+fogalomTipusToKategoria Hiba = KategoriaEmberi EmberiFazis
+fogalomTipusToKategoria Javitas = KategoriaEmberi EmberiMod
+fogalomTipusToKategoria Minta = KategoriaEmberi EmberiSzin
+fogalomTipusToKategoria Foltozas = KategoriaEmberi EmberiMod
+fogalomTipusToKategoria InfraJavitas = KategoriaEmberi EmberiMod
+fogalomTipusToKategoria Dontes = KategoriaSzamitasi SzamVezerles
+fogalomTipusToKategoria Valasztas = KategoriaSzamitasi SzamUtasitas
+fogalomTipusToKategoria Elutasitas = KategoriaSzamitasi SzamUtasitas
+fogalomTipusToKategoria Ok = KategoriaSzamitasi SzamAllapot
+fogalomTipusToKategoria Kavzatum = KategoriaSzamitasi SzamAllapot
+fogalomTipusToKategoria Korlatozas = KategoriaSzamitasi SzamVezerles
+fogalomTipusToKategoria Szabaly = KategoriaSzamitasi SzamUtasitas
+fogalomTipusToKategoria KemenySzabaly = KategoriaSzamitasi SzamUtasitas
+fogalomTipusToKategoria Egyezmeny = KategoriaSzamitasi SzamKapcsolat
+fogalomTipusToKategoria Eszkoz = KategoriaSzamitasi SzamAdat
+fogalomTipusToKategoria Kesztseg = KategoriaSzamitasi SzamAdat
+fogalomTipusToKategoria ModellKornyezetProtokoll = KategoriaSzamitasi SzamTipus
+fogalomTipusToKategoria Kerdes = KategoriaSzamitasi SzamKapcsolat
+fogalomTipusToKategoria Magyarazat = KategoriaSzamitasi SzamTipus
+fogalomTipusToKategoria E8xE8 = KategoriaEmberi EmberiSzin
+fogalomTipusToKategoria Dualitas = KategoriaEmberi EmberiFazis
+fogalomTipusToKategoria Kategoria = KategoriaSzamitasi SzamTipus
+fogalomTipusToKategoria Szimmetria = KategoriaEmberi EmberiHang
+fogalomTipusToKategoria Tenzor = KategoriaSzamitasi SzamAdat
+fogalomTipusToKategoria Funktor = KategoriaSzamitasi SzamVezerles
+-- Szamok
+fogalomTipusToKategoria TermeszetesSzam = KategoriaSzamitasi SzamAdat
+fogalomTipusToKategoria EgeszSzam = KategoriaSzamitasi SzamAdat
+fogalomTipusToKategoria RacionalisSzam = KategoriaSzamitasi SzamAdat
+fogalomTipusToKategoria ValosSzam = KategoriaSzamitasi SzamAdat
+fogalomTipusToKategoria KomplexSzam = KategoriaSzamitasi SzamAdat
+-- Minden mas
+fogalomTipusToKategoria _ = KategoriaEmberi EmberiMod
+
+||| [[15,1,3]] teljes allapot: 7 emberi + 7 szamitasi + 1 perem = 15+1 bit.
+||| A perem a Legendre transzformacio: p·q̇ = Yoneda parositas.
+public export
+data TizenotEgyAllapot : Type where
+  TizenotEgyKonstruktor : (emberi : HetesKod) -> (szamitasi : HetesKod) -> (perem : Kubit) -> TizenotEgyAllapot
+
+||| [[15,1,3]] kodolas: |0> → (|0_e>, |0_s>, 0), |1> → (|1_e>, |1_s>, 1)
+public export
+tizenotEgyKodol : Kubit -> TizenotEgyAllapot
+tizenotEgyKodol k = TizenotEgyKonstruktor (alapKod k) (alapKod k) k
+
+||| [[15,1,3]] dekodolas: tobbseg szavazat.
+|||   Ha az emberi es szamitasi oldal egyetert, azt adjuk.
+|||   Ha nem, a perem dont (Legendre adjunkcio).
+public export
+tizenotEgyDekodol : TizenotEgyAllapot -> Kubit
+tizenotEgyDekodol (TizenotEgyKonstruktor e s p) =
+  let ke = steaneDekodol e
+      ks = steaneDekodol s
+  in if ke == ks then ke else p
+
+||| [[15,1,3]] kod torveny: kodolas majd dekodolas = azonossag.
+public export
+tizenotEgyTorveny : (k : Kubit) -> tizenotEgyDekodol (tizenotEgyKodol k) = k
+tizenotEgyTorveny Nulla = Refl
+tizenotEgyTorveny Egy   = Refl

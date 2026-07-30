@@ -128,11 +128,11 @@ paritas f x = f (-x)
 |||   visszaadja az eredmenyt: H = p·q̇ - L = (-p)(-q̇) - L
 public export
 paritasKonfig : (Double -> Double -> Double) -> (Double -> Double -> Double)
-paritasKonfig L q qdot = L q (-qdot)
+paritasKonfig lagrangeFv hely sebesseg = lagrangeFv hely (-sebesseg)
 
 public export
 paritasFazis : (Double -> Double -> Double) -> (Double -> Double -> Double)
-paritasFazis H q p = H q (-p)
+paritasFazis hamiltonFv hely impulzus = hamiltonFv hely (-impulzus)
 
 -- ─── 1. MECHANIKA ─────────────────────────────────────────────────
 
@@ -154,16 +154,16 @@ hamiltonMechanika q p = 0.5 * p * p + 0.5 * q * q
 ||| Legendre: L → H (derivalas + perem)
 public export
 legendreMechanika : (Double -> Double -> Double) -> (Double -> Double -> Double)
-legendreMechanika L q p =
-  let qdot = p
-  in perem p qdot - L q qdot
+legendreMechanika lagrangeFv hely impulzus =
+  let qdot = impulzus
+  in perem impulzus qdot - lagrangeFv hely qdot
 
 ||| Inverz Legendre: H → L (derivalas + perem — szimmetrikus!)
 public export
 legendreInverzMechanika : (Double -> Double -> Double) -> (Double -> Double -> Double)
-legendreInverzMechanika H q p =
-  let qdot = p
-  in perem p qdot - H q p
+legendreInverzMechanika hamiltonFv hely impulzus =
+  let qdot = impulzus
+  in perem impulzus qdot - hamiltonFv hely impulzus
 
 -- ─── 2. TERMODINAMIKA — entropia = idonyil, homerseklet = idosebesseg ──
 
@@ -240,8 +240,9 @@ legendreEntalpia u s p =
 ||| Legendre (Gibbs): U(S,V) → G(T,p)
 |||   S → T, V → p: mindket dimenzio csereljuk.
 |||   = termikus + geometriai Legendre = teljes Legendre.
+|||   G = perem(t, s) + (-1)*perem(p, v) - u(s, v)
 public export
-legendreGibbs : (Double -> Double -> Double) -> (Double -> Double -> Double) -> (Double -> Double -> Double)
+legendreGibbs : (Double -> Double -> Double) -> Double -> Double -> Double
 legendreGibbs u t p =
   let s = t
       v = (-1.0) * p
@@ -473,7 +474,7 @@ fotonInformacio frekvencia homerseklet =
 |||   kotés (informacio) es mennyi disszipal.
 public export
 klorofillHatasfok : Double -> Double -> Double
-  klorofillHatasfok homerseklet kemiaiEnergia =
+klorofillHatasfok homerseklet kemiaiEnergia =
   kemiaiEnergia / (boltzmannAllando * homerseklet * log 2.0)
 
 -- ─── 2F. KVANTUMGRAVITÁCIÓ = ÖSSZEFONÓDÁS = INFORMÁCIÓ ──────────
@@ -562,34 +563,22 @@ mezoHamiltonSuruseg idoDerivalt terDerivalt tomege mezo =
   0.5 * (idoDerivalt * idoDerivalt + terDerivalt * terDerivalt
          + tomege * tomege * mezo * mezo)
 
-||| Kvantumter - Legendre adjunkcio:
-|||   ℒ ↔ ℋ, ahol π = ∂ℒ/∂φ̇
-|||   A terelo ℒ 'geometriai' (lokalis a terben)
-|||   Az ido ℋ 'idobeli' (globalis - a Hamilton generalja az idofejlest)
-|||   A Legendre itt: π·φ̇ = a perem = a mezo-kvantum csere
-public export
-mezoLegendre : (Double -> Double -> Double -> Double -> Double) -> Double -> Double -> Double -> Double -> Double
-mezoLegendre lagrange pi idoDerivalt terDerivalt tomege mezo =
-  let phiDot = pi
-  in perem pi phiDot - lagrange idoDerivalt terDerivalt tomege mezo
-
 -- ─── 3. MATEMATIKA (konvex konjugalt = szupremum) ────────────────
 
 ||| Numerikus maximum: sup_x g(x) az [a,b]-n n lepesben.
 public export
-maximumFv : (Double -> Double) -> Double -> Double -> Integer -> Double
+maximumFv : (Double -> Double) -> Double -> Double -> Nat -> Double
 maximumFv g a b n = maxKereses g a b n a (g a)
   where
-    maxKereses : (Double -> Double) -> Double -> Double -> Integer -> Double -> Double -> Double
-    maxKereses g a b n x0 fx0 =
-      case n of
-        0 => fx0
-        S k =>
-          let x = a + (b - a) * (cast (S k)) / (cast 100)
-              fv = g x
-          in if fv > fx0
-             then maxKereses g a b k x fv
-             else maxKereses g a b k x0 fx0
+    maxKereses : (Double -> Double) -> Double -> Double -> Nat -> Double -> Double -> Double
+    maxKereses g a b Z x0 fx0 = fx0
+    maxKereses g a b (S k) x0 fx0 =
+      let nNat = S k
+          x = a + (b - a) * (cast nNat) / 100.0
+          fv = g x
+      in if fv > fx0
+         then maxKereses g a b k x fv
+         else maxKereses g a b k x0 fx0
 
 ||| Konvex konjugalt: f*(p) = sup_x (p·x - f(x))
 |||   A vegtelen halmaz szupremuma = integral (kolimesz).

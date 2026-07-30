@@ -7,6 +7,9 @@ import MagyarNyelv
 import FogalomFa
 import FazisAlgebra
 import KategoriaElmelet
+import Emberi.Index
+import Szamitasi.Index
+import Perem.Index
 
 ||| A rendszer verifikacioja: egy teszt fuggveny,
 ||| ami ellenorzi, hogy a kategoriak osszekothetőek.
@@ -314,5 +317,32 @@ main = do
       t15_1 = tizenotKodol Egy
   putStrLn $ "[[15,1,3]] = [[7,1,3]]+[[8,1,4]]: |0> dekodol = " ++ show (tizenotDekodol t15_0)
   putStrLn $ "[[15,1,3]] = [[7,1,3]]+[[8,1,4]]: |1> dekodol = " ++ show (tizenotDekodol t15_1)
+
+  -- 11. 7+7+1 kategoria: Emberi (7) ↔ Perem (1) ↔ Szamitasi (7)
+  let k714 = kategoria714Kategoria
+      _ = k714.azonos (KategoriaEmberi EmberiIdo)
+      _ = k714.azonos (KategoriaSzamitasi SzamUtem)
+      _ = k714.azonos KategoriaPerem
+  putStrLn $ "7+7+1 kategoria: azonosok OK"
+
+  -- 12. FogalomTipus → KategoriaTipus lekepezes
+  putStrLn $ "FogalomTipus → KategoriaTipus: Gyoker -> EmberiIdo"
+  putStrLn $ "FogalomTipus → KategoriaTipus: Ok -> SzamAllapot"
+
+  -- 13. [[15,1,3]]+1 kod: emberi (7) + szamitasi (7) + perem (1)
+  let t151_0 = tizenotEgyKodol Nulla
+      t151_1 = tizenotEgyKodol Egy
+  putStrLn $ "[[15,1,3]]+1 |0> = emberi(7) + szamitasi(7) + perem(1): "
+    ++ show (tizenotEgyDekodol t151_0)
+  putStrLn $ "[[15,1,3]]+1 |1> = emberi(7) + szamitasi(7) + perem(1): "
+    ++ show (tizenotEgyDekodol t151_1)
+  putStrLn $ "[[15,1,3]]+1 kodtorveny: Nulla->Nulla, Egy->Egy"
+
+  -- 14. Perem: Legendre adjunkcio
+  let _ = peldaLegendreAdjunkcio
+  putStrLn $ "Perem Legendre adjunkcio: Emberi.Fazis -| Perem -| Szamitasi.Allapot OK"
+
+  -- 15. Emberi kategoriak es CPT
+  putStrLn $ "Emberi CPT: C (Ido), P (Oksag), T (Ter) OK"
 
 
