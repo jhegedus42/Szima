@@ -149,7 +149,20 @@ data FogalomTipus = Gyoker | Cel | ReszCel | Feladat | ReszFeladat
                   -- Kommunikacio
                   | Informacio | Kommunikacio | Kod | Jel | Csatorna | Zaj | Bit
                   -- Folytonossag
-                  | Folytonos | NemFolytonos | Codata | Sorozat | Hatar | Vegtelen
+                   | Folytonos | NemFolytonos | Codata | Sorozat | Hatar | Vegtelen
+                   -- Kepzetes egyseg (i), ij szorzat, katernio, okternio, tukrozesek
+                   | KepzetesEgyseg | IjSzorzat | Katernio | Okternio | OkternioTukor | FizikaTukor
+                   -- Kanti kategoriaelmélet
+                   | KantiKategoria | TranszcendentalisAppercepcio | TranszcendentalisDialektika
+                   -- Matematikai allandok es operatorok
+                   | EulerSzam | Pi
+                   | Osszeadas | Kivonas | Szorzas | Osztas | Hatvanyozas | Gyokvonas
+                   -- Euler-azonossag: e^(i·pi) + 1 = 0
+                   | EulerAzonossag
+                   -- [[15,1,3]] Reed-Muller kod, T-kapu, M-Elmelet
+                   | TizenotKod | TGate | MElmelet
+                   -- Pauli csoport, stabilizatorok, kvantum kapuk
+                   | PauliCsoport | Stabilizator | Kapu
 
 ||| SzoTipus: minden szó egy konstruktor.
 ||| A szavak tipusként vannak reprezentálva — nincs String.

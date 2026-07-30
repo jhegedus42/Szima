@@ -147,6 +147,29 @@ data FogalomKetMorf : (a, b : FogalomTipus) -> FogalomMorf a b -> FogalomMorf a 
   KetAzonos : FogalomKetMorf a b f f
   KetIre : FogalomKetMorf a b f g
 
+||| Fogalom morfizmus egyenloseg: kategoriatorvenyek.
+||| Asszociativitas: (f;g);h = f;(g;h)
+||| Bal egyseg: 1_a;f = f
+||| Jobb egyseg: f;1_b = f
+public export
+data FogalomMorfEgyenlo : (a, b : FogalomTipus) -> FogalomMorf a b -> FogalomMorf a b -> Type where
+  -- (f ; g) ; h  ==  f ; (g ; h)
+  Asszociativitas : {a, b, c, d : FogalomTipus}
+                 -> (f : FogalomMorf a b) -> (g : FogalomMorf b c) -> (h : FogalomMorf c d)
+                 -> FogalomMorfEgyenlo a d
+                      (FogalomSorozat {a = a} {c = d} c (FogalomSorozat {a = a} {c = c} b f g) h)
+                      (FogalomSorozat {a = a} {c = d} b f (FogalomSorozat {a = b} {c = d} c g h))
+  -- 1_a ; f  ==  f
+  BalAzonosTorveny : {a, b : FogalomTipus} -> (f : FogalomMorf a b)
+                  -> FogalomMorfEgyenlo a b (FogalomSorozat {a} {c = b} a FogalomAzonos f) f
+  -- f ; 1_b  ==  f
+  JobbAzonosTorveny : {a, b : FogalomTipus} -> (f : FogalomMorf a b)
+                   -> FogalomMorfEgyenlo a b (FogalomSorozat {a} {c = b} b f FogalomAzonos) f
+  -- Reflexiv, szimmetrikus, tranzitiv
+  EgyenloReflexiv  : FogalomMorfEgyenlo a b f f
+  EgyenloSzimmetria : FogalomMorfEgyenlo a b f g -> FogalomMorfEgyenlo a b g f
+  EgyenloTranzitiv : FogalomMorfEgyenlo a b f g -> FogalomMorfEgyenlo a b g h -> FogalomMorfEgyenlo a b f h
+
 ||| Eset morfizmus: EsetLogika wrapper — csak azonos morfizmusok.
 public export
 data EsetMorf : Eset -> Eset -> Type where
@@ -622,15 +645,150 @@ fogalomTipusKod E8xE8 = E8PontKonstruktor 1 1 0 0 0 0 1 1
 fogalomTipusKod Dualitas = E8PontKonstruktor 0 1 1 0 0 0 1 1
 fogalomTipusKod Kategoria = E8PontKonstruktor 0 0 1 1 0 0 1 1
 fogalomTipusKod Szimmetria = E8PontKonstruktor 0 0 0 1 1 0 1 1
-fogalomTipusKod Tenzor = E8PontKonstruktor 0 0 0 0 1 1 1 1
+fogalomTipusKod Tenzor = E8PontKonstruktor 0 0 0 1 1 0 0 1
 fogalomTipusKod Funktor = E8PontKonstruktor 1 0 0 0 0 1 1 1
-fogalomTipusKod _ = E8PontKonstruktor 0 0 0 0 0 0 0 0
+-- Szamok
+fogalomTipusKod TermeszetesSzam = E8PontKonstruktor 0 0 0 1 0 0 0 1
+fogalomTipusKod EgeszSzam = E8PontKonstruktor 0 0 0 1 0 0 1 0
+fogalomTipusKod RacionalisSzam = E8PontKonstruktor 0 0 0 1 0 0 1 1
+fogalomTipusKod ValosSzam = E8PontKonstruktor 0 0 0 1 0 1 0 0
+fogalomTipusKod KomplexSzam = E8PontKonstruktor 0 0 0 1 0 1 0 1
+-- Matematika logika
+fogalomTipusKod Allitas = E8PontKonstruktor 0 0 1 0 0 0 0 1
+fogalomTipusKod Bizonyitas = E8PontKonstruktor 0 0 1 0 0 0 1 0
+fogalomTipusKod GodelSzam = E8PontKonstruktor 0 0 1 0 0 0 1 1
+fogalomTipusKod Konzisztencia = E8PontKonstruktor 0 0 1 0 0 1 0 0
+fogalomTipusKod Onhivatkozas = E8PontKonstruktor 0 0 1 0 0 1 0 1
+fogalomTipusKod GodelElsoTetel = E8PontKonstruktor 0 0 1 0 0 1 1 0
+fogalomTipusKod GodelMasodikTetel = E8PontKonstruktor 0 0 1 0 0 1 1 1
+fogalomTipusKod DiagonaleLemma = E8PontKonstruktor 0 0 1 0 1 0 0 0
+fogalomTipusKod Bizonyithatosag = E8PontKonstruktor 0 0 1 0 1 0 0 1
+fogalomTipusKod InkonzisztenciaVonal = E8PontKonstruktor 0 0 1 0 1 0 1 0
+fogalomTipusKod WickForgatas = E8PontKonstruktor 0 0 1 0 1 0 1 1
+fogalomTipusKod KomplexFazis = E8PontKonstruktor 0 0 1 0 1 1 0 0
+fogalomTipusKod KettoMatematika = E8PontKonstruktor 0 0 1 0 1 1 0 1
+-- Curry-Howard-Lambek
+fogalomTipusKod Chl = E8PontKonstruktor 0 0 1 1 0 0 0 1
+-- Halmazelmelet es axiomak
+fogalomTipusKod Halmazelmelet = E8PontKonstruktor 0 1 0 0 0 0 0 1
+fogalomTipusKod PeanoAxiomak = E8PontKonstruktor 0 1 0 0 0 0 1 0
+fogalomTipusKod ZfcAxiomak = E8PontKonstruktor 0 1 0 0 0 0 1 1
+fogalomTipusKod KivalasztasiAxioma = E8PontKonstruktor 0 1 0 0 0 1 0 0
+fogalomTipusKod UresHalmaz = E8PontKonstruktor 0 1 0 0 0 1 0 1
+fogalomTipusKod Szamossag = E8PontKonstruktor 0 1 0 0 0 1 1 0
+fogalomTipusKod FolytonossagiHipotetikus = E8PontKonstruktor 0 1 0 0 0 1 1 1
+-- Fizika: 4 dimenzio
+fogalomTipusKod FizikaiAllapot = E8PontKonstruktor 0 1 0 1 0 0 0 1
+fogalomTipusKod Mezo = E8PontKonstruktor 0 1 0 1 0 0 1 0
+fogalomTipusKod Ter = E8PontKonstruktor 0 1 0 1 0 0 1 1
+fogalomTipusKod Ido = E8PontKonstruktor 0 1 0 1 0 1 0 0
+fogalomTipusKod Tomeg = E8PontKonstruktor 0 1 0 1 0 1 0 1
+fogalomTipusKod InformacioMennyiseg = E8PontKonstruktor 0 1 0 1 0 1 1 0
+-- Szimmetriak
+fogalomTipusKod SzimmetriaCsoport = E8PontKonstruktor 0 1 1 0 0 0 0 1
+fogalomTipusKod MertekCsoport = E8PontKonstruktor 0 1 1 0 0 0 1 0
+fogalomTipusKod SzimmetriaTores = E8PontKonstruktor 0 1 1 0 0 0 1 1
+fogalomTipusKod E8Szimmetria = E8PontKonstruktor 0 1 1 0 0 1 0 0
+fogalomTipusKod Geometria = E8PontKonstruktor 0 1 1 0 0 1 0 1
+fogalomTipusKod Anyag = E8PontKonstruktor 0 1 1 0 0 1 1 0
+fogalomTipusKod Antianyag = E8PontKonstruktor 0 1 1 0 0 1 1 1
+-- Mechanika
+fogalomTipusKod KlasszikusMechanika = E8PontKonstruktor 0 1 1 1 0 0 0 1
+fogalomTipusKod LagrangeFuggveny = E8PontKonstruktor 0 1 1 1 0 0 1 0
+fogalomTipusKod HamiltonFuggveny = E8PontKonstruktor 0 1 1 1 0 0 1 1
+fogalomTipusKod LagrangeTranszformacio = E8PontKonstruktor 0 1 1 1 0 1 0 0
+-- Kvantum
+fogalomTipusKod KvantumMechanika = E8PontKonstruktor 1 0 0 0 0 0 0 1
+fogalomTipusKod KvantumAllapot = E8PontKonstruktor 1 0 0 0 0 0 1 0
+fogalomTipusKod HullamFuggveny = E8PontKonstruktor 1 0 0 0 0 0 1 1
+fogalomTipusKod Operator = E8PontKonstruktor 1 0 0 0 0 1 0 0
+fogalomTipusKod Megfigyelt = E8PontKonstruktor 1 0 0 0 0 1 0 1
+fogalomTipusKod KvantumUgres = E8PontKonstruktor 1 0 0 0 0 1 1 0
+-- Fazis
+fogalomTipusKod FazisAtalakulas = E8PontKonstruktor 1 0 0 1 0 0 0 1
+fogalomTipusKod FazisAtmenet = E8PontKonstruktor 1 0 0 1 0 0 1 0
+fogalomTipusKod FazisElolas = E8PontKonstruktor 1 0 0 1 0 0 1 1
+-- Kolcsonhatasok
+fogalomTipusKod Elektromagneses = E8PontKonstruktor 1 0 1 0 0 0 0 1
+fogalomTipusKod Gyenge = E8PontKonstruktor 1 0 1 0 0 0 1 0
+fogalomTipusKod Eros = E8PontKonstruktor 1 0 1 0 0 0 1 1
+fogalomTipusKod Gravitacio = E8PontKonstruktor 1 0 1 0 0 1 0 0
+fogalomTipusKod KvantumGravitacio = E8PontKonstruktor 1 0 1 0 0 1 0 1
+fogalomTipusKod EgyesitettMezo = E8PontKonstruktor 1 0 1 0 0 1 1 0
+fogalomTipusKod StandardModell = E8PontKonstruktor 1 0 1 0 0 1 1 1
+-- Hullamok
+fogalomTipusKod Hullam = E8PontKonstruktor 1 0 1 1 0 0 0 1
+fogalomTipusKod Hang = E8PontKonstruktor 1 0 1 1 0 0 1 0
+fogalomTipusKod Feny = E8PontKonstruktor 1 0 1 1 0 0 1 1
+fogalomTipusKod GravitaciosHullam = E8PontKonstruktor 1 0 1 1 0 1 0 0
+fogalomTipusKod RadioHullam = E8PontKonstruktor 1 0 1 1 0 1 0 1
+-- Fluktacio, disszipacio, termodinamika
+fogalomTipusKod Fluktuacio = E8PontKonstruktor 1 1 0 0 0 0 0 1
+fogalomTipusKod Disszipacio = E8PontKonstruktor 1 1 0 0 0 0 1 0
+fogalomTipusKod FluktuacioDisszipacioTetele = E8PontKonstruktor 1 1 0 0 0 0 1 1
+fogalomTipusKod Homerseklet = E8PontKonstruktor 1 1 0 0 0 1 0 0
+fogalomTipusKod Termodinamika = E8PontKonstruktor 1 1 0 0 0 1 0 1
+fogalomTipusKod CarnotCiklus = E8PontKonstruktor 1 1 0 0 0 1 1 0
+fogalomTipusKod Entropia = E8PontKonstruktor 1 1 0 0 0 1 1 1
+fogalomTipusKod Hő = E8PontKonstruktor 1 1 0 0 1 0 0 0
+fogalomTipusKod Munka = E8PontKonstruktor 1 1 0 0 1 0 0 1
+fogalomTipusKod BelsőEnergia = E8PontKonstruktor 1 1 0 0 1 0 1 0
+fogalomTipusKod InformacioTorles = E8PontKonstruktor 1 1 0 0 1 0 1 1
+-- Szinek
+fogalomTipusKod Szin = E8PontKonstruktor 1 1 0 1 0 0 0 1
+fogalomTipusKod SzinToltes = E8PontKonstruktor 1 1 0 1 0 0 1 0
+fogalomTipusKod AntiszinToltes = E8PontKonstruktor 1 1 0 1 0 0 1 1
+fogalomTipusKod Gluon = E8PontKonstruktor 1 1 0 1 0 1 0 0
+fogalomTipusKod KvarkSzin = E8PontKonstruktor 1 1 0 1 0 1 0 1
+-- Kommunikacio
+fogalomTipusKod Informacio = E8PontKonstruktor 1 1 1 0 0 0 0 1
+fogalomTipusKod Kommunikacio = E8PontKonstruktor 1 1 1 0 0 0 1 0
+fogalomTipusKod Kod = E8PontKonstruktor 1 1 1 0 0 0 1 1
+fogalomTipusKod Jel = E8PontKonstruktor 1 1 1 0 0 1 0 0
+fogalomTipusKod Csatorna = E8PontKonstruktor 1 1 1 0 0 1 0 1
+fogalomTipusKod Zaj = E8PontKonstruktor 1 1 1 0 0 1 1 0
+fogalomTipusKod Bit = E8PontKonstruktor 1 1 1 0 0 1 1 1
+-- Folytonossag
+fogalomTipusKod Folytonos = E8PontKonstruktor 1 1 1 1 0 0 0 1
+fogalomTipusKod NemFolytonos = E8PontKonstruktor 1 1 1 1 0 0 1 0
+fogalomTipusKod Codata = E8PontKonstruktor 1 1 1 1 0 0 1 1
+fogalomTipusKod Sorozat = E8PontKonstruktor 1 1 1 1 0 1 0 0
+fogalomTipusKod Hatar = E8PontKonstruktor 1 1 1 1 0 1 0 1
+fogalomTipusKod Vegtelen = E8PontKonstruktor 1 1 1 1 0 1 1 0
+-- Kepzetes egyseg, ij szorzat, katernio, okternio, tukrozesek
+fogalomTipusKod KepzetesEgyseg = E8PontKonstruktor 0 1.0 0 0 0 0 0 0
+fogalomTipusKod IjSzorzat = E8PontKonstruktor 1 1 1 1 1 0 0 1
+fogalomTipusKod Katernio = E8PontKonstruktor 1 1 1 1 1 0 1 0
+fogalomTipusKod Okternio = E8PontKonstruktor 1 1 1 1 1 0 1 1
+fogalomTipusKod OkternioTukor = E8PontKonstruktor 1 1 1 1 1 1 0 0
+fogalomTipusKod FizikaTukor = E8PontKonstruktor 1 1 1 1 1 1 0 1
+-- Kanti kategoriaelmelet
+fogalomTipusKod KantiKategoria = E8PontKonstruktor 1 1 1 1 1 1 1 0
+fogalomTipusKod TranszcendentalisAppercepcio = E8PontKonstruktor 1 0 0 0 1 1 0 0
+fogalomTipusKod TranszcendentalisDialektika = E8PontKonstruktor 1 0 0 0 1 1 0 1
+-- Matematikai allandok
+fogalomTipusKod EulerSzam = E8PontKonstruktor (exp 1.0) 0 0 0 0 0 0 0
+fogalomTipusKod Pi = E8PontKonstruktor pi 0 0 0 0 0 0 0
+-- Operatorok
+fogalomTipusKod Osszeadas = E8PontKonstruktor 0 0 0 1 1 0 0 0
+fogalomTipusKod Kivonas = E8PontKonstruktor 0 0 0 1 1 0 1 0
+fogalomTipusKod Szorzas = E8PontKonstruktor 0 0 0 1 1 1 0 0
+fogalomTipusKod Osztas = E8PontKonstruktor 0 0 0 1 1 1 0 1
+fogalomTipusKod Hatvanyozas = E8PontKonstruktor 0 0 0 1 1 1 1 0
+fogalomTipusKod Gyokvonas = E8PontKonstruktor 0 0 0 1 1 1 1 1
+fogalomTipusKod EulerAzonossag = E8PontKonstruktor 0 0 0 0 0 0 0 0
+fogalomTipusKod TizenotKod = E8PontKonstruktor 1 1 0 1 1 0 0 0
+fogalomTipusKod TGate = E8PontKonstruktor 1 1 0 1 1 0 0 1
+fogalomTipusKod MElmelet = E8PontKonstruktor 1 1 0 1 1 0 1 0
+fogalomTipusKod PauliCsoport = E8PontKonstruktor 1 1 0 1 1 0 1 1
+fogalomTipusKod Stabilizator = E8PontKonstruktor 1 1 0 1 1 1 0 0
+fogalomTipusKod Kapu = E8PontKonstruktor 1 1 0 1 1 1 0 1
 
-||| Kubit → Int.
+||| Kubit → Double.
 public export
-kubitErtek : Kubit -> Int
-kubitErtek Nulla = 0
-kubitErtek Egy = 1
+kubitErtek : Kubit -> Double
+kubitErtek Nulla = 0.0
+kubitErtek Egy = 1.0
 
 ||| HaromKubit → E8Pont: harom kubit 3 koordinata.
 public export
@@ -691,7 +849,142 @@ fogalomNev Kategoria = "kategoria"
 fogalomNev Szimmetria = "szimmetria"
 fogalomNev Tenzor = "tenzor"
 fogalomNev Funktor = "funktor"
-fogalomNev _ = "ismeretlen"
+-- Szamok
+fogalomNev TermeszetesSzam = "termeszetes szam"
+fogalomNev EgeszSzam = "egesz szam"
+fogalomNev RacionalisSzam = "racionalis szam"
+fogalomNev ValosSzam = "valos szam"
+fogalomNev KomplexSzam = "komplex szam"
+-- Matematika logika
+fogalomNev Allitas = "allitas"
+fogalomNev Bizonyitas = "bizonyitas"
+fogalomNev GodelSzam = "godel szam"
+fogalomNev Konzisztencia = "konzisztencia"
+fogalomNev Onhivatkozas = "onhivatkozas"
+fogalomNev GodelElsoTetel = "godel elso tetel"
+fogalomNev GodelMasodikTetel = "godel masodik tetel"
+fogalomNev DiagonaleLemma = "diagonalis lemma"
+fogalomNev Bizonyithatosag = "bizonyithatosag"
+fogalomNev InkonzisztenciaVonal = "inkonzisztencia vonal"
+fogalomNev WickForgatas = "wick forgatas"
+fogalomNev KomplexFazis = "komplex fazis"
+fogalomNev KettoMatematika = "ketto matematika"
+-- Curry-Howard-Lambek
+fogalomNev Chl = "curry howard lambek"
+-- Halmazelmelet es axiomak
+fogalomNev Halmazelmelet = "halmazelmelet"
+fogalomNev PeanoAxiomak = "peano axiomak"
+fogalomNev ZfcAxiomak = "zfc axiomak"
+fogalomNev KivalasztasiAxioma = "kivalasztasi axioma"
+fogalomNev UresHalmaz = "ures halmaz"
+fogalomNev Szamossag = "szamossag"
+fogalomNev FolytonossagiHipotetikus = "folytonossagi hipotetikus"
+-- Fizika
+fogalomNev FizikaiAllapot = "fizikai allapot"
+fogalomNev Mezo = "mezo"
+fogalomNev Ter = "ter"
+fogalomNev Ido = "ido"
+fogalomNev Tomeg = "tomeg"
+fogalomNev InformacioMennyiseg = "informacio mennyiseg"
+-- Szimmetriak
+fogalomNev SzimmetriaCsoport = "szimmetria csoport"
+fogalomNev MertekCsoport = "mertek csoport"
+fogalomNev SzimmetriaTores = "szimmetria tores"
+fogalomNev E8Szimmetria = "e8 szimmetria"
+fogalomNev Geometria = "geometria"
+fogalomNev Anyag = "anyag"
+fogalomNev Antianyag = "antianyag"
+-- Mechanika
+fogalomNev KlasszikusMechanika = "klasszikus mechanika"
+fogalomNev LagrangeFuggveny = "lagrange fuggveny"
+fogalomNev HamiltonFuggveny = "hamilton fuggveny"
+fogalomNev LagrangeTranszformacio = "lagrange transzformacio"
+-- Kvantum
+fogalomNev KvantumMechanika = "kvantum mechanika"
+fogalomNev KvantumAllapot = "kvantum allapot"
+fogalomNev HullamFuggveny = "hullam fuggveny"
+fogalomNev Operator = "operator"
+fogalomNev Megfigyelt = "megfigyelt"
+fogalomNev KvantumUgres = "kvantum ugres"
+-- Fazis
+fogalomNev FazisAtalakulas = "fazis atalakulas"
+fogalomNev FazisAtmenet = "fazis atmenet"
+fogalomNev FazisElolas = "fazis elolas"
+-- Kolcsonhatasok
+fogalomNev Elektromagneses = "elektromagneses"
+fogalomNev Gyenge = "gyenge"
+fogalomNev Eros = "eros"
+fogalomNev Gravitacio = "gravitacio"
+fogalomNev KvantumGravitacio = "kvantum gravitacio"
+fogalomNev EgyesitettMezo = "egyesitett mezo"
+fogalomNev StandardModell = "standard modell"
+-- Hullamok
+fogalomNev Hullam = "hullam"
+fogalomNev Hang = "hang"
+fogalomNev Feny = "feny"
+fogalomNev GravitaciosHullam = "gravitacios hullam"
+fogalomNev RadioHullam = "radio hullam"
+-- Fluktacio, disszipacio, termodinamika
+fogalomNev Fluktuacio = "fluktuacio"
+fogalomNev Disszipacio = "disszipacio"
+fogalomNev FluktuacioDisszipacioTetele = "fluktuacio disszipacio tetele"
+fogalomNev Homerseklet = "homerseklet"
+fogalomNev Termodinamika = "termodinamika"
+fogalomNev CarnotCiklus = "carnot ciklus"
+fogalomNev Entropia = "entropia"
+fogalomNev Hő = "ho"
+fogalomNev Munka = "munka"
+fogalomNev BelsőEnergia = "belso energia"
+fogalomNev InformacioTorles = "informacio torles"
+-- Szinek
+fogalomNev Szin = "szin"
+fogalomNev SzinToltes = "szin toltes"
+fogalomNev AntiszinToltes = "antiszintoltes"
+fogalomNev Gluon = "gluon"
+fogalomNev KvarkSzin = "kvark szin"
+-- Kommunikacio
+fogalomNev Informacio = "informacio"
+fogalomNev Kommunikacio = "kommunikacio"
+fogalomNev Kod = "kod"
+fogalomNev Jel = "jel"
+fogalomNev Csatorna = "csatorna"
+fogalomNev Zaj = "zaj"
+fogalomNev Bit = "bit"
+-- Folytonossag
+fogalomNev Folytonos = "folytonos"
+fogalomNev NemFolytonos = "nem folytonos"
+fogalomNev Codata = "codata"
+fogalomNev Sorozat = "sorozat"
+fogalomNev Hatar = "hatar"
+fogalomNev Vegtelen = "vegtelen"
+-- Kepzetes egyseg, ij szorzat, katernio, okternio, tukrozesek
+fogalomNev KepzetesEgyseg = "kepzetes egyseg"
+fogalomNev IjSzorzat = "ij szorzat"
+fogalomNev Katernio = "katernio"
+fogalomNev Okternio = "okternio"
+fogalomNev OkternioTukor = "okternio tukor"
+fogalomNev FizikaTukor = "fizika tukor"
+-- Kanti kategoriaelmelet
+fogalomNev KantiKategoria = "kanti kategoria"
+fogalomNev TranszcendentalisAppercepcio = "transzcendentalis appercepcio"
+fogalomNev TranszcendentalisDialektika = "transzcendentalis dialektika"
+-- Matematikai allandok
+fogalomNev EulerSzam = "euler szam"
+fogalomNev Pi = "pi"
+-- Operatorok
+fogalomNev Osszeadas = "osszeadas"
+fogalomNev Kivonas = "kivonas"
+fogalomNev Szorzas = "szorzas"
+fogalomNev Osztas = "osztas"
+fogalomNev Hatvanyozas = "hatvanyozas"
+fogalomNev Gyokvonas = "gyokvonas"
+fogalomNev EulerAzonossag = "euler azonossag"
+fogalomNev TizenotKod = "tizenot egy harom kod"
+fogalomNev TGate = "te kapu"
+fogalomNev MElmelet = "m elmelet"
+fogalomNev PauliCsoport = "pauli csoport"
+fogalomNev Stabilizator = "stabilizator"
+fogalomNev Kapu = "kapu"
 
 ||| FogalomFa → HaromKubit.
 public export

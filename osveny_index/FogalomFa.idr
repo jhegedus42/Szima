@@ -221,6 +221,56 @@ data FogalomLogika : FogalomTipus -> FogalomTipus -> Type where
   StandardEros            : FogalomLogika StandardModell Eros
   StandardAnyag           : FogalomLogika StandardModell Anyag
   StandardKvantum         : FogalomLogika StandardModell KvantumMechanika
+  -- Kepzetes egyseg, ij szorzat, katernio, okternio, tukrozesek
+  GyokerKepzetesEgyseg    : FogalomLogika Gyoker KepzetesEgyseg
+  KomplexKepzetes         : FogalomLogika KomplexSzam KepzetesEgyseg
+  WickKepzetes            : FogalomLogika WickForgatas KepzetesEgyseg
+  KepzetesIj              : FogalomLogika KepzetesEgyseg IjSzorzat
+  IjKaternio              : FogalomLogika IjSzorzat Katernio
+  KepzetesKaternio        : FogalomLogika KepzetesEgyseg Katernio
+  KaternioOkternio        : FogalomLogika Katernio Okternio
+  E8Okternio              : FogalomLogika E8Szimmetria Okternio
+  OkternioTukor           : FogalomLogika Okternio OkternioTukor
+  OkternioTukorFizika     : FogalomLogika OkternioTukor FizikaTukor
+  GyokerFizikaTukor       : FogalomLogika Gyoker FizikaTukor
+  FizikaTukorSzimmetria   : FogalomLogika FizikaTukor Szimmetria
+  FizikaTukorDualitas     : FogalomLogika FizikaTukor Dualitas
+  -- Kanti kategoriaelmelet
+  GyokerKantiKategoria    : FogalomLogika Gyoker KantiKategoria
+  KantiAppercepcio        : FogalomLogika KantiKategoria TranszcendentalisAppercepcio
+  KantiDialektika         : FogalomLogika KantiKategoria TranszcendentalisDialektika
+  AppercepcioKategoria    : FogalomLogika TranszcendentalisAppercepcio Kategoria
+  DialektikaInkonzisztencia : FogalomLogika TranszcendentalisDialektika InkonzisztenciaVonal
+  DialektikaDualitas      : FogalomLogika TranszcendentalisDialektika Dualitas
+  -- Matematikai allandok es operatorok
+  GyokerEuler             : FogalomLogika Gyoker EulerSzam
+  GyokerPi                : FogalomLogika Gyoker Pi
+  GyokerOsszeadas         : FogalomLogika Gyoker Osszeadas
+  OsszeadasKivonas        : FogalomLogika Osszeadas Kivonas
+  OsszeadasSzorzas        : FogalomLogika Osszeadas Szorzas
+  SzorzasOsztas           : FogalomLogika Szorzas Osztas
+  SzorzasHatvanyozas      : FogalomLogika Szorzas Hatvanyozas
+  HatvanyozasGyokvonas    : FogalomLogika Hatvanyozas Gyokvonas
+  PiEuler                 : FogalomLogika Pi EulerSzam
+  -- Euler-azonossag: e^(i·pi) + 1 = 0
+  -- A bizonyítás lánca:
+  --   KepzetesEgyseg → Szorzas × Pi → Hatvanyozas(EulerSzam, _) → Osszeadas → EulerAzonossag
+  EulerKepzetesSzorzas    : FogalomLogika KepzetesEgyseg Szorzas
+  PiSzorzas               : FogalomLogika Pi Szorzas
+  EulerHatvanyozas        : FogalomLogika EulerSzam Hatvanyozas
+  SzorzasHatvany          : FogalomLogika Szorzas Hatvanyozas
+  HatvanyozasOsszeadas    : FogalomLogika Hatvanyozas Osszeadas
+  OsszeadasAzonossag      : FogalomLogika Osszeadas EulerAzonossag
+  -- [[15,1,3]] kod, T-kapu, M-Elmelet
+  GyokerTizenotKod        : FogalomLogika Gyoker TizenotKod
+  TizenotTGate            : FogalomLogika TizenotKod TGate
+  TGateMElmelet           : FogalomLogika TGate MElmelet
+  MElmeletE8              : FogalomLogika MElmelet E8Szimmetria
+  -- Pauli csoport, stabilizatorok, kapuk
+  GyokerPauli             : FogalomLogika Gyoker PauliCsoport
+  PauliStabilizator       : FogalomLogika PauliCsoport Stabilizator
+  StabilizatorKapu        : FogalomLogika Stabilizator Kapu
+  TGateKapu               : FogalomLogika TGate Kapu
 
 ||| Fa csomopont adatai.
 ||| Minden csomopontnak van:

@@ -25,15 +25,17 @@ import Steane713
 ||| A Cliﬀord elem a kapcsolatukat irja le.
 ||| A [[7,1,3]] Steane kod a hiba javitast biztositja.
 
-||| E8 racs pont: 8 egesz koordinata.
+||| E8 racs pont: 8 valos koordinata.
 ||| A 8 koordinata:
 |||   x1-x4: a Steane kod 7 bitjebol 4 (ido, oksag, ter, szin)
 |||   x5-x8: a maradek 3 bit + egy szabad dimenzio (hang, fazis, mod, egyseg)
+||| Valos szamok, mert az E8 valos Lie algebra — a gyokok
+||| koordinatai ±1, ±1/2, 0.
 public export
 record E8Pont where
   constructor E8PontKonstruktor
-  x1 : Int; x2 : Int; x3 : Int; x4 : Int
-  x5 : Int; x6 : Int; x7 : Int; x8 : Int
+  x1 : Double; x2 : Double; x3 : Double; x4 : Double
+  x5 : Double; x6 : Double; x7 : Double; x8 : Double
 
 ||| Cliﬀord algebra alap 8 dimenzioban.
 ||| A Lap tipus a 8 dimenzio mindegyiket egy-egy hatvanykent kodolja.
@@ -55,9 +57,9 @@ data Lap : Int -> Type where
 public export
 record CliﬀordElem where
   constructor CliﬀordKonstruktor
-  skalar : Int
-  vektor : Int
-  bivektor : Int
+  skalar : Double
+  vektor : Double
+  bivektor : Double
 
 ||| Geometriai szorzat belso resze = atfedes.
 ||| A ket Cliﬀord elem skalaris reszebol szamolva.
@@ -71,7 +73,7 @@ atfedes a b =
   let s = a.skalar * b.skalar + a.vektor * b.vektor
       na = a.skalar * a.skalar + a.vektor * a.vektor
       nb = b.skalar * b.skalar + b.vektor * b.vektor
-  in cast s / cast (na + nb + 1)
+  in s / (na + nb + 1.0)
 
 ||| Kuszob: efelett redundans.
 ||| 0.8 = 80% atfedes felett eldobjuk.

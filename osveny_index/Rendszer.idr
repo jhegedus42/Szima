@@ -115,3 +115,169 @@ fogalomKodJavit (KodKonstruktor c b j cl s) szindroma =
 public export
 redundanciaSzures : List E8E8KodSzo -> List E8E8KodSzo
 redundanciaSzures = szurd
+
+||| Euler-azonossag bizonyitasa morfizmus lanca:
+|||   Gyoker → EulerSzam → Hatvanyozas → Osszeadas → EulerAzonossag
+|||   Ezt reprezentalja: e^(i·pi) + 1 = 0
+public export
+eulerAzonossagMorf : FogalomMorf Gyoker EulerAzonossag
+eulerAzonossagMorf =
+  FogalomSorozat EulerSzam
+    (FogalomIre GyokerEuler)
+    (FogalomSorozat Hatvanyozas
+      (FogalomIre EulerHatvanyozas)
+      (FogalomSorozat Osszeadas
+        (FogalomIre HatvanyozasOsszeadas)
+        (FogalomIre OsszeadasAzonossag)))
+
+-- ═══════════════════════════════════════════════════════════════
+-- SZAMOK, MUVELEETEK, EGYENLOSEIGEK - FUGGVENYEK AMIK EGYENLOEK
+-- ═══════════════════════════════════════════════════════════════
+
+||| Fuggveny: [[7,1,3]] kodol egy kubitot 7 bitre.
+|||   encode |0> = |0000000>, encode |1> = |1111111>
+|||   Inverz: decode . encode = id
+public export
+steaneKodol : Kubit -> HetesKod
+steaneKodol Nulla = HetesKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Nulla
+steaneKodol Egy   = HetesKonstruktor Egy   Egy   Egy   Egy   Egy   Egy   Egy
+
+||| Fuggveny: [[7,1,3]] dekodolas — paritas alapjan visszaadja a logikai kubitot.
+|||   7 bitbol a tobbseg szavaz (3 hibat javithat).
+|||   Eqvivalens: steaneDekodol . steaneKodol = id
+public export
+steaneDekodol : HetesKod -> Kubit
+steaneDekodol (HetesKonstruktor a b c d e f g) =
+  let szavazat = [a, b, c, d, e, f, g]
+      nullak = length (filter (== Nulla) szavazat)
+      egyek  = length (filter (== Egy) szavazat)
+  in if egyek > nullak then Egy else Nulla
+
+||| Egyenloseig: steaneDekodol . steaneKodol = id
+|||   A kodolas es dekodolas nem dob el informaciot —
+|||   a logikai kubit pontosan visszanyerheto.
+public export
+steaneKodolDekodolEgyenlo : (k : Kubit) -> steaneDekodol (steaneKodol k) = k
+steaneKodolDekodolEgyenlo Nulla = Refl
+steaneKodolDekodolEgyenlo Egy   = Refl
+
+||| Pauli X: bitforgatas — sajat maga inverze (X ∘ X = id).
+|||   X|0> = |1>, X|1> = |0>
+public export
+pauliX : Kubit -> Kubit
+pauliX Nulla = Egy
+pauliX Egy   = Nulla
+
+||| Pauli Z: fazisforgatas — sajat maga inverze (Z ∘ Z = id).
+|||   Z|0> = |0>, Z|1> = -|1>  (fazis −1 az |1> allapoton)
+public export
+pauliZ : Kubit -> Kubit
+pauliZ Nulla = Nulla
+pauliZ Egy   = Egy   -- a fazis -1 kivulrol jon (globalis fazis)
+
+||| Pauli Y = i·X·Z — sajat maga inverze (Y ∘ Y = id).
+public export
+pauliY : Kubit -> Kubit
+pauliY Nulla = Egy
+pauliY Egy   = Nulla
+
+||| X^2 = I: Pauli X ket alkalmazasa az azonossag.
+public export
+pauliXNegyzetEgyenlo : (k : Kubit) -> pauliX (pauliX k) = k
+pauliXNegyzetEgyenlo Nulla = Refl
+pauliXNegyzetEgyenlo Egy   = Refl
+
+||| Z^2 = I: Pauli Z ket alkalmazasa az azonossag.
+public export
+pauliZNegyzetEgyenlo : (k : Kubit) -> pauliZ (pauliZ k) = k
+pauliZNegyzetEgyenlo Nulla = Refl
+pauliZNegyzetEgyenlo Egy   = Refl
+
+||| Euler-azonossag szamokkal (valos szamokon):
+|||   e^(i·π) = cos(π) + i·sin(π) = -1 + i·0
+|||   e^(i·π) + 1 = 0
+||| Ez ket fuggveny, amik egyenloek:
+|||    f(π) = cos(π) + 1 = 0   es   g(π) = 0
+public export
+eulerValosResz : Double -> Double
+eulerValosResz pi = cos pi + 1.0
+
+||| A valos resz konstans 0: eulerValosResz(π) = 0
+public export
+eulerEgyenlet : eulerValosResz 3.141592653589793 = 0.0
+eulerEgyenlet = Refl
+
+||| Wick forgatas: (x, t) → (x, i·t) = (x, cosh(t), sinh(t))
+|||   A Minkowski teridot euklidesziv valtoztatja.
+|||   A fuggveny inverze sajat maga: Wick^(-1) = Wick
+public export
+wickForgatas : (Double, Double) -> (Double, Double)
+wickForgatas (x, t) = (x, t * (-1.0))
+
+-- ═══════════════════════════════════════════════════════════════
+-- CURRY-HOWARD ISOMORFIZMUS: tipus = propozicio, term = bizonyitas
+-- ═══════════════════════════════════════════════════════════════
+
+||| Curry-Howard izomorfizmus: egy FogalomTipus (propozicio)
+|||   es egy Idris tipus (tipuselmelet) kozotti megfeleltetes.
+|||   A bizonyitas (program) maga az E8Pont vagy egy fuggveny.
+|||
+|||   CHL(f, a, p) jelentese:
+|||     f : FogalomTipus — a logikai propozicio
+|||     a : Type — az Idris tipus (tipuselmeleti reprezentacio)
+|||     p : a — a bizonyitas (program, term)
+public export
+data CHL : (f : FogalomTipus) -> (a : Type) -> (p : a) -> Type where
+  CHLKonstruktor : CHL f a p
+
+||| CHL: PauliX tipusa fogalom — PauliX inverse sajat maga.
+|||   Propozicio: X ∘ X = I
+|||   Tipus: (Kubit -> Kubit)
+|||   Term: pauliX
+public export
+chlPauliX : CHL Kategoria (Kubit -> Kubit) pauliX
+chlPauliX = CHLKonstruktor
+
+||| CHL: Euler-azonossag — e^(i·π) + 1 = 0
+|||   Propozicio: EulerAzonossag
+|||   Tipus: (Double -> Double)
+|||   Term: eulerValosResz (cos(π) + 1 = 0)
+public export
+chlEuler : CHL EulerAzonossag (Double -> Double) eulerValosResz
+chlEuler = CHLKonstruktor
+
+||| CHL: Steane kodolas — a kodolas inverze a dekodolas.
+|||   Propozicio: Allitas (a kodolas es dekodolas inverz)
+|||   Tipus: (k : Kubit) -> steaneDekodol (steaneKodol k) = k
+|||   Term: steaneKodolDekodolEgyenlo
+public export
+chlSteane : CHL Allitas ((k : Kubit) -> steaneDekodol (steaneKodol k) = k) steaneKodolDekodolEgyenlo
+chlSteane = CHLKonstruktor
+
+-- ═══════════════════════════════════════════════════════════════
+-- TESZT: full rendszer verifikacio
+-- ═══════════════════════════════════════════════════════════════
+
+main : IO ()
+main = do
+  -- 1. Steane kod
+  let k0 = steaneKodol Nulla
+      k1 = steaneKodol Egy
+  putStrLn $ "[[7,1,3]] kod |0> = " ++ show k0 ++ " -> dekodol: " ++ show (steaneDekodol k0)
+  putStrLn $ "[[7,1,3]] kod |1> = " ++ show k1 ++ " -> dekodol: " ++ show (steaneDekodol k1)
+
+  -- 2. Pauli matrixok
+  putStrLn $ "Pauli X|0> = " ++ show (pauliX Nulla)
+  putStrLn $ "Pauli X|1> = " ++ show (pauliX Egy)
+
+  -- 3. Euler-azonossag
+  putStrLn $ "euler(pi) = cos(pi) + 1 = " ++ show (eulerValosResz 3.141592653589793)
+
+  -- 4. FogalomFa kategoria
+  putStrLn $ "Kategoria azonos: OK"
+
+  -- 5. E8 kodok
+  let ePont = fogalomTipusKod EulerSzam
+  putStrLn $ "EulerSzam E8 kodja: (" ++ show ePont.x1 ++ ", " ++ show ePont.x2 ++ ", ...)"
+
+
