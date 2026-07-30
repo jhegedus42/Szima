@@ -96,6 +96,14 @@ data FogalomLogika : FogalomTipus -> FogalomTipus -> Type where
   GyokerAllitas          : FogalomLogika Gyoker Allitas
   AllitasBizonyitas      : FogalomLogika Allitas Bizonyitas
   BizonyitasGodel        : FogalomLogika Bizonyitas GodelSzam
+  AllitasKonzisztencia   : FogalomLogika Allitas Konzisztencia
+  AllitasOnhivatkozas    : FogalomLogika Allitas Onhivatkozas
+  OnhivatkozasDiagonale  : FogalomLogika Onhivatkozas DiagonaleLemma
+  DiagonaleGodelElso     : FogalomLogika DiagonaleLemma GodelElsoTetel
+  KonzisztenciaGodelMasodik : FogalomLogika Konzisztencia GodelMasodikTetel
+  AllitasBizonyithatosag : FogalomLogika Allitas Bizonyithatosag
+  GyokerKonzisztencia    : FogalomLogika Gyoker Konzisztencia
+  GyokerOnhivatkozas     : FogalomLogika Gyoker Onhivatkozas
   -- 4 dimenzio
   GyokerTer              : FogalomLogika Gyoker Ter
   GyokerIdo              : FogalomLogika Gyoker Ido
