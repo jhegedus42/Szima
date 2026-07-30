@@ -118,11 +118,13 @@ data FogalomTipus = Gyoker | Cel | ReszCel | Feladat | ReszFeladat
                   | Allitas | Bizonyitas | GodelSzam | Konzisztencia | Onhivatkozas
                   | GodelElsoTetel | GodelMasodikTetel | DiagonaleLemma | Bizonyithatosag
                   | InkonzisztenciaVonal | WickForgatas | KomplexFazis | KettoMatematika
+                  -- Curry-Howard-Lambek
+                  | Chl
                   -- Matematika alapaxiomak
                   | Halmazelmelet | PeanoAxiomak | ZfcAxiomak | KivalasztasiAxioma
                   | UresHalmaz | Szamossag | FolytonossagiHipotetikus
                   -- Fizika alapok — 4 dimenzio: ter, ido, energia, informaciomennyiseg
-                  | FizikaiAllapot | Mezo | Ter | Ido | Energia | InformacioMennyiseg
+                  | FizikaiAllapot | Mezo | Ter | Ido | Tomeg | InformacioMennyiseg
                   -- Szimmetriak
                   | SzimmetriaCsoport | MertekCsoport | SzimmetriaTores | E8Szimmetria
                   -- Geometria, anyag
@@ -141,11 +143,11 @@ data FogalomTipus = Gyoker | Cel | ReszCel | Feladat | ReszFeladat
                   -- Fluktacio-disszipacio, homerseklet
                   | Fluktuacio | Disszipacio | FluktuacioDisszipacioTetele | Homerseklet
                   -- Termodinamika
-                  | Termodinamika | CarnotCiklus | Entropia | Hő | Munka | BelsőEnergia
+                  | Termodinamika | CarnotCiklus | Entropia | Hő | Munka | BelsőEnergia | InformacioTorles
                   -- Szinek
                   | Szin | SzinToltes | AntiszinToltes | Gluon | KvarkSzin
                   -- Kommunikacio
-                  | Informacio | Kommunikacio | Kod | Jel | Csatorna | Zaj
+                  | Informacio | Kommunikacio | Kod | Jel | Csatorna | Zaj | Bit
                   -- Folytonossag
                   | Folytonos | NemFolytonos | Codata | Sorozat | Hatar | Vegtelen
 

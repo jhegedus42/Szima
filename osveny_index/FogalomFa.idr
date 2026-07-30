@@ -126,14 +126,19 @@ data FogalomLogika : FogalomTipus -> FogalomTipus -> Type where
   UresHalmazVegtelen        : FogalomLogika UresHalmaz Vegtelen
   GyokerPeano               : FogalomLogika Gyoker PeanoAxiomak
   GyokerZfc                 : FogalomLogika Gyoker ZfcAxiomak
+  -- Curry-Howard-Lambek
+  GyokerChl                 : FogalomLogika Gyoker Chl
+  ChlAllitas                : FogalomLogika Chl Allitas
+  ChlKategoria              : FogalomLogika Chl Kategoria
+  ChlSzimmetria             : FogalomLogika Chl Szimmetria
   -- 4 dimenzio
   GyokerTer              : FogalomLogika Gyoker Ter
   GyokerIdo              : FogalomLogika Gyoker Ido
-  GyokerEnergia          : FogalomLogika Gyoker Energia
+  GyokerTomeg            : FogalomLogika Gyoker Tomeg
   GyokerInformacio       : FogalomLogika Gyoker InformacioMennyiseg
   TerGeometria           : FogalomLogika Ter Geometria
   IdoFazisAtalakulas     : FogalomLogika Ido FazisAtalakulas
-  EnergiaHomerseklet     : FogalomLogika Energia Homerseklet
+  TomegHomerseklet       : FogalomLogika Tomeg Homerseklet
   InformacioEntropia     : FogalomLogika InformacioMennyiseg Entropia
   -- Fizikai allapot, mechanika
   GyokerFizikaiAllapot   : FogalomLogika Gyoker FizikaiAllapot
@@ -184,9 +189,10 @@ data FogalomLogika : FogalomTipus -> FogalomTipus -> Type where
   TermodinamikaCarnot    : FogalomLogika Termodinamika CarnotCiklus
   FluktuacioDisszipacioTetel : FogalomLogika FluktuacioDisszipacioTetele Termodinamika
   FluktuacioDisszip       : FogalomLogika Fluktuacio Disszipacio
-  HőEnergia              : FogalomLogika Hő Energia
-  MunkaEnergia           : FogalomLogika Munka Energia
+  HőTomeg                : FogalomLogika Hő Tomeg
+  MunkaTomeg             : FogalomLogika Munka Tomeg
   BelsőHő                : FogalomLogika BelsőEnergia Hő
+  InformacioTorlesHő     : FogalomLogika InformacioTorles Hő
   -- Fazis
   FazisAtalakulasAtmenet  : FogalomLogika FazisAtalakulas FazisAtmenet
   FazisAtmenetFluktuacio  : FogalomLogika FazisAtmenet Fluktuacio
@@ -198,6 +204,11 @@ data FogalomLogika : FogalomTipus -> FogalomTipus -> Type where
   KommunikacioKod        : FogalomLogika Kommunikacio Kod
   KommunikacioJel        : FogalomLogika Kommunikacio Jel
   CsatornaZaj            : FogalomLogika Csatorna Zaj
+  -- Bit = Landauer
+  BitInformacio          : FogalomLogika Bit Informacio
+  BitHo                  : FogalomLogika Bit Hő
+  BitDisszipacio         : FogalomLogika Bit Disszipacio
+  GyokerBit              : FogalomLogika Gyoker Bit
   -- Folytonossag
   GyokerFolytonos        : FogalomLogika Gyoker Folytonos
   FolytonosCodata        : FogalomLogika Folytonos Codata

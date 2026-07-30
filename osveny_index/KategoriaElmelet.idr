@@ -307,8 +307,122 @@ fogalomDualisKategoria = DualisKategoriaKonstruktor
   fogalomDualis
 
 -- ═══════════════════════════════════════════════════════════════
--- E8 × E8 SZORZAT ES MONOIDALIS STRUKTURA
+-- 4 DIMENZIO KATEGORIA: TER, IDO, TOMEG, INFORMACIO
 -- ═══════════════════════════════════════════════════════════════
+
+||| A 4 alap dimenzio.
+public export
+data NegyDimenzio = Ter | Ido | Tomeg | Informacio
+
+||| Morfizmusok a 4 dimenzio kozott.
+||| A legegyszerubb nem trivialis kategoria: mindegyik
+||| atalakithato a masikba.
+public export
+data DimenzioMorf : NegyDimenzio -> NegyDimenzio -> Type where
+  DimAzonos  : DimenzioMorf a a
+  DimTukor   : DimenzioMorf Ter Ter
+  DimIdoFord : DimenzioMorf Ido Ido
+  DimTerIdo  : DimenzioMorf Ter Ido
+  DimIdoTer  : DimenzioMorf Ido Ter
+  DimTerTomeg : DimenzioMorf Ter Tomeg
+  DimTomegTer : DimenzioMorf Tomeg Ter
+  DimTerInfo  : DimenzioMorf Ter Informacio
+  DimInfoTer  : DimenzioMorf Informacio Ter
+  DimIdoTomeg : DimenzioMorf Ido Tomeg
+  DimTomegIdo : DimenzioMorf Tomeg Ido
+  DimIdoInfo  : DimenzioMorf Ido Informacio
+  DimInfoIdo  : DimenzioMorf Informacio Ido
+  DimTomegInfo : DimenzioMorf Tomeg Informacio
+  DimInfoTomeg : DimenzioMorf Informacio Tomeg
+
+-- ═══════════════════════════════════════════════════════════════
+-- FIZIKAI EGYENLETEK (a 4 dimenzio kozotti kapcsolatok)
+-- ═══════════════════════════════════════════════════════════════
+
+||| c = fenysebesseg (allando)
+public export
+data Fenysebesseg : Type where
+  FenysebessegKonstruktor : Fenysebesseg
+
+||| Lorentz transzformacio: Ter ↔ Ido
+|||   t' = γ(t - v·x/c²)
+|||   x' = γ(x - v·t)
+|||   γ = 1/√(1 - v²/c²)
+public export
+data LorentzTranszformacio : Type where
+  LorentzKonstruktor : LorentzTranszformacio
+
+||| Ter → Tomeg: E = m·c² (Einstein)
+|||   A tomeg es a ter kozotti ekvivalencia.
+public export
+data EinsteiniEgyenlet : Type where
+  EinsteinKonstruktor : EinsteiniEgyenlet
+
+||| Ter → Informacio: holografikus elv
+|||   S = A / (4·ℓp²)
+public export
+data HolografikusElv : Type where
+  HolografikusKonstruktor : HolografikusElv
+
+||| Ido → Tomeg: tomeg okozta idodilatacio
+|||   t' = t · √(1 - 2GM/(rc²))
+public export
+data IdoDilatacio : Type where
+  IdoDilatacioKonstruktor : IdoDilatacio
+
+||| Ido → Informacio: Shannon-Hartley tetel
+|||   C = B · log₂(1 + S/N)
+public export
+data ShannonHartley : Type where
+  ShannonKonstruktor : ShannonHartley
+
+||| Tomeg → Informacio: Landauer elv
+|||   E = k·T·ln(2) · I
+public export
+data LandauerElv : Type where
+  LandauerKonstruktor : LandauerElv
+
+||| Tukor (paritas forditas): (x, y, z) → (-x, -y, -z)
+public export
+data ParitasForditas : Type where
+  TukorKonstruktor : ParitasForditas
+
+||| Ido forditas: t → -t
+|||   Amikor az ido megfordul, az osszes tobbi dimenzio is megfordul (CPT).
+public export
+data CptSzimmetria : Type where
+  CptKonstruktor : CptSzimmetria
+
+-- ═══════════════════════════════════════════════════════════════
+-- CURRY-HOWARD-LAMBEK MEGFELELTETES
+-- ═══════════════════════════════════════════════════════════════
+
+||| Curry-Howard-Lambek megfeleltetes: Logika ↔ Tipuselmelet ↔ Kategoria.
+||| Harom oszlop, minden szinten megfeleltetessel.
+public export
+data CurryHowardLambek : Type where
+  ||| Propozicio ↔ Tipus ↔ Objektum
+  PropozicioTipusObjektum : CurryHowardLambek
+  ||| Bizonyitas ↔ Program/Term ↔ Morfizmus
+  BizonyitasProgramMorfizmus : CurryHowardLambek
+  ||| Implikacio ↔ Fuggvenytipus ↔ Exponencialis objektum
+  ImplikacioFuggvenyExponencialis : CurryHowardLambek
+  ||| Konjunkcio ↔ Szorzattipus ↔ Kategoriai szorzat
+  KonjunkcioSzorzatKategoriai : CurryHowardLambek
+  ||| Diszjunkcio ↔ Osszegtipus ↔ Kategoriai koproduktum
+  DiszjunkcioOsszegKoproduktum : CurryHowardLambek
+  ||| Egyetemes kvantor ↔ Pi-tipus ↔ Hatarertek
+  EgyetemesKvantorPiHatar : CurryHowardLambek
+  ||| Egzisztencialis kvantor ↔ Szigma-tipus ↔ Koequalizer
+  EgzisztencialisKvantorSzigmaKo : CurryHowardLambek
+  ||| Igaz ↔ Egysegtipus ↔ Vegso objektum
+  IgazEgysegTerminalis : CurryHowardLambek
+  ||| Hamis ↔ Ures tipus ↔ Inicialis objektum
+  HamisUresInicialis : CurryHowardLambek
+  ||| Tagadas ↔ Void tipus ↔ Dualis
+  TagadasVoidDualis : CurryHowardLambek
+  ||| Godel befejezetlenseg ↔ Tipuselmeleti befejezetlenseg ↔ Fixpont
+  GodelTipusFixpont : CurryHowardLambek
 
 ||| E8 mint monoidalis kategoria: tenzor = pontonkenti osszeadas,
 ||| egyseg = nulla pont, braiding = azonos (kommutativitas miatt).
