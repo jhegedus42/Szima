@@ -175,6 +175,21 @@
 --   A típus mondja meg MI a mennyiség, nem csak a szerkezet.
 --   Double -> Double -> Double = jelentés nélküli.
 --   LagrangeFv = értelemszerű, dimenzionált, típbiztos.
+--
+-- HIERARCHIKUS TÍPUSOKAT HASZNÁLJ.
+--   A típusok egymásra épülnek, mint a typeclass-ok:
+--     Energia → KinetikaiEnergia, PotencialisEnergia
+--     Potencial → BelsoEnergia, HelmholtzEnergia, Entalpia, GibbsEnergia
+--     Metrika → EuklidesziMetrika, RiemannMetrika, LorentzMetrika
+--     Funktor → KategoriaFunktor, SteaneFunktor, E8Funktor
+--   Minden típus egy szülőtől örököl, a hierarchia tiszta.
+--   A hierarchia TYPECLASS-OKON keresztül valósul meg:
+--     interface EnergiaT e where ...
+--     interface EnergiaT e => KinetikaiEnergiaT e where ...
+--     interface EnergiaT e => PotencialisEnergiaT e where ...
+--     interface PotencialT p => BelsoEnergiaT p where ...
+--     interface PotencialT p => HelmholtzEnergiaT p where ...
+--   A typeclass instance = a törvények bizonyítása (Curry-Howard).
 --    Ha valamit NEM TUDOK: beírom a 3. szívdobbanásba.
 --
 -- SZÍVDOBANÁS RITMUS:

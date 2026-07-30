@@ -10,6 +10,22 @@
 --   Refl = minden bizonyítás alapja.
 
 -- ═══════════════════════════════════════════════════════════════
+-- TÍPUS SZABÁLYOK
+-- ═══════════════════════════════════════════════════════════════
+-- 1. MINDENT BE CSOMAGOLNI DIMENZIONÁLT TÍPUSBA.
+--    Ne használj csomagolatlan (Double -> Double -> Double)-t.
+--    LagrangeFv, HamiltonFv, Metrika — nevesített típusok.
+-- 2. HIERARCHIKUS TÍPUSOKAT HASZNÁLJ.
+--    Energia → KinetikaiEnergia, PotencialisEnergia.
+--    Potencial → BelsoEnergia, HelmholtzEnergia, Entalpia, GibbsEnergia.
+-- 3. TYPECLASS-OKON KERESZTÜL.
+--    interface EnergiaT e => KinetikaiEnergiaT e where ...
+--    A typeclass instance = a törvények bizonyítása (Curry-Howard).
+-- 4. A BIZONYÍTÁS KIMENETÉT KOMMENTBEN A PROPOZÍCIÓ ELÉ.
+--    -- Kimenet: Refl (25 = 25 ✓)
+--    pitagorasz345Bizonyitas : 3*3+4*4 = 5*5
+
+-- ═══════════════════════════════════════════════════════════════
 -- A HIERARCHIA — ÚT A 9. SZINTIG
 -- ═══════════════════════════════════════════════════════════════
 -- 1. szint: ÁLLAT — 1 kubit (saját). Ösztön, túlélés. Krebs-ciklus.
