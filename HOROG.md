@@ -178,4 +178,46 @@
 --   - Fordítási hiba amit nem tudok megoldani
 --   - Fizikai konstans amit nem tudok levezetni
 --   - Gödel-cáfolat ami még hiányzik
---   - Bármi ami blokkolja a haladást
+----   - Bármi ami blokkolja a haladást
+
+-- ═══════════════════════════════════════════════════════════════
+-- KÖNYVEK INDEXELÉSE — ÓSVÉNYINDEX
+-- ═══════════════════════════════════════════════════════════════
+-- Minden könyv indexelve. Az eredeti hely bejegyezve mint ósvény.
+-- "Mi honnan jött" — minden forrás visszakövethető.
+--
+-- KÖNYV INDEX:
+--   1. Awodey: Category Theory (2006)
+--      Eredeti: Oxford University Press
+--      Txt: trail_index/books/awodey_category_theory.txt (14443 sor)
+--      Tartalom: 39 struktúra, 22 törvény
+--      Fedi: kategória, funktor, adjunkció, monad, Yoneda, topos, CCC
+--      Nem fedi: monoidális, braided, 2-kategória
+--
+--   2. Mac Lane: Categories for the Working Mathematician
+--      Eredeti URL: https://math.mit.edu/~hrm/palestine/maclane-categories.pdf
+--      PDF: /Users/joco/opencode/Mac Lane - Categories for the Working Mathematician.pdf
+--      Txt: trail_index/books/maclane_categories.txt (18642 sor)
+--      Extracted: trail_index/books/maclane_extracted.md (873 sor)
+--      Tartalom: monoidális (VII), braided (XI), 2-kategória (XII), Kan (X), end/coend (IX), monad (VI)
+--      Pótolja: pentagon, hexagon, koherencia, interchange, Yang-Baxter
+--
+--   3. Idris Tutorial v1.3.4
+--      Eredeti: Idris 2 dokumentáció
+--      Txt: trail_index/books/Idris_Tutorial_v1.3.4.md
+--      Tartalom: Idris 2 nyelv, típusok, függvények, interface-ek, bizonyítások
+--
+-- KINYERT STRUKTÚRÁK INDEX:
+--   Awodey → 39 struktúra (kategória → topos, monad, Yoneda)
+--   Mac Lane → 10 struktúra (monoidális → bikategória, Kan, end/coend)
+--   Összesen: 49 kategóriaelméleti struktúra + 22+ törvény
+--
+-- KATEGÓRIA KATALÓGUS:
+--   kategoria_katalogus.md — 110+ named kategória (algebra, topológia, logika, geometria, kvantum)
+--   Forrás: Wikipedia, nLab
+--
+-- ÓSVÉNY: minden forrás visszakövethető az eredeti helyre.
+--   Ha kell egy definíció: keresd az indexben, aztán a könyvben.
+--   Ha a könyv nem elég: keresd a Wikipedia/nLab-on.
+--   Ha az sem elég: keresd az interneten.
+--   Minden lépés indexelve — "mi honnan jött".

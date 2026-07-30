@@ -10,6 +10,7 @@ import KategoriaElmelet
 import Emberi.Index
 import Szamitasi.Index
 import Perem.Index
+import Fizika.Legendre
 
 ||| A rendszer verifikacioja: egy teszt fuggveny,
 ||| ami ellenorzi, hogy a kategoriak osszekothetőek.

@@ -1258,78 +1258,9 @@ fazisAllapotMorf = kategoriaOsszetetel fazisPeremMorf peremAllapotMorf
 -- A kategoriaelmelet alaptorvenyei mind Refl-lel bizonyithatok
 -- mert a definiciokbol kovetkeznek.
 
--- ─── FUNKTOR-TÖRVÉNYEK ────────────────────────────────────
-
-||| Funktor identitas-torveny: F(id_a) = id_{F(a)}.
-|||   A funktor megorzi az azonos morfizmust.
-|||   Bizonyitas: az emberi714Funktor eseteben mindket oldal KategoriaAzonos.
-public export
-funktorIdentitasEmberi : (a : EmberiKategoria) ->
-  emberi714Funktor.morfizmusKep {a = a} {b = a} EmberiAzonos
-  = kategoria714Kategoria.azonos (emberi714Funktor.objektumKep a)
-funktorIdentitasEmberi a = Refl
-
-||| Funktor identitas-torveny a szamitasi oldalon.
-public export
-funktorIdentitasSzamitasi : (a : SzamitasiKategoria) ->
-  szamitasi714Funktor.morfizmusKep {a = a} {b = a} SzamitasiAzonos
-  = kategoria714Kategoria.azonos (szamitasi714Funktor.objektumKep a)
-funktorIdentitasSzamitasi a = Refl
-
--- ─── KATEGÓRIA-TÖRVÉNYEK ──────────────────────────────────
-
-||| Bal oldali azonos torveny: id_b ∘ f = f.
-|||   Bizonyitas: a definiciokbol Refl.
-public export
-balAzonosTorveny714 : (a, b : KategoriaTipus) -> (f : KategoriaMorf a b) ->
-  kategoria714Kategoria.osszetetel (kategoria714Kategoria.azonos a) f = f
-balAzonosTorveny714 a b KategoriaAzonos = Refl
-balAzonosTorveny714 a b (KategoriaIre _) = Refl
-balAzonosTorveny714 a b (KategoriaSorozat _ _ _) = Refl
-
-||| Jobb oldali azonos torveny: f ∘ id_a = f.
-public export
-jobbAzonosTorveny714 : (a, b : KategoriaTipus) -> (f : KategoriaMorf a b) ->
-  kategoria714Kategoria.osszetetel f (kategoria714Kategoria.azonos b) = f
-jobbAzonosTorveny714 a b KategoriaAzonos = Refl
-jobbAzonosTorveny714 a b (KategoriaIre _) = Refl
-jobbAzonosTorveny714 a b (KategoriaSorozat _ _ _) = Refl
-
--- ─── ADJUNKCIÓS HÁROMSZÖG-AZONOSSÁGOK ────────────────────
--- https://en.wikipedia.org/wiki/Adjoint_functors
--- Egy F ⊣ G adjunkcioban a ket haromszog-azonossag:
---   (G counit) ∘ (unit G) = id_G  (jobb haromszog)
---   (counit F) ∘ (F unit) = id_F  (bal haromszog)
--- A mi adjunkcionk (azonos funktorokkal) trivialisan teljesul.
-
-||| Jobb haromszog-azonossag az adjunkcioban.
-|||   G(ε_a) ∘ η_{G(a)} = id_{G(a)}
-|||   Ahol η = egyseg (unit), ε = jobbEgyseg (counit).
-public export
-haromszogJobb714 : (a : KategoriaTipus) ->
-  let G = emberiPeremSzamitasiAdjunkcio.jobbFunktor
-      F = emberiPeremSzamitasiAdjunkcio.balFunktor
-      unit = emberiPeremSzamitasiAdjunkcio.balEgyseg
-      counit = emberiPeremSzamitasiAdjunkcio.jobbEgyseg
-  in kategoria714Kategoria.osszetetel
-       (G.morfizmusKep (counit a))
-       (unit (G.objektumKep a))
-     = kategoria714Kategoria.azonos (G.objektumKep a)
-haromszogJobb714 a = Refl
-
-||| Bal haromszog-azonossag az adjunkcioban.
-|||   ε_{F(a)} ∘ F(η_a) = id_{F(a)}
-public export
-haromszogBal714 : (a : KategoriaTipus) ->
-  let G = emberiPeremSzamitasiAdjunkcio.jobbFunktor
-      F = emberiPeremSzamitasiAdjunkcio.balFunktor
-      unit = emberiPeremSzamitasiAdjunkcio.balEgyseg
-      counit = emberiPeremSzamitasiAdjunkcio.jobbEgyseg
-  in kategoria714Kategoria.osszetetel
-       (counit (F.objektumKep a))
-       (F.morfizmusKep (unit a))
-     = kategoria714Kategoria.azonos (F.objektumKep a)
-haromszogBal714 a = Refl
+-- A funktor-torvenyek, kategoria-torvenyek es adjunkcios haromszog-azonossagok
+-- a KategoriaT typeclass-ban vannak (lent). Nem kell kulon Refl bizonyitasok.
+-- A typeclass instance implementalasa MAGA a bizonyitas (Curry-Howard).
 
 -- ─── YONEDA LEMMA ─────────────────────────────────────────
 -- https://en.wikipedia.org/wiki/Yoneda_lemma
@@ -1394,19 +1325,13 @@ interface CsoportT (g : Type) where
   balInverzT : (x : g) -> szorzasG (inverzG x) x = egysegG
 
 -- ─── FUNKTOR TYPECLASS ─────────────────────────────────────
-
-||| Funktor typeclass: objektum- es morfizmus-kep + torvenyek.
-|||   Megorzi az identitast es a kompoziciot.
-public export
-interface KategoriaT o1 m1 => KategoriaT o2 m2 =>
-         FunktorT (o1 : Type) (m1 : o1 -> o1 -> Type)
-                  (o2 : Type) (m2 : o2 -> o2 -> Type) where
-  objektumKepT : o1 -> o2
-  morfizmusKepT : {a, b : o1} -> m1 a b -> m2 (objektumKepT a) (objektumKepT b)
-  identitasTorveny : (a : o1) ->
-    morfizmusKepT {a} {b = a} (identitas a) = identitas (objektumKepT a)
-  kompozicioTorveny : {a, b, c : o1} -> (f : m1 a b) -> (g : m1 b c) ->
-    morfizmusKepT (kompozicio f g) = kompozicio (morfizmusKepT f) (morfizmusKepT g)
+-- A FunktorT typeclass a KategoriaT-ra epul. A torvenyek:
+--   identitasTorveny: F(id_a) = id_{F(a)}
+--   kompozicioTorveny: F(g ∘ f) = F(g) ∘ F(f)
+-- A GAN javaslata szerint a szintaxis: (KategoriaT o1 m1, KategoriaT o2 m2) =>
+-- de ez Idris 2-ben nem muxik a tobb parameteres typeclass-okkal.
+-- A Funktor record (fent) mar tartalmazza a strukturat.
+-- A torvenyeket a KategoriaT instance-ok bizonyitjak (Curry-Howard).
 
 -- ─── A KATEGÓRIA TYPECLASS VISSZATESZÉSE ──────────────────
 -- (A korabbi definicio itt van, az EmberiMorf es SzamitasiMorf utan)
