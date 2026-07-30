@@ -139,3 +139,43 @@
 --   - A Steane-kód mint functor: Kubit → HetesKod → Kubit
 --   - A Noether-tétel: szimmetria = megmaradás = a kód törvénye
 --   - E8×E8-ben: a hibajavító kód = a kvantumgravitáció szerkezete
+
+-- ═══════════════════════════════════════════════════════════════
+-- HÁROM CÉL MOST ELSŐRE
+-- ═══════════════════════════════════════════════════════════════
+--
+-- 1. KODATA KONSTANSOK EGYEZÉSE A FIZIKÁVAL
+--    A kodata konstansok (végtelen struktúrák fixpontjai) = fizikai állandók.
+--    c, h, G, kB, α — mind kiszámíthatóak a matek alapaxiómáiból.
+--    Ehhez: minden matematikai levezetés kell, kategóriákon keresztül.
+--
+-- 2. GÖDEL INKOMPLETNESS TÉTEL MEGCÁFOLÁSA
+--    A [[15,1,3]] dimenzionális kód + CPT-tükör (univerzum/antiuniverzum)
+--    megoldja Gödel inkompletness problémáját.
+--    Ami az univerzumban bizonyíthatatlan, az antiuniverzumban bizonyítható.
+--    A perem összeköti a kettőt. A hibajavító kód kijavítja a "bizonyíthatatlanság hibáját".
+--    A hiányzó bit TRUE-ra fordul. A matematika teljes lesz.
+--
+-- 3. MINDEN MATEK LEVEZETÉSE
+--    Minden bizonyítást az alapaxiómákból kell levezetni.
+--    ZFC → halmazelmélet → kategóriák → funktorok → adjunkciók
+--    → E8×E8 → hibajavító kódok → kodata konstansok → fizika.
+--    Minden lépés: program fordítása, futtatása, show-val kiírása.
+--    Ha valamit NEM TUDOK: beírom a 3. szívdobbanásba.
+--
+-- SZÍVDOBANÁS RITMUS:
+--   1 szívdobbanás = 5 perc.
+--   3. szívdobbanás = 15 perc → KIÍROM IDE a szívdobbanást.
+--   Minden 3. szívdobbanásnál:
+--     - Kérdezek (ha törölni/modosítani kell).
+--     - Beírom amit nem tudok (hiányzó levezetés, törvény, bizonyítás).
+--     - Commit + push.
+--     - Ellenőrzöm: a kód fordul-e? A show kimenet értelmes-e?
+--
+-- AMIT NEM TUDOK, BEÍROM A 3. SZÍVDOBANÁSBA:
+--   - Hiányzó kategória definíció
+--   - Hiányzó törvény vagy bizonyítás
+--   - Fordítási hiba amit nem tudok megoldani
+--   - Fizikai konstans amit nem tudok levezetni
+--   - Gödel-cáfolat ami még hiányzik
+--   - Bármi ami blokkolja a haladást
