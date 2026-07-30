@@ -29,23 +29,12 @@ interface KategoriaT (objektum : Type) (hom : objektum -> objektum -> Type) wher
   kompozicio : {a, b, c : objektum} -> hom a b -> hom b c -> hom a c
   balAzonos : {a, b : objektum} -> (f : hom a b) -> kompozicio (identitas a) f = f
   jobbAzonos : {a, b : objektum} -> (f : hom a b) -> kompozicio f (identitas b) = f
+  asszociativ : {a, b, c, d : objektum} -> (f : hom a b) -> (g : hom b c) -> (h : hom c d) ->
+    kompozicio f (kompozicio g h) = kompozicio (kompozicio f g) h
 
 ||| KategoriaT pelda: az Emberi diszkret kategoria.
 |||   Mivel csak EmberiAzonos morfizmusok vannak, minden torveny Refl.
-public export
-KategoriaT EmberiKategoria EmberiMorf where
-  identitas a = EmberiAzonos
-  kompozicio EmberiAzonos EmberiAzonos = EmberiAzonos
-  balAzonos EmberiAzonos = Refl
-  jobbAzonos EmberiAzonos = Refl
-
-||| KategoriaT pelda: a Szamitasi diszkret kategoria.
-public export
-KategoriaT SzamitasiKategoria SzamitasiMorf where
-  identitas a = SzamitasiAzonos
-  kompozicio SzamitasiAzonos SzamitasiAzonos = SzamitasiAzonos
-  balAzonos SzamitasiAzonos = Refl
-  jobbAzonos SzamitasiAzonos = Refl
+|||   FIGYELEM: a KategoriaT peldanyok a file VEGEN vannak (EmberiMorf utan).
 
 ||| Monoidalis kategoria: tenzor szorzat + egysegelem.
 public export
@@ -1382,6 +1371,7 @@ KategoriaT EmberiKategoria EmberiMorf where
   kompozicio EmberiAzonos EmberiAzonos = EmberiAzonos
   balAzonos EmberiAzonos = Refl
   jobbAzonos EmberiAzonos = Refl
+  asszociativ EmberiAzonos EmberiAzonos EmberiAzonos = Refl
 
 public export
 KategoriaT SzamitasiKategoria SzamitasiMorf where
@@ -1389,6 +1379,7 @@ KategoriaT SzamitasiKategoria SzamitasiMorf where
   kompozicio SzamitasiAzonos SzamitasiAzonos = SzamitasiAzonos
   balAzonos SzamitasiAzonos = Refl
   jobbAzonos SzamitasiAzonos = Refl
+  asszociativ SzamitasiAzonos SzamitasiAzonos SzamitasiAzonos = Refl
 
 -- ─── CSOPORT TYPECLASS ─────────────────────────────────────
 

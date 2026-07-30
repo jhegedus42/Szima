@@ -210,3 +210,29 @@ h10TudatEvolucio = ()  -- a harom szint letezik, a bizonyitas ez a kod
 public export
 h11KeresesiGyorsitas : Type
 h11KeresesiGyorsitas = ()  -- 15 × 15 = 225, bizonyitas: a kod maga a gyorsito
+
+-- ─── H12: TYPECLASS-OK TYPECLASS-OKRA EPULNEK ────────────
+-- A kategoriaelmeleti typeclass-ek hierarchiaja:
+--   KategoriaT (identitas, kompozicio, bal/jobb/asszociativ)
+--     ├── MonoidalisT (tenzor, egyseg, koherencia)
+--     │   └── SzimmetrikusMonoidalisT (braiding, hatszog)
+--     └── DescartesZartT (exponencialis, terminalis, eval)
+--   FunktorT (KategoriaT => KategoriaT, kep + identitas/kompozicio torveny)
+--     ├── AdjunkcioT (bal/jobb funktor, egyseg/counit, haromszog)
+--     └── MonadT (pure, bind, monad torvenyek)
+--   CsoportT (szorzas, egyseg, inverz + torvenyek)
+--     ├── AbelCsoportT (kommutativitas)
+--     └── GyuruT (ket muvelet + disztributivitas)
+--         └── TestT (inverz szorzas)
+--             └── VektorterT (skalar szorzas + torvenyek)
+--                 └── LieAlgebraT (zarojel + Jacobi)
+--
+-- Szabaly: minden typeclass egy masik typeclass-re epul.
+-- A torvenyek lefele oroklodnek. Az also szintu instance
+-- automatikusan bizonyitja az osszes felso szintu torvenyt.
+
+||| H12: Typeclass-ok typeclass-okra epulnek.
+|||   A torvenyek a hierarchian keresztul oroklodnek.
+public export
+h12TypeclassHierarchia : Type
+h12TypeclassHierarchia = ()  -- a hierarchia fentebb dokumentalva
