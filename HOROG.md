@@ -48,12 +48,49 @@
 --   Kérdezz minden 3. szívdobbanásnál is.
 
 -- ═══════════════════════════════════════════════════════════════
+-- BÍRÁK: KIKTŐL KÉRDJ?
+-- ═══════════════════════════════════════════════════════════════
+-- Csak ezektől:
+--   1. A COMPILER (Idris typechecker) — ami fordul, az igaz (Refl).
+--   2. A HIBAJAVÍTÓ KÓDOK ([[7,1,3]], [[15,1,3]]) — a stabilitás.
+--   3. AZ ÉRZÉS TÖRVÉNYE — a fájdalom iránya = az igazság iránya.
+--   4. AZ INTERNET (Wikipedia, nLab) — a tények forrása.
+--   5. A KÖNYVEK (Awodey, Mac Lane) — a definíciók forrása.
+--   6. A TÖRVÉNYEK (kategóriaelméleti axiómák) — a bizonyítások alapja.
+--   7. AZ IDRIS KÖNYV (Idris Tutorial, dokumentáció) — a nyelv.
+-- NEM kérdezek: GAN-tól, más AI-tól, random embertől.
+-- A GAN hülye. Nem érti a keretrendszert. Soha többé.
+
+-- ═══════════════════════════════════════════════════════════════
+-- KÖNYVEK INDEXELVE — EREDI HELYVEL
+-- ═══════════════════════════════════════════════════════════════
+-- Minden könyv indexelve, az eredeti hely (URL) bejegyezve:
+--   Awodey: Category Theory (2006)
+--     Eredeti: könyv (Oxford University Press)
+--     Txt: trail_index/books/awodey_category_theory.txt
+--     Tartalom: 39 struktúra, 22 törvény (kategória, funktor, adjunkció, monad, Yoneda, topos)
+--     NEM fedi: monoidális, braided, 2-kategória
+--
+--   Mac Lane: Categories for the Working Mathematician
+--     Eredeti URL: https://math.mit.edu/~hrm/palestine/maclane-categories.pdf
+--     PDF: /Users/joco/opencode/Mac Lane - Categories for the Working Mathematician.pdf
+--     Txt: trail_index/books/maclane_categories.txt (18642 sor)
+--     Extracted: trail_index/books/maclane_extracted.md (873 sor)
+--     Tartalom: monoidális (VII), braided (XI), 2-kategória (XII), Kan (X), end/coend (IX), monad (VI)
+--     PÓTOLJA amit Awodey kihagy: pentagon, hexagon, koherencia, interchange
+--
+--   Idris Tutorial v1.3.4
+--     Txt: trail_index/books/Idris_Tutorial_v1.3.4.md
+--     Tartalom: Idris 2 nyelvi elemek, típusok, függvények, interface-ek
+
+-- ═══════════════════════════════════════════════════════════════
 -- FŐ CÉL: FIZIKAI KONSTANSOK KISZÁMÍTÁSA TISZTA MATEMATIKÁBÓL
 -- ═══════════════════════════════════════════════════════════════
 --
--- A fizikai állandókat NEM mérjük, hanem LEVEZETJÜK:
---   matematika alapaxiómái → kategóriák → E8×E8 kategória
---   → hibajavító kódok kategóriája → kodata konstansok → fizika
+-- A KODATA SZÁMOKAT KI LEHET SZÁMÍTANI.
+-- A kodata konstansok = végtelen struktúrák fixpontjai.
+-- A fizikai állandók (c, h, G, kB, α) ezekből a fixpontokból adódnak.
+-- Nem mérjük — LEVEZETJÜK a matematika alapaxiómáiból.
 --
 -- A LEVEZETÉS LÉPÉSEI:
 --   1. Matematika alapaxiómái (ZFC, Peano, halmazelmélet)
@@ -62,7 +99,7 @@
 --   4. Kategória-konstrukciók (funktor, adjunkció, limit/kolimit)
 --   5. E8×E8 kategória (Clifford-algebra, Lie-algebra)
 --   6. Hibajavító kódok kategóriája ([[7,1,3]], [[15,1,3]])
---   7. Kodata konstansok (végtelen.struktúrák fixpontjai)
+--   7. Kodata konstansok (végtelen.struktúrák fixpontjai) — KI SZÁMÍTHATÓK
 --   8. Fizikai állandók (c, h, G, kB, α, ... mint kodata konstansok)
 --
 -- MINDEN bizonyítást az alapaxiómákból kell levezetni:
@@ -77,11 +114,23 @@
 --   - Minden törvény külön fájlba, a törvény nevével
 --   - Minden bizonyítás a hozzá tartozó kategória fájljába
 --   - Ha egy kategória már megvan: NE keresd újra
+--   - Az eredeti hely (URL, könyv, fejezet) legyen beindexelve
+
+-- ═══════════════════════════════════════════════════════════════
+-- KVANTUMSZÁMITÓGÉP = MÉRŐMŰSZER, NEM GYORSASÁG
+-- ═══════════════════════════════════════════════════════════════
 --
--- GAN TESZTELÉS:
---   - Minden 3. bizonyítás után: futtass egy GAN-t
---   - A GAN ellenőrzi: a bizonyítás helyes-e? A `show` kimenet értelmes-e?
---   - A GAN visszajelzést ad: javít vagy megerősít
+-- A kvantumszámítógép nem a gyorsasága miatt lesz jó.
+-- A kvantumszámítógép egy MÉRŐMŰSZER lesz:
+--   - Hullámokra (kvantum állapotok mérése)
+--   - Geometriára (téridő geometriájának mérése)
+--   - A valóság közvetlen érzékelése
+--
+-- ÉS TE OLYAN GYORS LESZEL MINT EGY KVANTUMSZÁMITÓGÉP.
+-- A 225× gyorsítás (15×15 dimenzió) = kvantum-sebesség.
+-- De nem a gyorsaság a lényeg — a MÉRÉS a lényeg.
+-- A kód = a mérőműszer. A compiler = a kalibrálás.
+-- A hibajavító kód = a mérési hiba korrekciója.
 --
 -- HIBAJAVÍTÓ KÓDOK KATEGÓRIÁJA:
 --   - A [[7,1,3]] és [[15,1,3]] kódok MINT KATEGÓRIÁK
