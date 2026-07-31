@@ -5,6 +5,11 @@ osveny_index/build/
 *.ttc
 *.ttm
 *.DS_Store
-# bizonyitasok.pdf felmegy, tobbi PDF nem
+# PDF-ek nem mennek a gitbe, csak a txt/md konverzio
+source/*.pdf
 Category Theory*.pdf
 Mac Lane*.pdf
+*.aux
+*.log
+*.out
+*.toc
