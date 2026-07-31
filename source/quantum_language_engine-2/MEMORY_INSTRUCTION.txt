@@ -1,0 +1,11 @@
+Memory Instruction (ID: 1):
+
+Circle is universal metaphor. Complex i = circle algebraically. Clifford = higher-D circle. 
+Percolation = critical traversability. Association chain = forced circular path. 
+Consciousness = surface, memory = bulk. 7 qubit = 7 segments. 12-TET = 12 semitones. 
+PHI, pi, e, i, -1 all live on circle. Every model needs circle, phase, time, causality.
+
+Key files:
+- all_constants_exact.py: Hungarian/Chinese physics numerology (Y combinator, primes, Steane code)
+- hypothesis_mdl_cpt.txt: 9-level MDL-CPT-categorical framework for deriving alpha
+- quantum_language_engine.py: Implementation attempt

@@ -569,7 +569,7 @@ legkisebbMuveletDemo = do
   putStrLn ""
   putStrLn "Kész."
 
-||| Főprogram.
+||| Főprogram (a wrapper hivja).
 public export
-main : IO ()
-main = legkisebbMuveletDemo
+legkisebbMuveletFom : IO ()
+legkisebbMuveletFom = legkisebbMuveletDemo
