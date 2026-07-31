@@ -267,7 +267,7 @@ kvantumOperatorokFom = do
   putStrLn "Pauli matrixok (involúciók: X²=Y²=Z²=I):"
   putStrLn "  X·X = I (Refl bizonyítva)"
   putStrLn "  Z·Z = I (Refl bizonyítva)"
-  putStrLn "  X·Z = Y, Z·X = Y (antikommutatív!)"
+  putStrLn "  X·Z = Y (+), Z·X = Y (-) — fáziskülönbség = Heisenberg"
   putStrLn ""
   putStrLn "Heisenberg határozatlanság:"
   putStrLn "  [X, Z] ≠ 0 — X és Z nem kommutálnak"
@@ -286,16 +286,26 @@ kvantumOperatorokFom = do
   putStrLn "  D = 7  (part, szeptim, MIKOR — idő, [[7,1,3]])"
   putStrLn "  E = 11 (kapu, undecium, MI LENNE HA — U(1) töltés)"
   putStrLn ""
-  putStrLn ("Y kombinator fixpont: α⁻¹ = " ++ show alphaInverz ++ " (ref: 137.036)")
-  putStrLn ("  = 2⁷+2³+2⁰ + (D_CRIT-1)²/[(D_CRIT+1)^(D_CRIT-1)×(D_CRIT-2)]")
-  putStrLn ("  = 137 + 9/250 (D_CRIT=4)")
+  putStrLn "--- Y KOMBINÁTOR FIXPONT: α⁻¹ ---"
+  putStrLn ("  Levezetett:  " ++ show alphaInverz)
+  putStrLn ("  Referencia:  137.035999084 (CODATA 2018)")
+  let alphaHiba = abs (alphaInverz - 137.035999084)
+  putStrLn ("  Hiba:        " ++ show alphaHiba)
+  putStrLn ("  Relatív:     " ++ show (alphaHiba / 137.035999084 * 100.0) ++ " %")
+  putStrLn ("  Képlet: 2⁷+2³+2⁰ + (D-1)²/[(D+1)^(D-1)×(D-2)] = 137+9/250")
   putStrLn ""
-  putStrLn ("Gravitációs állandó: G = " ++ show gravitaciosAllandoSzármaztatva ++ " (ref: 6.67430e-11)")
-  putStrLn ("  = (7×11)/(8×25) × √3 × (1.036)^(1/40) × 10⁻¹⁰")
+  putStrLn "--- GRAVITÁCIÓS ÁLLANDÓ: G ---"
+  let gRef = 6.67430e-11
+  putStrLn ("  Levezetett:  " ++ show gravitaciosAllandoSzármaztatva)
+  putStrLn ("  Referencia:  " ++ show gRef ++ " (CODATA 2018)")
+  let gHiba = abs (gravitaciosAllandoSzármaztatva - gRef)
+  putStrLn ("  Hiba:        " ++ show gHiba)
+  putStrLn ("  Relatív:     " ++ show (gHiba / gRef * 100.0) ++ " %")
+  putStrLn ("  Képlet: (7×11)/(8×25) × √3 × (1+9/250)^(1/40) × 10⁻¹⁰")
   putStrLn ""
   putStrLn "A Heisenberg fázisátmenet = a tükör elkerülésének mechanizmusa:"
-  putStrLn "  A nem-kommutatív szorzás (X·Z ≠ Z·X) létrehozza a határozatlanságot."
-  putStrLn "  A határozatlanság = a fázisátmenet 'költsége'."
+  putStrLn "  A nem-kommutatív szorzás (X·Z ≠ Z·X, fáziskülönbség) létrehozza"
+  putStrLn "  a határozatlanságot. A határozatlanság = a fázisátmenet 'költsége'."
   putStrLn "  A fázisátmenet = a rendszer átmegy a tükörsíkon."
   putStrLn "  A tükör elkerülése = a 2D idő-síkban mozgás (igeidő + szemlélet)."
   putStrLn ""
