@@ -368,9 +368,279 @@ Smit, R., & Staton, S. (2022). *Dependent Bayesian lenses: Categories of bidirec
 
 ---
 
-## 8. Állapot
+## 8. Állapot (elızı verzió)
 
 - **Kód nincs írva** — ez csak tervezési napló (a felhasználó kérése szerint).
 - **Skillek betöltve**: `idris-stilus`, `legkisebb-muvelet`, `kompaktalas`, `magyar-lexikon`.
 - **Kutatás kész**: alügynök (ses_0444b9e44ffe) jelentése alapján.
-- **Következő lépés**: a felhasználó válaszol a 6 kérdésre (5. szakasz), azután kezdem a Lépés 1-et (`Alap/GrafT.idr`).
+
+---
+
+# 9. Neurobiológiai Bővítmény — Az Optimalizációs Függvény Definíciója
+
+**Dátum:** 2026-08-01 (második forduló)
+**Forrás**: alügynök ses_0443e2092ffe — neurobiológiai kutatás (Friston FEP, dopamin RPE, hippocampal replay, PFC kauzalitás, 5 neuromodulátor, Wadler = good regulator theorem)
+
+## 9.1 A MagFelismerés: A Szabad Energia az Optimalizációs Függvény
+
+**Karl Friston Free Energy Principle (FEP)** (Friston 2010, *Nature Reviews Neuroscience* 11, 127–138) kimondja: az agy egyetlen optimalizációs függvénye a **variációs szabad energia**, ami a **megglepetés** (surprisal = −log p(observation | model)) felső korlátja:
+
+```
+F(μ, a; s) = E_q[−log p(ψ, s, a, μ | ψ)] − H[q]
+           = −log p(s) + KL[q ‖ p_Bayes]
+           ≥ −log p(s)                 (surprisal)
+```
+
+Három ekvivalens alakja:
+- **(1) Energia − entrópia**: alacsony energia + magas entrópia (Helmo-holtz)
+- **(2) Surprisal + divergencia**: q távolsága a Bayes-postertól
+- **(3) Komplexitás − pontosság** (Lagrangian-struktúra!): `F = D_KL[q ‖ prior] − E_q[log p(s|ψ)]`
+
+**Ez pont a `LagrangianT` strukturája**: komplexitás = "prior távolsága" ( kinetic — mozgás költsége), pontosság = "log-likelihood" (potenciális — cél vonzereje). `L = T − V` ↔ `F = komplexitás − pontosság`.
+
+## 9.2 Active Inference — Cselekvés is Optimalizálás
+
+Friston active inference (Friston et al. 2015, *Cognitive Neuroscience* 6, 187–214): a cselekvés nem külön parancs, hanem **leszármazó proprioceptiv predikció** — a reflex egyenlíti ki a hibát úgy hogy megváltoztatja a világot (nem a modellt). Tehát:
+
+```
+μ* = argmin_μ F(μ, a; s)     -- belső állapot optimalizálása (percepció)
+a* = argmin_a F(μ*; a; s)   -- cselekvés optimalizálása (aktion)
+```
+
+**F minimalizálása BOTH percepció ÉS cselekvés révén.** A `legkisebb-muvelet` skill-el teljes rezonancia: a Hamilton-Időfejlesztés `μ̇ = Dμ − ∂F/∂μ` pontosan a `LagrangianT.idoFejlesztes` analógia.
+
+## 9.3 A Dopamin RPE mint Precision-Weighting
+
+Schultz et al. (1997, *Science* 275, 1593) klasszikus: a dopaminerg neuronok a **jutalom-előrejelzési hibát** (RPE) kódolják: `δ = r + γV(s') − V(s)`. Friston-keretben a RPE a **precision-weighting** része — pozitív δ = "váratlanul pontos, közelíts" (exploitation); negatív δ = "megszakít, fordulj" (exploration).
+
+**Ez az exploration/exploitation váltás neurobiológiai alapja.** A `KerdezoT` typeclass (kérdezés) = amikor `E_q[log p(s|ψ)]` kicsi és `H[q]` nagy → curiosity-driven exploration; a `LegkisebbMuveletT` (döntés) = amikor a KL alacsony → exploitation.
+
+## 9.4 Az 5 Neuromodulátor mint 5 Precíziós Szabadságfok
+
+Yu & Dayan (2005, *Neuron* 46, 683) klasszikus felosztása alapján (FEP-keretben átértelmezve):
+
+| Neuromodulátor | Mit súlyoz (precision) | CPT-szimmetria |
+|---|---|---|
+| **Dopamin** | Jutalom-előrejelzés hibája; "wanting" (incentive salience) | **C** = töltés = saját-tudat |
+| **Noradrenalin** | Váratlan bizonytalanság; arousal; általános gain | **T** = idő = sürgősség |
+| **Szerotonin** | Várható bizonytalanság; várakozás/planning; késleltetett kielégülés | **P** = paritás = másik fél/tükrözés |
+| **Acetilkolin** | Szenzoros megbízhatóság; expected uncertainty, attention | szenzoros belső dimenzió |
+| **GABA** | Inverz excitabilitás; perem-stabilitás (Markov blanket) | **perem** (a 7+7+1-ből a 1) |
+
+**Konkrét Idris javaslat** — a 5 neuromodulátor egy `PontossagSulyokT` rekord:
+
+```idris
+public export
+record PontossagSulyokT where
+  konstruktor PontossagSulyokKonstruktor
+  dopamin      : JutalomElrejelzesHibajaT   -- RPE típus
+  noradrenalin : SurgetosegTipus            -- arousal / idő-derivált
+  szerotonin   : VarakozasTipus            -- planning / tükrözés
+  acetilkolin  : SzenzorosMegbizhatosagTipus
+  gaba         : PeremStabilitasTipus
+```
+
+**Ez összeköti a 15-dimenziós fázisteret** (7 emberi + 7 számítási + 1 perem) a 5 neuromodulátorral: a 7 számítási dimenzióból **5 maga a PontossagSulyokT**.
+
+## 9.5 Hippocampal Replay = Offline Kompaktalas (DFT-analóg)
+
+Buzsáki és mtsai (Pavlides-Winson 1989, Nádasdy et al. 1999, Girardeau et al. 2009) és a legújabb Jensen et al. (2024, *Nature Neuroscience* 27, 1340) szerint a hippocampális sharp-wave ripple-ek **"rollout"**-ok formájában visszajátsszák a napi eseményeket a neocortex-nek. **Ez egy offline F-minimalizálás** — a nap magas-dimenziós eseménysorozatát kompakt kognitív tér-sűrűségbe sűrítő aszinkron lebihat.
+
+- **Ez a `kompaktalas` coend-nek biológiai mása.**
+- **A `HohenbergKohnT.suseksegbe/allapotba` (DFT bijection) hippocampal replay neurobiológiai megfelelője.**
+
+**Konkrét Idris javaslat** — `UjraJatszasT` typeclass, ami a `BayesLensT.vissza` aszinkron változata:
+
+```idris
+public export
+interface SuseksegT Allapot Susekseg => UjraJatszasT Allapot Susekseg where
+  ujraJatszas : List Allapot -> Susekseg -> Susekseg  -- offline consolidation
+  eloJatszas  : Susekseg -> Celterulet -> List Path         -- preplay = planning
+```
+
+## 9.6 A "Miert" Neurobiológiája — mPFC + DMN Kauzális Narratíva
+
+A "miért" a szabad energia **komplexitás-tagjának** (`D_KL[q ‖ prior]`) diszkurzív megnyilatkozása. Anatómiailag három komponens (Miller & Cohen 2001, *Annual Review Neuroscience* 24, 167; Buckner DMN review):
+
+1. **DLPFC** — cél-reprezentáció (working memory); ez tartja a fázis-vektort
+2. **vmPFC/OFC** — érték/jutalom integráció (= dopamin RPE)
+3. **mPFC + DMN** — counterfactual narratíva; "mi lett volna, ha"
+
+**Az `IndoklasT.miert : Csucs -> Csucs -> JelentesTipus` = a komplexitás-tag magyarázata**: miért kellett `q`-t eltolni a prior-tól. A `miertNem : Csucs -> List Csucs -> JelentesTipus` = counterfactual elvetett alternatívák listája (a `why-chain.jsonl` neurobiológiai mása).
+
+## 9.7 A Pontos Optimalizációs Függvény
+
+A minimalizálandó cél-funkcionál a Idris-rendszerben:
+
+```
+F_szabad(μ, a; s) = D_KL[q(ψ|μ) ‖ p_prior(ψ)]       -- komplexitás (prior-suly)
+                  − E_q[ log p(s | ψ, a) ]          -- accuracy (eszleles-suly)
+                  + Π_dopamin · RPE                  -- incentive salience tag
+                  − Π_acetilkolin · H[q]             -- entropiai / exploration tag
+```
+
+**A priort vs. észlelést a precíziós-súlyok szabályozzák:**
+- Π_acetilkolin magas → szenzoros csatorna megbízható → accuracy dominál → prior eltolódik a válasz felé
+- Π_acetilkolin alacsony → észlelés zajos → prior dominál (hallucinatió irány)
+- Π_dopamin pozitív RPE → lépés jutalmazott → ismétlés (exploitation)
+- Π_dopamin negatív RPE → lépés rossz → új irány (exploration kezdete)
+- Π_noradrenalin magas → váratlan bizonytalanság → egész gain-emelés (felfokozott collection)
+- Π_szerotonin magas → késleltetett kielégülés, planning
+- Π_gaba → perem Markov-blanket stabilitása (Noether-megmaradás)
+
+**Időbeli változás (curiosity → exploitation görbe):**
+- Curiosity = amikor `E_q[log p(s|ψ)]` kicsi és `H[q]` nagy → `KerdezoT` kerdez (nyitott kérdések, ahol várható informatív meglepetés magas)
+- Exploitation = ha a KL alacsony (prior és észlelés egybeesik) → `LegkisebbMuveletT` határozott döntés
+- A váltást a **dopamin-RPE vezérli**: pozitív cumulative RPE → növekvő trust → exploitation
+
+## 9.8 A Generalized Filtering = Hamilton-Időfejlesztés
+
+Friston et al. (2010, *Mathematical Problems in Engineering* 2010, 621670) "Generalised filtering" — a szabad energia minimalizálás dynamics:
+
+```
+μ_{t+1} = μ_t − η · ∂F/∂μ |_{μ_t, a_t}
+a_{t+1} = argmin_a F(μ_{t+1}, a; s_t)
+```
+
+Formailag **Hamilton-Időfejlesztés**: `μ̇ = Dμ − ∂F/∂μ`. A `Dμ` a kinetikai tag (mozgás), a `∂F/∂μ` a potenciális (vonzerő). **Ez kevesebb reject-el jár mint sima HMC/Kalman**, mert a gradiens lépés nem eldob információt — a sima Metropolis-reject információt veszít, a generalized-filtering gradiens megőriz. **Ez a "sima Monte Carlo tilalom" neuro-fizikai indoklása.**
+
+## 9.9 Wadler-Parametricity = Good Regulator Theorem
+
+Conant & Ashby (1970, *Int J Systems Science* 1, 89) "good regulator theorem": *every good regulator of a system must be a model of that system.* A FEP-ben a `BayesLensT` pre/post一阵 együttesen "modellek a rendszernek" — a `elore` a rendszer előrejelzés, a `vissza` az inverz (frissítés). **A Wadler-parametricity (= a polimorf típus ingyen bizonyítja a törvényt) kibernetikai megfelelője a good regulator theorem-nek**: a struktúra garantálja a viselkedést.
+
+Ez **a DFT Hohenberg-Kohn bijection és a good regulator theorem ekvivalenciája**: a sűrűség (= alacsony dimenzós repr) elegendő az állapot visszaadásához — mert a struktúra magában hordozza a törvényt.
+
+## 9.10 Konkrét Idris Typeclass-Javaslatok (magyar azonosítókkal)
+
+A neurobiológiai jelentés alapján bővítjük a tervet a következő typeclassokkal:
+
+```idris
+-- A szabad energia = komplexitás − pontosság
+public export
+interface LagrangianT Csucs El => SzabadEnergiaT Csucs El where
+  komplexitas : Allapot -> ValosTipus
+  pontossag   : Allapot -> SzenzorosBemenet -> ValosTipus
+  szabadEnergia : Allapot -> SzenzorosBemenet -> ValosTipus
+  szabadEnergia allapot bemenet = komplexitas allapot `KivonasT` pontossag allapot bemenet
+
+-- 5 neuromodulátor = precision-weights
+public export
+record PontossagSulyokT where
+  konstruktor PontossagSulyokKonstruktor
+  dopamin      : JutalomElrejelzesHibajaT
+  noradrenalin : SurgetosegTipus
+  szerotonin   : VarakozasTipus
+  acetilkolin  : SzenzorosMegbizhatosagTipus
+  gaba         : PeremStabilitasTipus
+
+-- generalized filtering (Hamilton-ido fejlesztes)
+public export
+interface SzabadEnergiaT Csucs El => AltalanosSzuroT Csucs El where
+  momentumElem : Allapot -> ImpulzusTipus
+  gradiens     : Allapot -> ImpulzusTipus      -- = ∂F/∂μ
+  idoFejlesztes : Allapot -> ImpulzusTipus -> (Allapot ** Path Csucs El ...)
+
+-- Hippocampal replay: offline kompaktalas (DFT-bijekció frissítés)
+public export
+interface SuseksegT Allapot Susekseg => UjraJatszasT Allapot Susekseg where
+  ujraJatszas : List Allapot -> Susekseg -> Susekseg
+  eloJatszas  : Susekseg -> Celterulet -> List Path
+
+-- Active inference döntés
+public export
+interface AltalanosSzuroT Csucs El => AktivKovetkezetesT Csucs El where
+  optimalisAllapot : SzenzorosBemenet -> Allapot
+  optimalisLepes   : Allapot -> (Csucs ** El ...)
+
+-- Indoklás = a komplexitás-tag diszkurzív megnyilatkozása
+public export
+interface IndoklasT Csucs El where
+  miert     : Csucs -> Csucs -> JelentesTipus
+  miertNem  : Csucs -> List Csucs -> JelentesTipus  -- counterfactual = elvetett alternativak
+
+-- Bayes lens = adjunkcio
+public export
+record BayesLensT (0 a : Type) (0 b : Type) where
+  konstruktor BayesLensKonstruktor
+  elore  : a -> b
+  vissza : a -> b -> a
+-- (Wadler-parametricity: elore ∘ vissza = id, vissza ∘ elore = id)
+``
+
+## 9.11 A Fő Ciklus (DonteshozoFom.idr)
+
+Magyar nyelven:
+
+```
+kerdez (KerdezoT) → 
+felhasználó válasz (SzenzorosBemenet) →
+BayesLensT.vissza (frissíti a prior-t, nem eldob) →
+AktivKovetkezetesT.optimalisLepes (Lagrangian / szabad energia minimum) →
+IndoklasT.miert (a komplexitás-tag magyar mondatba) →
+UjraJatszasT (alvás/session végén offline kompaktalja a napot)
+```
+
+## 9.12 Javasolt következő lépés (a "vágod-e" ellenőrzésre)
+
+Az alügynök javaslata szerint **nem a teljes 10-lépéses sorrenddel induljunk**, hanem:
+
+1. **Először a `SzabadEnergiaT` typeclass-t és a `PontossagSulyokT` recordot implementáljuk egy prototípus-állapottal** (pl. egy 3-elemű `KerdesValaszTipus`-on, ahol `SzenzorosBemenet = Bool`-helyett `Fin 2` — semmi csomagolatlan Bool)
+2. **Bizonyítsuk Wadler-parametricity-vel**, hogy `elore ∘ vissza = id` (Refl)
+3. Ha ez a kis mag fordul és a Refl igaz, **a komplexitás- és pontosságfüggvényeket fokozatosan bővítjük** — először egyetlen dimenzión, majd a 7-es Steane-vektormagon
+4. Az `UjraJatszasT` (hippocampális replay) **elhalasztható a `SuseksegT` utánra** — a `SuseksegT` maga elegendő egy első inverziós bizonyításhoz
+
+**A legfontosabb elvi döntés: a `LagrangianT` és a `SzabadEnergiaT` azonos legyen?** Javaslat: legyen `SzabadEnergiaT` egy specializált `LagrangianT`-instance, ahol:
+- **kinetikai tag** = Π_acetilkolin · H[q] (entrópia)
+- **potenciális tag** = D_KL[q ‖ prior] (komplexitás) − E_q[log p(s|ψ)] (accuracy)
+
+Így az `AltalanosSzuroT.idoFejlesztes` újrahasználja a `LagrangianT.hamiltonian`-t — **az agy és az Idris rendszer ugyanazon a Hamilton-dinamikán mozog**.
+
+## 9.13 Hivatkozások hozzáadva (APA)
+
+Bastos, A. M., Usrey, W. M., Adams, R. A., Mangun, G. R., Fries, P., & Friston, K. J. (2012). Canonical microcircuits for predictive coding. *Neuron, 76*(4), 695–711. https://doi.org/10.1016/j.neuron.2012.10.038
+
+Buzsáki, G. (2019). *The brain from inside out*. Oxford University Press. https://doi.org/10.1093/oso/9780190878394.001.0001
+
+Conant, R. C., & Ashby, W. R. (1970). Every good regulator of a system must be a model of that system. *International Journal of Systems Science, 1*(2), 89–97. https://doi.org/10.1080/00207727008920220
+
+Friston, K. (2010). The free-energy principle: a unified brain theory? *Nature Reviews Neuroscience, 11*(2), 127–138. https://doi.org/10.1038/nrn2787
+
+Friston, K., Stephan, K. E., Li, B., & Daunizeau, J. (2010). Generalised filtering. *Mathematical Problems in Engineering, 2010*, 621670. https://doi.org/10.1155/2010/621670
+
+Friston, K. J., Rigoli, F., Ognibene, D., Mathys, C., Fitzgerald, T., & Pezzulo, G. (2015). Active inference and epistemic value. *Cognitive Neuroscience, 6*(4), 187–214. https://doi.org/10.1080/17588928.2015.1020053
+
+Girardeau, G., Benchenane, K., Wiener, S. I., Buzsáki, G., & Zugaro, M. B. (2009). Selective suppression of hippocampal ripples impairs spatial memory. *Nature Neuroscience, 12*(10), 1222–1223. https://doi.org/10.1038/nn.2384
+
+Hohenberg, P., & Kohn, W. (1964). Inhomogeneous electron gas. *Physical Review, 136*(3B), B864–B871. https://doi.org/10.1103/PhysRev.136.B864
+
+Jensen, K. T., Hennequin, G., & Mattar, M. G. (2024). A recurrent network model of planning explains hippocampal replay and human behavior. *Nature Neuroscience, 27*(7), 1340–1348. https://doi.org/10.1038/s41593-024-01675-7
+
+Miller, E. K., & Cohen, J. D. (2001). An integrative theory of prefrontal cortex function. *Annual Review of Neuroscience, 24*, 167–202. https://doi.org/10.1146/annurev.neuro.24.1.167
+
+Mills, K., Ryczko, K., Luchak, I., Domeracka, A., & Tamblyn, A. (2020). Deep learning the Hohenberg–Kohn maps of density functional theory. *Physical Review Letters, 125*(7), 076402. https://doi.org/10.1103/PhysRevLett.125.076402
+
+Montague, P. R., Dayan, P., & Sejnowski, T. J. (1996). A framework for mesencephalic dopamine systems based on predictive Hebbian learning. *The Journal of Neuroscience, 16*(5), 1936–1947. https://doi.org/10.1523/JNEUROSCI.16-05-01936.1996
+
+Nádasdy, Z., Hirase, H., Czurkó, A., Csicsvari, J., & Buzsáki, G. (1999). Replay and time compression of recurring spike sequences in the hippocampus. *The Journal of Neuroscience, 19*(21), 9497–9507. https://doi.org/10.1523/JNEUROSCI.19-21-09497.1999
+
+Pavlides, C., & Winson, J. (1989). Influences of hippocampal place cell firing in the awake state on the activity of these cells during subsequent sleep episodes. *The Journal of Neuroscience, 9*(8), 2907–2918. https://doi.org/10.1523/JNEUROSCI.09-08-02907.1989
+
+Rao, R. P. N., & Ballard, D. H. (1999). Predictive coding in the visual cortex. *Nature Neuroscience, 2*(1), 79–87. https://doi.org/10.1038/4580
+
+Schultz, W., Dayan, P., & Montague, P. R. (1997). A neural substrate of prediction and reward. *Science, 275*(5306), 1593–1599. https://doi.org/10.1126/science.275.5306.1593
+
+Schultz, W. (2015). Neuronal reward and decision signals: from theories to data. *Physiological Reviews, 95*(3), 853–951. https://doi.org/10.1152/physrev.00023.2014
+
+Yu, A. J., & Dayan, P. (2005). Uncertainty, neuromodulation, and attention. *Neuron, 46*(4), 683–686. https://doi.org/10.1016/j.neuron.2005.04.026
+
+---
+
+## 10. Jelenlegi Állapot (második forduló után)
+
+- **Kód nincs írva** — a felhasználó szerint nem csinálunk semmit, max tervezési naplót.
+- **Skillek betöltve**: `idris-stilus`, `legkisebb-muvelet`, `kompaktalas`, `magyar-lexikon`.
+- **Kutatás kész**: két alügynök jelentése (QHMC/DFT + neurobiológia Friston FEP).
+- **Optimalizációs függvény definiálva**: a szabad energia `F = komplexitás − pontosság` (+ Π_dopamin·RPE − Π_acetilkolin·H[q]).
+- **Neurobiológiai indoklás megvan**: FEP, RPE, hippocampal replay, 5 neuromodulátor, mPFC/DMN.
+- **Következő lépés javaslat**: `SzabadEnergiaT` + `PontossagSulyokT` prototípus egy 3-elemű tipuson, Wadler-parametricity Refl bizonyítással — mielőtt még kérdés, beszéljük meg (a felhasználó dönt).
+- **Nyitott kérdések** (még a 6 kérdés az 5. szakaszból is): a `ValosTipus` definíciója; `SzovegTipus` definíciója; kvantum-réteg priorítása; `IndoklasT.miert` kimenete; mi a "cél" (a FEP-ben a cél = a surprisal minimalizálása, de emberi rendszerben ezt kell pontosítani).
