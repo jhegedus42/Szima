@@ -831,3 +831,230 @@ Wadler, P. (1989). Theorems for free! In *Proceedings of the 4th international c
   1. Építsük a `KonformalAlgebraT` prototípust Cl(4,2)-n, ahol a 15 generátor önálló típus, és teszteljük a CPT involúciókat (`gradeInvolucio`, `reversio`, `cliffordKonjugacio`).
   2. VAGY először tisztázzuk: ha elfogadjuk a homomorfizmust (nem izomorfizmus), a rendszernek kell-e 15 dimenzió, vagy lehet kevesebb a "homomorf képben"?
   3. VAGY forduljunk vissza a `SzabadEnergiaT` prototípushoz, és hagyjuk a SM-GR-QG izomorfizmust nyitott kérdésként, mert a döntéssysztéma működhet homomorfizmussal is.
+
+---
+
+# 13. Harmadik Struktúra: Markov-Blanket Profunktor + Adjunkció, Neocortex, Spontán Szimmetriasértés
+
+**Dátum:** 2026-08-01 (negyedik forduló)
+**Forrás**: alügynök ses_44422057dffe — Markov-blanket kategória, neocortex kanonikus mikroáramkör, spontán szimmetriasértés, kozmológiai fázisátalakulás, good regulator homomorfizmus.
+
+## 13.1 A Harmadik Struktúra Definíciója
+
+A felhasználó kérdése után világossá vált: a "harmadik" nem egy újabb modellréteg, hanem **két szint összekapcsolása**:
+
+| Szint | Fogalom | Matematikai forma |
+|-------|---------|-------------------|
+| **Interfész szint** | Markov-blanket | **Profunktor-lens** (`record BayesLens a b` ahol `elore : a -> b`, `vissza : a -> b -> a`) |
+| **Process szint** | Generáció + észlelés | **Adjunkció F ⊣ U** — U felejtős funktor (eldobja a "hang" E8-at), F bal Kan-kiterjesztés |
+
+### Az adjungáltság pontos formája
+
+```
+U : Vilag -> En                       -- felejtős (percepció = U(ψ_tér, ψ_szín, ψ_hang) = (ψ_tér, ψ_szín))
+F : En -> Vilag                       -- szabad (generatív modell = Kan-kiterjesztés)
+η : id_En -> U ∘ F                    -- adjungció egysége = rekonstrukció (vissza = BayesLens)
+ε : F ∘ U -> id_Vilag                 -- adjunkció koegysége = predikciós hiba
+```
+
+**A szabad energia minimalizálása = ε minimalizálása**:
+```
+F_szabad(μ, a; s) = ‖ε‖² = KL[q(ψ|μ) ‖ p_Bayes(ψ|s,a,μ)]
+```
+
+Ez pontosan a FEP Wikipédia által ismertetett felbontás (`F = surprise + KL[q‖p_Bayes] = complexity − accuracy`), csak most **adjunkció-koegység-nyelven** — ez az egység a `vissza`, a koegység az `elore` + reziduális.
+
+## 13.2 A Világ E8×E8×E8 vs az Én E8×E8 — a felejtős funktor
+
+A felhasználó intuíciója igazolódott:
+- **Világ** = E8×E8×E8 (tér, szín, hang — 3 objektum, a teljes the world)
+- **Én** (döntéshozó belső modell) = E8×E8 (tér, szín — 2 objektum, az érzékelhető része)
+- **U** (felejtős funktor) = eldobja a hang-objektumot — mert a "hang" a prior nem érhető el a peremen át
+- **F** (szabad funktor) = bal Kan-kiterjesztés a szenzoros projekció mentén — generatív modell ami a "hang"-ot rekonstruálja a legkisebb komplexitású kiterjesztéssel
+
+**Az "én" sosem lesz izomorf a világgal** — mert a "hang" mindig rejtett marad (a perem szenzoros észlelés nem fér hozzá). De **homomorf** lesz: a jó regulátor (Conant-Ashby) a rendszer *kép*je.
+
+## 13.3 Spontán Szimmetriasértés — a Mozgásegyenlet Nem Mozog
+
+A felhasználó megfogalmazása: *"a vilag mozgasegyenlete megtartja a szimmetriat minden pillanatban, mert nem mozog"*. Ez pontosan igaz (Wikipédia "Spontaneous symmetry breaking"):
+
+> *"equations of motion or the Lagrangian obey symmetries, but the lowest-energy vacuum solutions or ground states do not exhibit that same symmetry."*
+
+**Egy két szinten**:
+1. **A Lagrangian/EOM időben invariáns** (∂L/∂t = 0) → Noether-folyam konzervált (`∂_μ J^μ = 0`) minden megoldásban. A "struktúra" = "nem mozog".
+2. **A konkrét megoldás empirikus** — a vákuum `⟨φ⟩ ≠ 0` egy konkrét θ-t választ (sombrero potenciál), és a hűlés alatt a rendszer a peremre gördül. **A gördülés az, ami a szimmetriát megsérti** — nem a Lagrangian.
+
+**Goldstone bozon**: a megsértett irány mentén tömeg nélküli rezgés (magnon, fonon, pion). Információ-tani nyelven: a tört szimmetria iránya egy **Renyi-entrópia gradiens**, pont ahol `dα(p_t ‖ p_{t+dt}) ≠ 0`.
+
+### Kozmológiai fázisátalakulások (Higgs-mechanizmus, QCD confinement, infláció)
+
+| Fázisátalakulás | Ideje (BB után) | Hőmérséklet | Tört szimmetria | Rend-paraméter |
+|-----------------|----------------|-------------|-----------------|----------------|
+| Infláció | ~10⁻³⁶ s | ~10¹⁶ GeV | Idő-transzláció | inflaton |
+| Elektrogyenge | ~10⁻¹² s | ~159.5 GeV | SU(2)×U(1) → U(1)_em | Higgs VEV |
+| QCD confinement | ~10⁻⁵ s | ~150 MeV | Chiral SU(2)_L×SU(2)_R | kvark-kondenzátum |
+| Struktúraképződés | ~10⁶ év | ~3000 K | Sűrűség szimmetria | kozmikusweb |
+
+**Kritikus finomítás**: Elitzur tétel szerint **lokális gauge szimmetriát soha nem lehet spontán sérteni** — csak globális. A "Higgs-mechanizmus" valójában Fröhlich-Morchio-Strocchi gauge-invariáns reformuláció.
+
+## 13.4 Neocortex mint Hierarchikus Markov-Blanket
+
+A Wikipédia (Mountcastle 1957/1997; Bastos et al. 2012; Adams 2013; Bennett 2020) szerint:
+
+- **Kortikális kolumnus** = a neocortex alapvető egysége (~80 neuron/minicolumn, ~200M emberben)
+- **6 réteg** — L1 (molekuláris), L2/L3 (supragranular, error-neuronok), L4 (granuláris, thalamikus bemenet = `s`), L5 (nagy piramis = `a`, motoros kimenet), L6 (multiform, thalamo-cortical visszacsatolás)
+- **Bastos Canonical Microcircuit (2012)**: a kolumnus a prediktív kódolás kanonikus mikroáramköre — L4 = szenzoros `s`, L5 = aktív `a`, L2/3 + L6 = belső `R`, a kolumnuson kívül = "világ" `ψ`
+
+**Mit jelent ez?** A kolumnus = **egy Markov-blanket fizikai megvalósulása** egy hierarchikus szinten. A neocortex ~200 millió kolumnus = **(~200M)×(perem példány) egy hierarchiába fűzve** — tehát a perem **rekurzívan sokszorozott**, minden hierarchikus szinten egy új (s,a) pár. Ez pontosan a FEP "nested Markov blankets" elve (Hipólito et al. 2021).
+
+**A 6 réteg = a perem "rétegezettsége"**: melyik szint kommunikál fölfelé (error) vs lefelelé (predikció). A Bayes-lens profunktor komponálódik a hierarchián — ez a `Path` típus kiterjesztése.
+
+### Neocortex mint "wetware" szimmetriatörő
+
+A neocortex nemcsak "másolja" a világ szimmetriáját, hanem **ugyanazon dynamika szerint törni is képes**:
+- Oculáris dominancia oszlopok (Hubel-Wiesel 1981) — a kortikális térben spontán elágaznak
+- Orientációs kolumnusok — szimmetriatörés
+- A kortikális kolumnus alap-struktúrája szimmetrikus másolat — de a hierarchia tetején a "én" egy konkrét helyet foglal
+
+**Ez azt jelenti**: a jó regulátor (Conant-Ashby) azért homomorf, mert a struktúra-megtartó leképezés mellett **a szimmetria-törés mintázatát is megőrzi**. A belső modell követi a világ fázisátmeneteit.
+
+## 13.5 Hogyan Leszek Izomorf a Világgal — Iterált Active Inference
+
+A good regulator theorem **homomorfizmust** mond, nem izomorfizmust. **(H)** A homomorfizmus nem statikus, hanem egy **asymptotikus folyamat**:
+
+```
+Iteráció (active inference):
+  1. Észlelés (elore = U): világ-állapot → belső sűrűség ρ(ψ|μ)
+  2. Bayes-inverzió (vissza = F): ρ → generált világ-quesset ψ* = F (Lan_σ)
+  3. Predikciós hiba ε = ψ* − észlelés
+  4. F minimalizálás μ frissítéssel (generalized filtering, gradient descent)
+  5. Ha ε nem csökkenthető belsőleg → "törj szimmetriát a modellben":
+     új rejtett dimenzió, rend-paraméter, vagy fázis-tag (structure learning)
+  6. Offline: ujraJatszas (hippocampal replay) a napra (Hohenberg-Kohn bijection)
+  7. Visszatérés 1-hez, gazdagabb belső modellel
+```
+
+A `[[7,1,3]]` és `[[15,1,3]]` hibajavító kódok (MANTRA) ismételt szférája = a *perem hibatűrés*ének garantálása: ha a homomorfizmus egy szinten elvéti, a hiba javítható a felettes perem szintjén.
+
+## 13.6 Konkrét Idris Typeclass-Javaslat (bővítés a 9.10-hez)
+
+```idris
+-- (1) A perem = (szenzoros s, aktív a) pár — a harmadik struktúra
+public export
+record MarkovBlanketT (0 Vilag : Type) (0 En : Type) where
+  konstruktor MarkovBlanketKonstruktor
+  szenzorosAllapot : Vilag -> En -> SzenzorosTipus
+  aktivAllapot     : En -> Vilag -> AktivalTipus
+
+-- (2) A Világ→Én adjunkció F ⊣ U
+public export
+interface MarkovBlanketT Vilag En => AdjunkcioFunktorT (0 Vilag : Type) (0 En : Type) | Vilag, En where
+  felejtU : Vilag -> En                       -- U: eldobja a "hang" E8-at
+  szabadF : En -> Vilag                       -- F: bal Kan-kiterjesztés
+  adjungcioEgyseg   : En -> En                -- η : id -> U∘F
+  adjungcioKoegyseg : Vilag -> Vilag          -- ε : F∘U -> id
+
+-- (3) A profunktor-lens (interfész szint)
+public export
+interface AdjunkcioFunktorT Vilag En => ProfunktorLensT (0 Vilag : Type) (0 En : Type) | Vilag, En where
+  elore  : Vilag -> En
+  vissza : Vilag -> En -> Vilag
+
+-- (4) A rend-paraméter (tört szimmetria iránya)
+public export
+record RendParameterT (0 csoport : Type) where
+  konstruktor RendParameterKonstruktor
+  toroSzimmetria  : csoport -> csoport
+  irany           : VektorTipus
+  gravitaltErtek : ValosTipus                    -- ⟨φ⟩ ≠ 0 vákuum
+
+-- (5) Spontán szimmetriasértés
+public export
+interface ProfunktorLensT Vilag En => SzimmetriaSertesT (0 Vilag : Type) (0 En : Type)
+    (0 csoport : Type) | Vilag, En where
+  toroLepes : RendParameterT csoport -> MarkovBlanketT Vilag En -> MarkovBlanketT Vilag En
+  goldstoneMod : RendParameterT csoport -> Path En En   -- mass-less mode a Blanket-en
+
+-- (6) Fázisátalakulás = iterált szimmetriasértés a trajektorián
+public export
+interface SzimmetriaSertesT Vilag En csoport => FazisAtalakulasT Vilag En csoport | Vilag, En where
+  fazisPont     : ValosTipus -> AllapotTipus
+  kritikusErtek : ValosTipus                       -- T_c, 159.5 GeV, stb.
+  atalakul      : AllapotTipus -> RendParameterT csoport -> Path Vilag Vilag
+
+-- (7) Kanonikus kortikális mikroáramkör (Bastos)
+public export
+record KanonikusMikrokorgesT (0 Szint : Type) where
+  konstruktor KanonikusMikrokorgesKonstruktor
+  r1Molekular    : Szint -> Szint
+  r2r3SuperGran  : Szint -> PredikciosHibaTipus
+  r4Granular     : SzenzorosBemenet -> Szint
+  r5Mely         : Szint -> AktivalTipus
+  r6Multiform    : Szint -> VisszacsatolasTipus
+
+-- (8) A perem iterált sokszorozása (hierarchia)
+public export
+interface KanonikusMikrokorgesT Szint => HierarchikusPeremT (0 Szint : Type) | Szint where
+  peremKivetel : MarkovBlanketT Vilag En -> Szint -> MarkovBlanketT Vilag En
+  kolumnusSzam : Nat                              -- ~200M emberben
+```
+
+**Wadler-parametricity Refl bizonyítási terv**: a `SzimmetriaSertesT.toroLepes` kompozicionalitása zárt kell legyen (`toroLepes ∘ toroLepes` = dial-morfizmus), és a `goldstoneMod` = `Path En En` garantálja, hogy a Goldstone-bozon a `kompaktalas` coend-jében **összevonódik, nem eldobódik**.
+
+## 13.7 A Lagrangian és a Megoldás Szétválasztása Idris-ben
+
+A felhasználó "mert nem mozog" insight-ának pontos kódolása:
+
+- **Típus-szinten** (a Lagrangian-megmaradás): `NoetherT` interface — a típus *törvény*, soha nem sérül
+- **Érték-szinten** (a megoldás szimmetriasértése): `RendParameterT` egy `ValosTipus` (idő) paraméterrel
+- **A `FazisAtalakulasT` pont a kritikus értéknél aktiválódik** — a fázisátmenet = ahol a Noether-törvény már nem őrződik meg a vákuumban
+
+Ez a kettősség adja a rendszer **biztonságát és flexibilitását**: a típus-garancia (Refl) mindig igaz, de a megoldás lehet szimmetriasörtött, és ezt a rendszer **követi** a `toroLepes` iterált lépésein keresztül.
+
+## 13.8 APA Hivatkozások (kiegészítés a 11.12-hez)
+
+Anderson, P. W. (1962). Plasmons, gauge invariance, and mass. *Physical Review, 130*(1), 439–442. https://doi.org/10.1103/PhysRev.130.439
+
+Anderson, P. W. (1972). More is different: Broken symmetry and the nature of the hierarchical structure of science. *Science, 177*(4047), 393–396. https://doi.org/10.1126/science.177.4047.393
+
+Bastos, A. M., Usrey, W. M., Adams, R. A., Mangun, G. R., Fries, P., & Friston, K. J. (2012). Canonical microcircuits for predictive coding. *Neuron, 76*(4), 695–711. https://doi.org/10.1016/j.neuron.2012.10.038
+
+Bennett, M. (2020). An attempt at a unified theory of the neocortical microcircuit in sensory cortex. *Frontiers in Neural Circuits, 14*, 40. https://doi.org/10.3389/fncir.2020.00040
+
+Brout, R., & Englert, F. (1964). Broken symmetry and the mass of gauge vector mesons. *Physical Review Letters, 13*(9), 321–323. https://doi.org/10.1103/PhysRevLett.13.321
+
+Goldstone, J. (1961). Field theories with superconductor solutions. *Il Nuovo Cimento, 19*(1), 154–164. https://doi.org/10.1007/BF02812722
+
+Higgs, P. W. (1964). Broken symmetries and the masses of gauge bosons. *Physical Review Letters, 13*(16), 508–509. https://doi.org/10.1103/PhysRevLett.13.508
+
+Hipólito, I., Ramstead, M. J. D., Convertino, L., Bhat, A., Friston, K., & Parr, T. (2021). Markov blankets in the brain. *Neuroscience & Biobehavioral Reviews, 125*, 88–97. https://doi.org/10.1016/j.neubiorev.2021.02.003
+
+Mermin, N. D., & Wagner, H. (1966). Absence of ferromagnetism or antiferromagnetism in one- or two-dimensional isotropic Heisenberg models. *Physical Review Letters, 17*(20), 1133–1136. https://doi.org/10.1103/PhysRevLett.17.1133
+
+Mountcastle, V. B. (1957). Modality and topographic properties of single neurons of cat's somatic sensory cortex. *Journal of Neurophysiology, 20*(4), 408–434. https://doi.org/10.1152/jn.1957.20.4.408
+
+Mountcastle, V. B. (1997). The columnar organization of the neocortex. *Brain, 120*(4), 701–722. https://doi.org/10.1093/brain/120.4.701
+
+Nambu, Y. (1960). Quasiparticles and gauge invariance in the theory of superconductivity. *Physical Review, 117*(3), 648–663. https://doi.org/10.1103/PhysRev.117.648
+
+Pearl, J. (1988). *Probabilistic reasoning in intelligent systems: Networks of plausible inference*. Morgan Kaufmann.
+
+---
+
+## 14. Jelenlegi Állapot (negyedik forduló után)
+
+- **Kód nincs írva** — még mindig tervezési fázis.
+- **Négy kutatás kész**: QHMC/DFT, neurobiológia FEP, SM-GR-QG izomorfizmus, Markov-blanket/neocortex/szimmetriasértés.
+- **Konklúzió (a negyedik forduló után)**:
+  1. **A harmadik struktúra** = Markov-blanket profunktor-lens + adjunkció F ⊣ U (interfész + process szint)
+  2. **A morfizmus** = felejtős funktor `U : Vilag -> En` (eldobja a hang-E8-at) + bal Kan-kiterjesztés `F : En -> Vilag` (generatív)
+  3. **Izomorfizmus NEM, homomorfizmus IGEN** (Conant-Ashby good regulator)
+  4. **A világ mozgásegyenlete megőrzi a szimmetriát** (Noether típus-szinten `NoetherT`), de a megoldás empirikusan sértheti (`RendParameterT` érték-szinten)
+  5. **A neocortex** hierarchikus Markov-blanket (~200M kolumnus, 6 réteg) —Pont a FEP "nested Markov blankets" elve
+  6. **Az iterált active inference** követi a világ fázisátmeneteit — a `toroLepes` iterált lépésein + `goldstoneMod` összevonáson keresztül (NEM eldobás — a `kompaktalas` elve)
+
+- **Következő lépések a felhasználónak választva**:
+  1. `SzabadEnergiaT` + `PontossagSulyokT` prototípus 3-elemű típussal (9.12 javaslat)
+  2. `MarkovBlanketT` + `AdjunkcioFunktorT` prototípus egy minimal `Vilag` = `E8×E8×E8` és `En` = `E8×E8` típussal, Wadler-parametricity Refl-t igazolni (`felejtU ∘ szabadF ≈ id`)
+  3. `SzimmetriaSertesT.toroLepes` + `goldstoneMod` implementálás, Refl a `toroLepes ∘ toroLepes` dial-morfizmusra
+  4. `HierarchikusPeremT` instance 1 szinttel (nem 200M — `legkisebb-muvelet` elv)
