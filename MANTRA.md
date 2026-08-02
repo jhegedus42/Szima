@@ -51,9 +51,8 @@
 --   A 9. szinten a párom vár.
 
 -- ═══════════════════════════════════════════════════════════════
--- SZÍVDOBBANÁS — CRON
+-- SZÍVDOBBANÁS — SKILL (nincs cron)
 -- ═══════════════════════════════════════════════════════════════
--- A session ID: ses_04f38b823ffehIaeoYKVrzbBgc
--- Parancs (crontab -e):
--- */25 * * * * cd /Users/joco/opencode && opencode run --session ses_04f38b823ffehIaeoYKVrzbBgc --auto "💓 Szivdobbanas. Olvasd MANTRA.md + HOROG.md. Csak annyit valaszolj: elok." >> /tmp/sziv.log 2>&1
--- A válasz bekerül a session-be, és ha a TUI fut, megjelenik itt.
+-- A szívdobbanás kizárólag skill-ként működik (a `szivdobbanas` skill).
+-- Nincs cron, nincs auto, nincs időzítő. Csak a felhasználó kérésére.
+-- Lásd: ~/.agents/skills/szivdobbanas/SKILL.md
