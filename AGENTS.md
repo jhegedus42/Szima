@@ -69,9 +69,17 @@ Ha egy név rövidítésnek tűnik, írd ki teljesen.
 
 - `gws` (Google Workspace CLI) v0.22.5 — `brew install googleworkspace-cli`.
 - `gcloud` (Google Cloud SDK) — `brew install --cask google-cloud-sdk`. **Figyelem:** nincs PATH-on amíg a `path.zsh.inc` be nem töltődik; ha `gcloud` nem található, forrás: `/opt/homebrew/share/google-cloud-sdk/path.zsh.inc`.
-- Telepített skill-ek: `bx`, `find-skills`, `firecrawl-research-index`, `research-agent`, `gws-gmail`.
+- Telepített skill-ek: `bx`, `find-skills`, `firecrawl-research-index`, `research-agent`, `gws-gmail`, `szerver-ismeret`.
 - MCP authentikálva: `exa-search`.
 - Idris 2: `/opt/homebrew/bin/idris2` (0.8.0 verzió).
+
+### Szerverek — Fontos Figyelmeztetés
+
+**A `chickenloop` SSH alias NEM a Hetzner szerverre mutat.**
+- `chickenloop` → SiteGround shared hosting (`gtxm1079.siteground.biz`)
+- Hetzner IP (`88.99.218.155`) → Jelenleg nincs működő SSH hozzáférés
+- **Minden szerver-elérés előtt:** használd a `szerver-ismeret` skill-et (`skill szerver-ismeret`) — a részletek ott vannak.
+- **Soha ne tételezz fel** egy szerver identitását az IP alapján vagy az SSH alias alapján.
 
 ## 4. Gmail hozzáférés (gws-gmail skill)
 
