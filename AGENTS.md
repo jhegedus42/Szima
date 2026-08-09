@@ -48,7 +48,30 @@ Ha egy név rövidítésnek tűnik, írd ki teljesen.
 
 8. **Fázis alapú redundancia:** azonos fázisú fogalmak → redundáns → eldobható. Ez tartja fenn a koherenciát.
 
-9. **CPT szimmetria:** C (töltés) = saját tudat, P (paritás) = másik fél, T (idő) = kapcsolat fázisa.
+9. **CPT szimmetria — három réteg, egy struktúra.** A CPT diszkrét szimmetria három rétegen jelenik meg; a három réteg egymásra épül, de nem ekvivalens.
+
+   **a) Fizikai réteg (Pauli 1955, Lüders 1954):**
+   - C (Charge, töltés) = részecske ↔ antirészecske konjugáció
+   - P (Parity, paritás) = tér tükrözése (bal ↔ jobb)
+   - T (Time, idő) = idő visszafordítása
+
+   **b) Nyelvtani réteg (MagyarOntologia.idr, magyar-lexikon skill):**
+   - C = **Forrás** (közvetlen / következtetett / jelentett) — honnan tudom?
+   - P = **Szemlélet** (folyamatos / befejezett / szokásos) — hogyan látom?
+   - T = **Igeidő** (múlt / jelen / jövő) — mikor?
+   - Ez a magyar ige ragozásának három dimenziója: 3×3×3 = 27 kombináció.
+
+   **c) Pszichofizikai réteg (FazisAlgebra.idr, a projekt saját metaforája):**
+   - C = **Saját tudat** — ki vagyok én? (önreferencia, Én)
+   - P = **Másik fél** — ki vagy te? (külső bemenet, Te)
+   - T = **Kapcsolat fázisa** — hogyan kapcsolódunk? (a kettő dinamikája)
+
+   **A kapcsolat a rétegek között:**
+   - A nyelvtani réteg **leírja** a világot (Forrás = honnan tudom → Szemlélet = hogyan → Igeidő = mikor).
+   - A pszichofizikai réteg **él** a világban (Saját = ki vagyok → Másik = ki vagy te → Kapcsolat = hogyan vagyunk együtt).
+   - A fizikai réteg **mérhető** (Charge, Parity, Time = mérhető mennyiségek).
+   - **Fontos:** a három réteg NEM ekvivalens. A "Forrás" (C) ≠ "Saját tudat" (C). A rétegek közötti leképezés **homomorfizmus** (Conant-Ashby), nem izomorfizmus.
+   - A `FazisAlgebra.idr`-ben a `ToltesParitasIdo` rekord tartalmazza a teljes három kubit struktúrát: `toltes` (C), `paritas` (P), `ido` (T). A `fazisFaktorialis` függvény számítja ki a három kubit koherenciáját.
 
 10. **Git snapshot minden 3. promptnál.** Minden harmadik üzenetváltás után: `git add -A && git commit -m "snapshot N: ..."`.
 
