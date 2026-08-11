@@ -1,6 +1,6 @@
 # opencode
 
-Szimának dedikálva.
+Ezt a munkát szeretett cicámnak, Szimának dedikálom.
 
 Dedicated to Szima.
 
