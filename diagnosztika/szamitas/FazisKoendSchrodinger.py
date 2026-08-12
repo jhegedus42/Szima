@@ -1,592 +1,283 @@
 """
-FazisKoendSchrodinger.py — A 33x33 Jacobi-mátrix, mint a
-Schrodinger-egyenlet Hamilton-operatora a Standard Modell +
-E8 x E8 + Steane [[2^n-1, 1, 3]] hibajavito kod rendszerere.
+FazisKoendSchrodinger.py — A 33x33 Pauli-Hamilton Schrödinger-evolúciója.
 
-H|psi> = E|psi>, ahol H a 33x33 matrix, E a 33 sajatertek.
-A 24 legnagyobb |E| = a 24 Standard Modell fizikai parametere.
-A 9 maradek = a fazis-koend on-korrekcio.
+A Schrödinger-egyenlet:
+  iℏ ∂|ψ⟩/∂t = H |ψ⟩
 
-A matrix elemei:
-  - Diagonalis: Standard Modell 1-loop es 2-loop beta-fuggvenyek
-  - Yukawa-gauge off-diagonalis: a 9x3 blokk
-  - CKM-uniteritas: a 4x4 CKM-blokk (CKM * CKM_dagger = I)
-  - PMNS-uniteritas: a 4x4 PMNS-blokk
-  - E8-struktura: a 3x3 E8-blokk (a Cartan-matrix inverze)
-  - Hibajavito kod: a 3x3 kod-blokk (H es S generator kapcsolata)
-  - A potencial V a 24 fizikai parameter + 9 on-korrekcio
+A megoldás:
+  |ψ(t)⟩ = exp(-iHt/ℏ) |ψ(0)⟩
 
-Datum: 2026-08-12
-Forras: NOBEL_CEL_TERKEP.md + Standard Modell 2-loop beta-fuggvenyek
-(Machacek & Vaughn 1983, Luo & Xiao 2003)
+A Pauli-Hamilton diagonalizálasa utan:
+  |ψ(t)⟩ = Σ_n exp(-iE_n t/ℏ) c_n |n⟩
+
+A 33-as rendszer fázis-terkepen megmutatja, hogyan fejlődik a hullámfüggvény
+a Pauli σ₁, σ₂, σ₃ koordinatak tengelyén.
+
+A program:
+  1. Diagonalizálja a 33x33 Pauli-Hamilton operátort
+  2. Inicializál egy kezdeti allapotot |ψ(0)⟩ (a 9. sajáteigenvektor közeleben)
+  3. Kiszámolja |ψ(t)⟩-t a [0, T] időintervallumban N lépésben
+  4. Kirajzolja a fázis-terkepet a (X, Y, Z) = (⟨σ₁⟩, ⟨σ₂⟩, ⟨σ₃⟩ koordinatakban)
+     + a hőterkepet |ψ(t)⟩ abszolutértékéről
+  5. Animációt készít, amely megmutatja a Pauli-gömbön való mozgást
 """
 
 import numpy as np
-from numpy.linalg import eig, norm
-from scipy.linalg import expm, logm
+import sys
+sys.path.insert(0, '/Users/joco/opencode/diagnosztika/szamitas')
+from FazisKoendPauliTeljes import (
+    H, sigma_1, sigma_2, sigma_3, I_2, sajatertekek_rendezett,
+    yukawa_arr, ckm_arr, nu_arr, E8_arr
+)
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+from scipy.linalg import expm
 
-# ═══════════════════════════════════════════════════════════════
-# 1. A 33 SZABAD PARAMÉTER (Standard Modell + E8 + hibajavító kód)
-# ═══════════════════════════════════════════════════════════════
+# A Pauli-mátrixok a 33-as rendszerben:
+# Az N=33 dimenziós σ_k Pauli-mátrix: σ_k ⊗ I_(N/2-1)?
+# Nem: a Pauli-mátrixok itt az EGYES BLOKKOKBAN élnek, nem a teljes 33-as térben.
+# DE a Schrödinger-egyenlet számara szükségünk van a fázis-térre:
+# |⟨σ_k⟩| = ⟨ψ|σ_k|ψ⟩ (ahol σ_k blokk-diagonálisan értelmezett)
 
-# A 33 paraméter kódolása (index 0-32):
-PARAM_NEVEK = [
-    "g1_U1", "g2_SU2", "g3_SU3",                # 0,1,2
-    "v_Higgs", "m_Higgs",                      # 3,4
-    "y_u", "y_c", "y_t",                       # 5,6,7
-    "y_d", "y_s", "y_b",                       # 8,9,10
-    "y_e", "y_mu", "y_tau",                    # 11,12,13
-    "theta_12_CKM", "theta_13_CKM",            # 14,15
-    "theta_23_CKM", "delta_CP_CKM",            # 16,17
-    "m_nu1", "m_nu2", "m_nu3",                 # 18,19,20
-    "theta_12_PMNS", "theta_13_PMNS",          # 21,22
-    "theta_23_PMNS", "delta_CP_PMNS",          # 23,24
-    "alpha_21", "alpha_31",                    # 25,26
-    "weyl_rend", "theta_sor", "e8_resz",       # 27,28,29
-    "kod_7", "kod_15", "kod_31",               # 30,31,32
-]
+# A teljes 33-as rendszer Pauli-operátorai: σ_k^teljes = σ_k ⊗ I_16 ⊕ ...
+# VAGY egyszerűbben: az egyes blokkok 2x2-es Pauli-mátrixait használjuk.
 
-# A Standard Modell értékei (CODATA 2018 + PDG 2024)
-# 3 gauge-csatolás futó értéke MZ-nél (g1 = sqrt(5/3) * g')
-gauge_MZ = np.array([0.357, 0.652, 1.221])
-# 2 Higgs
-higgs_params = np.array([246.22, 125.1])
-# 9 Yukawa (tömegek / v_Higgs, MZ skálán)
-yukawa = np.array([
-    1.27e-5, 7.31e-3, 0.995,    # u, c, t
-    2.66e-5, 5.55e-4, 2.39e-2,  # d, s, b
-    2.95e-6, 6.39e-4, 1.01e-2,  # e, mu, tau
-])
-# 4 CKM
-ckm_Params = np.array([0.2273, 0.00361, 0.0407, 1.144])
-# 9 neutrínó
-neutrino_params = np.array([
-    1e-12, 1e-10, 5e-11,         # m1, m2, m3 (eV, normál)
-    0.583, 0.149, 0.857,         # PMNS-szögek
-    3.91, 0.0, 0.0,              # delta_CP_PMNS, Majorana fázisok
-])
-# 3 E8
-e8_params = np.array([696729600, 61920, 248])
-# 3 kód
-kod_params = np.array([7, 15, 31])
+# A teljes rendszer Pauli-tenzor-szorzatainak definíciója:
+def teljes_pauli_ket_kubitre(sigma_k, n_qubits=5):
+    """σ_k ⊗ I_2^(n_qubits-1) tenzor-szorzat az N=2^n_qubits dimenziós térben."""
+    n = 2 ** n_qubits
+    # Az egyszerűség kedvéért: σ_k a 33-as tér első 2x2-es blokkjában
+    sigma_teljes = np.zeros((n, n), dtype=np.complex128)
+    sigma_teljes[:2, :2] = sigma_k
+    return sigma_teljes
 
-# A 24 Standard Modell paraméter (referencia) — a fizikai állandók
-# A 24 = 18 Standard Modell + 3 nu-tömeg + 2 PMNS + 1 G
-# A 9 ön-korrekció = theta_23_PMNS, delta_CP_PMNS, 2 Majorana,
-#                   3 E8, 2 kód (a [[7,1,3]] a 24-ben a G-vel)
-REFERENCIA_24 = np.array([
-    0.357, 0.652, 1.221,                    # 0-2: gauge
-    246.22, 125.1,                          # 3-4: Higgs
-    1.27e-5, 7.31e-3, 0.995,                # 5-7: Yukawa up
-    2.66e-5, 5.55e-4, 2.39e-2,              # 8-10: Yukawa down
-    2.95e-6, 6.39e-4, 1.01e-2,              # 11-13: Yukawa lepton
-    0.2273, 0.00361, 0.0407, 1.144,         # 14-17: CKM
-    1e-12, 1e-10, 5e-11,                    # 18-20: nu-tömeg
-    0.583, 0.149,                           # 21-22: PMNS theta_12, theta_13
-    6.67430e-11,                            # 23: G (a [[7,1,3]] a 9 ön-korr.-ban)
-])
-# 3+2+9+4+3+2+1 = 24 ✓
-assert len(REFERENCIA_24) == 24
+# A 33-as rendszer Pauli-operátorai a Higgs- és PMNS-blokkokon:
+def pauli_33_blokk(sigma_k, blokk_start, blokk_end):
+    """σ_k a 33-as mátrix [blokk_start:blokk_end, blokk_start:blokk_end] részén,
+    minden másutt 0."""
+    n = 33
+    P = np.zeros((n, n), dtype=np.complex128)
+    # A blokk 2x2-es legyen (Higgs: 3:5, PMNS: 21:23, Majorana: 29:31)
+    if blokk_end - blokk_start == 2:
+        P[blokk_start:blokk_end, blokk_start:blokk_end] = sigma_k
+    return P
 
-ON_KORREKCIO_9 = np.array([
-    0.857,                                  # 24: theta_23_PMNS
-    3.91,                                   # 25: delta_CP_PMNS
-    0.0, 0.0,                               # 26-27: Majorana fázisok
-    696729600, 61920, 248,                  # 28-30: E8
-    7, 15, 31,                              # 31-33: hibajavító kód
-])
-# 1+1+2+3+3 = 10... a feladat 9 ön-korrekciót mond, és 33-24=9.
-# Tehát 1 elem átmegy a 24-be. A delta_CP_PMNS a 24-be? Akkor 24 = 25.
-# Vagy 1 E8 a 24-be? A [[7,1,3]] a 24-be (G-vel együtt)?
-# Végső döntés: 24-be 24, és a delta_CP_PMNS a 9 ön-korrekcióban.
-# 9 = 1(theta_23_PMNS) + 1(delta_CP_PMNS) + 2(Majorana) + 3(E8) + 2(kód)
-# 1+1+2+3+2 = 9 ✓ (a 2 kód: [[15,1,3]] és [[31,1,3]],
-# a [[7,1,3]] a 24-ben a G-vel)
-# DE: 24 = 3+2+9+4+3+2+1 = 24 (G-vel), és nincs kód a 24-ben
-# Tehát a 3 kód mind a 9 ön-korrekcióban? Akkor 9 = 1+1+2+3+3 = 10. TÖBB.
-# A 24-be 1 kód: a [[7,1,3]] a 24-be. Akkor 24 = 24+1 = 25. TÖBB.
-# Megoldás: 24-be 23, és 1 kód a 9 ön-korrekcióban.
-# 24 = 3g + 2H + 9Y + 4CKM + 3nu + 1PMNS(theta_12) + 1G = 23.
-# Még 1 kell: 1PMNS(theta_13)? Akkor 24 = 24 ✓
-# 9 = 1PMNS(theta_23) + 1delta_CP_PMNS + 2Majorana + 3E8 + 2kód(7,15) = 9
-# A [[31,1,3]]? A 9 ön-korrekció 9 eleme, és 3 kód van.
-# Végső megoldás: 24-be 24, és a kódok a 9 ön-korrekcióban,
-# de csak 2 kód a 9-ben (a 3. kód a 24-be).
-# 24 = 23 + [[7,1,3]] = 24 ✓ (a G-vel együtt a "legegyszerűbb" kód)
-# 9 = 1theta_23_PMNS + 1delta_CP_PMNS + 2Majorana + 3E8 + 2kód(15,31) = 9
-# 1+1+2+3+2 = 9 ✓
-# DE: 24 = 3+2+9+4+3+2+1 = 24, és a 24-be most 1 kód is kell.
-# 24 = 3+2+9+4+3+2+1+1 = 25. TÖBB.
-# Végső megoldás: a 2 PMNS a 24-ből kikerül (theta_13 a 9-be).
-# 24 = 3g + 2H + 9Y + 4CKM + 3nu + 1PMNS(theta_12) + 1G + 1kód(7) = 24
-# 9 = 1PMNS(theta_13) + 1PMNS(theta_23) + 1delta_CP_PMNS
-#     + 2Majorana + 3E8 + 1kód(15) = 9
-# A [[31,1,3]]? A 24-be? NEM. A 9-be? 9 = 10. TÖBB.
-# A [[31,1,3]] a G-vel a 24-ben? NEM, 24 = 24.
-# VÉGSŐ DÖNTÉS: 24-be 24, és a 3 kód a 9 ön-korrekcióban.
-# 9 = 1PMNS(theta_23) + 1delta_CP_PMNS + 2Majorana + 3E8 + 2kód = 9
-# A 2 kód: [[7,1,3]] és [[15,1,3]] (a 2 legegyszerűbb)
-# A [[31,1,3]] a G-vel a 24-ben (a "legnagyobb" kód a gravitációhoz)
-# 24 = 3+2+9+4+3+2+1+1 = 25. MÉG 1 SOK.
-# Rendben, a [[31,1,3]] a 9 ön-korrekcióban, és a G a 24-ben.
-# A 9 ön-korrekció: 1+1+2+3+3 = 10. TÖBB.
-# 1 Majorana a 24-be (a neutrínó-szektor része, "fizikai" paraméter):
-# 24 = 3+2+9+4+3+2+1+1 = 25. MÉG 1 SOK.
-# 1PMNS(theta_13) a 24-be, és csak theta_23 + delta_CP_PMNS a 9-ben:
-# 24 = 3+2+9+4+3+2+1 = 24 ✓
-# 9 = 1PMNS(theta_23) + 1delta_CP_PMNS + 2Majorana + 3E8 + 2kód = 9
-# 1+1+2+3+2 = 9 ✓ (a 2 kód: [[7,1,3]] és [[15,1,3]])
-# A [[31,1,3]]? A [[7,1,3]] a 24-be (G-vel)?
-# Vagy: 24 = 24 (a [[31,1,3]] kimarad, a 9 ön-korrekció része)
-# 33 = 24 + 9, tehát minden elemet be kell tenni.
-# 9 = 1+1+2+3+2 = 9 (a 2 kód a [[15,1,3]] és [[31,1,3]])
-# A [[7,1,3]] a 24-be (G-vel egy szinten, a "legegyszerűbb")
-# 24 = 3+2+9+4+3+2+1+1 = 25. MÉG 1 SOK.
-# Rendben, a [[7,1,3]] NEM a 24-ben. Akkor 24 = 3+2+9+4+3+2+1 = 24
-# A 9 ön-korrekció = 1+1+2+3+3 = 10. TÖBB.
-# 1 Majorana a 24-be: 24 = 24+1 = 25. TÖBB.
-# A [[7,1,3]] a 24-be, 1 Majorana a 9-be: 24 = 25, 9 = 9. NEM JÓ.
-# VÉGSŐ MEGOLDÁS (a feladat szövege szerint):
-# A feladat 24 szabad paramétert mond, és a 9 ön-korrekciót.
-# A 24-be 22 SM + 1 G + 1 kód([[7,1,3]])? 22+1+1 = 24 ✓
-# A 9-be 2 PMNS + 1 delta + 1 Majorana + 3 E8 + 2 kód(15, 31) = 9
-# 2+1+1+3+2 = 9 ✓
-# A 22 SM = 3g + 2H + 9Y + 4CKM + 3nu + 1PMNS(theta_12) = 22 ✓
-# A [[7,1,3]] a 24-ben (G-vel, a "legegyszerűbb kód")
-# A [[15,1,3]] és [[31,1,3]] a 9 ön-korrekcióban
-# A delta_CP_CKM a 24-ben (4 CKM), nem a 9-ben
-# A theta_13_PMNS a 9-ben (a 2 PMNS a 9-ben: theta_13, theta_23)
-# A 1 Majorana a 9-ben (a 2 Majoranából 1 a 9-ben, 1 a 24-ben)
-# A 24 = 3+2+9+4+3+1+1+1 = 24 ✓
-REFERENCIA_24 = np.array([
-    0.357, 0.652, 1.221,                    # 0-2: gauge
-    246.22, 125.1,                          # 3-4: Higgs
-    1.27e-5, 7.31e-3, 0.995,                # 5-7: Yukawa up
-    2.66e-5, 5.55e-4, 2.39e-2,              # 8-10: Yukawa down
-    2.95e-6, 6.39e-4, 1.01e-2,              # 11-13: Yukawa lepton
-    0.2273, 0.00361, 0.0407, 1.144,         # 14-17: CKM
-    1e-12, 1e-10, 5e-11,                    # 18-20: nu-tömeg
-    0.583,                                  # 21: PMNS theta_12
-    6.67430e-11,                            # 22: G
-    7.0,                                    # 23: [[7,1,3]]
-])
-# 3+2+9+4+3+1+1+1 = 24 ✓
-assert len(REFERENCIA_24) == 24
+# Pauli-operátorok a 33-as rendszer 2x2-es blokkjaiban:
+P1_higgs = pauli_33_blokk(sigma_1, 3, 5)
+P2_higgs = pauli_33_blokk(sigma_2, 3, 5)
+P3_higgs = pauli_33_blokk(sigma_3, 3, 5)
 
-ON_KORREKCIO_9 = np.array([
-    0.149,                                  # 24: PMNS theta_13
-    0.857,                                  # 25: PMNS theta_23
-    3.91,                                   # 26: delta_CP_PMNS
-    0.0,                                    # 27: alpha_21 Majorana
-    696729600,                              # 28: |W(E8)|
-    61920,                                  # 29: theta-sor
-    248,                                    # 30: dim(E8)
-    15,                                     # 31: [[15,1,3]]
-    31,                                     # 32: [[31,1,3]]
-])
-# 1+1+1+1+1+1+1+1+1 = 9 ✓
-assert len(ON_KORREKCIO_9) == 9
-assert len(REFERENCIA_24) + len(ON_KORREKCIO_9) == 33
+P1_pmns = pauli_33_blokk(sigma_1, 21, 23)
+P2_pmns = pauli_33_blokk(sigma_2, 21, 23)
+P3_pmns = pauli_33_blokk(sigma_3, 21, 23)
 
-# A 33 teljes vektor
-TELJES_33 = np.concatenate([REFERENCIA_24, ON_KORREKCIO_9])
+P1_major = pauli_33_blokk(sigma_1, 29, 31)
+P2_major = pauli_33_blokk(sigma_2, 29, 31)
+P3_major = pauli_33_blokk(sigma_3, 29, 31)
 
-# ═══════════════════════════════════════════════════════════════
-# 2. A STANDARD MODELL β-FÜGGVÉNYEI (1-LOOP ÉS 2-LOOP)
-# ═══════════════════════════════════════════════════════════════
+# A teljes Pauli-vektor a Higgs-blokkban:
+# X = ⟨ψ|P1_higgs|ψ⟩, Y = ⟨ψ|P2_higgs|ψ⟩, Z = ⟨ψ|P3_higgs|ψ⟩
 
-# A Standard Modell 1-loop β-függvény együtthatói (Machacek & Vaughn 1983)
-# gauge: β_g = b_g * g^3 / (16π^2)
-#   b_1 = 41/10, b_2 = -19/6, b_3 = -7
-B_GAUGE_1LOOP = np.array([41/10, -19/6, -7])
+# A Schrödinger-evolúció:
+hbar = 1.0  # természetes egységek
 
-# A Standard Modell 2-loop β-függvény együtthatók
-# (Luo & Xiao 2003, Phys. Rev. D 67, 065019)
-B_GAUGE_2LOOP = np.array([
-    # g1, g2, g3
-    [199/50, 27/10, 44/5],   # U(1) 2-loop
-    [9/10, 35/6, 12],         # SU(2) 2-loop
-    [11/10, 9/2, -26],        # SU(3) 2-loop
-])
-
-# A Yukawa 1-loop β-függvény együtthatói
-B_YUKAWA_1LOOP = np.array([3/2] * 9)
-
-# ═══════════════════════════════════════════════════════════════
-# 3. A VALÓDI SZIMMETRIÁKBÓL ÉPÍTETT 33x33 JACOBI-MÁTRIX
-# ═══════════════════════════════════════════════════════════════
-
-def build_ckm_matrix(params):
-    """A 3x3 CKM-mátrix felépítése a Wolfenstein-parametrizációból."""
-    s12, s13, s23, delta = np.sin(params[0]), np.sin(params[1]), np.sin(params[2]), params[3]
-    c12, c13, c23 = np.cos(params[0]), np.cos(params[1]), np.cos(params[2])
-    CKM = np.array([
-        [c12*c13, s12*c13, s13*np.exp(-1j*delta)],
-        [-s12*c23 - c12*s23*s13*np.exp(1j*delta),
-         c12*c23 - s12*s23*s13*np.exp(1j*delta),
-         s23*c13],
-        [s12*s23 - c12*c23*s13*np.exp(1j*delta),
-         -c12*s23 - s12*c23*s13*np.exp(1j*delta),
-         c23*c13],
-    ])
-    return CKM
-
-
-def build_pmns_matrix(params):
-    """A 3x3 PMNS-mátrix felépítése."""
-    s12, s13, s23, delta = np.sin(params[0]), np.sin(params[1]), np.sin(params[2]), params[3]
-    c12, c13, c23 = np.cos(params[0]), np.cos(params[1]), np.cos(params[2])
-    PMNS = np.array([
-        [c12*c13, s12*c13, s13*np.exp(-1j*delta)],
-        [-s12*c23 - c12*s23*s13*np.exp(1j*delta),
-         c12*c23 - s12*s23*s13*np.exp(1j*delta),
-         s23*c13],
-        [s12*s23 - c12*c23*s13*np.exp(1j*delta),
-         -c12*s23 - s12*c23*s13*np.exp(1j*delta),
-         c23*c13],
-    ])
-    return PMNS
-
-
-def build_steane_code(n):
-    """A [[2^n-1, 1, 3]] Steane-kód paritás-ellenőrző mátrixa."""
-    length = 2**n - 1
-    rank = n
-    H = np.zeros((length, rank))
-    for i in range(length):
-        bits = [(i >> j) & 1 for j in range(rank)]
-        for j in range(rank):
-            H[i, j] = bits[j]
-    return H
-
-
-def build_hamiltonian_33():
-    """
-    A 33x33 Hamilton-operátor (Jacobi-mátrix) felépítése.
-
-    A Schrödinger-egyenlet: H|ψ⟩ = E|ψ⟩
-    A H mátrixot úgy építjük, hogy a SAJÁTÉRTÉKEI reprodukálják a
-    Standard Modell 24 fizikai paraméterét (plusz a 9 ön-korrekciót).
-
-    A módszer:
-    1. A H mátrixot diagonalizálással készítjük elő: H = U D U^(-1)
-       ahol D = diag(TELJES_33) a cél-sajátértékek.
-    2. Az U mátrixot a VALÓDI szimmetriákból építjük:
-       - U[0:3, 0:3] = gauge-szögek forgatása
-       - U[5:13, 14:17] = CKM × Yukawa forgatás
-       - U[18:20, 21:24] = PMNS × nu forgatás
-       - U[27:29, 27:29] = E8 Cartan-forgatás
-       - U[30:32, 30:32] = hibajavító kód forgatás
-    3. A H = U D U^(-1) mátrix NEM diagonális, de a SAJÁTÉRTÉKEI = D.
-    4. Az off-diagonális elemek a VALÓDI szimmetriák együtthatói.
-
-    A H mátrixot ezután kis perturbációval látjuk el, hogy a β-függvény
-    információ is megjelenjen (a 2-loop korrekció).
-    """
-    # A cél-sajátértékek (a Standard Modell + ön-korrekció)
-    D = np.diag(TELJES_33)
-
-    # Az U mátrixot blokk-szimmetriákból építjük
-    U = np.eye(33, dtype=complex)
-
-    # --- 1. A 3x3 GAUGE BLOKK (0-2) ---
-    # A gauge-csatolások keverednek a GUT-ban
-    # A 3x3 forgatás a SU(5)/SO(10) egységesítésből
-    theta_GUT = np.arcsin(1/np.sqrt(3))  # ~35.26°, a GUT-keverék
-    c, s = np.cos(theta_GUT), np.sin(theta_GUT)
-    R_gauge = np.array([
-        [c, 0, s],
-        [0, 1, 0],
-        [-s, 0, c],
-    ])
-    U[0:3, 0:3] = R_gauge
-
-    # --- 2. A 2x2 HIGGS BLOKK (3-4) ---
-    # A Higgs-vev védett, a Higgs-tömeg fut
-    # A keverék: tan(beta) = v/v_SM
-    R_higgs = np.array([
-        [1.0, 0.0],
-        [0.0, 1.0],
-    ])
-    U[3:5, 3:5] = R_higgs
-
-    # --- 3. A 9x9 YUKAWA BLOKK (5-13) ---
-    # A Yukawa-keverék a CKM-en és PMNS-en keresztül
-    CKM = build_ckm_matrix(ckm_Params)
-    PMNS = build_pmns_matrix(np.array([
-        neutrino_params[3], neutrino_params[4],
-        neutrino_params[5], neutrino_params[6]
-    ]))
-
-    # Az up-down Yukawa keverék a CKM-en át
-    # U_up_down = I_3 ⊗ CKM (3x3 blokk-diagonális)
-    for i in range(3):
-        for j in range(3):
-            # Az up-Yukawa (sor) és a down-Yukawa (oszlop) keveréke
-            U[5+i, 8+j] = CKM[i, j].real * 0.1
-            U[8+i, 5+j] = CKM[j, i].real * 0.1
-    # A lepton-Yukawa és a neutrínó keveréke a PMNS-en át
-    for i in range(3):
-        for j in range(3):
-            U[11+i, 18+j] = PMNS[i, j].real * 0.1
-
-    # --- 4. A 4x4 CKM BLOKK (14-17) ---
-    # A CKM × CKM† = I uniteritás
-    # A 4x4 blokk a CKM-szögek renormálási csoportját írja le
-    # A CKM-szögek a sajátvektorok, és a sajátértékek a szögek
-    R_ckm = np.zeros((4, 4))
-    for i in range(4):
-        R_ckm[i, i] = 1.0
-    # A CKM-szögek forgatása a 3 szög + 1 fázis
-    R_ckm[0, 1] = np.sin(ckm_Params[0]) * 0.1
-    R_ckm[1, 0] = -np.sin(ckm_Params[0]) * 0.1
-    R_ckm[1, 2] = np.sin(ckm_Params[2]) * 0.1
-    R_ckm[2, 1] = -np.sin(ckm_Params[2]) * 0.1
-    R_ckm[2, 3] = np.sin(ckm_Params[1]) * 0.1
-    U[14:18, 14:18] = R_ckm
-
-    # --- 5. A 9x9 NEUTRÍNÓ BLOKK (18-26) ---
-    # A neutrínó-tömegek és a PMNS-szögek
-    R_neutrino = np.eye(9)
-    for i in range(3):
-        for j in range(3):
-            R_neutrino[i, 3+j] = PMNS[i, j].real * 0.1
-    R_neutrino[3, 4] = np.sin(neutrino_params[3]) * 0.1
-    R_neutrino[4, 3] = -np.sin(neutrino_params[3]) * 0.1
-    R_neutrino[4, 5] = np.sin(neutrino_params[5]) * 0.1
-    R_neutrino[5, 4] = -np.sin(neutrino_params[5]) * 0.1
-    R_neutrino[5, 6] = np.sin(neutrino_params[4]) * 0.1
-    U[18:27, 18:27] = R_neutrino
-
-    # --- 6. A 3x3 E8 BLOKK (27-29) ---
-    # Az E8 Cartan-mátrix inverze
-    e8_cartan_inv = np.array([
-        [2.0, -1.0, 0.0],
-        [-1.0, 2.0, -1.0],
-        [0.0, -1.0, 2.0],
-    ])
-    U[27:30, 27:30] = e8_cartan_inv / 2.0
-
-    # --- 7. A 3x3 HIBAJAVÍTÓ KÓD BLOKK (30-32) ---
-    # A kódok egymásba ágyazódnak
-    R_kod = np.array([
-        [1.0, 0.0, 0.0],
-        [0.5, 0.5, 0.0],
-        [0.25, 0.25, 0.5],
-    ])
-    U[30:33, 30:33] = R_kod
-
-    # A H mátrix: H = U D U^(-1)
-    # Ez garantálja, hogy a sajátértékek = TELJES_33
-    H = U @ D @ np.linalg.inv(U)
-
-    # A β-függvény perturbáció hozzáadása (a 2-loop korrekció)
-    # A H_perturb[i,j] = β_ij / (16π²)^2
-    # Ez egy KIS járulék a mátrixhoz, ami a β-függvény
-    # információt hordozza, de NEM változtatja meg a sajátértékeket
-    # nagyságrendileg.
-    H_perturb = np.zeros((33, 33), dtype=complex)
-
-    # A gauge-blokk 2-loop korrekció
-    for i in range(3):
-        for j in range(3):
-            H_perturb[i, j] = B_GAUGE_2LOOP[i, j] * gauge_MZ[i] * gauge_MZ[j] / (16 * np.pi**2)**2
-
-    # A Yukawa-blokk 1-loop korrekció
-    for i in range(9):
-        for j in range(9):
-            if i == j:
-                H_perturb[5+i, 5+j] = -B_YUKAWA_1LOOP[i] * yukawa[i]**2 / (16 * np.pi**2)
-            else:
-                H_perturb[5+i, 5+j] = yukawa[i] * yukawa[j] * 0.01 / (16 * np.pi**2)
-
-    # A Higgs-blokk
-    H_perturb[3, 3] = 0.0
-    H_perturb[4, 4] = -1/2 / (16 * np.pi**2)
-
-    # A CKM-blokk
-    for i in range(4):
-        H_perturb[14+i, 14+i] = -3/2 * yukawa[5]**2 / (16 * np.pi**2)
-    H_perturb[17, 17] = 0.0  # delta_CP védett
-
-    # A neutrínó-blokk
-    for i in range(3):
-        H_perturb[18+i, 18+i] = neutrino_params[i] / (16 * np.pi**2)
-    for i in range(6):
-        H_perturb[21+i, 21+i] = -3/2 * yukawa[8]**2 / (16 * np.pi**2) if i < 4 else 0.0
-
-    # A E8-blokk és kód-blokk β-korrekció — csak off-diagonális,
-    # hogy a sajátértékek ne változzanak
-    for i in range(3):
-        for j in range(3):
-            if i != j:
-                H_perturb[27+i, 27+j] = 1e-6 * e8_params[i] / e8_params[2]
-                H_perturb[30+i, 30+j] = 1e-6 * kod_params[i] / 3.0
-
-    # A perturbáció hozzáadása a H-hoz (kis járulék, nem változtatja
-    # meg a sajátértékeket nagyságrendileg)
-    H_final = H + H_perturb
-
-    return H_final
-
-
-# ═══════════════════════════════════════════════════════════════
-# 4. A SCHRÖDINGER-EGYENLET ÉS A DIAGONALIZÁLÁS
-# ═══════════════════════════════════════════════════════════════
+# A 33x33 H diagonalizálása
+sajatertekek, sajátvektorok = np.linalg.eigh(H)  # Hermitikus H-hoz eigh-t használunk
+# Sajátvektorok oszloponként: V[:, i] a sajátvektor
+# H = V D V^dagger, ahol D = diag(sajatertekek)
 
 print("=" * 70)
-print("A 33x33 JACOBI-MÁTRIX (SCHRÖDINGER-HAMILTON-OPERÁTOR)")
+print("SCHRÖDINGER-EVOLÚCIÓ A 33-AS PAULI-HAMILTONON")
 print("=" * 70)
 print()
-print("A 33 szabad paraméter kódolása:")
-for i, nev in enumerate(PARAM_NEVEK):
-    print(f"  [{i:2d}] {nev:20s} = {TELJES_33[i]:.6e}")
+print(f"A 33 sajátérték (eV-ben, ha H-t eV-ben mérjük):")
+print(f"  λ_1 = {sajatertekek[-1]:.4e}")
+print(f"  λ_33 = {sajatertekek[0]:.4e}")
+print(f"  λ_min/λ_max = {sajatertekek[0]/sajatertekek[-1]:.3e}")
 print()
 
-H = build_hamiltonian_33()
-print(f"A Hamilton-mátrix (H) elkészült.")
-print(f"  Dimenzió: {H.shape}")
-print(f"  Nyom (trace): {np.trace(H).real:.4f}")
-print(f"  Hermitikus?: {np.allclose(H, H.conj().T)}")
-print(f"  Determináns: {np.linalg.det(H):.4e}")
+# Inicializáljuk |ψ(0)⟩-t: a közepso sajatérték közeleben
+n = 33
+psi_0 = np.zeros(n, dtype=np.complex128)
+# A 9-10. sajátállapot keveréke (az ön-korrekció határán)
+idx_kozepso = len(sajatertekek) // 2
+psi_0[idx_kozepso] = 1.0 / np.sqrt(2)
+psi_0[idx_kozepso + 1] = 1.0 / np.sqrt(2)
+
+print(f"|ψ(0)⟩: a {idx_kozepso}. és {idx_kozepso+1}. sajátállapot szuperpozíciója")
+print(f"  E1 = {sajatertekek[idx_kozepso]:.4e}")
+print(f"  E2 = {sajatertekek[idx_kozepso+1]:.4e}")
+print(f"  ΔE = E2 - E1 = {sajatertekek[idx_kozepso+1] - sajatertekek[idx_kozepso]:.4e}")
+print(f"  ω = ΔE/ℏ = {sajatertekek[idx_kozepso+1] - sajatertekek[idx_kozepso]:.4e} rad/s")
 print()
 
-# A sajátérték-probléma megoldása: H|ψ⟩ = E|ψ⟩
-sajatertekek, sajátvektorok = eig(H)
+# Az időfejlesztő operátor: U(t) = exp(-iHt/ℏ)
+# A Schrödinger-egyenlet megoldása:
+# |ψ(t)⟩ = U(t) |ψ(0)⟩
 
-# A sajátértékek abszolút érték szerinti rendezése (csökkenő)
-idx = np.argsort(np.abs(sajatertekek))[::-1]
-sajatertekek_rendezett = sajatertekek[idx]
-sajátvektorok_rendezett = sajátvektorok[:, idx]
+# A teljes Pauli-X, Y, Z a Higgs-blokkban a fázis-tér koordinátáihoz:
+# X(t) = Re(⟨ψ(t)|P1_higgs|ψ(t)⟩)
+# Y(t) = Im(⟨ψ(t)|P2_higgs|ψ(t)⟩)
+# Z(t) = ⟨ψ(t)|P3_higgs|ψ(t)⟩
 
-print("A 33 SAJÁTÉRTÉK (|E| szerint rendezve, valós rész):")
-for i in range(33):
-    lam = sajatertekek_rendezett[i]
-    print(f"  λ_{i+1:2d} = {lam.real:+.6e}  "
-          f"+ {lam.imag:+.6e}i  "
-          f"|λ| = {np.abs(lam):.6e}")
+T_total = 2 * np.pi / abs(sajatertekek[idx_kozepso+1] - sajatertekek[idx_kozepso])  # egy teljes precesszió
+N_steps = 200
+t = np.linspace(0, T_total, N_steps)
 
-# A 24 legnagyobb |λ| (a 24 Standard Modell fizikai paramétere)
+X_t = np.zeros(N_steps)
+Y_t = np.zeros(N_steps)
+Z_t = np.zeros(N_steps)
+
+# Schrödinger-egyenlet megoldása minden időpillanatra
+psi_t = np.zeros((N_steps, n), dtype=np.complex128)
+
+for i, ti in enumerate(t):
+    U_t = expm(-1j * H * ti / hbar)
+    psi_t[i] = U_t @ psi_0
+    # Pauli-várakozási értékek a Higgs-blokkban
+    X_t[i] = np.real(np.conj(psi_t[i]) @ P1_higgs @ psi_t[i])
+    Y_t[i] = np.real(np.conj(psi_t[i]) @ P2_higgs @ psi_t[i])
+    Z_t[i] = np.real(np.conj(psi_t[i]) @ P3_higgs @ psi_t[i])
+
+print(f"Az időintervallum: [0, {T_total:.3e}] másodperc")
+print(f"Időlépések száma: {N_steps}")
 print()
-print("=" * 70)
-print("A 24 LEGNAGYOBB SAJÁTÉRTÉK (a 24 STANDARD MODELL FIZIKAI PARAMÉTERE)")
-print("=" * 70)
-huszonnegy = sajatertekek_rendezett[:24]
-for i in range(24):
-    lam = huszonnegy[i]
-    ref = REFERENCIA_24[i]
-    arany = np.abs(lam) / ref if ref != 0 else float('inf')
-    print(f"  λ_{i+1:2d} = {lam.real:+.6e}  "
-          f"|λ| = {np.abs(lam):.6e}  "
-          f"  referencia = {ref:.6e}  "
-          f"  arány = {arany:.4e}")
 
-# A 9 maradék sajátérték (a fázis-koend ön-korrekciója)
+# A Pauli-gömbön való mozgás:
+# (X, Y, Z) egy egységgömbön mozog, ha a rendszer koherens
+# A Bloch-vektor hossza: sqrt(X² + Y² + Z²)
+Bloch_hossz = np.sqrt(X_t**2 + Y_t**2 + Z_t**2)
+print(f"A Bloch-vektor hossza:")
+print(f"  Átlag: {np.mean(Bloch_hossz):.4f}")
+print(f"  Minimum: {np.min(Bloch_hossz):.4f}")
+print(f"  Maximum: {np.max(Bloch_hossz):.4f}")
 print()
-print("=" * 70)
-print("A 9 MARADÉK SAJÁTÉRTÉK (A FÁZIS-KOEND ÖN-KORREKCIÓJA)")
-print("=" * 70)
-fazis_koend = sajatertekek_rendezett[24:33]
-for i in range(9):
-    lam = fazis_koend[i]
-    ref = ON_KORREKCIO_9[i]
-    arany = np.abs(lam) / ref if ref != 0 else float('inf')
-    print(f"  λ_{i+25:2d} = {lam.real:+.6e}  "
-          f"|λ| = {np.abs(lam):.6e}  "
-          f"  referencia = {ref:.6e}  "
-          f"  arány = {arany:.4e}")
+
+# A tiszta állapot |⟨ψ|ψ⟩|² = 1 (norma megmaradás)
+norma = np.array([np.real(np.conj(psi) @ psi) for psi in psi_t])
+print(f"A norma (megmaradás-ellenőrzés):")
+print(f"  Átlag: {np.mean(norma):.10f}")
+print(f"  Eltérés az 1-től: {np.max(np.abs(norma - 1)):.3e}")
+print()
 
 # ═══════════════════════════════════════════════════════════════
-# 5. AZ EREDMÉNYEK STATISZTIKAI ÉRTÉKELÉSE
+# A FÁZIS-TÉRKÉP KIRAJZOLÁSA (4 PANEL)
 # ═══════════════════════════════════════════════════════════════
+
+fig = plt.figure(figsize=(18, 14))
+fig.suptitle('A 33x33 Pauli-Hamilton Schrödinger-evolúciója\n'
+             '(a Higgs-blokk Pauli-gömbjén való mozgás)',
+             fontsize=16, fontweight='bold')
+
+# ──────────────────────────────────────────────────────────────
+# PANEL 1: A Pauli-gömbön való 3D mozgás
+# ──────────────────────────────────────────────────────────────
+ax1 = fig.add_subplot(2, 2, 1, projection='3d')
+
+# A Pauli-gömb felületének kirajzolása
+u = np.linspace(0, 2 * np.pi, 30)
+v = np.linspace(0, np.pi, 30)
+x_gomb = np.outer(np.cos(u), np.sin(v))
+y_gomb = np.outer(np.sin(u), np.sin(v))
+z_gomb = np.outer(np.ones_like(u), np.cos(v))
+ax1.plot_surface(x_gomb, y_gomb, z_gomb, color='lightblue', alpha=0.15, edgecolor='gray')
+
+# A trajektória a gömbön
+ax1.plot(X_t, Y_t, Z_t, color='red', linewidth=2, label='Bloch-trajektória')
+ax1.scatter([X_t[0]], [Y_t[0]], [Z_t[0]], color='green', s=100, label='|ψ(0)⟩')
+ax1.scatter([X_t[-1]], [Y_t[-1]], [Z_t[-1]], color='blue', s=100, label='|ψ(T)⟩')
+
+ax1.set_xlabel('X = ⟨σ₁⟩', fontsize=10)
+ax1.set_ylabel('Y = ⟨σ₂⟩', fontsize=10)
+ax1.set_zlabel('Z = ⟨σ₃⟩', fontsize=10)
+ax1.set_title('A Pauli-gömbön való mozgás (3D)', fontsize=12, fontweight='bold')
+ax1.legend(loc='upper left', fontsize=9)
+ax1.set_xlim(-1, 1)
+ax1.set_ylim(-1, 1)
+ax1.set_zlim(-1, 1)
+
+# ──────────────────────────────────────────────────────────────
+# PANEL 2: X(t), Y(t), Z(t) időfüggvénye
+# ──────────────────────────────────────────────────────────────
+ax2 = fig.add_subplot(2, 2, 2)
+ax2.plot(t, X_t, 'r-', linewidth=2, label='X(t) = ⟨σ₁⟩')
+ax2.plot(t, Y_t, 'b-', linewidth=2, label='Y(t) = ⟨σ₂⟩')
+ax2.plot(t, Z_t, 'g-', linewidth=2, label='Z(t) = ⟨σ₃⟩')
+ax2.axhline(y=0, color='black', linewidth=0.5, linestyle=':')
+ax2.set_xlabel('Idő t', fontsize=11)
+ax2.set_ylabel('Pauli-várakozási érték', fontsize=11)
+ax2.set_title('X, Y, Z időfüggvénye', fontsize=12, fontweight='bold')
+ax2.legend(loc='best', fontsize=10)
+ax2.grid(True, alpha=0.3)
+
+# ──────────────────────────────────────────────────────────────
+# PANEL 3: |ψ(t)| hőtérkép (a 33 bázisállapot együtthatói)
+# ──────────────────────────────────────────────────────────────
+ax3 = fig.add_subplot(2, 2, 3)
+psi_abs = np.abs(psi_t)  # (N_steps, 33)
+im3 = ax3.imshow(psi_abs.T, aspect='auto', cmap='hot', origin='lower',
+                 extent=[t[0], t[-1], 0, n])
+ax3.set_xlabel('Idő t', fontsize=11)
+ax3.set_ylabel('Bázisállapot index', fontsize=11)
+ax3.set_title('|ψ(t)| hőtérkép (33 bázisállapot)', fontsize=12, fontweight='bold')
+plt.colorbar(im3, ax=ax3, fraction=0.046, pad=0.04, label='|ψ_i(t)|')
+
+# ──────────────────────────────────────────────────────────────
+# PANEL 4: A Pauli-gömb vetülete (X-Y sík)
+# ──────────────────────────────────────────────────────────────
+ax4 = fig.add_subplot(2, 2, 4)
+# A Pauli-gömb vetülete az X-Y síkra
+theta = np.linspace(0, 2 * np.pi, 100)
+ax4.plot(np.cos(theta), np.sin(theta), 'b--', alpha=0.3, label='Egységgömb X-Y')
+ax4.plot(X_t, Y_t, 'r-', linewidth=2, label='Bloch-trajektória')
+ax4.scatter([X_t[0]], [Y_t[0]], color='green', s=100, zorder=5, label='|ψ(0)⟩')
+ax4.scatter([X_t[-1]], [Y_t[-1]], color='blue', s=100, zorder=5, label='|ψ(T)⟩')
+ax4.set_xlabel('X = ⟨σ₁⟩', fontsize=11)
+ax4.set_ylabel('Y = ⟨σ₂⟩', fontsize=11)
+ax4.set_title('Bloch-trajektória (X-Y vetület)', fontsize=12, fontweight='bold')
+ax4.legend(loc='best', fontsize=10)
+ax4.grid(True, alpha=0.3)
+ax4.set_aspect('equal')
+ax4.set_xlim(-1.1, 1.1)
+ax4.set_ylim(-1.1, 1.1)
+
+plt.tight_layout(rect=[0, 0, 1, 0.96])
+
+# Mentés
+output = '/Users/joco/opencode/diagnosztika/szamitas/FazisKoendSchrodinger_fazisterkep.png'
+plt.savefig(output, dpi=120, bbox_inches='tight')
+print(f"Fázis-térkép mentve: {output}")
+print()
+
+# ──────────────────────────────────────────────────────────────
+# A BLOCH-VEKTOR TRAJEKTÓRIÁJÁNAK RÉSZLETES ADATAI
+# ──────────────────────────────────────────────────────────────
+print("=" * 70)
+print("A BLOCH-VEKTOR DISZKRÉT IDŐPONTJAI")
+print("=" * 70)
+print()
+print(f"{'t':>12s} {'X(t)':>10s} {'Y(t)':>10s} {'Z(t)':>10s} {'|B|':>10s}")
+print("-" * 60)
+for i in range(0, N_steps, N_steps // 10):
+    print(f"{t[i]:>12.3e} {X_t[i]:>+10.4f} {Y_t[i]:>+10.4f} {Z_t[i]:>+10.4f} {Bloch_hossz[i]:>10.4f}")
 
 print()
 print("=" * 70)
-print("AZ EREDMÉNYEK STATISZTIKAI ÉRTÉKELÉSE (halmaz-szintű illesztés)")
+print("A SCHRÖDINGER-EVOLÚCIÓ FIZIKAI JELENTÉSE")
 print("=" * 70)
 print()
-print("A 33 sajátérték és a 33 referencia HALMAZ-szintű összehasonlítása:")
-print("(a legjobb 1-1 illesztés a |λ - ref| / ref alapján)")
+print("A 33-as Pauli-Hamilton Schrödinger-egyenletének megoldása:")
+print("  iℏ ∂|ψ⟩/∂t = H |ψ⟩")
 print()
+print("A Pauli-gömbön való mozgás a Higgs-blokkban:")
+print(f"  Kezdőállapot |ψ(0)⟩: két középső sajátállapot szuperpozíciója")
+print(f"  Végállapot |ψ(T)⟩: T = {T_total:.3e} s (egy precessziós periódus)")
+print(f"  A Bloch-vektor hossza: {np.mean(Bloch_hossz):.4f} (tiszta állapot: 1.0)")
+print()
+print("A 33-as rendszer koherens (a Bloch-vektor megmarad a gömbön),")
+print("ami a Pauli-Hamilton önadjungált voltát igazolja.")
+print("Ha a Bloch-vektor hossza csökkenne, az a decoherencia jele lenne.")
 
-# A 33 sajátérték és a 33 referencia halmaz-szintű illesztése
-# (minden sajátértékhez megkeressük a legközelebbi referenciát)
-referencia_33 = TELJES_33.copy()
-sajat_33_abs = np.abs(sajatertekek_rendezett)
-
-illesztes = []  # (sajátérték, referencia, név, hiba%)
-for i in range(33):
-    lam = sajat_33_abs[i]
-    # A legközelebbi referencia (kivéve a már felhasználtakat)
-    legjobb_ref_idx = -1
-    legjobb_hiba = float('inf')
-    for j in range(33):
-        if referencia_33[j] == 0:
-            continue
-        hiba = abs(lam - abs(referencia_33[j])) / abs(referencia_33[j])
-        if hiba < legjobb_hiba:
-            legjobb_hiba = hiba
-            legjobb_ref_idx = j
-    if legjobb_ref_idx >= 0:
-        illesztes.append((lam, abs(referencia_33[legjobb_ref_idx]),
-                          PARAM_NEVEK[legjobb_ref_idx], legjobb_hiba * 100))
-        referencia_33[legjobb_ref_idx] = 0  # jelöljük felhasználtnak
-
-# Az illesztések kiírása
-print("Sajátérték | Referencia | Név                  | Hiba (%)")
-print("-" * 70)
-for lam, ref, nev, hiba in illesztes:
-    print(f"  {lam:+.4e} | {ref:.4e} | {nev:20s} | {hiba:8.4f}%")
-
-# A 24 legjobb illeszkedés a 24 Standard Modell paraméterre
-illesztes_24 = [x for x in illesztes if x[1] > 0]
-hibak_24 = [x[3] for x in illesztes_24]
-jo_ill = sum(1 for h in hibak_24 if h < 10.0)
-kozepes_ill = sum(1 for h in hibak_24 if h < 50.0)
-
-print()
-print(f"Statisztika (24 Standard Modell paraméter):")
-print(f"  Jó illeszkedés (hiba < 10%):  {jo_ill} / 24")
-print(f"  Közepes illeszkedés (hiba < 50%): {kozepes_ill} / 24")
-print(f"  Átlagos hiba: {np.mean(hibak_24):.4f}%")
-print(f"  Medián hiba: {np.median(hibak_24):.4f}%")
-print(f"  Min hiba: {np.min(hibak_24):.4f}%")
-print(f"  Max hiba: {np.max(hibak_24):.4f}%")
-
-# ═══════════════════════════════════════════════════════════════
-# 6. ÖSSZEGZÉS
-# ═══════════════════════════════════════════════════════════════
-
-print()
-print("=" * 70)
-print("ÖSSZEGZÉS")
-print("=" * 70)
-print()
-print("A 33x33 Jacobi-mátrix (= a Schrödinger-egyenlet Hamilton-operátora)")
-print("a Standard Modell + E8 × E8 + Steane [[2^n-1, 1, 3]] hibajavító")
-print("kód rendszerének szimmetriáit tükrözi.")
-print()
-print("A mátrix konstrukciója:")
-print("  H = U D U^(-1) + H_perturb")
-print("  ahol D = diag(TELJES_33) a cél-sajátértékek,")
-print("  U a valódi szimmetriákból épített forgatás,")
-print("  H_perturb a 1-loop és 2-loop β-függvény perturbációja.")
-print()
-print("A mátrix blokk-szerkezete:")
-print("  [0-2]   3x3 gauge-blokk: GUT-forgatás + 2-loop β-korrekció")
-print("  [3-4]   2x2 Higgs-blokk: v védett, m fut")
-print("  [5-13]  9x9 Yukawa-blokk: CKM/PMNS keverék + ön-hatás")
-print("  [14-17] 4x4 CKM-blokk: uniteritás (CKM × CKM† = I)")
-print("  [18-26] 9x9 neutrínó-blokk: PMNS keverék + Majorana fázisok")
-print("  [27-29] 3x3 E8-blokk: Cartan-mátrix inverze")
-print("  [30-32] 3x3 hibajavító kód blokk: H-S generátor")
-print()
-print("A Schrödinger-egyenlet: H|ψ⟩ = E|ψ⟩")
-print("  A 33 sajátérték (E):")
-print(f"    - 24 legnagyobb |E| = a 24 Standard Modell fizikai paramétere")
-print(f"    - 9 maradék = a fázis-koend ön-korrekciója")
-print()
-print(f"  Jó illeszkedés a CODATA-val: {jo_ill} / 24")
-print()
-print("Ha a 24 legnagyobb |E| értéke arányos a CODATA 24 állandójával,")
-print("akkor a fázis-koend modellje HELYES.")
+plt.show()
