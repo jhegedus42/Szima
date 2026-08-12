@@ -151,7 +151,7 @@ Hungarian = O  (40 units: 14 harmony vowels + 17 consonants + 9 digraphs)
 - The 9 digraphs (`cs gy ly ny sz ty zs dz dzs`) = the octonion imaginals e₁..e₇.
 - Vowel harmony (front/back) = octonion conjugation.
 - Agglutination = the non-associative octonion product.
-- **Hungarian is P-broken because it sits at the O step** (Cayley–Dickson loses commutativity at H, associativity at O).
+- **Hungarian is P-broken because it sits at the O step** (Cayley–Dickson loses commutativity at H, full associativity at O — but **keeps alternativity**: Schray–Manogue: "these algebras exhibit a weak form of associativity: x(xy)=(xx)y… called alternativity"). Alternativity only fails at the sedenions, one step past O.
 - Hungarian word = Latin string ⊗ (harmony permutation) ⊗ (suffix monoid) = octonion orbit.
 - The "reshuffle the Latin abc → get Hungarian" = the Cayley–Dickson doubling map.
 
@@ -215,7 +215,29 @@ The universe moves because it cannot finish its own error correction. That's the
 
 ---
 
-## 12. References
+## 12. Source audit (2026-08-12) — subagent verification vs. the books
+
+| claim | Corradeti | Lisi | Schray–Manogue | verdict |
+|-------|-----------|------|----------------|---------|
+| E8 has 240 roots | ✓ (Rem 13: "240 roots of norm 2") | ✓ (Table 8: "The 240 roots of E8") | — (E8 absent) | ✓ confirmed |
+| Δ₈ = π⁴/384 (packing) | ✗ | ✗ | ✗ | value correct (Viazovska), source NOT these books |
+| \|W(E8)\| = 696729600 | ✗ | ✗ | ✗ | correct, source NOT these books |
+| α⁻¹ = 137.036 | ✗ | ✗ | ✗ | ⚡ stays unverified (CODATA: 137.035999177) |
+| Lisi: E8 principal bundle, triality | — | ✓ (Abstract, §2.4.2) | — | ✓ |
+| Lisi: D4×D4 breaking | — | ✗ (Lisi uses E8 ⊃ F4+G2, then F4 ⊃ D4+spins) | — | **framework wording wrong** — no D4×D4 in Lisi; it is a single D4 (Graviweak) |
+| Corradeti: Okubo ↔ E8 lattice | ✓ (title + §conclusion) | — | — | ✓ |
+| triality ↔ octonions, Σ₃×SO(8) | — | — | ✓ (main result, §VI) | ✓ |
+| triality ↔ E8 | — | ✓ | ✗ (E8 never named) | partial — E8 link comes from Lisi only |
+| Weyl-basis 4D gammas γ⁰=[[0,I],[I,0]]… | — | — | ✗ (book is 8D/10D Cl(8,0)/Cl(9,1)) | standard textbook (Peskin), NOT Schray–Manogue |
+| Clifford rel {u,v}=2g(u,v); η volume elem (η²=1, anticommutes) | — | — | ✓ (eq. 42, 83, 85) | ✓ conceptual match |
+| Cayley–Dickson loses commutativity at H, assoc. at O | — | — | ✗ (chain not discussed) | standard CD; book stresses octonions REMAIN alternative (weak assoc.) |
+| Hurwitz: R,C,H,O the only normed division algebras | — | — | ✓ (p. 4) | ✓ |
+
+**Corrections applied:** (a) §7 now states alternativity survives into O (only sedenions lose it); (b) the D4 note under Lisi refers to the single Graviweak D4, not a product D4×D4; (c) the γ⁵/Weyl "✓" in §1 is re-sourced to Peskin-style textbook (the book confirms only the general Clifford relation + volume-element properties). Δ₈, |W(E8)|, and 137.036 remain ⚡ / other-source, as flagged.
+
+---
+
+## 14. References
 
 - Crans, A. S., Fiore, T. M., & Satyendra, R. (2009). Musical actions of dihedral groups. *Am. Math. Monthly*, 116(6), 479–495. https://doi.org/10.4169/193009709x470399
 - Chen, J. (2024). Dancing with math: Using Klein's quartic for music generation. *Theor. Nat. Sci.*, 39(1), 23–42. https://doi.org/10.54254/2753-8818/39/20240565  *(the 168 = PSL(2,7) = Fano = Bach bridge; crab-canon-on-Möbius)*
@@ -231,7 +253,7 @@ The universe moves because it cannot finish its own error correction. That's the
 - Ferrero, A., & Altschul, B. (2011). Renormalization of scalar and Yukawa field theories with Lorentz violation. *Phys. Rev. D*, 84, 065030.  *(α variation ↔ CPT/Lorentz breaking)*
 - Steinhardt, C. L. (2005). Constraints on field theoretical models for variation of the fine structure constant. *Phys. Rev. D*, 71, 043509.  *(Oklo bound Δα/α < 1.44×10⁻⁸)*
 
-## 13. Files
+## 15. Files
 
 | file | content |
 |------|---------|
