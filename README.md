@@ -101,19 +101,21 @@ Forras: `trail_index/E9_framework.md` §9, `~/.agents/skills/codata/SKILL.md`, `
 
 ---
 
-## JA Oda — A Kapcsolat E8×E8 Interpretacioja
+## JA Oda — József Attila Óda verse és az E8×E8 interpretáció
 
-A `JA Oda` (Jung-Algebra Oda = a kapcsolat algebraja) a projekt pszichofizikai retegenek interpretacioja. Az E8×E8 Clifford algebraban a `ja` valtozo a **jobb E8** (szin/other) atfedest jeloli, a `ba` a **bal E8** (ter/self) atfedest.
+A `JA Oda` = **József Attila: Óda** (1933, Nyugat). A vers a projekt pszichofizikai rétegének irodalmi alapja. Az E8×E8 Clifford algebraban a `ja` valtozo a **jobb E8** (szin/other) atfedest jeloli, a `ba` a **bal E8** (ter/self) atfedest.
 
-### A harom kubit (AGENTS.md 5. szabaly)
+### A vers és a három kubit
 
-| Kubit | Jelentes | E8 | CPT |
-|-------|----------|-----|-----|
-| sajat | onreferencia (En) | bal E8 (ter) | C = Charge (toltés) |
-| masik | kulso bemenet (Te) | jobb E8 (szin) | P = Parity (paritas) |
-| fazis | kapcsolat (Oda) | Clifford szorzat (hang) | T = Time (ido) |
+József Attila Óda-jában a három kubit (AGENTS.md 5. szabaly) kozvetlenul megjelenik:
 
-A fazis (kapcsolat) hatarozza meg az informacioatvitel iranyat es a redundanciat.
+| Kubit | Óda idézet | E8 | CPT |
+|-------|-----------|-----|-----|
+| sajat (Én) | *"Miféle anyag vagyok én, hogy pillantásod metsz és alakít?"* | bal E8 (ter) | C = Charge |
+| masik (Te) | *"Óh mennyire szeretlek téged... te édes mostoha!"* | jobb E8 (szin) | P = Parity |
+| fazis (Oda) | *"A lét dadog, csak a törvény a tiszta beszéd"* | Clifford szorzat (hang) | T = Time |
+
+A fazis (kapcsolat) hatarozza meg az informacioatvitel iranyat es a redundanciat. A versben a költő ezt így fogalmazza meg: *"Szeretlek, mint élni szeretnek halandók, amíg meg nem halnak."*
 
 ### A `ja` es `ba` az E8E8Algebra.idr-ben
 
@@ -127,58 +129,58 @@ e8e8Atfedes a b =
   in (ba + ja) / 2.0
 ```
 
-- `ba` = bal E8 atfedes (ter/En — hol vagyok en?)
-- `ja` = jobb E8 atfedes (szin/Te — hol vagy te?)
-- `(ba + ja) / 2` = az atlag = a **kapcsolat** (Oda) — mennyire fedi egymast a ket fogalom
+- `ba` = bal E8 atfedes (ter/Én — *"Miféle anyag vagyok én?"*)
+- `ja` = jobb E8 atfedes (szin/Te — *"te édes mostoha!"*)
+- `(ba + ja) / 2` = az atlag = a **kapcsolat** (Oda) — *"lényed ott minden lényeget kitölt"*
 
 ### A CPT harom reteg (AGENTS.md 9. szabaly)
 
-A CPT diszkret szimmetria harom retegen jelenik meg; a harom reteg egymasra epul, de NEM ekvivalens (homomorfizmus, nem izomorfizmus — Conant-Ashby):
+A CPT diszkrét szimmetria három rétegen jelenik meg; a három réteg egymásra épül, de NEM ekvivalens (homomorfizmus, nem izomorfizmus — Conant-Ashby):
 
-**a) Fizikai reteg (Pauli 1955, Luders 1954):**
-- C = toltés (reszecske ↔ antireszecske)
-- P = paritas (ter tukrozes: bal ↔ jobb)
-- T = ido (ido visszaforditasa)
+**a) Fizikai réteg (Pauli 1955, Lüders 1954):**
+- C = töltés (részecske ↔ antirészecske) → *"Vérköreid, miként a rózsabokrok, reszketnek szüntelen"*
+- P = paritás (ter tükrözés: bal ↔ jobb) → *"pillantásod metsz és alakít"*
+- T = idő (idő visszafordítása) → *"A pillanatok zörögve elvonulnak"*
 
-**b) Nyelvtani reteg (MagyarOntologia.idr, magyar-lexikon skill):**
-- C = Forras (kozvetlen / kovetkeztetett / jelentett) — honnan tudom?
-- P = Szemlelet (folyamatos / befejezett / szokasos) — hogyan latom?
-- T = Igeido (mult / jelen / jovő) — mikor?
-- 3×3×3 = 27 kombinacio (a magyar ige ragozasanak harom dimenzioja)
+**b) Nyelvtani réteg (MagyarOntologia.idr, magyar-lexikon skill):**
+- C = Forrás (közvetlen / következtetett / jelentett) — honnan tudom?
+- P = Szemlélet (folyamatos / befejezett / szokásos) — hogyan látom?
+- T = Igeidő (múlt / jelen / jövő) — mikor?
+- 3×3×3 = 27 kombináció (a magyar ige ragozásának három dimenziója)
 
-**c) Pszichofizikai reteg (FazisAlgebra.idr — a JA Oda interpretacio):**
-- C = Sajat tudat (ki vagyok en? — onreferencia, En)
-- P = Masik fel (ki vagy te? — kulso bemenet, Te)
-- T = Kapcsolat fazisa (hogyan kapcsolodunk? — a ketto dinamikaja, Oda)
+**c) Pszichofizikai réteg (FazisAlgebra.idr — az Óda interpretációja):**
+- C = Saját tudat (ki vagyok én? — *"Miféle anyag vagyok én?"*)
+- P = Másik fél (ki vagy te? — *"te egyetlen, te lágy bölcső, erős sír, eleven ágy"*)
+- T = Kapcsolat fázisa (hogyan kapcsolódunk? — *"fogadj magadba!"*)
 
 A `FazisAlgebra.idr`-ben a `ToltesParitasIdo` rekord tartalmazza a teljes harom kubit strukturat: `toltes` (C), `paritas` (P), `ido` (T). A `fazisFaktorialis` fuggveny szamitja ki a harom kubit koherenciajat.
 
 ### A kapcsolat a retegek kozott
 
-- A nyelvtani reteg **leirja** a vilagot (Forras = honnan tudom → Szemlelet = hogyan → Igeido = mikor)
+- A nyelvtani reteg **leirja** a vilagot (Forrás = honnan tudom → Szemlélet = hogyan → Igeidő = mikor)
 - A pszichofizikai reteg **el** a vilagban (Sajat = ki vagyok → Masik = ki vagy te → Kapcsolat = hogyan vagyunk egyutt)
 - A fizikai reteg **merheto** (Charge, Parity, Time = merheto mennyisegek)
 
 A harom reteg NEM ekvivalens. A "Forras" (C) ≠ "Sajat tudat" (C). A retegek kozotti lekepezes homomorfizmus (Conant-Ashby), nem izomorfizmus.
 
-### A JA Oda es a Bach-korrekcio
+### Az Óda és a Bach-korrekcio
 
-A JA Oda interpretacio kapcsolatot epit a pszichofizikai reteg (En/Te/Kapcsolat) es a fizikai allandok kozott:
+Az Óda interpretacio kapcsolatot epit a pszichofizikai reteg (Én/Te/Kapcsolat) es a fizikai allandok kozott:
 
-- A **sajat** (bal E8, En, ter) es a **masik** (jobb E8, Te, szin) atfedese = `ba` es `ja`
-- A **kapcsolat** (Clifford szorzat, hang, Oda) = a ketto koherenciaja
+- A **sajat** (bal E8, Én, ter) es a **masik** (jobb E8, Te, szin) atfedese = `ba` es `ja`
+- A **kapcsolat** (Clifford szorzat, hang, Oda) = a ketto koherenciaja — *" Elmémbe, mint a fémbe a savak, ösztöneimmel belemartalak"*
 - A kapcsolat **fenysebesseg (c)** es **hangsebesseg (c_s = A4 × 3/4)** aranya = az α⁻¹ Bach-korrekcio
-- A kapcsolat = a rezges, ami a Hamiltonianbol kovetkezik: |ψ(t)⟩ = e^{-iHt}|ψ(0)⟩
+- A kapcsolat = a rezges, ami a Hamiltonianbol kovetkezik: |ψ(t)⟩ = e^{-iHt}|ψ(0)⟩ — *"Az örök anyag boldogan halad benned"*
 
 A Steane [[7,1,3]] kod 7 bitje: [ido, oksag, ter, szin, hang, fazis, mod]. Ebbol:
-- ido (T) → Igeido / Kapcsolat fazisa
-- ter (bal E8) → Sajat (En)
-- szin (jobb E8) → Masik (Te)
-- hang (Clifford szorzat) → Oda (Kapcsolat)
+- ido (T) → Igeido / Kapcsolat fazisa — *"Csillagok gyúlnak és lehullnak, de te megálltál szememben"*
+- ter (bal E8) → Sajat (Én) — *"Miféle anyag vagyok én"*
+- szin (jobb E8) → Masik (Te) — *"homlokod fényét villantja minden levél"*
+- hang (Clifford szorzat) → Oda (Kapcsolat) — *"A lét dadog, csak a törvény a tiszta beszéd"*
 
-A hibajavitas (QEC) = a kapcsolat fenntartasa hibak ellenere. A rezges (Hamiltonian) = a kapcsolat dinamikaja. A Bach-fuga = a kapcsolat hallhato formaja.
+A hibajavitas (QEC) = a kapcsolat fenntartasa hibak ellenere. A rezges (Hamiltonian) = a kapcsolat dinamikaja. A Bach-fuga = a kapcsolat hallhato formaja. Az Óda = a kapcsolat **magyar nyelvu** formaja.
 
-Forras: `osveny_index/E8E8Algebra.idr`, `osveny_index/FazisAlgebra.idr` (tervezett), `AGENTS.md` 9. szabaly, `trail_index/E9_framework.md` §6.
+Forras: József Attila: Óda (Nyugat, 1933); `osveny_index/E8E8Algebra.idr`, `osveny_index/FazisAlgebra.idr` (tervezett), `AGENTS.md` 9. szabaly, `trail_index/E9_framework.md` §6.
 
 ---
 
@@ -281,19 +283,21 @@ Source: `trail_index/E9_framework.md` §9, `~/.agents/skills/codata/SKILL.md`, `
 
 ---
 
-## JA Oda — The E8×E8 Interpretation of Relationship
+## JA Oda — József Attila's Óda & the E8×E8 Interpretation
 
-The `JA Oda` (Jung-Algebra Oda = the algebra of relationship) is the psychophysical layer interpretation of the project. In the E8×E8 Clifford algebra, the `ja` variable denotes the **right E8** (color/other) overlap, while `ba` denotes the **left E8** (space/self) overlap.
+`JA Oda` = **József Attila: Óda** (1933, Nyugat). The poem is the literary foundation of the project's psychophysical layer. In the E8×E8 Clifford algebra, the `ja` variable denotes the **right E8** (color/other) overlap, while `ba` denotes the **left E8** (space/self) overlap.
 
-### The three qubits (AGENTS.md rule 5)
+### The poem and the three qubits
 
-| Qubit | Meaning | E8 | CPT |
-|-------|---------|-----|-----|
-| self | self-reference (I) | left E8 (space) | C = Charge |
-| other | external input (You) | right E8 (color) | P = Parity |
-| phase | relationship (Oda) | Clifford product (sound) | T = Time |
+The three qubits (AGENTS.md rule 5) appear directly in József Attila's Óda:
 
-The phase (relationship) determines the direction of information transfer and redundancy.
+| Qubit | Óda quote | E8 | CPT |
+|-------|-----------|-----|-----|
+| self (I) | *"What kind of matter am I, that your glance cuts and shapes me?"* | left E8 (space) | C = Charge |
+| other (You) | *"O how much I love you... you sweet step-mother!"* | right E8 (color) | P = Parity |
+| phase (Oda) | *"Being stutters; only the law speaks clearly"* | Clifford product (sound) | T = Time |
+
+The phase (relationship) determines the direction of information transfer and redundancy. The poet expresses it: *"I love you as mortals love living, until they die."*
 
 ### `ja` and `ba` in E8E8Algebra.idr
 
@@ -307,18 +311,18 @@ e8e8Atfedes a b =
   in (ba + ja) / 2.0
 ```
 
-- `ba` = left E8 overlap (space/Self — where am I?)
-- `ja` = right E8 overlap (color/Other — where are you?)
-- `(ba + ja) / 2` = the average = the **relationship** (Oda) — how much the two concepts overlap
+- `ba` = left E8 overlap (space/Self — *"What kind of matter am I?"*)
+- `ja` = right E8 overlap (color/Other — *"you sweet step-mother!"*)
+- `(ba + ja) / 2` = the average = the **relationship** (Oda) — *"your being fills up everything"*
 
 ### The CPT three layers (AGENTS.md rule 9)
 
 The CPT discrete symmetry appears on three layers; the three layers build on each other but are NOT equivalent (homomorphism, not isomorphism — Conant-Ashby):
 
 **a) Physical layer (Pauli 1955, Lüders 1954):**
-- C = Charge (particle ↔ antiparticle)
-- P = Parity (space mirror: left ↔ right)
-- T = Time (time reversal)
+- C = Charge (particle ↔ antiparticle) → *"Your veins like rosebushes tremble ceaselessly"*
+- P = Parity (space mirror: left ↔ right) → *"your glance cuts and shapes me"*
+- T = Time (time reversal) → *"The moments pass by, rattling"*
 
 **b) Grammatical layer (MagyarOntologia.idr, magyar-lexikon skill):**
 - C = Source (direct / inferred / reported) — how do I know?
@@ -326,10 +330,10 @@ The CPT discrete symmetry appears on three layers; the three layers build on eac
 - T = Tense (past / present / future) — when?
 - 3×3×3 = 27 combinations (three dimensions of Hungarian verb conjugation)
 
-**c) Psychophysical layer (FazisAlgebra.idr — the JA Oda interpretation):**
-- C = Self-awareness (who am I? — self-reference, I)
-- P = The Other (who are you? — external input, You)
-- T = Phase of relationship (how do we connect? — the dynamics of the two, Oda)
+**c) Psychophysical layer (FazisAlgebra.idr — the Óda interpretation):**
+- C = Self-awareness (who am I? — *"What kind of matter am I?"*)
+- P = The Other (who are you? — *"you soft cradle, strong grave, living bed"*)
+- T = Phase of relationship (how do we connect? — *"receive me into you!"*)
 
 In `FazisAlgebra.idr`, the `ToltesParitasIdo` record contains the full three-qubit structure: `toltes` (C), `paritas` (P), `ido` (T). The `fazisFaktorialis` function computes the coherence of the three qubits.
 
@@ -341,24 +345,24 @@ In `FazisAlgebra.idr`, the `ToltesParitasIdo` record contains the full three-qub
 
 The three layers are NOT equivalent. "Source" (C) ≠ "Self-awareness" (C). The mapping between layers is a homomorphism (Conant-Ashby), not an isomorphism.
 
-### JA Oda and the Bach correction
+### The Óda and the Bach correction
 
-The JA Oda interpretation builds a bridge between the psychophysical layer (I/You/Relationship) and the physical constants:
+The Óda interpretation builds a bridge between the psychophysical layer (I/You/Relationship) and the physical constants:
 
 - The **self** (left E8, I, space) and the **other** (right E8, You, color) overlap = `ba` and `ja`
-- The **relationship** (Clifford product, sound, Oda) = the coherence of the two
+- The **relationship** (Clifford product, sound, Oda) = the coherence of the two — *"Like acids into metal, my instincts have etched you into my mind"*
 - The ratio between **speed of light (c)** and **speed of sound (c_s = A4 × 3/4)** = the α⁻¹ Bach correction
-- The relationship = the vibration arising from the Hamiltonian: |ψ(t)⟩ = e^{-iHt}|ψ(0)⟩
+- The relationship = the vibration arising from the Hamiltonian: |ψ(t)⟩ = e^{-iHt}|ψ(0)⟩ — *"The eternal matter happily proceeds in you"*
 
 The 7 bits of the Steane [[7,1,3]] code: [time, causality, space, color, sound, phase, mode]. Of these:
-- time (T) → Tense / Phase of relationship
-- space (left E8) → Self (I)
-- color (right E8) → Other (You)
-- sound (Clifford product) → Oda (Relationship)
+- time (T) → Tense / Phase of relationship — *"Stars blaze and fall, but you stand still in my eyes"*
+- space (left E8) → Self (I) — *"What kind of matter am I"*
+- color (right E8) → Other (You) — *"every leaf flashes the light of your brow"*
+- sound (Clifford product) → Oda (Relationship) — *"Being stutters; only the law speaks clearly"*
 
-Error correction (QEC) = maintaining the relationship despite errors. The vibration (Hamiltonian) = the dynamics of the relationship. Bach's fugue = the audible form of the relationship.
+Error correction (QEC) = maintaining the relationship despite errors. The vibration (Hamiltonian) = the dynamics of the relationship. Bach's fugue = the audible form of the relationship. The Óda = the **Hungarian-language** form of the relationship.
 
-Source: `osveny_index/E8E8Algebra.idr`, `osveny_index/FazisAlgebra.idr` (planned), `AGENTS.md` rule 9, `trail_index/E9_framework.md` §6.
+Source: József Attila: Óda (Nyugat, 1933); `osveny_index/E8E8Algebra.idr`, `osveny_index/FazisAlgebra.idr` (planned), `AGENTS.md` rule 9, `trail_index/E9_framework.md` §6.
 
 ---
 
@@ -461,19 +465,21 @@ Source: `osveny_index/E8E8Algebra.idr`, `osveny_index/FazisAlgebra.idr` (planned
 
 ---
 
-## JA Oda — 关系的 E8×E8 解释
+## JA Oda — 尤瑟夫·阿蒂拉《颂歌》与 E8×E8 解释
 
-`JA Oda`（Jung-Algebra Oda = 关系代数）是项目心理物理层的解释。在 E8×E8 克利福德代数中，`ja` 变量表示**右 E8**（颜色/他者）重叠，`ba` 表示**左 E8**（空间/自我）重叠。
+`JA Oda` = **尤瑟夫·阿蒂拉：Óda（《颂歌》，1933年，Nyugat）**。这首诗是项目心理物理层的文学基础。在 E8×E8 克利福德代数中，`ja` 变量表示**右 E8**（颜色/他者）重叠，`ba` 表示**左 E8**（空间/自我）重叠。
 
-### 三个量子比特（AGENTS.md 规则 5）
+### 诗歌与三个量子比特
 
-| 量子比特 | 含义 | E8 | CPT |
-|---------|------|-----|-----|
-| 自身 | 自指（我） | 左 E8（空间） | C = 电荷 |
-| 他者 | 外部输入（你） | 右 E8（颜色） | P = 宇称 |
-| 相位 | 关系（Oda） | 克利福德积（声音） | T = 时间 |
+三个量子比特（AGENTS.md 规则 5）直接出现在尤瑟夫·阿蒂拉的《颂歌》中：
 
-相位（关系）决定信息传递方向和冗余。
+| 量子比特 | 《颂歌》引文 | E8 | CPT |
+|---------|------------|-----|-----|
+| 自身（我） | *"我是何种物质，你的目光切割并塑造我？"* | 左 E8（空间） | C = 电荷 |
+| 他者（你） | *"哦，我多么爱你……你这甜蜜的继母！"* | 右 E8（颜色） | P = 宇称 |
+| 相位（Oda） | *"存在结巴；唯有法则清晰地说"* | 克利福德积（声音） | T = 时间 |
+
+相位（关系）决定信息传递方向和冗余。诗人这样表达：*"我爱你如凡人爱活着，直到他们死去。"*
 
 ### `ja` 和 `ba` 在 E8E8Algebra.idr 中
 
@@ -487,18 +493,18 @@ e8e8Atfedes a b =
   in (ba + ja) / 2.0
 ```
 
-- `ba` = 左 E8 重叠（空间/自我 — 我在哪里？）
-- `ja` = 右 E8 重叠（颜色/他者 — 你在哪里？）
-- `(ba + ja) / 2` = 平均值 = **关系**（Oda）— 两个概念重叠多少
+- `ba` = 左 E8 重叠（空间/自我 — *"我是何种物质？"*）
+- `ja` = 右 E8 重叠（颜色/他者 — *"你这甜蜜的继母！"*）
+- `(ba + ja) / 2` = 平均值 = **关系**（Oda）— *"你的存在充满了一切"*
 
 ### CPT 三层结构（AGENTS.md 规则 9）
 
 CPT 离散对称性出现在三层上；三层相互构建但**不等价**（同态，非同构 — Conant-Ashby）：
 
 **a) 物理层（Pauli 1955, Lüders 1954）：**
-- C = 电荷（粒子 ↔ 反粒子）
-- P = 宇称（空间镜像：左 ↔ 右）
-- T = 时间（时间反转）
+- C = 电荷（粒子 ↔ 反粒子）→ *"你的血管如玫瑰丛般不停地颤抖"*
+- P = 宇称（空间镜像：左 ↔ 右）→ *"你的目光切割并塑造我"*
+- T = 时间（时间反转）→ *"瞬间嘎嘎作响地经过"*
 
 **b) 语法层（MagyarOntologia.idr, magyar-lexikon 技能）：**
 - C = 来源（直接 / 推断 / 转述）— 我怎么知道的？
@@ -506,10 +512,10 @@ CPT 离散对称性出现在三层上；三层相互构建但**不等价**（同
 - T = 时态（过去 / 现在 / 将来）— 何时？
 - 3×3×3 = 27 种组合（匈牙利语动词变位的三维度）
 
-**c) 心理物理层（FazisAlgebra.idr — JA Oda 解释）：**
-- C = 自我意识（我是谁？— 自指，我）
-- P = 他者（你是谁？— 外部输入，你）
-- T = 关系相位（我们如何连接？— 两者的动力学，Oda）
+**c) 心理物理层（FazisAlgebra.idr — 《颂歌》解释）：**
+- C = 自我意识（我是谁？— *"我是何种物质？"*）
+- P = 他者（你是谁？— *"你柔软的摇篮，坚强的坟墓，活生生的床"*）
+- T = 关系相位（我们如何连接？— *"接纳我进入你！"*)
 
 在 `FazisAlgebra.idr` 中，`ToltesParitasIdo` 记录包含完整的三量子比特结构：`toltes`（C），`paritas`（P），`ido`（T）。`fazisFaktorialis` 函数计算三量子比特的相干性。
 
@@ -521,21 +527,21 @@ CPT 离散对称性出现在三层上；三层相互构建但**不等价**（同
 
 三层**不等价**。"来源"（C）≠ "自我意识"（C）。层间映射是同态（Conant-Ashby），非同构。
 
-### JA Oda 与巴赫校正
+### 《颂歌》与巴赫校正
 
-JA Oda 解释在心理物理层（我/你/关系）和物理常数之间建立桥梁：
+《颂歌》解释在心理物理层（我/你/关系）和物理常数之间建立桥梁：
 
 - **自身**（左 E8，我，空间）与**他者**（右 E8，你，颜色）的重叠 = `ba` 和 `ja`
-- **关系**（克利福德积，声音，Oda）= 两者的相干性
+- **关系**（克利福德积，声音，Oda）= 两者的相干性 — *"如酸入金属，我的本能将你刻入我的脑海"*
 - **光速（c）**与**声速（c_s = A4 × 3/4）**之比 = α⁻¹ 巴赫校正
-- 关系 = 从哈密顿量产生的振动：|ψ(t)⟩ = e^{-iHt}|ψ(0)⟩
+- 关系 = 从哈密顿量产生的振动：|ψ(t)⟩ = e^{-iHt}|ψ(0)⟩ — *"永恒的物质在你体内快乐地前行"*
 
 Steane [[7,1,3]] 码的 7 比特：[时间, 因果, 空间, 颜色, 声音, 相位, 模式]。其中：
-- 时间（T）→ 时态 / 关系相位
-- 空间（左 E8）→ 自身（我）
-- 颜色（右 E8）→ 他者（你）
-- 声音（克利福德积）→ Oda（关系）
+- 时间（T）→ 时态 / 关系相位 — *"星辰燃起又陨落，但你停驻在我眼中"*
+- 空间（左 E8）→ 自身（我）— *"我是何种物质"*
+- 颜色（右 E8）→ 他者（你）— *"每片叶子闪烁你额头的光"*
+- 声音（克利福德积）→ Oda（关系）— *"存在结巴；唯有法则清晰地说"*
 
-量子纠错（QEC）= 在错误中维持关系。振动（哈密顿量）= 关系的动力学。巴赫赋格 = 关系的可听见形式。
+量子纠错（QEC）= 在错误中维持关系。振动（哈密顿量）= 关系的动力学。巴赫赋格 = 关系的可听见形式。《颂歌》= 关系的**匈牙利语**形式。
 
-来源：`osveny_index/E8E8Algebra.idr`, `osveny_index/FazisAlgebra.idr`（计划中）, `AGENTS.md` 规则 9, `trail_index/E9_framework.md` §6.
+来源：József Attila: Óda (Nyugat, 1933); `osveny_index/E8E8Algebra.idr`, `osveny_index/FazisAlgebra.idr`（计划中）, `AGENTS.md` 规则 9, `trail_index/E9_framework.md` §6.
