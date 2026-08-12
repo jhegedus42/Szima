@@ -23,7 +23,7 @@ U0 = expm(1j * (e8 + 1j*im))
 U = U0
 for _ in range(3):
     U = np.kron(U, U0)
-N = 160
+N = 80
 k = U.shape[0] // N
 mag = np.abs(U[::k, ::k][:N, :N])
 ph  = np.angle(U[::k, ::k][:N, :N])
@@ -67,20 +67,20 @@ gamma = 1.2
 mag_norm = (mag - mag.min())/(mag.max()-mag.min())
 base_rgba = plt.get_cmap("magma")(mag_norm)   # (N,N,4)
 
-frames = 30
+frames = 20
 imgs = []
 for f in range(frames):
     t = f
     # E8 crystalline standing part + affine E9 traveling part across all roots
     # field w(phi,theta,t) on the (N,N) grid  (vectorize over roots)
     # dot of each wavevector with (Ph, Th)
-    arg = waves[:, 0:1] * Ph.ravel() + waves[:, 1:2] * Th.ravel()   # (240, N*N)
+    arg = waves[:, 0:1] * Ph.ravel()[None, :] + waves[:, 1:2] * Th.ravel()[None, :]   # (240, N*N)
     # affine E9 traveling term: propagation around longitude (the "ninth" affine root)
     aff = Ph.ravel()[None, :] - omega * t
     # charge phase (C-break) + chirality (P-break)
     cphase = gamma * charge[:, None]
     pchir = 1.0 + alpha_P * np.sin(Ph.ravel()[None, :])   # breaks mirror phi->-phi
-    contrib = np.cos(arg + aff[None, :] + cphase[:, None]) * pchir[None, :]
+    contrib = np.cos(arg + aff + cphase) * pchir
     W = contrib.mean(axis=0).reshape(N, N)                # (N,N)
     Wn = (W - W.min())/(W.max()-W.min())                 # 0..1
     # modulate brightness / blend toward phase hue
@@ -91,7 +91,7 @@ for f in range(frames):
     phase_tint = (np.sin(ph) * 0.5 + 0.5)[:, :, None]
     rgba[..., 1] = np.clip(rgba[..., 1] + 0.15*phase_tint[:,:,0]*Wn, 0, 1)
 
-    fig = plt.figure(figsize=(8, 8))
+    fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(111, projection="3d")
     ax.plot_surface(X, Y, Z, facecolors=rgba, rstride=1, cstride=1,
                     linewidth=0, antialiased=False)

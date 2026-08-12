@@ -91,6 +91,10 @@ Az eredmeny:
 
 A Bach-korrekcio az E9 framework §6-aban van leirva: a Bach-fuga "perpetuum mobile"-ja = a Carnot-ciklus = a kvantumhibajavitas vegtelen ciklusa. A crab-canon (BWV 1079) egy Mobius-szalagon = a paritas-tukor (P) nem letezik = E8⁴ nem zarodik E9-be. A "Bach-korrekcio" = az a finomhangolas, ami a zenei skala (a perfekt kvart) es a fenysebesseg kozotti aranybol adodik, es az α⁻¹ utolso 9 szamjegyet adja meg.
 
+![E8⁴ → E9 CPT-broken wave](e8_e9_cpt_wave.gif)
+
+*A felette az E8⁴ gömb → E9 hullám (CPT-törött): P = chiralitás, T = irányított terjedés, C = töltés-fázis.*
+
 A `G` gravitacios allando is levezetesre kerult, de az α⁻¹ a fo eredmeny.
 
 Forras: `trail_index/E9_framework.md` §9, `~/.agents/skills/codata/SKILL.md`, `trail_index/books/codata_2022_complete.txt`.
@@ -269,6 +273,10 @@ The result:
 
 The Bach correction is described in E9 framework §6: Bach's fugue as "perpetuum mobile" = the Carnot cycle = the infinite cycle of quantum error correction. The crab canon (BWV 1079) on a Möbius strip = the parity mirror (P) does not exist = E8⁴ does not close into E9. The "Bach correction" = the fine-tuning arising from the ratio between the musical scale (the perfect fourth) and the speed of light, yielding the last 9 digits of α⁻¹.
 
+![E8⁴ → E9 CPT-broken wave](e8_e9_cpt_wave.gif)
+
+*Above: the E8⁴ sphere → E9 wave (CPT-broken): P = chirality, T = directed propagation, C = charge phase.*
+
 Source: `trail_index/E9_framework.md` §9, `~/.agents/skills/codata/SKILL.md`, `trail_index/books/codata_2022_complete.txt`.
 
 ---
@@ -444,6 +452,10 @@ Source: `osveny_index/E8E8Algebra.idr`, `osveny_index/FazisAlgebra.idr` (planned
 | 137.035999174 | 137.035999177 | ±0.000000021 | **通过 ✓ (0.12σ)** |
 
 巴赫校正在 E9 框架 §6 中描述：巴赫赋格作为"永动机" = 卡诺循环 = 量子纠错的无限循环。蟹形卡农（BWV 1079）在莫比乌斯带上 = 宇称镜面（P）不存在 = E8⁴ 不闭合为 E9。"巴赫校正" = 从音阶（纯四度）与光速之比中产生的微调，给出 α⁻¹ 的最后 9 位数字。
+
+![E8⁴ → E9 CPT-broken wave](e8_e9_cpt_wave.gif)
+
+*上方：E8⁴ 球面 → E9 波（CPT 破缺）：P = 手征性，T = 定向传播，C = 电荷相位。*
 
 来源：`trail_index/E9_framework.md` §9, `~/.agents/skills/codata/SKILL.md`, `trail_index/books/codata_2022_complete.txt`.
 
