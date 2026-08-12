@@ -1,4 +1,4 @@
-# opencode
+# Szima
 
 ## Magyar
 
