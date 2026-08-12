@@ -13,3 +13,11 @@ Mac Lane*.pdf
 *.log
 *.out
 *.toc
+
+# scala-cli caches
+.trail_index/.scala-build/
+.trail_index/.bsp/
+
+# scala-cli caches (fixed patterns)
+trail_index/.scala-build/
+trail_index/.bsp/
