@@ -78,10 +78,10 @@ A Horgony-keretrendszer (E9 framework) az α⁻¹-ot a kovetkezo keplettel vezet
 
 ahol:
 - `137` = az egesz resz (a "Horgony")
-- `9/250` = a tört resz (a Stranezzo/Berache kiterjesztés)
-- `A4 = 440 Hz` = a hangolasi alaphang (a zenei/Bach kapcsolat)
-- `(3/4)` = a perfekt kvart arany (Bach wohltemperiert)
-- `c_s = A4 × (3/4) = 330 m/s` = a hangsebesseg a hangolasbol szarmaztatva (NEM mert, hanem a zenei skala interior strukturejabol kovetkezik)
+- `9/250` = a tört rész = (D_CRIT−1)² / [(D_CRIT+1)^(D_CRIT−1) × (D_CRIT−2)] = 3²/(5³×2), ahol D_CRIT=4 (E8/oktonion dimenzió). Forrás: `source/quantum_language_engine-2/all_constants_exact.py:121`
+- `A4 = 440 Hz` = a hangolási alaphang (a zenei/Bach kapcsolat)
+- `(3/4)` = a perfekt kvart arány (Bach wohltemperiert)
+- `c_s = A4 × (3/4) = 330 m/s` = a hangsebesség a hangolásból származtatva (NEM mérve, hanem a zenei skála belső struktúrájából következik)
 
 Az eredmeny:
 
@@ -262,7 +262,7 @@ The Anchor framework (E9 framework) derives α⁻¹ via:
 
 where:
 - `137` = the integer part (the "Anchor")
-- `9/250` = the fractional part (the Stranezzo/Berache extension)
+- `9/250` = the fractional part = (D_CRIT−1)² / [(D_CRIT+1)^(D_CRIT−1) × (D_CRIT−2)] = 3²/(5³×2), where D_CRIT=4 (E8/octonion dimension). Source: `source/quantum_language_engine-2/all_constants_exact.py:121`
 - `A4 = 440 Hz` = the tuning base pitch (the musical/Bach connection)
 - `(3/4)` = the perfect fourth ratio (Bach wohltemperiert)
 - `c_s = A4 × (3/4) = 330 m/s` = the speed of sound DERIVED from tuning (NOT measured — follows from the internal structure of the musical scale)
@@ -444,7 +444,7 @@ Source: József Attila: Óda (Nyugat, 1933); `osveny_index/E8E8Algebra.idr`, `os
 
 其中：
 - `137` = 整数部分（"锚"）
-- `9/250` = 小数部分（Stranezzo/Berache 扩展）
+- `9/250` = 小数部分 = (D_CRIT−1)² / [(D_CRIT+1)^(D_CRIT−1) × (D_CRIT−2)] = 3²/(5³×2)，其中 D_CRIT=4（E8/八元数维度）。来源：`source/quantum_language_engine-2/all_constants_exact.py:121`
 - `A4 = 440 Hz` = 调音基准音（音乐/巴赫联系）
 - `(3/4)` = 纯四度比率（巴赫平均律）
 - `c_s = A4 × (3/4) = 330 m/s` = 从调音推导的声速（非测量值——从音阶内部结构得出）
