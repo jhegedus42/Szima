@@ -16,6 +16,8 @@ import MagyarNyelvtan
 import Kodol
 import Tavolsag
 
+import System.File
+
 -- ─── 1. BILINGUAL MONDAT ────────────────────────────────────
 
 ||| Egy bilingual mondat: magyar + angol + forras.
@@ -141,46 +143,41 @@ keres kerdesSzoveg mondatok =
         Nothing => Nothing
         Just (d, m) => Just (ValaszKonstruktor m.magyar m.angol m.forras d (hasonlosag d))
 
--- ─── 5. FŐPROGRAM (teszt) ───────────────────────────────────
+-- ─── 5. FÁJL BEOLVASÁS (IO) ─────────────────────────────────
 
-||| Teszt: par peldamondat kodolasa es kereses kozottuk.
-||| A valodi fajl-beolvasas kulon kell (IO).
+||| String felosztasa sorokra (newlines szerint).
 public export
-keresoFom : IO ()
-keresoFom = do
-  putStrLn "=== KERESO — Magyar kerdes → valasz ==="
+sorokra : String -> List String
+sorokra s = splitOnChar '\n' s
+
+||| Bilingual fajl beolvasasa: utvonal → List BilingualMondat.
+||| A fajl formatuma: HU: ... / EN: ... / SRC: ... harmasok.
+public export
+beolvasBilingual : String -> IO (List BilingualMondat)
+beolvasBilingual utvonal = do
+  tartalom <- readFile utvonal
+  case tartalom of
+    Left hiba => do
+      putStrLn ("Hiba a fajl beolvasasakor: " ++ show hiba)
+      pure []
+    Right szoveg => do
+      let sorok = sorokra szoveg
+      let mondatok = parszol sorok
+      pure mondatok
+
+-- ─── 6. FŐPROGRAM (fajl beolvasassal) ───────────────────────
+
+public export
+keresoFomFajl : IO ()
+keresoFomFajl = do
+  putStrLn "=== KERESO — Awodey bilingual ch1 ==="
   putStrLn ""
-  putStrLn "Teszt: 5 bilingual mondat + 3 kerdes"
+  -- Fajl beolvasasa
+  mondatok <- beolvasBilingual "../trail_index/books/awodey_bilingual_ch1.txt"
+  putStrLn ("Beolvasott mondatok: " ++ show (length mondatok))
   putStrLn ""
-  -- Teszt mondatok (kezzel)
-  let mondatok =
-        [ BilingualKonstruktor
-            "Egy kategória objektumokból és nyilakból áll."
-            "A category consists of objects and arrows."
-            "Awodey §1.3"
-            (kodol "Egy kategória objektumokból és nyilakból áll.")
-        , BilingualKonstruktor
-            "A funktor két kategória közötti struktúramegőrző leképezés."
-            "A functor is a structure-preserving map between two categories."
-            "Awodey §7.1"
-            (kodol "A funktor két kategória közötti struktúramegőrző leképezés.")
-        , BilingualKonstruktor
-            "Egy izomorfizmus egy invertálható morfizmus."
-            "An isomorphism is an invertible morphism."
-            "Awodey §1.5"
-            (kodol "Egy izomorfizmus egy invertálható morfizmus.")
-        , BilingualKonstruktor
-            "Az objektum a kategória alapegysége."
-            "An object is the basic unit of a category."
-            "Awodey §1.3"
-            (kodol "Az objektum a kategória alapegysége.")
-        , BilingualKonstruktor
-            "A kompozíció két morfizmus egymás utáni alkalmazása."
-            "Composition is the application of two morphisms in sequence."
-            "Awodey §1.3"
-            (kodol "A kompozíció két morfizmus egymás utáni alkalmazása.")
-        ]
-  -- Kerdések
+
+  -- Kerdesek
   putStrLn "Kérdés 1: 'Mi az a kategória?'"
   case keres "Mi az a kategória?" mondatok of
     Just v => do
@@ -190,6 +187,7 @@ keresoFom = do
       putStrLn ("  Távolság: " ++ show v.tavolsag ++ " (" ++ show v.hasonlosagEr ++ ")")
     Nothing => putStrLn "  Nincs találat."
   putStrLn ""
+
   putStrLn "Kérdés 2: 'Mi az a funktor?'"
   case keres "Mi az a funktor?" mondatok of
     Just v => do
@@ -199,6 +197,7 @@ keresoFom = do
       putStrLn ("  Távolság: " ++ show v.tavolsag ++ " (" ++ show v.hasonlosagEr ++ ")")
     Nothing => putStrLn "  Nincs találat."
   putStrLn ""
+
   putStrLn "Kérdés 3: 'Hol van az objektum?'"
   case keres "Hol van az objektum?" mondatok of
     Just v => do
@@ -208,4 +207,25 @@ keresoFom = do
       putStrLn ("  Távolság: " ++ show v.tavolsag ++ " (" ++ show v.hasonlosagEr ++ ")")
     Nothing => putStrLn "  Nincs találat."
   putStrLn ""
+
+  putStrLn "Kérdés 4: 'Miért használunk izomorfizmust?'"
+  case keres "Miért használunk izomorfizmust?" mondatok of
+    Just v => do
+      putStrLn ("  Válasz (HU): " ++ v.magyarValasz)
+      putStrLn ("  Válasz (EN): " ++ v.angolValasz)
+      putStrLn ("  Forrás: " ++ v.forrasHely)
+      putStrLn ("  Távolság: " ++ show v.tavolsag ++ " (" ++ show v.hasonlosagEr ++ ")")
+    Nothing => putStrLn "  Nincs találat."
+  putStrLn ""
+
+  putStrLn "Kérdés 5: 'Mivel kapcsolódik a funktor a kategóriához?'"
+  case keres "Mivel kapcsolódik a funktor a kategóriához?" mondatok of
+    Just v => do
+      putStrLn ("  Válasz (HU): " ++ v.magyarValasz)
+      putStrLn ("  Válasz (EN): " ++ v.angolValasz)
+      putStrLn ("  Forrás: " ++ v.forrasHely)
+      putStrLn ("  Távolság: " ++ show v.tavolsag ++ " (" ++ show v.hasonlosagEr ++ ")")
+    Nothing => putStrLn "  Nincs találat."
+  putStrLn ""
+
   putStrLn "Kész."
