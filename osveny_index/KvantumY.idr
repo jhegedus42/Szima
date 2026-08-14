@@ -153,59 +153,112 @@ spiralMegall kuszob (S k) =
 -- = a klasszikus Y (nincs fázis, nincs visszatérés) = divergál.
 -- = a spirál megtört — a fázis nem viszi vissza, hanem kioltja.
 
+-- ─── 6. KONKRÉT SZÁMÍTÁSOK (futtatható) ────────────────────
+
+||| A Bach-korrekcio valós része: 137 + 9/250 - A4*(3/4)²/c
+||| A4 = 440, c = 299792458
+public export
+bachKorrekcioRe : Double
+bachKorrekcioRe =
+  let a4 = 440.0
+      c = 299792458.0
+      egesz = 137.0
+      tort = 9.0 / 250.0
+      cs = a4 * (3.0 / 4.0)  -- 330 m/s
+      korrekcio = a4 * (3.0/4.0) * (3.0/4.0) / c
+  in egesz + tort - korrekcio
+
+||| A CODATA mért érték (α⁻¹)
+public export
+codataAlfaInverz : Double
+codataAlfaInverz = 137.035999177
+
+||| A hiba a Bach-korrekcio és a CODATA között
+public export
+bachHiba : Double
+bachHiba = abs (bachKorrekcioRe - codataAlfaInverz)
+
+||| A mérési bizonytalanság (CODATA)
+public export
+codataHiba : Double
+codataHiba = 0.000000021
+
+||| A hiba sigma-ban: |bach - codata| / codataHiba
+public export
+bachSigma : Double
+bachSigma = bachHiba / codataHiba
+
+||| A CPT-rest: δ = aranymetszés szög - α⁻¹ (fokban)
+public export
+cptRest : Double
+cptRest = abs (aranyMetszesSzoog * 180.0 / 3.141592653589793 - 137.036)
+
+||| A spirál konvergenciája: N lépés után a sugár
+public export
+spiralSugar : Nat -> Double
+spiralSugar 0 = 1.0
+spiralSugar (S k) = spiralSugar k / aranyMetszes
+
+||| A kvantum Y konvergenciája: N lépés után
+||| teszt: f(x) = 0.5*x + 0.5 → fixpont = 1.0
+public export
+kvantumYTeszt : Nat -> Double
+kvantumYTeszt 0 = 0.5
+kvantumYTeszt (S k) =
+  let elozo = kvantumYTeszt k
+      fazisSzorzo = cos (fromInteger (natToInteger k) * aranyMetszesSzoog)
+  in fazisSzorzo * (0.5 * elozo + 0.5)
+
+||| A kvantum Y konvergenciája a fixponthoz:
+||| |Y_n - fixpont| → 0?
+public export
+kvantumYKonvergencia : Nat -> Double
+kvantumYKonvergencia n = abs (kvantumYTeszt n - 1.0)
+
 -- ─── 7. FŐPROGRAM ───────────────────────────────────────────
 
 public export
 kvantumYFom : IO ()
 kvantumYFom = do
-  putStrLn "=== KVANTUM Y-KOMBINATOR — fazis + aranymetszes spirál ==="
+  putStrLn "=== KVANTUM Y-KOMBINATOR — fazis + aranymetszes spiral ==="
   putStrLn ""
-  putStrLn "Klasszikus Y: Y(f) = f(Y(f)) — divergal (nincs fazis)"
-  putStrLn "Kvantum Y:    Y_f(f) = e^{iφ} * f(Y_f(f)) — konvergal (spirál)"
+  putStrLn "1. ARANYMETSES:"
+  putStrLn ("  fi = " ++ show aranyMetszes)
+  putStrLn ("  szog = " ++ show (aranyMetszesSzoog * 180.0 / 3.141592653589793) ++ " fok")
   putStrLn ""
-  putStrLn ("AranyMetszes fi = " ++ show aranyMetszes)
-  putStrLn ("AranyMetszes szog = " ++ show aranyMetszesSzoog ++ " rad")
-  putStrLn ("  = " ++ show (aranyMetszesSzoog * 180.0 / 3.141592653589793) ++ " fok")
-  putStrLn ("  alpha^-1 = 137.036 (a finomszerkezeti allando)")
-  putStrLn ("  aranyMetszesSzoog = 137.5 fok (a Bach-korrekcio celja)")
+  putStrLn "2. BACH-KORREKCIO (konkret szamitas):"
+  putStrLn ("  Re(α⁻¹) = 137 + 9/250 - A4*(3/4)²/c")
+  putStrLn ("         = " ++ show bachKorrekcioRe)
+  putStrLn ("  CODATA  = " ++ show codataAlfaInverz)
+  putStrLn ("  Hiba    = " ++ show bachHiba)
+  putStrLn ("  Sigma   = " ++ show bachSigma ++ "σ")
+  putStrLn ("  Meresi hiba = " ++ show codataHiba)
+  putStrLn ("  Eredmeny: " ++ (if bachSigma < 1.0 then "MERESI HIBAN BELUL ✓" else "NEM ✗"))
   putStrLn ""
-  putStrLn "BACH-KORREKCIO A FAZISBAN:"
-  putStrLn "  A CODATA a REAL reszt meri: Re(α⁻¹) = 137.035999177"
-  putStrLn "  A FAZIS reszt nem meri:     Im(α⁻¹) = e^{iφ}"
-  putStrLn "  φ = aranymetszes szog ≈ 137.5°"
-  putStrLn "  δ = |137.5° - 137.036| = 0.5° = a CPT-rest"
-  putStrLn "  A kvantum Y spirálja = a fazis-korrekcio"
-  putStrLn "  A valos resz konvergal (137 → 137.036)"
-  putStrLn "  A fazis resz forog (a spiral)"
-  putStrLn "  A ketto egyutt = a komplex fixpont"
+  putStrLn "3. CPT-REST (fazis):"
+  putStrLn ("  δ = |137.5° - 137.036| = " ++ show cptRest ++ "°")
+  putStrLn ("  Ez a fazis-resz amit a CODATA nem mer")
   putStrLn ""
-  putStrLn "CODATA egyeztetes:"
-  putStrLn "  Re(α⁻¹) = 137.035999174 (Bach-korrekcio valos szamokkal)"
-  putStrLn "  Re(α⁻¹) = 137.035999177 (CODATA mert ertek)"
-  putStrLn "  Hiba = 0.12σ (meresi hiban belul)"
-  putStrLn "  DE: a fazis reszt a CODATA nem meri!"
-  putStrLn "  A fazis = δ = 0.5° = a CPT-rest = a buborek"
+  putStrLn "4. SPIRAL KONVERGENCIA (konkret szamitas):"
+  putStrLn ("  0 lepes: " ++ show (spiralSugar 0))
+  putStrLn ("  1 lepes: " ++ show (spiralSugar 1))
+  putStrLn ("  2 lepes: " ++ show (spiralSugar 2))
+  putStrLn ("  3 lepes: " ++ show (spiralSugar 3))
+  putStrLn ("  5 lepes: " ++ show (spiralSugar 5))
+  putStrLn ("  10 lepes: " ++ show (spiralSugar 10))
+  putStrLn ("  20 lepes: " ++ show (spiralSugar 20))
   putStrLn ""
-  putStrLn "Spiral konvergencia (sugar 1.0 -> 0):"
-  putStrLn ("  0 lepes:  sugar = 1.0")
-  putStrLn ("  1 lepes:  sugar = " ++ show (1.0 / aranyMetszes))
-  putStrLn ("  2 lepes:  sugar = " ++ show (1.0 / (aranyMetszes * aranyMetszes)))
-  putStrLn ("  3 lepes:  sugar = " ++ show (1.0 / (aranyMetszes * aranyMetszes * aranyMetszes)))
-  putStrLn ("  5 lepes:  sugar = " ++ show (1.0 / (aranyMetszes * aranyMetszes * aranyMetszes * aranyMetszes * aranyMetszes)))
+  putStrLn "5. KVANTUM Y KONVERGENCIA (konkret szamitas):"
+  putStrLn ("  f(x) = 0.5*x + 0.5, fixpont = 1.0")
+  putStrLn ("  0 lepes: Y = " ++ show (kvantumYTeszt 0) ++ "  |Y-1| = " ++ show (kvantumYKonvergencia 0))
+  putStrLn ("  1 lepes: Y = " ++ show (kvantumYTeszt 1) ++ "  |Y-1| = " ++ show (kvantumYKonvergencia 1))
+  putStrLn ("  2 lepes: Y = " ++ show (kvantumYTeszt 2) ++ "  |Y-1| = " ++ show (kvantumYKonvergencia 2))
+  putStrLn ("  3 lepes: Y = " ++ show (kvantumYTeszt 3) ++ "  |Y-1| = " ++ show (kvantumYKonvergencia 3))
+  putStrLn ("  5 lepes: Y = " ++ show (kvantumYTeszt 5) ++ "  |Y-1| = " ++ show (kvantumYKonvergencia 5))
+  putStrLn ("  10 lepes: Y = " ++ show (kvantumYTeszt 10) ++ "  |Y-1| = " ++ show (kvantumYKonvergencia 10))
   putStrLn ""
-  putStrLn "A 'fog' = a kvantum Y:"
-  putStrLn "  'meg fogom' = e^{iφ} * (elkapom) = a spiral ami visszater"
-  putStrLn "  'megall'    = a spiral elerte a fixpontot (d ≈ 0)"
-  putStrLn "  'folytatodik' = a spiral meg forog (d > 0)"
-  putStrLn ""
-  putStrLn "A versben (Jozsef Attila: Tudod, hogy nincs bocsanat):"
-  putStrLn "  'megall' = 'nincs bocsanat' = nincs hibajavitas = klasszikus Y"
-  putStrLn "  'folytatodik' = 'meg remelj' = van fazis = kvantum Y = spiral"
-  putStrLn ""
-  putStrLn "INFORMACIO NEM VESZTHETO EL (unitaritas, no-cloning):"
-  putStrLn "  A valos reszt a CODATA meri (137.035999177)"
-  putStrLn "  A fazis reszt a Bach-korrekcio kalkulalja (e^{iφ})"
-  putStrLn "  A kettő egyutt = a teljes kvantum allapot"
-  putStrLn "  A δ = 0.5° = ami nem merheto = ami a kvantum-resze"
+  putStrLn "6. 'fog' = kvantum Y:"
+  putStrLn "  'megall' = nincs fazis = klasszikus Y = divergal"
+  putStrLn "  'folytatodik' = van fazis = kvantum Y = spiral konvergal"
   putStrLn ""
   putStrLn "Kesz."
