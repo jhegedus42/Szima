@@ -44,6 +44,22 @@ fogalomSzotar =
   , ("víz",          E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Egy Nulla)
   , ("fény",         E8PontKonstruktor Egy Nulla Nulla Nulla Nulla Nulla Nulla Nulla)
   , ("pillanat",     E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Nulla Egy)
+  -- József Attila: Tudod, hogy nincs bocsánat (1937)
+  , ("bocsanat",     E8PontKonstruktor Egy Nulla Nulla Nulla Nulla Egy Nulla Nulla)
+  , ("bocsánat",     E8PontKonstruktor Egy Nulla Nulla Nulla Nulla Egy Nulla Nulla)
+  , ("bun",          E8PontKonstruktor Nulla Egy Nulla Nulla Nulla Egy Nulla Nulla)
+  , ("bűn",          E8PontKonstruktor Nulla Egy Nulla Nulla Nulla Egy Nulla Nulla)
+  , ("konny",        E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Egy Nulla)
+  , ("könny",        E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Egy Nulla)
+  , ("sziv",         E8PontKonstruktor Egy Nulla Nulla Egy Nulla Nulla Nulla Nulla)
+  , ("szív",         E8PontKonstruktor Egy Nulla Nulla Egy Nulla Nulla Nulla Nulla)
+  , ("fegyver",      E8PontKonstruktor Nulla Nulla Nulla Egy Nulla Egy Nulla Nulla)
+  , ("pszichoanalizis", E8PontKonstruktor Nulla Nulla Egy Nulla Nulla Egy Egy Nulla)
+  , ("carnot",       E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Nulla Egy)
+  , ("carnot-ciklus", E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Nulla Egy)
+  , ("dekoherencia", E8PontKonstruktor Nulla Nulla Egy Nulla Nulla Nulla Nulla Egy)
+  , ("entropia",     E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Egy Nulla)
+  , ("hibajavitas",  E8PontKonstruktor Egy Nulla Nulla Nulla Egy Nulla Nulla Egy)
   ]
 
 public export

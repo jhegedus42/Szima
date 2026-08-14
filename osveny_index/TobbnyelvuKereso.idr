@@ -320,8 +320,12 @@ tobbnyelvuKeresoFom : IO ()
 tobbnyelvuKeresoFom = do
   putStrLn "=== TÖBBNYELVŰ HADAMARD KERESŐ (HU/EN/LA/ZH) ==="
   putStrLn ""
-  mondatok <- beolvasQuadlingual "../trail_index/books/awodey_quadlingual_ch1.txt"
-  putStrLn ("Beolvasott mondatok: " ++ show (length mondatok))
+  -- Awodey 1. fejezet
+  mondatok1 <- beolvasQuadlingual "../trail_index/books/awodey_quadlingual_ch1.txt"
+  -- József Attila vers elemzés
+  mondatok2 <- beolvasQuadlingual "../trail_index/books/jozsef_attila_nincs_bocsanat_quadlingual.txt"
+  let mondatok = mondatok1 ++ mondatok2
+  putStrLn ("Beolvasott mondatok: " ++ show (length mondatok) ++ " (Awodey: " ++ show (length mondatok1) ++ ", József Attila: " ++ show (length mondatok2) ++ ")")
   putStrLn ""
 
   let kerdesek = [
@@ -329,7 +333,12 @@ tobbnyelvuKeresoFom = do
     "Mi az a funktor?",
     "Hol van az objektum?",
     "Miert hasznalunk izomorfizmust?",
-    "Mivel kapcsolodik a funktor a kategoriahoz?"
+    "Mivel kapcsolodik a funktor a kategoriahoz?",
+    "Mi a bocsanat?",
+    "Miert leallt a Carnot-ciklus?",
+    "Mivel a pszichoanalizis nem gyogyit?",
+    "Mi a fog szerepe a versben?",
+    "Mi a konny jelentese?"
   ]
 
   kerdesCiklus kerdesek mondatok
