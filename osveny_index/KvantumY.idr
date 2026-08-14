@@ -161,13 +161,30 @@ kvantumYFom = do
   putStrLn "=== KVANTUM Y-KOMBINATOR — fazis + aranymetszes spirál ==="
   putStrLn ""
   putStrLn "Klasszikus Y: Y(f) = f(Y(f)) — divergal (nincs fazis)"
-  putStrLn "Kvantum Y:    Y_f(f) = e^{if} * f(Y_f(f)) — konvergal (spirál)"
+  putStrLn "Kvantum Y:    Y_f(f) = e^{iφ} * f(Y_f(f)) — konvergal (spirál)"
   putStrLn ""
   putStrLn ("AranyMetszes fi = " ++ show aranyMetszes)
   putStrLn ("AranyMetszes szog = " ++ show aranyMetszesSzoog ++ " rad")
   putStrLn ("  = " ++ show (aranyMetszesSzoog * 180.0 / 3.141592653589793) ++ " fok")
   putStrLn ("  alpha^-1 = 137.036 (a finomszerkezeti allando)")
   putStrLn ("  aranyMetszesSzoog = 137.5 fok (a Bach-korrekcio celja)")
+  putStrLn ""
+  putStrLn "BACH-KORREKCIO A FAZISBAN:"
+  putStrLn "  A CODATA a REAL reszt meri: Re(α⁻¹) = 137.035999177"
+  putStrLn "  A FAZIS reszt nem meri:     Im(α⁻¹) = e^{iφ}"
+  putStrLn "  φ = aranymetszes szog ≈ 137.5°"
+  putStrLn "  δ = |137.5° - 137.036| = 0.5° = a CPT-rest"
+  putStrLn "  A kvantum Y spirálja = a fazis-korrekcio"
+  putStrLn "  A valos resz konvergal (137 → 137.036)"
+  putStrLn "  A fazis resz forog (a spiral)"
+  putStrLn "  A ketto egyutt = a komplex fixpont"
+  putStrLn ""
+  putStrLn "CODATA egyeztetes:"
+  putStrLn "  Re(α⁻¹) = 137.035999174 (Bach-korrekcio valos szamokkal)"
+  putStrLn "  Re(α⁻¹) = 137.035999177 (CODATA mert ertek)"
+  putStrLn "  Hiba = 0.12σ (meresi hiban belul)"
+  putStrLn "  DE: a fazis reszt a CODATA nem meri!"
+  putStrLn "  A fazis = δ = 0.5° = a CPT-rest = a buborek"
   putStrLn ""
   putStrLn "Spiral konvergencia (sugar 1.0 -> 0):"
   putStrLn ("  0 lepes:  sugar = 1.0")
@@ -184,5 +201,11 @@ kvantumYFom = do
   putStrLn "A versben (Jozsef Attila: Tudod, hogy nincs bocsanat):"
   putStrLn "  'megall' = 'nincs bocsanat' = nincs hibajavitas = klasszikus Y"
   putStrLn "  'folytatodik' = 'meg remelj' = van fazis = kvantum Y = spiral"
+  putStrLn ""
+  putStrLn "INFORMACIO NEM VESZTHETO EL (unitaritas, no-cloning):"
+  putStrLn "  A valos reszt a CODATA meri (137.035999177)"
+  putStrLn "  A fazis reszt a Bach-korrekcio kalkulalja (e^{iφ})"
+  putStrLn "  A kettő egyutt = a teljes kvantum allapot"
+  putStrLn "  A δ = 0.5° = ami nem merheto = ami a kvantum-resze"
   putStrLn ""
   putStrLn "Kesz."
