@@ -1,5 +1,8 @@
 module MagyarNyelvtan
 
+import Steane713
+import E8E8Algebra
+
 -- ═══════════════════════════════════════════════════════════════
 -- MAGYAR NYELVTAN — A 18 ESETRAG + IGERAGOZÁS TÍPUSOKKÉNT
 -- ═══════════════════════════════════════════════════════════════
@@ -389,3 +392,28 @@ magyarNyelvtanFom = do
     Nothing   => putStrLn "  Nem ismert fel."
   putStrLn ""
   putStrLn "Kész."
+
+-- ─── ESETRAG → E8PONT (a nyelvtan resze) ────────────────────
+
+||| Az esetrag E8 kódja (jobb E8 = szín = fázis).
+||| 18 eset → 8 Kubit.
+public export
+esetKod : Esetrag -> E8Pont
+esetKod NominativusE     = E8PontKonstruktor Egy Nulla Nulla Egy Nulla Nulla Nulla Nulla
+esetKod AccusativusE     = E8PontKonstruktor Egy Nulla Nulla Nulla Egy Nulla Nulla Nulla
+esetKod DativusE         = E8PontKonstruktor Egy Nulla Nulla Nulla Nulla Egy Nulla Nulla
+esetKod InessivusE       = E8PontKonstruktor Nulla Egy Egy Nulla Nulla Nulla Nulla Nulla
+esetKod ElativusE        = E8PontKonstruktor Nulla Egy Nulla Egy Nulla Nulla Nulla Nulla
+esetKod IllativusE       = E8PontKonstruktor Nulla Egy Nulla Nulla Egy Nulla Nulla Nulla
+esetKod SuperessivusE    = E8PontKonstruktor Nulla Egy Egy Nulla Nulla Nulla Nulla Nulla
+esetKod AdessivusE       = E8PontKonstruktor Nulla Egy Nulla Nulla Nulla Egy Nulla Nulla
+esetKod DelativusE       = E8PontKonstruktor Nulla Nulla Egy Egy Nulla Nulla Nulla Nulla
+esetKod AblativusE       = E8PontKonstruktor Nulla Nulla Egy Nulla Egy Nulla Nulla Nulla
+esetKod SublativusE      = E8PontKonstruktor Nulla Nulla Nulla Egy Egy Nulla Nulla Nulla
+esetKod AllativusE       = E8PontKonstruktor Nulla Nulla Nulla Egy Nulla Egy Nulla Nulla
+esetKod TerminativusE    = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Egy Nulla
+esetKod InstrumentalisE  = E8PontKonstruktor Nulla Nulla Nulla Nulla Egy Nulla Egy Nulla
+esetKod CausalisFinalisE = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Egy Egy Nulla
+esetKod TranszlativusE   = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Nulla Egy
+esetKod FormativusE      = E8PontKonstruktor Nulla Nulla Nulla Nulla Egy Egy Nulla Nulla
+esetKod EssivusFormalisE = E8PontKonstruktor Nulla Nulla Nulla Nulla Egy Nulla Nulla Egy

@@ -11,6 +11,7 @@ module Kodol
 import Steane713
 import E8E8Algebra
 import MagyarNyelvtan
+import NyelvtaniFa
 
 -- ─── 1. SZÓTÁR — Fogalom → E8Pont (Kubit) ───────────────────
 
@@ -70,31 +71,6 @@ fogalomKeres szo = keres szo fogalomSzotar
     keres _ [] = Nothing
     keres s ((nev, pont) :: xs) =
       if s == nev then Just pont else keres s xs
-
--- ─── 2. ESETRAG → E8Pont (Kubit) ────────────────────────────
-
-||| Az esetrag E8 kódja (jobb E8 = szín = fázis).
-||| 18 eset → 8 Kubit.
-public export
-esetKod : Esetrag -> E8Pont
-esetKod NominativusE     = E8PontKonstruktor Egy Nulla Nulla Egy Nulla Nulla Nulla Nulla
-esetKod AccusativusE     = E8PontKonstruktor Egy Nulla Nulla Nulla Egy Nulla Nulla Nulla
-esetKod DativusE         = E8PontKonstruktor Egy Nulla Nulla Nulla Nulla Egy Nulla Nulla
-esetKod InessivusE       = E8PontKonstruktor Nulla Egy Egy Nulla Nulla Nulla Nulla Nulla
-esetKod ElativusE        = E8PontKonstruktor Nulla Egy Nulla Egy Nulla Nulla Nulla Nulla
-esetKod IllativusE       = E8PontKonstruktor Nulla Egy Nulla Nulla Egy Nulla Nulla Nulla
-esetKod SuperessivusE    = E8PontKonstruktor Nulla Egy Egy Nulla Nulla Nulla Nulla Nulla
-esetKod AdessivusE       = E8PontKonstruktor Nulla Egy Nulla Nulla Nulla Egy Nulla Nulla
-esetKod DelativusE       = E8PontKonstruktor Nulla Nulla Egy Egy Nulla Nulla Nulla Nulla
-esetKod AblativusE       = E8PontKonstruktor Nulla Nulla Egy Nulla Egy Nulla Nulla Nulla
-esetKod SublativusE      = E8PontKonstruktor Nulla Nulla Nulla Egy Egy Nulla Nulla Nulla
-esetKod AllativusE       = E8PontKonstruktor Nulla Nulla Nulla Egy Nulla Egy Nulla Nulla
-esetKod TerminativusE    = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Egy Nulla
-esetKod InstrumentalisE  = E8PontKonstruktor Nulla Nulla Nulla Nulla Egy Nulla Egy Nulla
-esetKod CausalisFinalisE = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Egy Egy Nulla
-esetKod TranszlativusE   = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Nulla Egy
-esetKod FormativusE      = E8PontKonstruktor Nulla Nulla Nulla Nulla Egy Egy Nulla Nulla
-esetKod EssivusFormalisE = E8PontKonstruktor Nulla Nulla Nulla Nulla Egy Nulla Nulla Egy
 
 -- ─── 3. CPT → CliffordElem (Kubit) ──────────────────────────
 
@@ -248,7 +224,59 @@ kodol mondat =
                               Nothing => keresFogalom ss
             Nothing => keresFogalom ss
 
--- ─── 7. FŐPROGRAM ───────────────────────────────────────────
+-- ─── 6b. MONDAT → E8E8KodSzo (FA-ALAPON, párhuzamos) ──────
+
+||| Fa-alapú kódolás: a mondat szintaktikai fája → balE8.
+||| Ez a NyelvtaniFa.parszolMagyarMondat + mondatFaE8-ot használja
+||| a balE8 (fogalom) kódolására, a régi kulcsszó-egyeztetés helyett.
+||| A jobbE8 (eset), clifford, steane ugyanaz marad.
+public export
+kodolFa : String -> E8E8KodSzo
+kodolFa mondat =
+  let szavak = map irasjelLevagas (splitOnChar ' ' mondat)
+      -- Eset + kerdoszo (ugyanaz mint kodol)
+      esetKerdes = keresKerdoszoFa szavak
+      esetRag = case esetKerdes of
+                  Just e => e
+                  Nothing => case szavak of
+                              (elsoSzo :: _) => case ragFelismer elsoSzo of
+                                                  Just (_, e) => e
+                                                  Nothing => NominativusE
+                              [] => NominativusE
+      -- Fa-alapu balE8 (a szofajok + esetragok strukturaja)
+      fa = parszolMagyarMondat mondat
+      balE8Fa = mondatFaE8 fa
+      -- De ha a fa nulla, probaljuk a szotarbol is
+      fogalomPont = keresFogalomFa szavak
+      balE8Pont = case fogalomPont of
+                    Just p => e8Osszead p balE8Fa  -- szotar + fa XOR
+                    Nothing => balE8Fa
+      jobbE8Pont = esetKod esetRag
+      harmadikE8Pont = e8Nulla
+      negyedikE8Pont = e8Nulla
+      cpt = CptIgeragozasKonstruktor JelenI FolyamatosSz KozvetlenF
+      cliffordElem = cptKod cpt
+      steaneKod = mondatSteane esetRag JelenI
+  in KodKonstruktor mondat balE8Pont jobbE8Pont harmadikE8Pont negyedikE8Pont cliffordElem steaneKod
+  where
+    keresKerdoszoFa : List String -> Maybe Esetrag
+    keresKerdoszoFa [] = Nothing
+    keresKerdoszoFa (s :: ss) =
+      case kerdoszoEset s of
+        Just e => Just e
+        Nothing => keresKerdoszoFa ss
+
+    keresFogalomFa : List String -> Maybe E8Pont
+    keresFogalomFa [] = Nothing
+    keresFogalomFa (s :: ss) =
+      case fogalomKeres s of
+        Just p => Just p
+        Nothing =>
+          case ragFelismer s of
+            Just (to, _) => case fogalomKeres to of
+                              Just p => Just p
+                              Nothing => keresFogalomFa ss
+            Nothing => keresFogalomFa ss
 
 public export
 showE8 : E8Pont -> String
@@ -263,36 +291,28 @@ showE8 p =
 public export
 kodolFom : IO ()
 kodolFom = do
-  putStrLn "=== KODOL — Magyar mondat → E8E8KodSzo (Kubit) ==="
+  putStrLn "=== KODOL — kodol vs kodolFa osszehasonlitas ==="
   putStrLn ""
-  putStrLn "Példa 1: 'Mi az a kategória?'"
-  let ks1 = kodol "Mi az a kategória?"
-  putStrLn ("  cimke: " ++ ks1.cimke)
-  putStrLn ("  balE8 (ter/én):    " ++ showE8 ks1.balE8)
-  putStrLn ("  jobbE8 (szín/te):  " ++ showE8 ks1.jobbE8)
+  let mondatok = [
+    "Mi az a kategoria?",
+    "A funktor ket kategoria kozotti lekepezes.",
+    "Egy kategoria objektumokbol es nyilakbol all.",
+    "Miert hasznalunk izomorfizmust?",
+    "Mivel kapcsolodik a funktor a kategoriahoz?"
+  ]
+  tesztCiklus mondatok
   putStrLn ""
-  putStrLn "Példa 2: 'Hogyan működik a funktor?'"
-  let ks2 = kodol "Hogyan működik a funktor?"
-  putStrLn ("  cimke: " ++ ks2.cimke)
-  putStrLn ("  balE8 (ter/én):    " ++ showE8 ks2.balE8)
-  putStrLn ("  jobbE8 (szín/te):  " ++ showE8 ks2.jobbE8)
-  putStrLn ""
-  putStrLn "Példa 3: 'Miért használunk izomorfizmust?'"
-  let ks3 = kodol "Miért használunk izomorfizmust?"
-  putStrLn ("  cimke: " ++ ks3.cimke)
-  putStrLn ("  balE8 (ter/én):    " ++ showE8 ks3.balE8)
-  putStrLn ("  jobbE8 (szín/te):  " ++ showE8 ks3.jobbE8)
-  putStrLn ""
-  putStrLn "Példa 4: 'Mivel kapcsolódik a funktor a kategóriához?'"
-  let ks4 = kodol "Mivel kapcsolódik a funktor a kategóriához?"
-  putStrLn ("  cimke: " ++ ks4.cimke)
-  putStrLn ("  balE8 (ter/én):    " ++ showE8 ks4.balE8)
-  putStrLn ("  jobbE8 (szín/te):  " ++ showE8 ks4.jobbE8)
-  putStrLn ""
-  putStrLn "Példa 5: 'Hol van az objektum?'"
-  let ks5 = kodol "Hol van az objektum?"
-  putStrLn ("  cimke: " ++ ks5.cimke)
-  putStrLn ("  balE8 (ter/én):    " ++ showE8 ks5.balE8)
-  putStrLn ("  jobbE8 (szín/te):  " ++ showE8 ks5.jobbE8)
-  putStrLn ""
-  putStrLn "Kész."
+  putStrLn "Kesz."
+  where
+    tesztCiklus : List String -> IO ()
+    tesztCiklus [] = pure ()
+    tesztCiklus (m :: ms) = do
+      putStrLn ("Mondat: '" ++ m ++ "'")
+      let ks1 = kodol m
+      let ks2 = kodolFa m
+      putStrLn ("  kodol    balE8: " ++ Kodol.showE8 ks1.balE8 ++ "  jobbE8: " ++ Kodol.showE8 ks1.jobbE8)
+      putStrLn ("  kodolFa  balE8: " ++ Kodol.showE8 ks2.balE8 ++ "  jobbE8: " ++ Kodol.showE8 ks2.jobbE8)
+      let egyezik = ks1.balE8 == ks2.balE8
+      putStrLn ("  Egyenzo: " ++ (if egyezik then "IGEN" else "NEM"))
+      putStrLn ""
+      tesztCiklus ms

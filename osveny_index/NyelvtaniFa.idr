@@ -3,7 +3,6 @@ module NyelvtaniFa
 import Steane713
 import E8E8Algebra
 import MagyarNyelvtan
-import Kodol
 
 -- ─── 1. SZÓOSZTÁLYOK ───────────────────────────────────────
 
@@ -32,7 +31,46 @@ sofajKod NemoszoSof     = E8PontKonstruktor Nulla Nulla Nulla Nulla Egy Nulla Nu
 sofajKod KotoszoSof     = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Egy Nulla Nulla
 sofajKod IsmeretlenSof  = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Egy Nulla
 
--- ─── 2. SZÓOSZTÁLYOZÁS (top-level, nincs where) ────────────
+-- ─── 2. SEGÉDFÜGGVÉNYEK (lokális, hogy elkerüljük a ciklikus importot) ──
+
+public export
+splitOnCharFa : Char -> String -> List String
+splitOnCharFa c s = go (unpack s)
+  where
+    go : List Char -> List String
+    go [] = [""]
+    go (x :: xs) =
+      if x == c
+        then "" :: go xs
+        else case go xs of
+               (elso :: tobbi) => (strCons x elso) :: tobbi
+               [] => [strCons x ""]
+
+public export
+kisbetusitFa : Char -> Char
+kisbetusitFa 'A' = 'a'; kisbetusitFa 'B' = 'b'; kisbetusitFa 'C' = 'c'
+kisbetusitFa 'D' = 'd'; kisbetusitFa 'E' = 'e'; kisbetusitFa 'F' = 'f'
+kisbetusitFa 'G' = 'g'; kisbetusitFa 'H' = 'h'; kisbetusitFa 'I' = 'i'
+kisbetusitFa 'J' = 'j'; kisbetusitFa 'K' = 'k'; kisbetusitFa 'L' = 'l'
+kisbetusitFa 'M' = 'm'; kisbetusitFa 'N' = 'n'; kisbetusitFa 'O' = 'o'
+kisbetusitFa 'P' = 'p'; kisbetusitFa 'Q' = 'q'; kisbetusitFa 'R' = 'r'
+kisbetusitFa 'S' = 's'; kisbetusitFa 'T' = 't'; kisbetusitFa 'U' = 'u'
+kisbetusitFa 'V' = 'v'; kisbetusitFa 'W' = 'w'; kisbetusitFa 'X' = 'x'
+kisbetusitFa 'Y' = 'y'; kisbetusitFa 'Z' = 'z'
+kisbetusitFa c = c
+
+public export
+irasjelLevagasFa : String -> String
+irasjelLevagasFa s = pack (go (map kisbetusitFa (unpack s)))
+  where
+    go : List Char -> List Char
+    go [] = []
+    go (x :: xs) =
+      if x == '?' || x == '!' || x == '.' || x == ',' || x == ';' || x == ':'
+        then go xs
+        else x :: go xs
+
+-- ─── 3. SZÓOSZTÁLYOZÁS (top-level, nincs where) ────────────
 
 public export
 nemoszoLista : List String
@@ -55,7 +93,7 @@ vanE x (y :: ys) = if x == y then True else vanE x ys
 public export
 sofajMagyar : String -> Sofaj
 sofajMagyar szo =
-  let s = irasjelLevagas szo
+  let s = irasjelLevagasFa szo
   in if vanE s nemoszoLista then NemoszoSof
      else if vanE s kotoszoLista then KotoszoSof
      else if endsWith "-ni" s then IgeSof
@@ -79,7 +117,7 @@ public export
 elemezMagyar : String -> ElemzettSzo
 elemezMagyar szo =
   let sf = sofajMagyar szo
-      rg = ragFelismer (irasjelLevagas szo)
+      rg = ragFelismer (irasjelLevagasFa szo)
   in case rg of
        Just (to, eset) => ElemzettSzoKonstruktor sf to eset szo
        Nothing => ElemzettSzoKonstruktor sf szo NominativusE szo
@@ -122,7 +160,7 @@ mondatFaE8 fa = e8Osszead (faCsucsE8 fa.topikFa) (faCsucsE8 fa.predikatumFa)
 public export
 parszolMagyarMondat : String -> MondatFa
 parszolMagyarMondat mondat =
-  let szavak = map irasjelLevagas (splitOnChar ' ' mondat)
+  let szavak = map irasjelLevagasFa (splitOnCharFa ' ' mondat)
       elemzett = map elemezMagyar szavak
       (ts, ps) = bontasTopikPredikatum elemzett
       topik = Csop (map Level ts)
@@ -183,7 +221,7 @@ nyelvtaniFaFom = do
       let e8 = mondatFaE8 fa
       putStrLn ("  Szavak: " ++ show fa.szavakSzama)
       putStrLn ("  Fa E8:  " ++ NyelvtaniFa.showE8 e8)
-      let szavak = map irasjelLevagas (splitOnChar ' ' m)
+      let szavak = map irasjelLevagasFa (splitOnCharFa ' ' m)
       osztalyozCiklus szavak
       putStrLn ""
       tesztCiklus ms

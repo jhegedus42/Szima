@@ -29,6 +29,13 @@ record E8Pont where
   x1 : Kubit; x2 : Kubit; x3 : Kubit; x4 : Kubit
   x5 : Kubit; x6 : Kubit; x7 : Kubit; x8 : Kubit
 
+public export
+Eq E8Pont where
+  a == b = a.x1 == b.x1 && a.x2 == b.x2 &&
+           a.x3 == b.x3 && a.x4 == b.x4 &&
+           a.x5 == b.x5 && a.x6 == b.x6 &&
+           a.x7 == b.x7 && a.x8 == b.x8
+
 -- ─── 2. CLIFFORD ELEM — 3 KUBIT (CPT) ───────────────────────
 
 ||| Clifford elem: 3 Kubit = CPT fázis.
