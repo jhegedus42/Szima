@@ -1,144 +1,214 @@
 module E8E8Algebra
 
+-- ═══════════════════════════════════════════════════════════════
+-- E8 × E8 × E8 × E8 ALGEBRA — KUBIT ALAPON
+-- ═══════════════════════════════════════════════════════════════
+-- Nincs Double. Minden Kubit (Nulla | Egy).
+-- E8Pont = 8 Kubit = 8 bit = 256 kulonbozo pont (240 E8 gyok + tartalek).
+-- E8⁴ = 4 × E8Pont = 32 bit = (ter, szin, hang, mod).
+--   ter   = bal E8 (en, hol vagyok?)
+--   szin  = jobb E8 (te, hol vagy?)
+--   hang  = 3. E8 (kapcsolat, hogyan rezegunk?)
+--   mod   = 4. E8 (Carnot-ciklus, hogyan tartjuk fenn?)
+-- CliffordElem = 3 Kubit (skalar, vektor, bivektor) = CPT fázis.
+-- Atfedes = Hamming tavolsag (hány biten egyezik).
+-- ═══════════════════════════════════════════════════════════════
+
 import Steane713
 
-||| E8 × E8 algebra — a magyar nyelv esetrendszerenek algebrai alapja.
-|||
-||| Gondolat: miert E8? Mert az E8 racs a legnagyobb kiveteles
-||| Lie algebra, 248 dimenzioja pontosan elegendo a 22 eset,
-||| 7 kubit, es 3 idodimenzio egyideju lekepezesere.
-|||
-||| E8 bal oldal → ter (fogalmak elhelyezkedese a racsban).
-|||   Minden fogalomnak van egy "helye" a fogalmi racsban.
-||| E8 jobb oldal → szin (fazis es osszefonodes).
-|||   A szin hatarozza meg, hogy ket fogalom hogyan rezeg egyutt.
-||| Cliﬀord szorzat → hang (a harmonikus rezgesek).
-|||   A geometriai szorzat kelt hangot — informaciot.
-|||
-||| A Cliﬀord geometriai szorzat: ab = a·b + a∧b
-|||   a·b = belso szorzat → atfedes (redundancia)
-|||     Ha a·b magas, a ket fogalom ugyanazt mondja — eldobhato.
-|||   a∧b = kulso szorzat → ujdonsag (informacio)
-|||     Ha a∧b magas, a ket fogalom uj informaciot hordoz — megtartando.
-|||
-||| Az E8 × E8 a bal es jobb E8 tenzor szorzata.
-||| A Cliﬀord elem a kapcsolatukat irja le.
-||| A [[7,1,3]] Steane kod a hiba javitast biztositja.
+-- ─── 1. E8 PONT — 8 KUBIT ───────────────────────────────────
 
-||| E8 racs pont: 8 valos koordinata.
+||| E8 racs pont: 8 Kubit.
+||| 8 bit = 256 kulonbozo ertek, elegendo a 240 E8 gyokhoz.
 ||| A 8 koordinata:
-|||   x1-x4: a Steane kod 7 bitjebol 4 (ido, oksag, ter, szin)
-|||   x5-x8: a maradek 3 bit + egy szabad dimenzio (hang, fazis, mod, egyseg)
-||| Valos szamok, mert az E8 valos Lie algebra — a gyokok
-||| koordinatai ±1, ±1/2, 0.
+|||   x1-x4: Steane kod 7 bitjebol 4 (ido, oksag, ter, szin)
+|||   x5-x8: maradek 3 bit + egyseg (hang, fazis, mod, egyseg)
 public export
 record E8Pont where
   constructor E8PontKonstruktor
-  x1 : Double; x2 : Double; x3 : Double; x4 : Double
-  x5 : Double; x6 : Double; x7 : Double; x8 : Double
+  x1 : Kubit; x2 : Kubit; x3 : Kubit; x4 : Kubit
+  x5 : Kubit; x6 : Kubit; x7 : Kubit; x8 : Kubit
 
-||| Cliﬀord algebra alap 8 dimenzioban.
-||| A Lap tipus a 8 dimenzio mindegyiket egy-egy hatvanykent kodolja.
-|||  Lap 0 = skalar (1), Lap 1 = elso baxis (e1), stb.
-|||  A 128 bites ertek a 8. dimenzio (e8).
-|||  Ez a 2^8 = 256 dimenzios Cliﬀord algebra alapja.
+-- ─── 2. CLIFFORD ELEM — 3 KUBIT (CPT) ───────────────────────
+
+||| Clifford elem: 3 Kubit = CPT fázis.
+|||   skalar   = T (ido): mult=-1, jelen=0(van), jovo=+1 — DE Kubit: Nulla/Egy
+|||   vektor   = P (paritas): folytonos=Nulla, befejezett=Egy
+|||   bivektor = C (toltés): kozvetlen=Nulla, kovetkeztett=Egy
+|||
+||| A fog (jovo segedige) = P (szemlelet), nem T (igeido).
+||| A szem-lelet = szem (i) + él (j) = i×j = k = a kapcsolat.
 public export
-data Lap : Int -> Type where
-  Skalar : Lap 0
-  S1 : Lap 1;  S2 : Lap 2;  S3 : Lap 4;  S4 : Lap 8
-  S5 : Lap 16; S6 : Lap 32; S7 : Lap 64; S8 : Lap 128
+record CliffordElem where
+  constructor CliffordKonstruktor
+  skalar   : Kubit  -- T: ido (mikor?)
+  vektor   : Kubit  -- P: paritas/szemlelet (hogyan lathom?)
+  bivektor : Kubit  -- C: toltés/forras (honnan tudom?)
 
-||| Cliﬀord elem: lapok linearis kombinacioja.
-||| A skalar, vektor, es bivektor mezők egy-egy
-||| Cliﬀord lapot reprezentalnak.
-||| skalar = 0-dimenzios resz (a·b atfedes alapja)
-||| vektor = 1-dimenzios resz (irany)
-||| bivektor = 2-dimenzios resz (forgatas / kapcsolat)
+-- ─── 3. ATFEDES — HAMMING TAVOLSAG ──────────────────────────
+
+||| Ket Kubit egyezese: egyezik?
 public export
-record CliﬀordElem where
-  constructor CliﬀordKonstruktor
-  skalar : Double
-  vektor : Double
-  bivektor : Double
+kubitEgyezik : Kubit -> Kubit -> Bool
+kubitEgyezik Nulla Nulla = True
+kubitEgyezik Egy Egy = True
+kubitEgyezik _ _ = False
 
-||| Geometriai szorzat belso resze = atfedes.
-||| A ket Cliﬀord elem skalaris reszebol szamolva.
-||| Magas atfedes → redundans → eldobhato.
-||| Az atfedes 0 es 1 kozotti ertek: 0 = nincs atfedes,
-||| 1 = teljes atfedes (ugyanaz az informacio).
-||| A +1 a nevezoben a nullaval valo osztas elkerulesere.
+||| Hamming tavolsag: hány biten kulonbozik ket E8Pont.
+||| 0 = azonos, 8 = teljesen kulonbozo.
 public export
-atfedes : CliﬀordElem -> CliﬀordElem -> Double
-atfedes a b =
-  let s = a.skalar * b.skalar + a.vektor * b.vektor
-      na = a.skalar * a.skalar + a.vektor * a.vektor
-      nb = b.skalar * b.skalar + b.vektor * b.vektor
-  in s / (na + nb + 1.0)
+hammingTavolsag : E8Pont -> E8Pont -> Nat
+hammingTavolsag a b =
+  (if kubitEgyezik a.x1 b.x1 then 0 else 1) +
+  (if kubitEgyezik a.x2 b.x2 then 0 else 1) +
+  (if kubitEgyezik a.x3 b.x3 then 0 else 1) +
+  (if kubitEgyezik a.x4 b.x4 then 0 else 1) +
+  (if kubitEgyezik a.x5 b.x5 then 0 else 1) +
+  (if kubitEgyezik a.x6 b.x6 then 0 else 1) +
+  (if kubitEgyezik a.x7 b.x7 then 0 else 1) +
+  (if kubitEgyezik a.x8 b.x8 then 0 else 1)
 
-||| Kuszob: efelett redundans.
-||| 0.8 = 80% atfedes felett eldobjuk.
-||| Ez a kuszob empirikusan valasztva: a nyelvben
-||| a 80% feletti hasonlosag mar nem hordoz uj informaciot.
+||| Atfedes: 1 - hammingTavolsag/8.
+||| 1.0 = teljes atfedes (azonos), 0.0 = nincs atfedes.
+||| DE: Kubit alapon, ez egy Nat/Nat = Double... helyette:
+||| Atfedes = (8 - hammingTavolsag) : Nat
+||| 8 = teljes atfedes, 0 = nincs atfedes.
 public export
-atfedesKuszob : Double
-atfedesKuszob = 0.8
+atfedesBit : E8Pont -> E8Pont -> Nat
+atfedesBit a b = 8 `minus` hammingTavolsag a b
 
-||| Eldontes: egy fogalom megtartasa vagy eldobasa
-||| az atfedes merteke alapjan.
+||| Atfedes kuszob: efelett redundans → eldobhato.
+||| 6/8 = 75% felett eldobjuk (6 bit egyezes).
+public export
+atfedesKuszob : Nat
+atfedesKuszob = 6
+
+||| Eldontes: egy fogalom megtartasa vagy eldobasa.
 public export
 data Eldontes = DobdEl | TartsdMeg
 
 public export
-eldont : Double -> Eldontes
-eldont o = if o > atfedesKuszob then DobdEl else TartsdMeg
+eldont : Nat -> Eldontes
+eldont o = if o >= atfedesKuszob then DobdEl else TartsdMeg
 
-||| E8 × E8 kodoszo: bal E8 + jobb E8 + Cliﬀord es [[7,1,3]].
-||| A kodoszo egy teljes fogalmi kapcsolatot kodol:
-|||   cimke = a kapcsolat neve (a "mirol van szo")
-|||   balE8 = a fogalom helye a terben
-|||   jobbE8 = a fogalom szine a fazisban
-|||   cliﬀord = a ket E8 kapcsolata (hang)
-|||   steane = a [[7,1,3]] hiba javito kod
+-- ─── 4. E8⁴ KODSZO — 4×E8 + CLIFFORD + STEANE ───────────────
+
+||| E8⁴ kodoszo: 4 E8Pont + Clifford + Steane.
+||| E8⁴ = (ter, szin, hang, mod) = (en, te, kapcsolat, carnot-ciklus).
 |||
-||| A mezők nevei:
-|||   cimke, balE8, jobbE8, cliﬀord, steane — mind magyar,
-|||   a kivetelek a szabvany fizikai terminusok (E8, Cliﬀord, Steane).
+||| A negyedik E8 (mod) = a Carnot-ciklus = a hibajavitas = a buborek.
+||| Ez tartja eletben a rendszert: E8⁴ → almost-E9, de a buborek
+||| (CPT-töres) megakadalyozza a zarodast. A Carnot-ciklus futtatasa
+||| = a Hamiltonian-aramlas = a mozgas maga.
+|||
+||| A cimke a mondat szovege (vesztesegmentes).
 public export
 record E8E8KodSzo where
   constructor KodKonstruktor
   cimke    : String
-  balE8    : E8Pont     -- ter: a fogalom helye
-  jobbE8   : E8Pont     -- szin: a fogalom fazisa
-  cliﬀord  : CliﬀordElem -- hang: a kapcsolat
-  steane   : HetesKod    -- [[7,1,3]] hiba javito kod
+  balE8    : E8Pont       -- ter: en (hol vagyok?)
+  jobbE8   : E8Pont       -- szin: te (hol vagy?)
+  harmadikE8 : E8Pont     -- hang: kapcsolat (hogyan rezegunk?)
+  negyedikE8 : E8Pont     -- mod: carnot-ciklus (hogyan tartjuk fenn?)
+  clifford : CliffordElem -- CPT fazis (T/P/C)
+  steane   : HetesKod      -- [[7,1,3]] hibajavitas
 
-||| E8Pont osszeadas: ket pont osszege a racsban.
-||| A komponensenkenti osszeadas az E8 racs
-||| csoportmuvelete — zart a racsra.
+-- ─── 5. E8 PONT OSSZEADAS — KUBIT XOR ───────────────────────
+
+||| Kubit XOR: a csoportmuvelet a Z₂ felett.
+public export
+kubitXor : Kubit -> Kubit -> Kubit
+kubitXor Nulla Nulla = Nulla
+kubitXor Nulla Egy = Egy
+kubitXor Egy Nulla = Egy
+kubitXor Egy Egy = Nulla
+
+||| E8Pont osszeadas: komponensenkenti XOR.
+||| Ez az E8 racs csoportmuvelete (Z₂⁸).
 public export
 e8Osszead : E8Pont -> E8Pont -> E8Pont
 e8Osszead a b = E8PontKonstruktor
-  (a.x1 + b.x1) (a.x2 + b.x2) (a.x3 + b.x3) (a.x4 + b.x4)
-  (a.x5 + b.x5) (a.x6 + b.x6) (a.x7 + b.x7) (a.x8 + b.x8)
+  (kubitXor a.x1 b.x1) (kubitXor a.x2 b.x2)
+  (kubitXor a.x3 b.x3) (kubitXor a.x4 b.x4)
+  (kubitXor a.x5 b.x5) (kubitXor a.x6 b.x6)
+  (kubitXor a.x7 b.x7) (kubitXor a.x8 b.x8)
 
-||| Cliﬀord szorzat: a geometriai szorzat 8 dimenzioban.
-||| ab = a·b + a∧b
-||| Itt a skalar es vektor reszbol szamitjuk a szorzatot.
-public export
-cliﬀordSzorzat : CliﬀordElem -> CliﬀordElem -> CliﬀordElem
-cliﬀordSzorzat a b = CliﬀordKonstruktor
-  (a.skalar * b.skalar - a.vektor * b.vektor)
-  (a.skalar * b.vektor + a.vektor * b.skalar)
-  (a.vektor * b.vektor)
+-- ─── 6. CLIFFORD SZORZAT ────────────────────────────────────
 
-||| Atfedes ket E8E8KodSzo kozott.
-||| A bal es jobb E8 atfedesenek atlaga.
-||| Ez mutatja, hogy ket kodoszo mennyire fedi egymast.
+||| Clifford szorzat: ab = a·b + a∧b
+||| Kubit alapon:
+|||   skalar   = a.skalar XOR b.skalar (belso = atfedes)
+|||   vektor   = (a.skalar AND b.vektor) XOR (a.vektor AND b.skalar) (kulso)
+|||   bivektor = a.vektor AND b.vektor (forgatas)
 public export
-e8e8Atfedes : E8E8KodSzo -> E8E8KodSzo -> Double
+kubitEs : Kubit -> Kubit -> Kubit
+kubitEs Egy Egy = Egy
+kubitEs _ _ = Nulla
+
+public export
+cliffordSzorzat : CliffordElem -> CliffordElem -> CliffordElem
+cliffordSzorzat a b = CliffordKonstruktor
+  (kubitXor a.skalar b.skalar)
+  (kubitXor (kubitEs a.skalar b.vektor) (kubitEs a.vektor b.skalar))
+  (kubitEs a.vektor b.vektor)
+
+-- ─── 7. E8⁴ ATFEDES ─────────────────────────────────────────
+
+||| Ket E8E8KodSzo atfedese: a 4 E8Pont atfedesinek osszege.
+||| minel nagyobb, annal redundansabb.
+||| (ba + ja + ha + ma) / 32 — de Nat alapon:
+||| atfedesBit osszesen = bal + jobb + harmadik + negyedik (max 32).
+public export
+e8e8Atfedes : E8E8KodSzo -> E8E8KodSzo -> Nat
 e8e8Atfedes a b =
-  let ba = atfedes (CliﬀordKonstruktor a.balE8.x1 a.balE8.x2 0)
-                   (CliﬀordKonstruktor b.balE8.x1 b.balE8.x2 0)
-      ja = atfedes (CliﬀordKonstruktor a.jobbE8.x1 a.jobbE8.x2 0)
-                   (CliﬀordKonstruktor b.jobbE8.x1 b.jobbE8.x2 0)
-  in (ba + ja) / 2.0
+  atfedesBit a.balE8 b.balE8 +
+  atfedesBit a.jobbE8 b.jobbE8 +
+  atfedesBit a.harmadikE8 b.harmadikE8 +
+  atfedesBit a.negyedikE8 b.negyedikE8
+
+-- ─── 8. ALAP E8 PONTOK ──────────────────────────────────────
+
+||| Az also pont: minden Nulla.
+public export
+e8Nulla : E8Pont
+e8Nulla = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Nulla Nulla
+
+||| Az elso pont: x1=Egy, tobbi Nulla.
+public export
+e8Egy : E8Pont
+e8Egy = E8PontKonstruktor Egy Nulla Nulla Nulla Nulla Nulla Nulla Nulla
+
+||| A masodik pont: x2=Egy, tobbi Nulla.
+public export
+e8Ketto : E8Pont
+e8Ketto = E8PontKonstruktor Nulla Egy Nulla Nulla Nulla Nulla Nulla Nulla
+
+||| A harmadik pont: x3=Egy, tobbi Nulla.
+public export
+e8Harom : E8Pont
+e8Harom = E8PontKonstruktor Nulla Nulla Egy Nulla Nulla Nulla Nulla Nulla
+
+||| A negyedik pont: x4=Egy, tobbi Nulla.
+public export
+e8Negy : E8Pont
+e8Negy = E8PontKonstruktor Nulla Nulla Nulla Egy Nulla Nulla Nulla Nulla
+
+||| Az otodik pont: x5=Egy, tobbi Nulla.
+public export
+e8Ot : E8Pont
+e8Ot = E8PontKonstruktor Nulla Nulla Nulla Nulla Egy Nulla Nulla Nulla
+
+||| A hatodik pont: x6=Egy, tobbi Nulla.
+public export
+e8Hat : E8Pont
+e8Hat = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Egy Nulla Nulla
+
+||| A hetedik pont: x7=Egy, tobbi Nulla.
+public export
+e8Het : E8Pont
+e8Het = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Egy Nulla
+
+||| A nyolcadik pont: x8=Egy, tobbi Nulla.
+public export
+e8Nyolc : E8Pont
+e8Nyolc = E8PontKonstruktor Nulla Nulla Nulla Nulla Nulla Nulla Nulla Egy
