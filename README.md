@@ -545,3 +545,109 @@ Steane [[7,1,3]] 码的 7 比特：[时间, 因果, 空间, 颜色, 声音, 相�
 量子纠错（QEC）= 在错误中维持关系。振动（哈密顿量）= 关系的动力学。巴赫赋格 = 关系的可听见形式。《颂歌》= 关系的**匈牙利语**形式。
 
 来源：József Attila: Óda (Nyugat, 1933); `osveny_index/E8E8Algebra.idr`, `osveny_index/FazisAlgebra.idr`（计划中）, `AGENTS.md` 规则 9, `trail_index/E9_framework.md` §6.
+
+---
+
+## Magyar Nyelvű Determinisztikus Kereső (Idris)
+
+A projekt tartalmaz egy **veszteségmentes, determinisztikus magyar nyelvű keresőt** Idris 2-ben, amely a Carnot-ciklus alapján működik:
+
+```
+kérdés (entrópia) → kódol (információ) → keres (munka) → válasz (energia)
+```
+
+### A Carnot-ciklus lépései
+
+| Lépés | Modul | Mit csinál |
+|-------|-------|-----------|
+| 1. Entrópia | `MagyarNyelvtan.idr` | 18 esetrag + ragFelismer + igeragozás + CPT |
+| 2. Információ | `Kodol.idr` | magyar mondat → E8E8KodSzo (Kubit-alapon) |
+| 3. Munka | `Tavolsag.idr` | E8⁴ + Clifford + Steane távolság + [[15,1,3]] hibajavítás |
+| 4. Energia | `Kereso.idr` | kérdés → legkisebb távolságú mondat = válasz |
+
+### Alapelv
+
+A szöveg **soha nem sűrítődik**. Az `E8E8KodSzo.cimke` tartalmazza a teljes mondatot. A kódolás (balE8, jobbE8, clifford, steane) csak **indexkulcs** a kereséshez. Veszteségmentes = a dekódolás visszaadja az eredeti mondatot.
+
+### Kubit-alapon (nincs Double)
+
+Minden Kubit (Nulla | Egy):
+- **E8Pont** = 8 Kubit = 256 érték (240 E8 gyök + tartalék)
+- **E8⁴KodSzo** = 4×E8Pont (ter/szín/hang/mod) + 3 Kubit (CPT) + 7 Kubit (Steane) = 42 bit
+- **E8⁴** = (én, te, kapcsolat, Carnot-ciklus) — a negyedik E8 = a hibajavítás = tartja életben a rendszert
+- **Atfedés** = Hamming távolság (Nat, nem Double)
+
+### A 18 esetrag (Kiefer 2011 szerint)
+
+A magyar nyelvtan kategóriaelméleti lebontása: 18 esetrag = 18 morfizmus. A hagyományos 28-ból 18 valódi esetrag, a többi képző.
+
+| Eset | Rag | Kérdés | Funkció |
+|------|-----|--------|---------|
+| Nominativus | ø | (nincs) | alany (szintaktikai) |
+| Accusativus | -t/-ot/-et | tárgy | tárgy (szintaktikai) |
+| Dativus | -nak/-nek | kinek? | részeshatározó (szintaktikai) |
+| Inessivus | -ban/-ben | hol? | hely (belül) |
+| Elativus | -ból/-ből | honnan? | irány (belülről) |
+| Illativus | -ba/-be | hová? | irány (belülbe) |
+| Superessivus | -on/-en/-ön | hol? | hely (felület) |
+| Adessivus | -nál/-nél | hol? | hely (mellett) |
+| Delativus | -ról/-ről | honnan? | irány (felületről) |
+| Ablativus | -tól/-től | honnan? | irány (mellől) |
+| Sublativus | -ra/-re | hová? | irány (felületre) |
+| Allativus | -hoz/-hez/-höz | hová? | irány (mellé) |
+| Terminativus | -ig | meddig? | irány (meddig) |
+| Instrumentalis | -val/-vel | mivel? | eszközhatározó |
+| Causalis-finalis | -ért | miért? | célhatározó |
+| Transzlativus | -vá/-vé | mivé? | eredményhatározó |
+| Formativus | -képp | miképpen? | állapothatározó |
+| Essivus-formalisi | -ként | mint? | állapothatározó |
+
+### A Steane [[7,1,3]] felbontás
+
+A Steane kód = CSS(C, C⊥) konstrukció:
+- **[[7,4,3]] Hamming kód** = válasz (X-stabilizátor, 4 bit) — ami a szövegben van
+- **[[7,3,3]] duális Hamming** = kérdés (Z-stabilizátor, 3 bit) — ami a megfigyelést kódolja
+- **Steane** = kérdés + válasz = kapcsolat
+
+Ez a **kvantum Carnot-ciklus**: a kérdés (duális Hamming) és a válasz (Hamming) együtt = a Steane kód. A hibajavítás = a ciklus lezárása. A kvantum Hamiltonian-t Turing-gépre kell bontani — a klasszikus szimuláció = a kvantum térbeli felbontása időbeli lépésekre.
+
+### Főbb felismerések a session-ből
+
+- **fog** (jövő segédige) = fog (tooth) = instrumentalis (mivel? foggal!) = nem igeidő, hanem aspektus/szemlélet. Kiefer szerint a jövő nem morfológiai kategória.
+- **szem-lélet** = szem (megfigyelő, i) + él (létezés, j) + -et (tárgy, k) = i×j=k = oktonion
+- **lé** = víz = entrópia hordozó (nem energia). A víz szállítja az entrópiát → anyagcsere = Carnot-ciklus biológiai formája
+- **fény** = energia (E=hf)
+- **lét** = lé-t = entrópia + tárgyasítás = információ (Landauer)
+- **élni** = entrópiát alakítani információvá (a Carnot-ciklus egy lépése)
+- **pillanat** = pill-an-at = kvantum-mérési esemény eredménye
+- **szempont** = szem + pont = aspektus = P (paritás) a CPT-ben
+- **E8⁴** = (én, te, kapcsolat, Carnot-ciklus) — a negyedik E8 = a buborék = a CPT-törés = tartja életben a rendszert
+- **bizonytalanság** = fázis = entrópia = nem követett szabadságfokok, de E9-nél a Hilbert tér maga az entrópia hordozó
+
+### Források
+
+- Kiefer Ferenc (szerk.): Új magyar nyelvtan (2011) — `trail_index/books/uj_magyar_nyelvtan.txt`
+- 18 esetrag táblázat — `trail_index/books/magyar_esetragok.txt`
+- Igeragozás rendszer — `trail_index/books/magyar_igeragozas.txt`
+- Awodey 1. fejezet magyar fordítás — `trail_index/books/awodey_bilingual_ch1.txt` (589 mondat, HU/EN/SRC)
+
+### Modulok
+
+| Modul | Fájl | Állapot |
+|-------|------|---------|
+| MagyarNyelvtan | `osveny_index/MagyarNyelvtan.idr` | ✓ Fordul + fut |
+| Kodol | `osveny_index/Kodol.idr` | ✓ Fordul + fut |
+| Tavolsag | `osveny_index/Tavolsag.idr` | ✓ Fordul + fut |
+| Kereso | `osveny_index/Kereso.idr` | ✓ Fordul + fut (589 mondat, 5 kérdés) |
+
+### Teszt eredmények
+
+```
+Kérdés: 'Mi az a kategória?'       → Távolság: 0 (Azonos)     → Awodey §1.1
+Kérdés: 'Mi az a funktor?'         → Távolság: 0 (Azonos)     → Awodey §1.1
+Kérdés: 'Hol van az objektum?'     → Távolság: 2 (EgyBitHiba) → Awodey §1.7
+Kérdés: 'Miért izomorfizmus?'      → Távolság: 2 (EgyBitHiba) → Awodey §1.1
+Kérdés: 'Mivel funktor→kategória?' → Távolság: 2 (EgyBitHiba) → Awodey §1.2
+```
+
+A 0 távolság = tökéletes találat. A 2-es távolság = a [[15,1,3]] hibajavítás alatt (≤3). A szótár bővítése (jelenleg 25 szó) javítaná a találatok pontosságát.
