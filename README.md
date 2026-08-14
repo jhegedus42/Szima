@@ -651,3 +651,125 @@ Kérdés: 'Mivel funktor→kategória?' → Távolság: 2 (EgyBitHiba) → Awode
 ```
 
 A 0 távolság = tökéletes találat. A 2-es távolság = a [[15,1,3]] hibajavítás alatt (≤3). A szótár bővítése (jelenleg 25 szó) javítaná a találatok pontosságát.
+
+---
+
+## Latina (Lingua Latina)
+
+### Operis Lapidis — Fundamenta Algebraica Categoriarum
+
+Hoc opus dedicatum est Szima, catti dilectae.
+
+Idris 2 fundatur: theoria categoriarum, algebra Cliffordiana E8×E8, et codex correctorius quanticus Steane [[7,1,3]].
+
+### CODATA — Constantes Physicae et Correctio Bachiana
+
+```
+α⁻¹ = 137 + 9/250 − A4·(3/4)² / c
+```
+
+| Derivatum | CODATA | Incertitudo | Resultatus |
+|-----------|--------|------------|------------|
+| 137.035999174 | 137.035999177 | ±0.000000021 | **ITA ✓ (0.12σ)** |
+
+### JA Oda — Carmen Iosephi Attilae (1933)
+
+`JA Oda` = **Iosephus Attila: Óda** (1933). Carmen est fundamentum litterarium strati psychophysici. In algebra Cliffordiana E8×E8, `ja` significat **E8 dextram** (color/alterius) overlapping, `ba` **E8 sinistram** (spatium/ipsius).
+
+#### Tres qubitae
+
+| Qubita | Carmen Óda | E8 | CPT |
+|--------|-----------|-----|-----|
+| ipsius (Ego) | *"Qualis materia sum ego, ut aspectus tuus me secet et formet?"* | E8 sinistra (spatium) | C = Charge |
+| alterius (Tu) | *"O quanto te amo... tu dulcis noverca!"* | E8 dextra (color) | P = Parity |
+| phasis (Oda) | *"Esse balbutit; sola lex oratio pura est"* | Productum Cliffordianum (sonus) | T = Tempus |
+
+#### CPT tres strata
+
+**a) Stratum physicum** (Pauli 1955, Lüders 1954):
+- C = Charge (particula ↔ antiparticula)
+- P = Parity (speculum spatii: laevum ↔ dextrum)
+- T = Tempus (inversio temporis)
+
+**b) Stratum grammaticum** (MagyarOntologia.idr):
+- C = Fons (directus / conclusus / nuntiatus) — unde scio?
+- P = Aspectus (continuus / perfectus / habitualis) — quomodo video?
+- T = Tempus verbi (praeteritum / praesens / futurum) — quando?
+- 3×3×3 = 27 combinationes
+
+**c) Stratum psychophysicum** (FazisAlgebra.idr — interpretatio Óda):
+- C = Conscientia propria (quis sum ego?)
+- P = Alter (quis es tu?)
+- T = Phasis relationis (quomodo conectimus?)
+
+Tres strata NON aequivalentia. "Fons" (C) ≠ "Conscientia propria" (C). Mappatio inter strata est homomorphismus (Conant-Ashby), non isomorphismus.
+
+### Quaestor Linguisticus Deterministicus (Idris)
+
+Systema **deterministicum sine perte** quaestionibus hungaricis respondens, in Idris 2, secundum cyculum Carnot:
+
+```
+quaestio (entropia) → codificatio (informatio) → quaerere (opus) → responsio (energia)
+```
+
+#### 18 casus (Kiefer 2011)
+
+Lingua hungarica habet 18 casus veros (non 28). Casus = morphismus in theoria categoriarum.
+
+| Casus | Terminus | Quaestio | Functio |
+|-------|----------|----------|---------|
+| Nominativus | ø | — | subiectum |
+| Accusativus | -t/-ot/-et | objectum | objectum |
+| Dativus | -nak/-nek | cui? | dativus |
+| Inessivus | -ban/-ben | ubi? | locus (intus) |
+| Elativus | -ból/-ből | unde? | directio (intus) |
+| Illativus | -ba/-be | quo? | directio (intus) |
+| Superessivus | -on/-en | ubi? | locus (superficies) |
+| Adessivus | -nál/-nél | ubi? | locus (iuxta) |
+| Delativus | -ról/-ről | unde? | directio (superficie) |
+| Ablativus | -tól/-től | unde? | directio (iuxta) |
+| Sublativus | -ra/-re | quo? | directio (superficiem) |
+| Allativus | -hoz/-hez | quo? | directio (iuxta) |
+| Terminativus | -ig | usque? | directio |
+| Instrumentalis | -val/-vel | quo instrumento? | instrumentum |
+| Causalis-finalis | -ért | cur? | causa |
+| Translativus | -vá/-vé | in quid? | resultatus |
+| Formativus | -képp | quomodo? | status |
+| Essivus-formalisi | -ként | ut quid? | status |
+
+#### Codex Steane [[7,1,3]] divisio
+
+- **[[7,4,3]] Codex Hamming** = responsio (stabilizator X, 4 bit)
+- **[[7,3,3]] Hamming dualis** = quaestio (stabilizator Z, 3 bit)
+- **Steane** = quaestio + responsio = connexio
+
+Hoc est **cyculum Carnot quanticum**: quaestio (Hamming dualis) et responsio (Hamming) simul = codex Steane. Correctio errorum = clausura cyculi.
+
+#### Sententiae principales
+
+- **fog** (verbum auxiliare futurum) = dens = instrumentalis (quo instrumento? dente!) = non tempus, sed aspectus
+- **szem-lélet** = oculus (i) + vivere (j) = i×j=k = octonion
+- **lé** = aqua = portans entropiae (non energia)
+- **fény** = energia (E=hf)
+- **lét** = aqua + objectum = informatio (Landauer)
+- **élni** = entropiam in informationem convertere (gradus cyculi Carnot)
+- **E8⁴** = (ego, tu, connexio, cyculus Carnot) — quartus E8 = bulla = ruptura CPT = vitam sustinet
+
+#### Resultatus probationis
+
+```
+Quaestio: 'Quid est categoria?'     → Distantia: 0 (Idem)      → Awodey §1.1
+Quaestio: 'Quid est functor?'       → Distantia: 0 (Idem)      → Awodey §1.1
+Quaestio: 'Ubi est objectum?'       → Distantia: 2 (Error 1 bit) → Awodey §1.7
+Quaestio: 'Cur isomorphismus?'      → Distantia: 2 (Error 1 bit) → Awodey §1.1
+Quaestio: 'Quo functor→categoria?'  → Distantia: 2 (Error 1 bit) → Awodey §1.2
+```
+
+Distantia 0 = perfectus. Distantia ≤3 = correctio [[15,1,3]].
+
+#### Fontes
+
+- Kiefer (ed.): Új magyar nyelvtan (2011) — `trail_index/books/uj_magyar_nyelvtan.txt`
+- Awodey: Category Theory, cap. 1 (hungarice) — `trail_index/books/awodey_bilingual_ch1.txt`
+- Iosephus Attila: Óda (Nyugat, 1933)
+- `osveny_index/MagyarNyelvtan.idr`, `Kodol.idr`, `Tavolsag.idr`, `Kereso.idr`
