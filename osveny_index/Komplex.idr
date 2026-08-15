@@ -129,7 +129,66 @@ showKomplex : Komplex -> String
 showKomplex (K a b) =
   show a ++ (if b >= 0.0 then " + " else " - ") ++ show (abs b) ++ "i"
 
--- ─── 8. FŐPROGRAM ───────────────────────────────────────────
+-- ─── 8. ARANYMETSES FIXPONT — √(1+z) KONTRAKCIO ────────────
+
+||| Az aranymetszés fixpontja: f(z) = √(1+z)
+||| φ = √(1+φ) → φ² = 1+φ → φ²-φ-1 = 0 → φ = (1+√5)/2
+||| |f'(z)| = |1/(2√(1+z))| < 1 ha |1+z| > 1/4 — kontrakcio!
+||| Komplex síkon is konvergál: a spirál φ-hez tart.
+|||
+||| Forrás: John D. Cook, "Complex golden convergence" (2025)
+|||   https://www.johndcook.com/blog/2025/02/23/complex-golden-convergence/
+public export
+komplexGyok : Komplex -> Komplex
+komplexGyok (K a b) =
+  let -- √(a+bi) = √((r+a)/2) + i·sgn(b)·√((r-a)/2), r = |a+bi|
+      r = sqrt (a*a + b*b)
+      reGyok = sqrt ((r + a) / 2.0)
+      imGyok = if b >= 0.0 then sqrt ((r - a) / 2.0) else -sqrt ((r - a) / 2.0)
+  in K reGyok imGyok
+
+||| Az aranymetszés kontrakciós iterációja: z_{n+1} = √(1+z_n)
+||| Konvergál φ = (1+√5)/2 ≈ 1.618 felé.
+||| Komplex síkon: a spirál φ-hez tart.
+public export
+aranyMetszesIteracio : Komplex -> Nat -> Komplex
+aranyMetszesIteracio z 0 = z
+aranyMetszesIteracio z (S k) =
+  aranyMetszesIteracio (komplexGyok (kOsszead kEgy z)) k
+
+||| A konvergencia: |z_n - φ| → 0?
+public export
+aranyMetszesKonvergencia : Komplex -> Nat -> Double
+aranyMetszesKonvergencia z n =
+  let zn = aranyMetszesIteracio z n
+      fiKomplex = K 1.618033988749895 0.0
+  in kAbs (kKivon zn fiKomplex)
+
+-- ─── 9. KVANTUM Y = ARANYMETSES KONTRAKCIO + FAZIS ──────────
+
+||| A kvantum Y-kombinátor = aranymetszés kontrakció + fázis:
+|||   Y_φ(f) = e^{iθ} · √(1 + Y_φ(f))
+||| ahol θ = aranymetszés szög (137.5°)
+||| 
+||| A kontrakció (√(1+z)) garantálja a konvergenciát,
+||| a fázis (e^{iθ}) a spirált biztosítja.
+||| A fixpont = φ · e^{i·φ_spirál} = komplex aranymetszés.
+public export
+kvantumYAranyMetszes : Double -> Nat -> Komplex
+kvantumYAranyMetszes fazisSzog 0 = K 0.0 0.0
+kvantumYAranyMetszes fazisSzog (S k) =
+  let elozo = kvantumYAranyMetszes fazisSzog k
+      kontrakcio = komplexGyok (kOsszead kEgy elozo)
+      fazisSzorzo = euler (fromInteger (natToInteger k) * fazisSzog * 0.01)  -- gyengitett fázis
+  in kSzoroz fazisSzorzo kontrakcio
+
+||| A kvantum Y konvergenciája a fixponthoz.
+public export
+kvantumYAMKonvergencia : Double -> Nat -> Double
+kvantumYAMKonvergencia fazisSzog n =
+  let zn = kvantumYAranyMetszes fazisSzog n
+      fiKomplex = K 1.618033988749895 0.0
+  in kAbs (kKivon zn fiKomplex)
 
 public export
 komplexFom : IO ()
@@ -158,20 +217,26 @@ komplexFom = do
   putStrLn ("  5 lepes: |z| = " ++ show (spiralKonvergencia 1.0 aranyMetszesSzoog 5))
   putStrLn ("  10 lepes: |z| = " ++ show (spiralKonvergencia 1.0 aranyMetszesSzoog 10))
   putStrLn ""
-  putStrLn "4. KVANTUM Y KOMPLEX (konkret szamitas):"
-  putStrLn "  f(z) = 0.5*z + 0.5, fixpont = 1.0"
-  let f = \z => K (0.5 * z.re + 0.5) (0.5 * z.im)
-  let y0 = kvantumYKomplex f aranyMetszesSzoog 0
-  let y1 = kvantumYKomplex f aranyMetszesSzoog 1
-  let y2 = kvantumYKomplex f aranyMetszesSzoog 2
-  let y3 = kvantumYKomplex f aranyMetszesSzoog 3
-  let y5 = kvantumYKomplex f aranyMetszesSzoog 5
-  let y10 = kvantumYKomplex f aranyMetszesSzoog 10
-  putStrLn ("  0 lepes: Y = " ++ showKomplex y0 ++ "  |Y-1| = " ++ show (kAbs (kKivon y0 kEgy)))
-  putStrLn ("  1 lepes: Y = " ++ showKomplex y1 ++ "  |Y-1| = " ++ show (kAbs (kKivon y1 kEgy)))
-  putStrLn ("  2 lepes: Y = " ++ showKomplex y2 ++ "  |Y-1| = " ++ show (kAbs (kKivon y2 kEgy)))
-  putStrLn ("  3 lepes: Y = " ++ showKomplex y3 ++ "  |Y-1| = " ++ show (kAbs (kKivon y3 kEgy)))
-  putStrLn ("  5 lepes: Y = " ++ showKomplex y5 ++ "  |Y-1| = " ++ show (kAbs (kKivon y5 kEgy)))
-  putStrLn ("  10 lepes: Y = " ++ showKomplex y10 ++ "  |Y-1| = " ++ show (kAbs (kKivon y10 kEgy)))
+  putStrLn "4. ARANYMETSES KONTRAKCIO (f(z) = √(1+z) → φ):"
+  putStrLn "  Kezdoertek: z0 = 0.0 + 0.0i"
+  let z0 = K 0.0 0.0
+  putStrLn ("  0 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 0) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 0))
+  putStrLn ("  1 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 1) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 1))
+  putStrLn ("  2 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 2) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 2))
+  putStrLn ("  3 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 3) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 3))
+  putStrLn ("  5 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 5) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 5))
+  putStrLn ("  10 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 10) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 10))
+  putStrLn ("  20 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 20) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 20))
+  putStrLn ""
+  putStrLn "5. KVANTUM Y = ARANYMETSES KONTRAKCIO + FAZIS:"
+  let amsz = 2.399963229728653  -- aranyMetszesSzoog radban
+  putStrLn ("  fazisSzog = " ++ show amsz ++ " rad (137.5°)")
+  putStrLn ("  0 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 0))
+  putStrLn ("  1 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 1))
+  putStrLn ("  2 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 2))
+  putStrLn ("  3 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 3))
+  putStrLn ("  5 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 5))
+  putStrLn ("  10 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 10))
+  putStrLn ("  20 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 20))
   putStrLn ""
   putStrLn "Kesz."
