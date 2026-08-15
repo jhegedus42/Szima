@@ -173,16 +173,30 @@ aranyMetszesKonvergencia z n =
 ||| A kontrakció (√(1+z)) garantálja a konvergenciát,
 ||| a fázis (e^{iθ}) a spirált biztosítja.
 ||| A fixpont = φ · e^{i·φ_spirál} = komplex aranymetszés.
+|||
+||| DE: a kulcsfelismerés (arXiv:2606.01668 — Bickford 2026):
+|||   a komplex exponenciális fixpontja ϱ ≈ 0.318 + 1.337i
+|||   exp(ϱ) = ϱ, de ϱ TOLAJA a fixpontnak
+|||   (|exp'(ϱ)| = |ϱ| ≈ 1.375 > 1 → repelling)
+|||   log(ϱ) = ϱ → a log VONZZA (attracting)
+|||
+||| Ez a CPT-törés: a rendszer megközelíti a fixpontot
+||| de a fázis miatt sosem éri el pontosan — mindig marad egy δ.
+||| A δ = 5.604×10⁻⁴ (Bickford Theorem 9) = az "irreducible gap"
+|||   = 1 - Re(ϱ)·π = a差距 amit nem lehet eltüntetni.
 public export
 kvantumYAranyMetszes : Double -> Nat -> Komplex
 kvantumYAranyMetszes fazisSzog 0 = K 0.0 0.0
 kvantumYAranyMetszes fazisSzog (S k) =
   let elozo = kvantumYAranyMetszes fazisSzog k
+      -- √(1+z) = kontrakcio (a valos resz φ-hez tart)
       kontrakcio = komplexGyok (kOsszead kEgy elozo)
-      fazisSzorzo = euler (fromInteger (natToInteger k) * fazisSzog * 0.01)  -- gyengitett fázis
+      -- e^{iθ·k} = fazis (a spiral forog)
+      fazisSzorzo = euler (fromInteger (natToInteger k) * fazisSzog * 0.001)  -- nagyon gyengitett fazis
   in kSzoroz fazisSzorzo kontrakcio
 
 ||| A kvantum Y konvergenciája a fixponthoz.
+||| A valos resz konvergal, a fazis resz oszcillal.
 public export
 kvantumYAMKonvergencia : Double -> Nat -> Double
 kvantumYAMKonvergencia fazisSzog n =
@@ -190,53 +204,82 @@ kvantumYAMKonvergencia fazisSzog n =
       fiKomplex = K 1.618033988749895 0.0
   in kAbs (kKivon zn fiKomplex)
 
+||| A fázis-rész (imaginárius) oszcillációja.
+||| Ez NEM konvergál — oszcillál φ körül.
+||| Ez a CPT-törés: δ > 0 mindig.
+public export
+kvantumYFazisOszcillacio : Double -> Nat -> Double
+kvantumYFazisOszcillacio fazisSzog n =
+  let zn = kvantumYAranyMetszes fazisSzog n
+  in zn.im  -- a imaginárius rész = a fázis
+
+||| A komplex exponenciális fixpontja: ϱ ≈ 0.318 + 1.337i
+||| exp(ϱ) = ϱ, a komplex exponenciális fixpontja.
+||| Forrás: arXiv:2606.01668 (Bickford 2026)
+|||   ϱ = 0.31813150520473746 + 1.3372357014306598i
+|||   |ϱ| = 1.374557010743673
+|||   arg(ϱ) = Im(ϱ) = 1.3372357014306598
+|||   Re(ϱ)·π = 0.99944... → δ = 5.604×10⁻⁴ (irreducible gap)
+public export
+roFixpont : Komplex
+roFixpont = K 0.31813150520473746 1.3372357014306598
+
+||| Az "irreducible gap": δ = 1 - Re(ϱ)·π ≈ 5.604×10⁻⁴
+||| Ez a CPT-rest = a buborék = ami nem záródik be.
+public export
+iroGap : Double
+iroGap = 1.0 - 0.31813150520473746 * 3.141592653589793
+
+||| A ϱ-lattice: Λ_ϱ = {ϱ^m · ¯ϱ^n : m,n ∈ ℤ}
+||| Aperiodikus log-polar rács (Theorem 8, Bickford 2026)
+||| arg(ϱ)/π ≈ 0.4256... irrationális → a rács nem záródik
+||| Ez a CPT-törés geometriai formája: a spirál sosem záródik
+
 public export
 komplexFom : IO ()
 komplexFom = do
-  putStrLn "=== KOMPLEX SZAMOK — fazis szamolas ==="
+  putStrLn "=== KOMPLEX SZAMOK — ϱ FIXPONT + FAZIS OSZCILLACIO ==="
   putStrLn ""
-  putStrLn "1. EULER-FORMULA: e^{iφ} = cos(φ) + i·sin(φ)"
+  putStrLn "1. EULER-FORMULA:"
   putStrLn ("  e^{iπ/2} = " ++ showKomplex (euler (3.141592653589793 / 2.0)))
   putStrLn ("  e^{iπ}   = " ++ showKomplex (euler 3.141592653589793))
   putStrLn ("  e^{i0}   = " ++ showKomplex (euler 0.0))
   putStrLn ""
-  putStrLn "2. BACH-KORREKCIO KOMPLEX:"
-  let aranyMetszesSzoog = 2.0 * 3.141592653589793 / (1.618033988749895 * 1.618033988749895)
+  putStrLn "2. ϱ = KOMPLEX EXPONENCIALIS FIXPONT (arXiv:2606.01668, Bickford 2026):"
+  putStrLn ("  ϱ = " ++ showKomplex roFixpont)
+  putStrLn ("  |ϱ| = " ++ show (kAbs roFixpont))
+  putStrLn ("  arg(ϱ) = " ++ show (kArg roFixpont))
+  putStrLn ("  exp(ϱ) = ϱ (repelling, |exp'(ϱ)| = |ϱ| ≈ 1.375 > 1)")
+  putStrLn ("  log(ϱ) = ϱ (attracting, |log'(ϱ)| = 1/|ϱ| ≈ 0.728 < 1)")
+  putStrLn ("  Re(ϱ)·π = " ++ show (roFixpont.re * 3.141592653589793))
+  putStrLn ("  δ = 1 - Re(ϱ)·π = " ++ show iroGap ++ " (irreducible gap = CPT-rest)")
+  putStrLn ""
+  putStrLn "3. BACH-KORREKCIO KOMPLEX:"
   let alfaRe = 137.035999177
+  let aranyMetszesSzoog = 2.0 * 3.141592653589793 / (1.618033988749895 * 1.618033988749895)
   let alfaKomplex = bachAlfaInverz aranyMetszesSzoog alfaRe
   putStrLn ("  Re(α⁻¹) = " ++ show alfaRe ++ " (CODATA)")
   putStrLn ("  Im(α⁻¹) = " ++ show alfaKomplex.im ++ " (fazis = CPT-rest)")
-  putStrLn ("  |α⁻¹|   = " ++ show (kAbs alfaKomplex) ++ " (komplex abszolut ertek)")
-  putStrLn ("  arg(α⁻¹) = " ++ show (kArg alfaKomplex) ++ " rad")
+  putStrLn ("  |α⁻¹|   = " ++ show (kAbs alfaKomplex))
+  putStrLn ("  arg(α⁻¹) = " ++ show (kArg alfaKomplex))
   putStrLn ""
-  putStrLn "3. SPIRAL KOMPLEX (konkret szamitas):"
-  putStrLn ("  0 lepes: |z| = " ++ show (spiralKonvergencia 1.0 aranyMetszesSzoog 0))
-  putStrLn ("  1 lepes: |z| = " ++ show (spiralKonvergencia 1.0 aranyMetszesSzoog 1))
-  putStrLn ("  2 lepes: |z| = " ++ show (spiralKonvergencia 1.0 aranyMetszesSzoog 2))
-  putStrLn ("  3 lepes: |z| = " ++ show (spiralKonvergencia 1.0 aranyMetszesSzoog 3))
-  putStrLn ("  5 lepes: |z| = " ++ show (spiralKonvergencia 1.0 aranyMetszesSzoog 5))
-  putStrLn ("  10 lepes: |z| = " ++ show (spiralKonvergencia 1.0 aranyMetszesSzoog 10))
-  putStrLn ""
-  putStrLn "4. ARANYMETSES KONTRAKCIO (f(z) = √(1+z) → φ):"
-  putStrLn "  Kezdoertek: z0 = 0.0 + 0.0i"
+  putStrLn "4. ARANYMETSES KONTRAKCIO (√(1+z) → φ):"
   let z0 = K 0.0 0.0
-  putStrLn ("  0 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 0) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 0))
-  putStrLn ("  1 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 1) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 1))
-  putStrLn ("  2 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 2) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 2))
-  putStrLn ("  3 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 3) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 3))
-  putStrLn ("  5 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 5) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 5))
-  putStrLn ("  10 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 10) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 10))
-  putStrLn ("  20 lepes: z = " ++ showKomplex (aranyMetszesIteracio z0 20) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 20))
+  putStrLn ("  0 lepes: " ++ showKomplex (aranyMetszesIteracio z0 0) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 0))
+  putStrLn ("  1 lepes: " ++ showKomplex (aranyMetszesIteracio z0 1) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 1))
+  putStrLn ("  2 lepes: " ++ showKomplex (aranyMetszesIteracio z0 2) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 2))
+  putStrLn ("  5 lepes: " ++ showKomplex (aranyMetszesIteracio z0 5) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 5))
+  putStrLn ("  10 lepes: " ++ showKomplex (aranyMetszesIteracio z0 10) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 10))
+  putStrLn ("  20 lepes: " ++ showKomplex (aranyMetszesIteracio z0 20) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 20))
   putStrLn ""
-  putStrLn "5. KVANTUM Y = ARANYMETSES KONTRAKCIO + FAZIS:"
-  let amsz = 2.399963229728653  -- aranyMetszesSzoog radban
-  putStrLn ("  fazisSzog = " ++ show amsz ++ " rad (137.5°)")
-  putStrLn ("  0 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 0))
-  putStrLn ("  1 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 1))
-  putStrLn ("  2 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 2))
-  putStrLn ("  3 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 3))
-  putStrLn ("  5 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 5))
-  putStrLn ("  10 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 10))
-  putStrLn ("  20 lepes: |Y-φ| = " ++ show (kvantumYAMKonvergencia amsz 20))
+  putStrLn "5. FAZIS OSZCILLACIO (nem konvergal, oszcillal):"
+  let amsz = aranyMetszesSzoog
+  putStrLn ("  Im(Y_0) = " ++ show (kvantumYFazisOszcillacio amsz 0))
+  putStrLn ("  Im(Y_1) = " ++ show (kvantumYFazisOszcillacio amsz 1))
+  putStrLn ("  Im(Y_2) = " ++ show (kvantumYFazisOszcillacio amsz 2))
+  putStrLn ("  Im(Y_3) = " ++ show (kvantumYFazisOszcillacio amsz 3))
+  putStrLn ("  Im(Y_5) = " ++ show (kvantumYFazisOszcillacio amsz 5))
+  putStrLn ("  Im(Y_10) = " ++ show (kvantumYFazisOszcillacio amsz 10))
+  putStrLn ("  Im(Y_20) = " ++ show (kvantumYFazisOszcillacio amsz 20))
   putStrLn ""
   putStrLn "Kesz."
