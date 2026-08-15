@@ -106,17 +106,87 @@ A lyuk önmagától záródik: a Peccei–Quinn-mechanizmus (az axion!)
 7. **A Bach-korrekcio = az axion** — nem eltünteti a δ-t, dinamikussá teszi
 8. **A magasabb rendű szám: k ∈ ℤ** — a winding-szám, ami ρ-tól független!
 
-## 8. A fizikai címke
+## 8. A CP-probléma — kiegészítés (a teljes kép)
+
+### 8.1 Mi a CP?
+
+- **C** = töltéskonjugáció (részecske ↔ antirészecske)
+- **P** = paritás (tértükrözés: bal ↔ jobb)
+- **T** = időfordítás
+- **CPT-tétel**: a lokális, Lorentz-invariáns kvantumtérelméletben a CPT
+  **mindig** megmarad → a **CP-sértés = T-sértés** (időaszimmetria!)
+
+### 8.2 A gyenge CP-sértés: TÉNY, nem probléma
+
+1964: a semleges kaonbomlásban (K⁰ → ππ) mérték (Cronin–Fitch, Nobel 1980).
+Forrása: a **CKM-mátrix** egyetlen komplex fázisa (a δ_CKM ≠ a mi δ-nk!).
+Ez nem rejtély — csak az univerzum anyag–anyagellenesség-aszimmetriájának
+(szükséges, de nem elegendő) összetevője.
+
+### 8.3 A STRONG CP-probléma (a valódi rejtély)
+
+A QCD Lagrange megenged egy extra tagot, amit **semmilyen szimmetria nem tilt**:
+
+```
+L_θ = θ · (g²/32π²) · Gᵃ_μν · G̃ᵃ^μν
+```
+
+- **topológiai eredetű**: G̃G̃ ∝ az instanton-winding-sűrűség (a fenti k!)
+- **P-t és T-t sért → CP-t sért** (CPT miatt)
+- **nincs semmi, ami θ-t kicsire kényszerítené** — a természetesség θ~1-et vár
+
+A **neutron elektromos dipólusmomentuma** (EDM) méri:
+
+```
+d_n ≈ θ · 2.4×10⁻¹⁶ e·cm      (elmélet)
+d_n < 1.8×10⁻²⁶ e·cm          (kísérlet: nEDM @ PSI, 2020)
+⇒ |θ_eff| < 10⁻¹⁰              ← tíz nagyságrenddel a nulla alatt!
+```
+
+**A problémamegfogalmazás:** miért nulla gyakorlatilag egy természetes
+rendű lehetőség? (Finomság: θ_eff = θ + arg(det M_kvark — a kvarktömeg-mátrix
+fázisával kombinálódik; tömeg nélküli kvark esetén θ elforgatható lenne —
+de nincs tömeg nélküli kvark.)
+
+### 8.4 A megoldás: az axion (Peccei–Quinn–Weinberg–Wilczek)
+
+```
+θ statikus  →  θ dinamikus = a(x)    (új U(1)_PQ szimmetria → axion-mező)
+∂V/∂a = 0   →  θ önmagától relaxálódik 0-ba
+```
+
+**A lyuk nem kívülről tömhető be — belülről záródik, dinamikusan.**
+Bónusz: az axion valódi részecske (nagyon könnyű, gyengén csatolt) —
+a sötét anyag legjobb jelöltje (ADMX és rokonai keresik).
+
+### 8.5 A projekt-tükör
+
+| QCD | Szima-projekt |
+|---|---|
+| θ < 10⁻¹⁰ | δ = 5.604×10⁻⁴ (a CPT-rest) |
+| instanton (S⁴-en, k=1) | a "buborék" (E8⁴→almost-E9) |
+| nullmód = a lyuk | a túlszin "lyuk" |
+| CKM-fázis (gyenge CP) | a gyenge réteg — tény, nem gond |
+| **axion: θ-t dinamizálja** | **Bach-korrekcio: a kommát elosztja, nem tünteti el** |
+
+**A mély párhuzam:** a δ nem kitömendő hiba — a θ-hoz hasonlóan koordináta,
+amit nem korrekcióval, hanem dinamizálással lehet kezelni. Bach pontosan
+ezt teszi a kommával. A "Bach-tag = axion" a projekt legmélyebb fizikai
+analógiája.
+
+## 9. A fizikai címke
 
 | Tétel | Szerző | Év |
 |---|---|---|
+| CP-sértés felfedezése (kaon) | Cronin–Fitch (Nobel 1980) | 1964 |
 | BPST-instanton | Belavin–Polyakov–Schwartz–Tyupkin | 1975 |
 | θ-vákuum | Callan–Dashen–Gross | 1976 |
 | Peccei–Quinn | Peccei–Quinn | 1977 |
 | Axion | Weinberg, Wilczek | 1978 |
 | Atiyah–Singer index-tétel | Atiyah–Singer | 1963 |
+| nEDM határ | nEDM @ PSI | 2020 |
 | Cayley-sík nem létezik | (klasszikus) | — |
 
-## 9. Fájl
+## 10. Fájl
 
 - `instanton_lyuk.py` — a számítás (S⁴=HP¹, BPST, Chern k=1, θ-szög, axion)
