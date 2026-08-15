@@ -164,6 +164,8 @@ aranyMetszesKonvergencia z n =
       fiKomplex = K 1.618033988749895 0.0
   in kAbs (kKivon zn fiKomplex)
 
+
+
 -- ─── 9. KVANTUM Y = ARANYMETSES KONTRAKCIO + FAZIS ──────────
 
 ||| A kvantum Y-kombinátor = aranymetszés kontrakció + fázis:
@@ -195,14 +197,96 @@ kvantumYAranyMetszes fazisSzog (S k) =
       fazisSzorzo = euler (fromInteger (natToInteger k) * fazisSzog * 0.001)  -- nagyon gyengitett fazis
   in kSzoroz fazisSzorzo kontrakcio
 
-||| A kvantum Y konvergenciája a fixponthoz.
-||| A valos resz konvergal, a fazis resz oszcillal.
+-- ─── 9b. CSILLAPÍTOTT FAZISÚ KVANTUM Y (a fazis VISSZATÉR) ──
+-- A konstans fazisszorzo divergal (a fazis felhalmozodik).
+-- A csillapitott fazis: e^{i·θ/(n+1)} — a fazis 1/n-el csokken,
+-- a kontrakcio (√(1+z)) dominal -> a rendszer OSZCILLAL majd VISSZATER.
+-- Ez a "visszateres a vakumon at": Re -> φ, Im -> 0 (oszcillalva).
+
 public export
-kvantumYAMKonvergencia : Double -> Nat -> Double
-kvantumYAMKonvergencia fazisSzog n =
-  let zn = kvantumYAranyMetszes fazisSzog n
+kvantumYCsillapitott : Double -> Nat -> Komplex
+kvantumYCsillapitott fazisSzog 0 = K 0.25 0.25
+kvantumYCsillapitott fazisSzog (S k) =
+  let elozo = kvantumYCsillapitott fazisSzog k
+      kontrakcio = komplexGyok (kOsszead kEgy elozo)
+      n = fromInteger (natToInteger (S k))
+      fazisSzorzo = euler (fazisSzog / n)
+  in kSzoroz fazisSzorzo kontrakcio
+
+public export
+kvantumYCsillapitottKonvergencia : Double -> Nat -> Double
+kvantumYCsillapitottKonvergencia fazisSzog n =
+  let zn = kvantumYCsillapitott fazisSzog n
       fiKomplex = K 1.618033988749895 0.0
   in kAbs (kKivon zn fiKomplex)
+
+public export
+kvantumYCsillapitottFazis : Double -> Nat -> Double
+kvantumYCsillapitottFazis fazisSzog n = (kvantumYCsillapitott fazisSzog n).im
+
+-- Barmilyen komplex kezdoertekbol a √(1+z) kontrakcio
+-- a VALOS φ fixponthoz viszi vissza a rendszert.
+-- A kepzetes resz (a fazis, a "vakum") eltunik —
+-- ez a vesztesegmentes visszateres: az informacio nem veszik el,
+-- a kontrakcio a valos reszbe suriti vissza.
+-- Forras: John D. Cook, "Complex golden convergence" (2025)
+
+public export
+komplexVisszateres : Komplex -> Nat -> Komplex
+komplexVisszateres z 0 = z
+komplexVisszateres z (S k) =
+  komplexVisszateres (komplexGyok (kOsszead kEgy z)) k
+
+public export
+komplexVisszateresTavolsag : Komplex -> Nat -> Double
+komplexVisszateresTavolsag z n =
+  let zn = komplexVisszateres z n
+      fiKomplex = K 1.618033988749895 0.0
+  in kAbs (kKivon zn fiKomplex)
+
+-- ─── 10. INFORMÁCIÓMEGMARADÁS A KONVERGÁLÁS ELLEN ──────────
+-- A √(1+z) KONTRAKCIÓ INJEKTÍV (főág) → matematikailag visszafordítható.
+-- Az inverz: f⁻¹(w) = w² - 1 — KÁOTIKUS TÁGULÓ (a Mandelbrot c=-1 térképe).
+--
+-- A кажdő konvergáló lépés torli a "honnan jöttem" információt (Landauer),
+-- DE a pálya (z₀, z₁, z₂, ...) VESZTESÉGMENTES kódolása z₀-nak.
+-- Ez a why-chain: a trajektória maga a tömörített, de veszteségmentes kép.
+--
+-- A fizikai párhuzam:
+--   előre (√): termodinamikai nyíl — kontrakció, H-tétel
+--   hátra (w²-1): Loschmidt-paradoxon — az inverz LÉTEZIK, de káotikus
+--   Lyapunov: λ = ln|f⁻¹'(φ)| = ln(2φ) ≈ 1.175 > 0 → érzékeny függés
+
+-- Az inverz kontrakció: f⁻¹(w) = w² - 1 (káotikus)
+public export
+inverzKontrakcio : Komplex -> Komplex
+inverzKontrakcio w = kKivon (kSzoroz w w) kEgy
+
+-- Oda-vissza út: z₀ → (n-szer előre) → z_n → (n-szer hátra) → z₀'
+-- Matematikailag z₀' = z₀ (veszteségmentes);
+-- numerikusan a hiba exponenciálisan nő (kaosz) — a gyakorlati
+-- visszafordíthatatlanság = entrópia = Landauer költség.
+public export
+odaVissza : Komplex -> Nat -> Komplex
+odaVissza z n =
+  komplexVisszateresHatrafel (komplexVisszateres z n) n
+  where
+    komplexVisszateresHatrafel : Komplex -> Nat -> Komplex
+    komplexVisszateresHatrafel w 0 = w
+    komplexVisszateresHatrafel w (S k) =
+      komplexVisszateresHatrafel (inverzKontrakcio w) k
+
+-- A visszaút hibája: |z₀' - z₀| (a Landauer-költség numerikus mása)
+public export
+odaVisszaHiba : Komplex -> Nat -> Double
+odaVisszaHiba z n = kAbs (kKivon (odaVissza z n) z)
+
+-- A Lyapunov-tényező: λ = ln(2φ) — bit/lépés információvesztés
+-- a fixpont környékén (numerikus visszafordíthatatlanság mértéke)
+public export
+lyapunovTenyzo : Double
+lyapunovTenyzo = 1.1747627006009333  -- ln(2φ) = ln(3.2360...)
+
 
 ||| A fázis-rész (imaginárius) oszcillációja.
 ||| Ez NEM konvergál — oszcillál φ körül.
@@ -272,14 +356,51 @@ komplexFom = do
   putStrLn ("  10 lepes: " ++ showKomplex (aranyMetszesIteracio z0 10) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 10))
   putStrLn ("  20 lepes: " ++ showKomplex (aranyMetszesIteracio z0 20) ++ "  |z-φ| = " ++ show (aranyMetszesKonvergencia z0 20))
   putStrLn ""
-  putStrLn "5. FAZIS OSZCILLACIO (nem konvergal, oszcillal):"
-  let amsz = aranyMetszesSzoog
-  putStrLn ("  Im(Y_0) = " ++ show (kvantumYFazisOszcillacio amsz 0))
-  putStrLn ("  Im(Y_1) = " ++ show (kvantumYFazisOszcillacio amsz 1))
-  putStrLn ("  Im(Y_2) = " ++ show (kvantumYFazisOszcillacio amsz 2))
-  putStrLn ("  Im(Y_3) = " ++ show (kvantumYFazisOszcillacio amsz 3))
-  putStrLn ("  Im(Y_5) = " ++ show (kvantumYFazisOszcillacio amsz 5))
-  putStrLn ("  Im(Y_10) = " ++ show (kvantumYFazisOszcillacio amsz 10))
-  putStrLn ("  Im(Y_20) = " ++ show (kvantumYFazisOszcillacio amsz 20))
+  putStrLn "5. KVANTUM Y CSILLAPITOTT FAZISSAL (a fazis VISSZATER):"
+  putStrLn ("  Y_{n+1} = e^{i·θ/(n+1)} · √(1+Y_n),  θ = aranymetszes szog")
+  let amsz = 2.0 * 3.141592653589793 / (1.618033988749895 * 1.618033988749895)
+  putStrLn ("  0 lepes: |Y-φ| = " ++ show (kvantumYCsillapitottKonvergencia amsz 0) ++ "  Im(Y) = " ++ show (kvantumYCsillapitottFazis amsz 0))
+  putStrLn ("  1 lepes: |Y-φ| = " ++ show (kvantumYCsillapitottKonvergencia amsz 1) ++ "  Im(Y) = " ++ show (kvantumYCsillapitottFazis amsz 1))
+  putStrLn ("  2 lepes: |Y-φ| = " ++ show (kvantumYCsillapitottKonvergencia amsz 2) ++ "  Im(Y) = " ++ show (kvantumYCsillapitottFazis amsz 2))
+  putStrLn ("  3 lepes: |Y-φ| = " ++ show (kvantumYCsillapitottKonvergencia amsz 3) ++ "  Im(Y) = " ++ show (kvantumYCsillapitottFazis amsz 3))
+  putStrLn ("  5 lepes: |Y-φ| = " ++ show (kvantumYCsillapitottKonvergencia amsz 5) ++ "  Im(Y) = " ++ show (kvantumYCsillapitottFazis amsz 5))
+  putStrLn ("  10 lepes: |Y-φ| = " ++ show (kvantumYCsillapitottKonvergencia amsz 10) ++ "  Im(Y) = " ++ show (kvantumYCsillapitottFazis amsz 10))
+  putStrLn ("  20 lepes: |Y-φ| = " ++ show (kvantumYCsillapitottKonvergencia amsz 20) ++ "  Im(Y) = " ++ show (kvantumYCsillapitottFazis amsz 20))
+  putStrLn ""
+  putStrLn "6. KOMPLEX VISSZATERES (a kontrakcio torli a kepzest):"
+  putStrLn "  KULONBOZO komplex kezdoertekek, √(1+z) iteracio:"
+  let kezdek = [ K 0.0 1.0, K (-0.9) 2.0, K (-0.75) 0.0, K 2.0 (-1.5) ]
+  visszaterCiklus kezdek
   putStrLn ""
   putStrLn "Kesz."
+  where
+    visszaterCiklus : List Komplex -> IO ()
+    visszaterCiklus [] = pure ()
+    visszaterCiklus (z :: zs) = do
+      putStrLn ("  kezdo " ++ showKomplex z ++ ":")
+      putStrLn ("    5 lepes:  z = " ++ showKomplex (komplexVisszateres z 5) ++ "  |z-φ| = " ++ show (komplexVisszateresTavolsag z 5))
+      putStrLn ("    10 lepes: z = " ++ showKomplex (komplexVisszateres z 10) ++ "  |z-φ| = " ++ show (komplexVisszateresTavolsag z 10))
+      putStrLn ("    20 lepes: z = " ++ showKomplex (komplexVisszateres z 20) ++ "  |z-φ| = " ++ show (komplexVisszateresTavolsag z 20))
+      visszaterCiklus zs
+
+public export
+komplexFom2 : IO ()
+komplexFom2 = do
+  putStrLn "7. ODA-VISSZA (Loschmidt): az informacio NEM veszik el"
+  putStrLn "   elore: z→√(1+z) (n-szer, konvergal φ-hez)"
+  putStrLn "   hatra: w→w²-1    (n-szer, KAO TIpusZIKUS tadas — a Mandelbrot c=-1)"
+  putStrLn "   a PAlYA a vesztesegmentes kod (why-chain), a vegpont NEM"
+  putStrLn ("   Lyapunov-tenyezo: λ = ln(2φ) = " ++ show lyapunovTenyzo ++ " bit/lepes")
+  putStrLn ""
+  let kezdo = K 0.25 0.25
+  putStrLn ("   kezdo: " ++ showKomplex kezdo)
+  putStrLn ("     3 lepes oda-vissza:  hiba = " ++ show (odaVisszaHiba kezdo 3))
+  putStrLn ("     5 lepes oda-vissza:  hiba = " ++ show (odaVisszaHiba kezdo 5))
+  putStrLn ("     8 lepes oda-vissza:  hiba = " ++ show (odaVisszaHiba kezdo 8))
+  putStrLn ("     10 lepes oda-vissza: hiba = " ++ show (odaVisszaHiba kezdo 10))
+  putStrLn "   -> 0 lepesnel: hiba ~ 0 (pontosan visszater)"
+  putStrLn "   -> n novekszik: hiba exponencialisan no (kaosz, Landauer)"
+  putStrLn "      de a PAlYA (z0,z1,...,zn) torolhetetlenul kodolja z0-t"
+  putStrLn "   Y = KARNOT-CIKLUS: elore (kompresszio) + hatra (expanzio)"
+  putStrLn "      = a vegtelen ciklus ami eletben tartja a rendszert"
+  putStrLn "Kesz2."
