@@ -228,6 +228,9 @@ projektFogalmak =
   , FogalomK "A440"            ZeneK     (p8 Nulla Egy Nulla Nulla Egy Nulla Nulla Egy)
   , FogalomK "diapason-normal" ZeneK     (p8 Nulla Egy Nulla Egy Nulla Nulla Nulla Egy)
   , FogalomK "ISO-16"          ZeneK     (p8 Egy Egy Nulla Nulla Egy Nulla Nulla Nulla)
+  , FogalomK "Fermat-prím"     MatekK    (p8 Egy Nulla Nulla Nulla Nulla Egy Nulla Egy)
+  , FogalomK "terc"            ZeneK     (p8 Nulla Nulla Nulla Egy Nulla Egy Nulla Nulla)
+  , FogalomK "gauge-rögzítés"  FizikaK   (p8 Egy Nulla Nulla Nulla Egy Egy Nulla Nulla)
   -- számítástudomány
   , FogalomK "Y-kombinátor"    SzamitastudomanyK (p8 Nulla Nulla Nulla Egy Nulla Egy Nulla Nulla)
   , FogalomK "Turing-gép"      SzamitastudomanyK (p8 Nulla Nulla Nulla Egy Nulla Egy Nulla Egy)
@@ -353,6 +356,13 @@ projektElek =
   , ElK "ISO-16"          NominativusK   "A440"         -- a szabvány hordozója (1975)
   , ElK "hangvilla"       InstrumentalisK "keresés"     -- a hangvilla mint referencia-eszköz
   , ElK "Bach"            TerminativusK  "komma"        -- Bach: a komma elosztásáig
+  -- kör-újraolvasás (docs/kor_ujraolvasa.md): a konzonancia = a szerkeszthetőség
+  , ElK "kvint"           EssivusK       "Fermat-prím"  -- 3/2: a 3 = F0 Fermat-prím
+  , ElK "terc"            EssivusK       "Fermat-prím"  -- 5/4: az 5 = F1 Fermat-prím
+  , ElK "Fermat-prím"     CausalisK      "Gödel"        -- Gauss–Wantzel a Gödel-tétel geometriai rokona
+  , ElK "A440"            EssivusK       "gauge-rögzítés" -- az abszolút hang = gauge, nem fizika
+  , ElK "MDL"             CausalisK      "A440"         -- 440=2^3·5·11 rövid leírás vs. prím 439
+  , ElK "komma"           DativusK       "axion"        -- a komma elosztása = az axion-mechanizmus
   ]
 
 public export
