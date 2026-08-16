@@ -1,0 +1,186 @@
+{
+  "verzio": "v5.3",
+  "tények_száma": 68,
+  "nyers_bit": 3400,
+  "gép_bit": 1618,
+  "tömörítés": "47.6%",
+  "kiválasztott_modulok": [
+    "M_AWODEY Cat(Awodey)",
+    "M_KANT transzcendentális: 2 forrás, kategóriatábla, szint.a priori",
+    "M_HORIZON 黑洞信息相变",
+    "M_BUHLER Organon: 3 funkció, 2 mező, origó",
+    "M_STEANE H=-JΣ6S_i",
+    "M_OCT2 八元数+Z₂",
+    "M_MERSENNE 2^127",
+    "M_GR 爱因斯坦-希尔伯特",
+    "M_PERC 相位渗流",
+    "M_SKYRME2 孤立子+修正"
+  ],
+  "összes_modul": {
+    "M_GR 爱因斯坦-希尔伯特": {
+      "cost": 77,
+      "covers": {
+        "F14": 0,
+        "F26": 0
+      }
+    },
+    "M_SM SU(3)×SU(2)×U(1)+三代": {
+      "cost": 95,
+      "covers": {
+        "F8": 0,
+        "F9": 0,
+        "F12": 20
+      }
+    },
+    "M_CAUSET 序+数=几何": {
+      "cost": 68,
+      "covers": {
+        "F20": 0,
+        "F10": 8,
+        "F19": 8
+      }
+    },
+    "M_STEANE H=-JΣ6S_i": {
+      "cost": 68,
+      "covers": {
+        "F15": 0,
+        "F16": 0,
+        "F18": 0,
+        "F29": 8
+      }
+    },
+    "M_PERC 相位渗流": {
+      "cost": 77,
+      "covers": {
+        "F17": 0,
+        "F30": 8,
+        "F19": 12
+      }
+    },
+    "M_MERSENNE 2^127": {
+      "cost": 59,
+      "covers": {
+        "F24": 0,
+        "F6": 8,
+        "F35": 6
+      }
+    },
+    "M_CLIFF Cl-lánc+Bott": {
+      "cost": 68,
+      "covers": {
+        "F11": 0,
+        "F12": 12,
+        "F13": 10
+      }
+    },
+    "M_SKYRME2 孤立子+修正": {
+      "cost": 86,
+      "covers": {
+        "F23": 0,
+        "F2": 12
+      }
+    },
+    "M_HORIZON 黑洞信息相变": {
+      "cost": 77,
+      "covers": {
+        "F31": 0,
+        "F32": 0,
+        "F33": 0,
+        "F34": 0,
+        "F35": 10,
+        "F36": 0,
+        "F37": 8
+      }
+    },
+    "M_GAUSS ℤ[i] mod-4": {
+      "cost": 68,
+      "covers": {
+        "F22": 0
+      }
+    },
+    "M_THERMO Legendre/Carnot": {
+      "cost": 68,
+      "covers": {
+        "F29": 10,
+        "F16": 10
+      }
+    },
+    "M_OCT2 八元数+Z₂": {
+      "cost": 86,
+      "covers": {
+        "F21": 0,
+        "F8": 10,
+        "F12": 12
+      }
+    },
+    "M_PIANO 12-TET minimax": {
+      "cost": 59,
+      "covers": {
+        "F25": 10
+      }
+    },
+    "M_AWODEY Cat(Awodey)": {
+      "cost": 140,
+      "covers": {
+        "F38": 0,
+        "F39": 0,
+        "F40": 0,
+        "F41": 0,
+        "F42": 0,
+        "F13": 6,
+        "F10": 6,
+        "F19": 6,
+        "F44": 0,
+        "F45": 0,
+        "F46": 0,
+        "F47": 0,
+        "F48": 0,
+        "F49": 0,
+        "F50": 0,
+        "F51": 0,
+        "F52": 0,
+        "F53": 0
+      }
+    },
+    "M_KANT transzcendentális: 2 forrás, kategóriatábla, szint.a priori": {
+      "cost": 104,
+      "covers": {
+        "F54": 0,
+        "F55": 0,
+        "F56": 0,
+        "F57": 0,
+        "F58": 0,
+        "F59": 0,
+        "F60": 0,
+        "F61": 0
+      }
+    },
+    "M_BUHLER Organon: 3 funkció, 2 mező, origó": {
+      "cost": 104,
+      "covers": {
+        "F62": 0,
+        "F63": 0,
+        "F64": 0,
+        "F65": 0,
+        "F66": 0,
+        "F67": 0,
+        "F68": 0
+      }
+    }
+  },
+  "kulcsszámok": {
+    "T_qc": 0.717,
+    "T*": 0.83,
+    "p_c": 0.05785,
+    "lambda": 1.8035,
+    "nu": 3.3,
+    "K_c_S1": 1.29,
+    "K_c_S3": 1.71,
+    "Z_beta": "2(2cosh βJ)^6",
+    "jelek": {
+      "m_p/m_e": "6π⁵ (19ppm)",
+      "α_G⁻¹": "2^127 (0.45%)",
+      "m_μ/m_e": "ln2/p_c² (36ppm)"
+    }
+  }
+}

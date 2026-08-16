@@ -1,0 +1,168 @@
+# ============================================================
+# HanMag gép v7.0 — tiszta szöveges definíció
+# Ez a fájl IS a gép: a hanmag_gep.py ebből számol,
+# és a gépállapot veszteség nélkül visszaírható ilyen szöveggé
+# (oda-vissza kerekítés).
+#
+# Formátum:
+#   TENY <azonosito> | bit=<nyers bithossz> | <magyar leírás>
+#   MODUL <név> | koltseg=<bit> | <tény>:<maradék_bit> ...
+#   (a MODUL sor végén üres is lehet a fedéslista)
+#
+# A maradék bit = amennyi bit a tény leírása a modul
+# ISMERETÉBEN még igényel (0 = a modul teljesen levezeti).
+# Modul költség = HanMag-tokenek x 9 bit + 32 bit számrész.
+# ============================================================
+
+# ---- A TÉNYEK (68 db, nyersen 3400 bit) ----
+TENY F1 | bit=50 | alfa = 1/137.035999084 (CODATA)
+TENY F2 | bit=50 | mp/me = 1836.152673426
+TENY F3 | bit=50 | mmu/me = 206.7682830
+TENY F4 | bit=50 | alfa_G^-1 ~ 5.91e39 ~ 2^127 (proton gravitációs finomszerkezet)
+TENY F5 | bit=50 | ln2 = 0.6931 — egy bit entrópia
+TENY F6 | bit=50 | pi = 3.14159 — körfázis
+TENY F7 | bit=50 | e = 2.71828 — növekedési alap
+TENY F8 | bit=50 | i — képzetes egység, a negatív bit
+TENY F9 | bit=50 | 3 fermion-generáció — NYITOTT, a gép nem tudja levezetni
+TENY F10 | bit=50 | c, G, hbar struktúra + E = mc^2
+TENY F11 | bit=50 | Steane [[7,1,3]] kód: 7 qubit, 6 stabilizátor
+TENY F12 | bit=50 | 21 egyqubites Pauli-hiba (nem 279!)
+TENY F13 | bit=50 | Z(béta) = 2(2 cosh(béta J))^6 — verifikált partíciófüggvény
+TENY F14 | bit=50 | T* = 0.83 — Schottky-csúcs és Carnot-optimum
+TENY F15 | bit=50 | T_qc = 0.717 — kód-összeomlási hőmérséklet
+TENY F16 | bit=50 | p_c = 0.05785 — konkatenációs küszöb (fixpont)
+TENY F17 | bit=50 | lambda = 1.8035 — RG-nagyítás a fixpontban
+TENY F18 | bit=50 | nu = ln7/ln(lambda) = 3.30 — korrelációs exponens (FSS-igazolt)
+TENY F19 | bit=50 | hibrid/kevert fázisátmenet: ugró rendparaméter (béta=0) + skálázás
+TENY F20 | bit=50 | Lee–Yang-zérusok: béta = +/- i pi/2 (2n+1), hatszoros
+TENY F21 | bit=50 | koherens információ: I_c = ln2 - H_szindróma
+TENY F22 | bit=50 | Szilárd-fordítás: DeltaS = 6 ln2 = ln64
+TENY F23 | bit=50 | két fürdős Carnot-hatásfok 94% @ T*
+TENY F24 | bit=50 | J + 16% hangolás: T* és T_qc átfedésbe hozható
+TENY F25 | bit=50 | Einstein-egyenlet: G_munu = 8 pi G T_munu
+TENY F26 | bit=50 | Schwarzschild-metrika, r_s = 2GM/c^2
+TENY F27 | bit=50 | SM mértékcsoport: SU(3) x SU(2) x U(1)
+TENY F28 | bit=50 | elektrogyenge átmenet = crossover (m_H = 125 GeV miatt)
+TENY F29 | bit=50 | QCD kiral átmenet O(4) — csak kiral limeszben
+TENY F30 | bit=50 | 12-TET zongora: 2^(1/12) irracionális, a hangolás kompromisszum
+TENY F31 | bit=50 | Bekenstein: 1 bit = 4 ln2 * lP^2 horizontfelület
+TENY F32 | bit=50 | 0.361 bit / Planck-pixel
+TENY F33 | bit=50 | Steane-horizont: 64 bit @ 1.88 mP sugár
+TENY F34 | bit=50 | QCD-feketelyuk horizontkapacitás ~ 1.78e38 ~ 2^127
+TENY F35 | bit=50 | negatív hőkapacitás: C = -8 pi k_B G M^2 / (hbar c)
+TENY F36 | bit=50 | a párolgás végigfut az SM összes crossover-hőmérsékletén
+TENY F37 | bit=50 | 1-bites limesz @ 0.235 mP — itt omlik össze a kód
+TENY F38 | bit=50 | Yoneda-lemma = causet-tétel (az objektum a nyilai)
+TENY F39 | bit=50 | monád-join = kódkonkatenáció
+TENY F40 | bit=50 | RG-lépés = monád-algebra
+TENY F41 | bit=50 | RAPL: a jobb adjungált őrzi a limeszt = megmaradás
+TENY F42 | bit=50 | adjunkció = MDL-óramű
+TENY F43 | bit=50 | funktor és természetes transzformáció alapjai
+TENY F44 | bit=50 | Awodey: kategória = objektumok + nyilak + kompozíció
+TENY F45 | bit=50 | Awodey: azonosság és asszociativitás
+TENY F46 | bit=50 | Awodey: izomorfizmus = kölcsönös részbeni inverzek
+TENY F47 | bit=50 | Awodey: a funktor őrzi a kompozíciót
+TENY F48 | bit=50 | Awodey: természetes transzformáció = nyílcsalád funktorok között
+TENY F49 | bit=50 | Awodey: adjunkció = univerzális tulajdonság
+TENY F50 | bit=50 | Awodey: limesz és kolimesz = univerzális kúp
+TENY F51 | bit=50 | Awodey: Yoneda — minden objektumot a nyilai határoznak meg
+TENY F52 | bit=50 | Awodey: monád = endofunktor + egység + szorzás
+TENY F53 | bit=50 | Awodey: a kategóriatétel komprimált bizonyítás
+TENY F54 | bit=50 | Kant: értelem = spontaneitás — a gép moduljai
+TENY F55 | bit=50 | Kant: érzékiség = receptivitás — a nyers tények
+TENY F56 | bit=50 | Kant: a maradék bit = szintetikus a priori
+TENY F57 | bit=50 | Kant: 7+5=12 — a gép prímszámaiból
+TENY F58 | bit=50 | Kant: a tapasztalat lehetősége = kategóriák
+TENY F59 | bit=50 | Kant: tér és idő = az érzéki forma
+TENY F60 | bit=50 | Kant: transzcendentális egység = a gép állapota
+TENY F61 | bit=50 | Kant: gondolkodás = szabály szerinti egyesítés
+TENY F62 | bit=50 | Bühler: Organon-modell — a nyelv szerszám
+TENY F63 | bit=50 | Bühler: Symbolfeld = Darstellung — a hanzi mező
+TENY F64 | bit=50 | Bühler: Zeigefeld = deixis — a magyar ragozás mezeje
+TENY F65 | bit=50 | Bühler: origo = én-itt-most = mértékrögzítés
+TENY F66 | bit=50 | Bühler: három függvény: Darstellung / Ausdruck / Appell
+TENY F67 | bit=50 | Bühler: feladó-címzett-tárgy = 我/尔/相
+TENY F68 | bit=50 | Bühler: a HanMag maga egy Organon-nyelv
+
+# ---- A METAFORIKUS FIZIKA fájlból (22 új tény) ----
+TENY F69 | bit=50 | 137 = (11+4i)(11-4i) a Gauss-egészekben — Fermat szerint egyértelmű
+TENY F70 | bit=50 | a 7 inert prím (3 mod 4): sosem a^2+b^2 — a Fano/Steane-világ ura
+TENY F71 | bit=50 | mod 4 vámvonal: p≡1(4) felbomlik, p≡3(4) inert marad
+TENY F72 | bit=50 | K_c(S^1)=1.29, K_c(S^3)=1.71 — a fáziskondenzáció drágul dimenzióval
+TENY F73 | bit=50 | 343 = 7 + 2*168: az oktonió-tábla 175 asszociatív + 168 antiasszociatív hármas
+TENY F74 | bit=50 | 168 = |PSL(2,7)| — a Fano-sík szimmetriacsoportjának rendje
+TENY F75 | bit=50 | Fano^3 spektrális dimenzió ~ 4.0 — három Fano-sík adja a 4D-t
+TENY F76 | bit=50 | Myrheim–Meyer: D ~ 2.02 tiszta oksági rendezésből (causet)
+TENY F77 | bit=50 | spektrális dimenzió d_s ~ 2.5 (2D kauzális háló, véletlen bolyongás)
+TENY F78 | bit=50 | Gauss-prím események: 0.220 ~ p_c ~ 0.227; prím-prím dúsulás 1.47x
+TENY F79 | bit=50 | 12-TET MDL-derivált: minimax-optimum, legyőzi a 7/19/31-TET-et
+TENY F80 | bit=50 | Tolman: eta(r) = 1 - (Tc/Th)/sqrt(g00); neutroncsillagon +3.5%
+TENY F81 | bit=50 | CPT-sértés a kódban: DeltaS ~ 1.6 eps bit, az ára eps^2-es
+TENY F82 | bit=50 | Szilárd-gőzgép: 200 kör, +186 J-egység munka, a bit 99.5%-ban ép
+TENY F83 | bit=50 | COP=1 nullszaldó a T*-nál — Schottky = gazdasági határ, 3 úton ugyanaz
+TENY F84 | bit=50 | dob = Bessel-zérusok: irracionális felhangok; a körhúr egész sorozat
+TENY F85 | bit=50 | a vöröseltolódás transzponál (nem falsít), a görbületgradiens falsít
+TENY F86 | bit=50 | Connes spektrális hármas (A,H,D); KMS: i*hbar*béta = képzetes időkör
+TENY F87 | bit=50 | alfa = 7/960 jelölt (779 ppm) — az MDL 1 bittel a határ alatt tartja
+TENY F88 | bit=50 | 279 = 7^3 - 64 geometriai mellékszám; a valódi egyhibák száma 21
+TENY F89 | bit=50 | p_c ~ 0.227: 100 pontos kör + 5% hosszú húrok áttekeredési küszöbe
+TENY F90 | bit=50 | T-dualitás R <-> alfa'/R: lendület és tekeredés felcserélhető
+
+# ---- LOGIKA + ER=EPR + HOLO + TOMASELLO (20 új tény) ----
+TENY F91 | bit=50 | Tóth: bivalencia — a kijelentés igaz vagy hamis, harmadik nincs
+TENY F92 | bit=50 | Tóth: műveletek nem/és/vagy/következtetés/ekvivalencia igazságtáblái
+TENY F93 | bit=50 | Tóth: modus ponens: p->q és p, tehát q — a következtetés motorja
+TENY F94 | bit=50 | Tóth: hipotetikus szillogizmus: p->q, q->r, tehát p->r (lánc)
+TENY F95 | bit=50 | Tóth: predikátumlogika: minden/létezik + magasabbrendű nyelvek
+TENY F96 | bit=50 | Tóth: hálók és algebrák — a logika algebrai szerkezete
+TENY F97 | bit=50 | Maldacena–Susskind: ER = EPR — a fonódás Einstein–Rosen-hidat sző
+TENY F98 | bit=50 | ER=EPR: nincs fénysebesség-feletti jelzés (nem átjárható a híd)
+TENY F99 | bit=50 | ER=EPR: fonódás LOCC-val (lokális művelet) nem hozható létre
+TENY F100 | bit=50 | ER=EPR: az AMPS-tűzfal paradoxon feloldása egyoldali műveletekkel
+TENY F101 | bit=50 | HOLO: tudatalatti = 2D határ-CFT, tudat = 3D bulk (AdS3/CFT2)
+TENY F102 | bit=50 | HOLO: Brown–Henneaux c = 3L/2G_N; Ising c=1/2 => L = G_N/3
+TENY F103 | bit=50 | HOLO: alvás = fázisátmenet a határon, egzakt 2D Ising osztály
+TENY F104 | bit=50 | HOLO: 2D Ising exponensek: alfa=0, béta=1/8, gamma=7/4, delta=15, nu=1, eta=1/4
+TENY F105 | bit=50 | HOLO: kínai 2D logográf + magyar 1D ragozó = aminosav-szekvencia
+TENY F106 | bit=50 | HOLO: tanulás = fehérjehajtogatás = a bulk-geometria kondenzációja
+TENY F107 | bit=50 | HOLO: biológiai mérés: directed percolation exponensek (tau~1.5, 2.0)
+TENY F108 | bit=50 | Tomasello: a nyelv használat-alapú — konstrukciók, nem szabályok
+TENY F109 | bit=50 | Tomasello: konstrukciós szigetekből absztrakt sémák slot-okkal
+TENY F110 | bit=50 | Tomasello/Wittgenstein: a nyelv nem üresjárat, hanem munka — a gép is
+
+# ---- A MODULOK (26 db könyvtárból, a gép választ) ----
+MODUL GR | koltseg=86 | F25:0 F26:10 F80:10
+MODUL SM | koltseg=140 | F27:0 F28:0 F29:12
+MODUL STEANE | koltseg=104 | F11:0 F12:0 F13:0 F21:12 F22:12 F81:20 F82:0 F88:15
+MODUL THERMO | koltseg=131 | F14:6 F23:8 F24:10
+MODUL PERC | koltseg=68 | F16:0 F17:0 F18:0
+MODUL MERSENNE | koltseg=59 | F4:0 F34:0
+MODUL OCT2 | koltseg=68 | F2:0 F3:20
+MODUL SKYRME2 | koltseg=68 | F5:0 F6:0 F7:0 F8:0
+MODUL HORIZON | koltseg=77 | F31:0 F32:0 F33:0 F36:0 F35:30 F37:20
+MODUL GAUSS | koltseg=59 | F1:8
+MODUL AWODEY | koltseg=140 | F38:0 F39:0 F40:0 F41:0 F42:0 F44:0 F45:0 F46:0 F47:0 F48:0 F49:0 F50:0 F51:0 F52:0 F53:0 F10:20 F19:16
+MODUL KANT | koltseg=104 | F54:0 F55:0 F56:0 F57:0 F58:0 F59:0 F60:0 F61:0
+MODUL BUHLER | koltseg=104 | F62:0 F63:0 F64:0 F65:0 F66:0 F67:0 F68:0
+MODUL CAUSET | koltseg=68 | F38:6
+MODUL CLIFF | koltseg=77 | F20:8
+MODUL PIANO | koltseg=59 | F30:10
+# ---- újak a Metaforikus Fizika fájlból ----
+MODUL GAUSS2 | koltseg=86 | F69:0 F70:0 F71:0 F78:30
+MODUL OKTONIO | koltseg=86 | F73:0 F74:0 F75:20
+MODUL SPEKTRUM | koltseg=77 | F76:0 F77:15 F89:0
+MODUL KT | koltseg=68 | F72:0 F83:20
+MODUL ZENE | koltseg=86 | F79:0 F84:0 F85:0 F30:0 F90:15
+MODUL CONNES | koltseg=77 | F86:0 F20:8
+# ---- a nagy durranás: logika + új anyagok ----
+MODUL LOGIKA | koltseg=86 | F91:0 F92:0 F93:0 F94:0 F95:10 F96:10
+MODUL EREPR | koltseg=77 | F97:0 F98:0 F99:5 F100:10
+MODUL HOLO | koltseg=95 | F101:0 F102:0 F103:0 F104:0 F105:0 F106:5 F107:10
+MODUL TOMASELLO | koltseg=77 | F108:0 F109:0 F110:10
+
+# ---- ALGORITMUSOK: a szöveg mint végrehajtható motor ----
+# ALGO <modulnév> | motor=<gépezet> — a modul nem csak tárol, SZÁMOL
+ALGO LOGIKA | motor=modus_ponens
+ALGO EREPR | motor=horizont_szam
+ALGO HOLO | motor=brown_henneaux
+ALGO TOMASELLO | motor=ngram_indukcio

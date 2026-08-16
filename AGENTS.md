@@ -137,3 +137,14 @@ Ha egy feladat titkot igényel, kérdezd meg a felhasználót — ne kutakodj ez
 - `git init` megtörtént a `/Users/joco/opencode/` könyvtárban
 - Snapshot minden 3. prompt után: `git add -A && git commit -m "snapshot N: rövid leírás"`
 - `.gitignore`: `session-*.md`, `trail_index/build/`
+
+### Idris 2 csapda: kisbetűs név a bizonyítástípusban (0.8.0)
+
+Ha egy felső szintű deklaráció TÍPUSÁBAN csupusz **kisbetűs** definiált
+név áll (pl. `bizKetto : kettoLeg = 2`), az elaborátor azt automatikusan
+új implicit argumentumként köti be ("shadowing" figyelmeztetés), és a
+`Refl` nem redukálódik. A nagybetűs konstansnév jó: `bizNagy : KettoLegNev = 2` átmegy.
+
+Szabály: **a bizonyítástípusokban hivatkozott konstansok neve nagybetűvel
+kezdődjön** (FanóNégy, NullaPont), vagy konstruktor-alkalmazás legyen.
+Futásidejű kódban (érték jobboldalán) a kisbetűs név teljesen jó.

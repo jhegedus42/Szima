@@ -1,0 +1,31 @@
+HanMag üzemanyag-rúd v0.2 — a beszélgetés tömörített archívuma
+28 eredmény, binárisan 339 bájt
+
+质虚val镜ként         | 137 = (11+4i)(11-4i)  [137.036]
+质ban破ig关ként       | mod-4 海关: 137分裂/7惰性  [137.0, 7.0]
+轴ben海ként镜val      | 343 = 7 + 2×168  [343.0, 7.0, 168.0]
+缠kor镜ig海ben        | 175结合/168反结合  [175.0, 168.0]
+谱kor维ként泡ban      | Fano^3 谱维度≈4  [4.03]
+渗kor泡ból凝be        | p_c ≈ 0.227 渗流  [0.227]
+空ból时vel维ként      | 因果集 D≈2.02 (Myrheim-Meyer)  [2.02]
+谱ből维be渗kor        | d_s ≈ 2.5 (2D因果集)  [2.5]
+维ből时be凝kor        | d_s 流动 4D→2 (CDT)  [4.0, 2.0]
+相ban凝ig圆kor        | K_c≈1.29 (S^1)  [1.29]
+相ban凝ig维kor        | K_c≈1.71 (S^3, 四元数)  [1.71]
+谱kor破ként相ig       | KT: η=1/4 交叉  [0.25]
+码ben能ből熵ba        | Z = 2(2cosh βJ)^6  [2.0, 6.0]
+熵kor轴ként码ben      | S(T→0)=ln2 逻辑比特  [0.693]
+熵ból能be关kor        | ΔS = 6 ln2 = ln64  [4.159]
+沸kor热ként泡ból      | T*≈0.83 Schottky 峰  [0.83]
+功kor熵val能ként      | Landauer W ≥ 6kT ln2  [6.0]
+圆kor塔ben比be        | m_p/m_e ≈ 6π^5 (19 ppm)  [1836.15, 19.0]
+质塔kor引be           | α_G^-1 ≈ 2^127 (Mersenne)  [1.6938e+38, 127.0]
+破ban比ként镜kor      | sin^2θ_W ≈ 3/13  [0.2312]
+圆ből比be破kor        | sinθ_C ≈ π/14  [0.225]
+质ból比be音kor        | α_s ≈ 2/17  [0.1179]
+琴ben调ig圆ként       | 琴12-TET: 2^(1/12) 无理  [1.0595]
+鼓ben谱ként调ig       | 鼓: Bessel零点 无理泛音  [1.593, 2.136]
+红kor调ként镜ban      | 红移=移调非失谐
+对kor圆vel镜ként      | T对偶 R↔α'/R (圆弦)
+鼓ből谱ként函kor      | 同谱鼓=Yoneda不忠实
+误ban码kor质ként      | 21 单错 (真error数)  [21.0]

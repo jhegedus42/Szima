@@ -1,0 +1,12 @@
+HANMAG TELJES ARCHIVUM — tartalomjegyzek (ellenorzott)
+epitve: 2026-07-28
+
+A GENOM: hanmag_csillagok.py — a 29 gep kodon-indexe (a fajl neve 'csillagok', nem 'genom')
+A SZOTAR: hanmag_szotar.md
+AZ EGESZ GUT EGY KOTETBEN: HANMAG_teljes_gut.txt
+AZ ELME MENTESE: hanmag_elme_mentes.json (28 KB, a hanmag_folytatas tolti vissza)
+TRANSZKRIPTEK: archivum/ (15 fajl)
+CIKKEK: papers_library/ (9 pdf)
+
+ONELLENORZO gepek (ELLENORIZVE-vel vegzodnek, 8 db): hanmag_agy.py hanmag_carnot.py hanmag_csillagok.py hanmag_fazis.py hanmag_folytatas.py hanmag_gorbulet.py hanmag_torony.py hanmag_vilag.py 
+a tobbi 21 gep konyvtar/kiserlet-fajl, banner nelkul fut.
