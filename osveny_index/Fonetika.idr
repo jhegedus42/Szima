@@ -473,31 +473,19 @@ szotagGrafema s = renderSzotagKodaval s (koda s)
 ||| utolsó hangja ugyanaz a digráf, mint a következő támadásának
 ||| első hangja (nny, ssz, ggy …), a kóda utolsó elemét FÉLBETŰvel
 ||| írjuk: men|nye, asz|szony …
-utolsoHang : List Hang -> Maybe Hang
-utolsoHang [] = Nothing
-utolsoHang [x] = Just x
-utolsoHang (_ :: xs) = utolsoHang xs
-
+||| Szótag-sor graféma-visszaírása. A geminátumokra (nny, ssz, ggy…)
+||| az AkH. 226.f szabály érvényes: „a kettőzött többjegyű betű
+||| elválasztásakor mind a sor végén, mind a következő sor elején
+||| ki kell írni a teljes rövid mássalhangzót" — meny-nye-zet,
+||| ösz-sze, szity-tya. Ezt a tiszta 1:1 fonéma→graféma visszaírás
+||| AUTOMATIKUSAN adja: a fonémák maguk oszlanak a határon
+||| ([ɲ][ɲ], [s][s]…), és mindegyik a teljes digráfjaként íródik.
+||| Felezés (men|nye) nem helyes — az a fonetikai, nem a
+||| helyesírási határ.
 geminatosSor : List Szotag -> String
 geminatosSor [] = ""
-geminatosSor (x :: xs) = case xs of
-  [] => szotagGrafema x
-  (y :: _) =>
-    let k = koda x
-        -- a kóda UTOLSÓ hangja (akár egyetlen elem!) egyezik-e a
-        -- következő támadás első digráfjával → men|nye, asz|szony
-        felezendo = case (utolsoHang k, tamadas y) of
-                      (Just b, (c :: _)) => (b == c) && digrafE b
-                      (_, _) => False
-        kUj = if felezendo then utolsoElott k else k
-        fejluk = case utolsoHang k of
-                   Just b => if felezendo then elsoBetu b else ""
-                   Nothing => ""
-    in renderSzotagKodaval x kUj ++ fejluk ++ "\183" ++ geminatosSor xs
-  where
-    digrafE : Hang -> Bool
-    digrafE (DigrafHang _) = True
-    digrafE _ = False
+geminatosSor [x] = szotagGrafema x
+geminatosSor (x :: xs) = szotagGrafema x ++ "\183" ++ geminatosSor xs
 
 ||| Szótagolt forma a BETŰKKEL (graféma-réteg), geminátum-tudatosan:
 ||| grafForma "kutya" = "ku·tya"; grafForma "mennyezet" = "men·nye·zet"

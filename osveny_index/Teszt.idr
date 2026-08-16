@@ -386,8 +386,8 @@ fonetikaTesztek =
       (grafForma "bandita" == "ban·di·ta")
   , teszt "szótag: papír = pa·pír + szóvégi kóda [r]"
       (grafForma "papír" == "pa·pír")
-  , teszt "szótag: mennyezet = men·nye·zet (geminátum oszlik!)"
-      (grafForma "mennyezet" == "men·nye·zet" && szotagSzam "mennyezet" == 3)
+  , teszt "szótag: mennyezet = meny·nye·zet (AkH. 226.f: teljes rövid mindkét oldalon!)"
+      (grafForma "mennyezet" == "meny·nye·zet" && szotagSzam "mennyezet" == 3)
   , teszt "szótag: egészség = e·gész·ség (é-sz-s-é: az sz EGÉSZ digráf!)"
       (grafForma "egészség" == "e·gész·ség" && szotagSzam "egészség" == 3)
   , teszt "hangsúly MINDIG az első szótagon (determinisztikus)"
