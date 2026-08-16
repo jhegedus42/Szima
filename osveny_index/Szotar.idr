@@ -223,6 +223,11 @@ projektFogalmak =
   , FogalomK "komma"           ZeneK     (p8 Nulla Nulla Nulla Nulla Egy Nulla Egy Egy)
   , FogalomK "kvint"           ZeneK     (p8 Nulla Nulla Nulla Egy Nulla Nulla Nulla Nulla)
   , FogalomK "oktáv"           ZeneK     (p8 Egy Nulla Nulla Egy Nulla Nulla Nulla Nulla)
+  , FogalomK "hangvilla"       ZeneK     (p8 Egy Egy Nulla Egy Nulla Nulla Nulla Nulla)
+  , FogalomK "tonométer"       ZeneK     (p8 Egy Egy Nulla Egy Nulla Nulla Nulla Egy)
+  , FogalomK "A440"            ZeneK     (p8 Nulla Egy Nulla Nulla Egy Nulla Nulla Egy)
+  , FogalomK "diapason-normal" ZeneK     (p8 Nulla Egy Nulla Egy Nulla Nulla Nulla Egy)
+  , FogalomK "ISO-16"          ZeneK     (p8 Egy Egy Nulla Nulla Egy Nulla Nulla Nulla)
   -- számítástudomány
   , FogalomK "Y-kombinátor"    SzamitastudomanyK (p8 Nulla Nulla Nulla Egy Nulla Egy Nulla Nulla)
   , FogalomK "Turing-gép"      SzamitastudomanyK (p8 Nulla Nulla Nulla Egy Nulla Egy Nulla Egy)
@@ -339,6 +344,15 @@ projektElek =
   , ElK "kvaternió"     GeneralizacioK "CayleyDickson"
   , ElK "valószínűség"  GeneralizacioK "MDL"
   , ElK "magyar-nyelv"  GeneralizacioK "nyelv"
+  -- hangvilla / A440 (docs/hangvilla_440hz.md)
+  , ElK "tonométer"       InessivusK     "hangvilla"    -- 52 hangvillából áll (Scheibler)
+  , ElK "tonométer"       CausalisK      "A440"         -- Stuttgart 1834: Scheibler javaslata
+  , ElK "A440"            EssivusK       "hangvilla"    -- A440 = egy hangvilla frekvenciája
+  , ElK "A440"            CausalisK      "α⁻¹"          -- a Bach-korrekcio bemenete
+  , ElK "diapason-normal" EllenteteK     "A440"         -- francia 435 vs ISO 440
+  , ElK "ISO-16"          NominativusK   "A440"         -- a szabvány hordozója (1975)
+  , ElK "hangvilla"       InstrumentalisK "keresés"     -- a hangvilla mint referencia-eszköz
+  , ElK "Bach"            TerminativusK  "komma"        -- Bach: a komma elosztásáig
   ]
 
 public export
