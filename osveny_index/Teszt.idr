@@ -19,6 +19,7 @@ import E8E8Algebra
 import MagyarNyelvtan
 import LawvereGodel
 import Szotar
+import Fonetika
 
 %default total
 
@@ -339,6 +340,60 @@ lawvereTesztek =
   , teszt "Kleene: Hamis→Igaz" (kleeneTagadas Hamis == Igaz)
   ]
 
+-- ─── Fonetika tesztek (magyarHangok: determinisztikus IPA-atiras) ──
+
+public export
+fonetikaTesztek : List TesztEredmeny
+fonetikaTesztek =
+  [ teszt "hangrendszer = 40 (14+17+9, E9 'Hungarian=O')" (hangrendszerSzama == 40)
+  , teszt "magánhangzók = 14"  (maganhagzokSzama == 14)
+  , teszt "mássalhangzók = 17" (massalhangzokSzama == 17)
+  , teszt "digráfok = 9 (oktonion imagináriusok)" (digrafokSzama == 9)
+  , teszt "IPA \"kategória\" = [kɒtɛɡoːriɒ] (Wikipedia IPA/HU)"
+      (magyarIPA "kategória" == "[kɒtɛɡoːriɒ]")
+  , teszt "IPA \"konszonáns\" = [konsonaːnʃ] (sz=EGY fonéma [s]!)"
+      (magyarIPA "konszonáns" == "[konsonaːnʃ]")
+  , teszt "IPA \"szótár\" = [soːtaːr] (sz=[s], ó=[oː], á=[aː])"
+      (magyarIPA "szótár" == "[soːtaːr]")
+  , teszt "IPA \"győr\" = [ɟøːr] (gy=[ɟ], ő=[øː])"
+      (magyarIPA "győr" == "[ɟøːr]")
+  , teszt "IPA \"hangvilla\" = [hɒŋvillɒ] (ng→[ŋ] asszimiláció)"
+      (magyarIPA "hangvilla" == "[hɒŋvillɒ]")
+  , teszt "IPA \"edzés\" = [ɛd͡zeːʃ] (dz=[d͡z], s=[ʃ])"
+      (magyarIPA "edzés" == "[ɛd͡zeːʃ]")
+  , teszt "IPA \"kutya\" = [kucɒ] (ty=[c])"
+      (magyarIPA "kutya" == "[kucɒ]")
+  , teszt "IPA \"lyuk\" = [juk] (ly=[j]!)"
+      (magyarIPA "lyuk" == "[juk]")
+  , teszt "IPA \"dzsessz\" = [d͡ʒɛss] (ssz = hosszú sz = [ss])"
+      (magyarIPA "dzsessz" == "[d͡ʒɛss]")
+  , teszt "táv(szó,zó)=1 (s≠z, ó egyezik)"
+      (fonetikaiTavolsag (magyarHangok "szó") (magyarHangok "zó") == 1)
+  , teszt "táv(x,x)=0"
+      (fonetikaiTavolsag (magyarHangok "kategória") (magyarHangok "kategória") == 0)
+  , teszt "ékezetfüggetlen: KATEGÓRIA ≡ kategória"
+      (magyarIPA "KATEGÓRIA" == magyarIPA "kategória")
+  -- ── szótagolás (determinisztikus; minden magánhangzó = egy szótag) ──
+  , teszt "szótag: kategória = ka·te·gó·ri·a (5, hiátussal: ri·a)"
+      (grafForma "kategória" == "ka·te·gó·ri·a" && szotagSzam "kategória" == 5)
+  , teszt "szótag: kutya = ku·tya (2)"
+      (grafForma "kutya" == "ku·tya" && szotagSzam "kutya" == 2)
+  , teszt "szótag: anya = a·nya (1 mássalhangzó → támadás)"
+      (grafForma "anya" == "a·nya")
+  , teszt "szótag: asztal = asz·tal (2 mássalhangzó → kóda+támadás)"
+      (grafForma "asztal" == "asz·tal")
+  , teszt "szótag: bandita = ban·di·ta (3)"
+      (grafForma "bandita" == "ban·di·ta")
+  , teszt "szótag: papír = pa·pír + szóvégi kóda [r]"
+      (grafForma "papír" == "pa·pír")
+  , teszt "szótag: mennyezet = men·nye·zet (geminátum oszlik!)"
+      (grafForma "mennyezet" == "men·nye·zet" && szotagSzam "mennyezet" == 3)
+  , teszt "szótag: egészség = e·gész·ség (é-sz-s-é: az sz EGÉSZ digráf!)"
+      (grafForma "egészség" == "e·gész·ség" && szotagSzam "egészség" == 3)
+  , teszt "hangsúly MINDIG az első szótagon (determinisztikus)"
+      (hangsulyPozicio == 0)
+  ]
+
 -- ═══════════════════════════════════════════════════════════════
 -- ÖSSZEFOGLALÓ
 -- ═══════════════════════════════════════════════════════════════
@@ -348,6 +403,7 @@ osszesTeszt : List TesztEredmeny
 osszesTeszt =
   e8Tesztek ++ hammingTesztek ++ ragTesztek ++ kerdoszoTesztek
   ++ grafTesztek ++ mdlTesztek ++ valoszinusegTesztek ++ lawvereTesztek
+  ++ fonetikaTesztek
 
 public export
 sikeres : List TesztEredmeny

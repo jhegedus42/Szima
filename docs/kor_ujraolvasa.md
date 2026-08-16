@@ -22,8 +22,8 @@ A tiszta (Ptolemaiosz-féle, "5-limit") hangolás hangközei:
 | Hangköz | Arány | Prim | Fermat-prim? | Zenei sors |
 |---|---|---|---|---|
 | oktáv | 2/1 | 2 | (a dupláció maga) | **pontosan zár** — az egyetlen |
-| **kvint** | 3/2 | **3 = F₀** | ✓ **IGEN** | konzonáns — a rendszer alapja |
-| **terc** | 5/4 | **5 = F₁** | ✓ **IGEN** | konzonáns — a dur/hármas |
+| **kvint** | 3/2 | **3 = F₀** | ✓ **IGEN** | konszonáns — a rendszer alapja |
+| **terc** | 5/4 | **5 = F₁** | ✓ **IGEN** | konszonáns — a dur/hármas |
 | szeptim | 7/4 | 7 | ✗ nem | **"blue note"** — a blues! |
 | 11/8 | 11 | ✗ nem | Partch-terület (43-hangú skála) |
 | 17/16 | 17 | ✓ **F₂** | Gauss 17-szöge — és 17-limit! |
