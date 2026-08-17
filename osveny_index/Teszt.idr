@@ -22,6 +22,9 @@ import Szotar
 import Fonetika
 import FanoParitás
 import ErtelmezoSzotar
+import SteaneHamiltonian
+import LejeuneTranszformacio
+import HanMagKodolas
 
 %default total
 
@@ -29,15 +32,9 @@ import ErtelmezoSzotar
 -- 0. HIÁNYZÓ INSTANCE-OK (Show, Eq) — ADD a forráshoz
 -- ═══════════════════════════════════════════════════════════════
 
--- Show E8Pont (a Kodol-ban van, de nem exportáltuk ide — itt definiáljuk)
 showK : Kubit -> String
 showK Nulla = "0"
 showK Egy = "1"
-
-public export
-Show E8Pont where
-  show p = showK p.x1 ++ showK p.x2 ++ showK p.x3 ++ showK p.x4
-        ++ showK p.x5 ++ showK p.x6 ++ showK p.x7 ++ showK p.x8
 
 public export
 Show Esetrag where
@@ -179,6 +176,18 @@ bizonyitasLista =
   , "bizE1..E7              : Fanó-sík 7 egyenes XOR=000 [Refl]"
   , "bizXZ, bizZX           : Pauli X·Z=Z·X=Y [Refl]"
   , "bizXX, bizZZ           : Pauli involúciók X·X=Z·Z=E [Refl]"
+  , "bizTisztaHamiltonian   : H(tiszta)=−6 alapállapot [Refl]"
+  , "bizEgyesHibaHamiltonian: H(X₁hiba)=0 [Refl]"
+  , "bizNegyesHibaHamilton. : H(X₄hiba)=−4 [Refl]"
+  , "bizSzindromaEgyes/Negy.: szindróma=hiba pozíció binárisan [Refl]"
+  , "bizSzindromaFazisLath. : Z₅ fázishiba az érték-oldal elől rejtve [Refl]"
+  , "bizTisztaTorlesIngyenes: Landauer: tiszta törlés=0 energia [Refl]"
+  , "bizEgyBitTorles        : Landauer: 1 bit=1 egység [Refl]"
+  , "bizHulladekHoVan       : 2. főtétel: a törlési ütem fizet [Refl]"
+  , "bizJavitasAdiabata     : a javító ütem hőáram nélkül [Refl]"
+  , "bizZhiBan/MaBen/YuanK. : HanMag 8 bit = gyökér+rág+paritás [Refl]"
+  , "bizGaussPrimNorma      : 137 = 11²+4² Gauss-prím [Refl]"
+  , "bizBanMely/BizBenMagas : hangrend = a bájt paritásbitje [Refl]"
   ]
 
 public export
@@ -477,6 +486,82 @@ szotarTesztek =
   ]
 
 -- ═══════════════════════════════════════════════════════════════
+-- STEANE-HAMILTONIÁN TESZTEK — a Kimi-archívum TODO-ja teljesül
+-- ═══════════════════════════════════════════════════════════════
+
+public export
+steaneHamiltonianTesztek : List TesztEredmeny
+steaneHamiltonianTesztek =
+  [ teszt "Hamiltonián: a tiszta állapot a legalacsonyabb energiaszint (0)"
+      (energiaSzint TisztaAllapot == 0)
+  , teszt "Hamiltonián: tiszta állapot H = −6 (az alapállapot)"
+      (hamiltonianErtek TisztaAllapot == -6)
+  , teszt "Hamiltonián: X₁ hiba szint = 3, H = 0 (oszlop-1 = 111)"
+      (energiaSzint EgyesHibaAllapot == 3 && hamiltonianErtek EgyesHibaAllapot == 0)
+  , teszt "Hamiltonián: X₄ hiba szint = 1, H = −4 (oszlop-4 = 100)"
+      (energiaSzint NegyesHibaAllapot == 1 && hamiltonianErtek NegyesHibaAllapot == -4)
+  , teszt "Hamiltonián: Z₅ fázishiba szint = 2, H = −2 (oszlop-5 = 011)"
+      (energiaSzint OtosFazisHibaAllapot == 2)
+  , teszt "szindróma: tiszta állapot = 000"
+      (show (ertekSzindroma TisztaAllapot) == "000")
+  , teszt "szindróma: X₁ hiba = 111 (a hiba pozíciója binárisan = 1)"
+      (show (ertekSzindroma EgyesHibaAllapot) == "111")
+  , teszt "szindróma: X₄ hiba = 100 (a hiba pozíciója binárisan = 4)"
+      (show (ertekSzindroma NegyesHibaAllapot) == "100")
+  , teszt "szindróma: a fázishiba rejtve az érték-oldal elől"
+      (show (ertekSzindroma OtosFazisHibaAllapot) == "000")
+  ]
+
+-- ═══════════════════════════════════════════════════════════════
+-- LEJEUNE-TRANSZFORMÁCIÓ TESZTEK — a Landauer-híd és a négy ütem
+-- ═══════════════════════════════════════════════════════════════
+
+public export
+lejeuneTesztek : List TesztEredmeny
+lejeuneTesztek =
+  [ teszt "Lejeune ℒ: a Carnot-ciklus 4 ütemből áll"
+      (length carnotCiklus == 4)
+  , teszt "Landauer ℒ_I: a tiszta szindróma törlése 0 energiát fizet"
+      (energiaOldalErtek (atvalt (InformacioOldalKonstruktor TisztaKod)) == 0)
+  , teszt "Landauer ℒ_I: az 1 hibás bit törlése 1 egység"
+      (energiaOldalErtek (atvalt (InformacioOldalKonstruktor EgyesHibasKod)) == 1)
+  , teszt "Carnot: csak a törlési ütem fizet Landauer-költséget"
+      (landauer (alairas HarmadikUtem) == Egy
+       && landauer (alairas ElsoUtem) == Nulla
+       && landauer (alairas MasodikUtem) == Nulla
+       && landauer (alairas NegyedikUtem) == Nulla)
+  , teszt "Carnot: a javító ütem adiabatikus (nincs hőáram)"
+      (meleg (alairas MasodikUtem) == Nulla && adiabata (alairas MasodikUtem) == Egy)
+  ]
+  where
+    energiaOldalErtek : EnergiaOldal -> Integer
+    energiaOldalErtek (EnergiaOldalKonstruktor e) = e
+
+-- ═══════════════════════════════════════════════════════════════
+-- HANMAG TESZTEK — 1 szóelem = 1 bájt = E8Pont
+-- ═══════════════════════════════════════════════════════════════
+
+public export
+hanmagTesztek : List TesztEredmeny
+hanmagTesztek =
+  [ teszt "HanMag: 质-ban = 00000100 (gyökér 00000 + -ban 10 + mély 0)"
+      (show ZhiBan == "00000100")
+  , teszt "HanMag: 码-ben = 00010111 (gyökér 00010 + -ben 11 + magas 1)"
+      (show MaBen == "00010111")
+  , teszt "HanMag: 圆-kor = 00111101 (gyökér 00111 + -ként + magas 1)"
+      (show YuanKent == "00111101")
+  , teszt "HanMag: a hangrend mindig a 8. bit (-ban/-ból mély = 0)"
+      (hangrendParitas BanRag == Nulla && hangrendParitas BolRag == Nulla)
+  , teszt "HanMag: a hangrend mindig a 8. bit (-ben/-ből/-ként magas = 1)"
+      (hangrendParitas BeRag == Egy && hangrendParitas BolRagM == Egy
+       && hangrendParitas KentRag == Egy)
+  , teszt "HanMag: 26 kínai gyökér (Yi = egy = 25. index)"
+      (gyokerKod Yi == 25)
+  , teszt "Gauss-prím: 137 = 11² + 4² (a norma Refl-bizonyítva)"
+      (TizenegyNegyzetPluszNegyNegyzet == 137)
+  ]
+
+-- ═══════════════════════════════════════════════════════════════
 -- ÖSSZEFOGLALÓ
 -- ═══════════════════════════════════════════════════════════════
 
@@ -486,6 +571,7 @@ osszesTeszt =
   e8Tesztek ++ hammingTesztek ++ ragTesztek ++ kerdoszoTesztek
   ++ grafTesztek ++ mdlTesztek ++ valoszinusegTesztek ++ lawvereTesztek
   ++ fonetikaTesztek ++ fanoParitasTesztek ++ szotarTesztek
+  ++ steaneHamiltonianTesztek ++ lejeuneTesztek ++ hanmagTesztek
 
 public export
 sikeres : List TesztEredmeny
