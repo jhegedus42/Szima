@@ -21,3 +21,6 @@ Mac Lane*.pdf
 # scala-cli caches (fixed patterns)
 trail_index/.scala-build/
 trail_index/.bsp/
+seed.hex
+*.seed
+seed*
