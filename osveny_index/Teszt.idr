@@ -25,6 +25,7 @@ import ErtelmezoSzotar
 import SteaneHamiltonian
 import LejeuneTranszformacio
 import HanMagKodolas
+import Kerdoszo
 
 %default total
 
@@ -188,6 +189,12 @@ bizonyitasLista =
   , "bizZhiBan/MaBen/YuanK. : HanMag 8 bit = gyökér+rág+paritás [Refl]"
   , "bizGaussPrimNorma      : 137 = 11²+4² Gauss-prím [Refl]"
   , "bizBanMely/BizBenMagas : hangrend = a bájt paritásbitje [Refl]"
+  , "bizKiElo/bizMiDolog    : ki?=élő, mi?=dolog (alap-osztó) [Refl]"
+  , "bizMiertOk             : miért?→causalis (OK/CÉL) [Refl]"
+  , "bizMikorNincsRag       : mikor?-ra nincs rag (T≠C,P!) [Refl]"
+  , "bizKerdesKiGauge       : „ki” IPA = [ki] [Refl]"
+  , "bizHogyanDgraf         : „hogyan” gy=[ɟ] [Refl]"
+  , "bizMelyikDgraf         : „melyik” ly=[j] [Refl]"
   ]
 
 public export
@@ -562,6 +569,42 @@ hanmagTesztek =
   ]
 
 -- ═══════════════════════════════════════════════════════════════
+-- KÉRDŐSZÓ TÍPUSOS TESZTEK — mindennek alfja és omegája
+-- ═══════════════════════════════════════════════════════════════
+
+public export
+kerdoszoTipusosTesztek : List TesztEredmeny
+kerdoszoTipusosTesztek =
+  [ teszt "GAUGE: „miért” kézzel == parser ([mieːrt])"
+      (ipaForma KerdesMiert == magyarIPA "miért")
+  , teszt "GAUGE: „hogyan” gy-digráf [ɟ]"
+      (ipaForma KerdesHogyan == magyarIPA "hogyan")
+  , teszt "GAUGE: „melyik” ly-digráf [j]"
+      (ipaForma KerdesMelyik == magyarIPA "melyik")
+  , teszt "kérdés→eset: miért? = causalis-finalis (OK/CÉL)"
+      (kerdoszoEsetT MiertKerdo == Just CausalisFinalisE)
+  , teszt "kérdés→eset: hol? = inessivus (BEN)"
+      (kerdoszoEsetT HolKerdo == Just InessivusE)
+  , teszt "kérdés→eset: mikor? → SEMMI (az igeidőre felel, T ≠ C,P)"
+      (kerdoszoEsetT MikorKerdo == Nothing)
+  , teszt "kérdés→eset: mennyi? → SEMMI (a mennyiség nem eset)"
+      (kerdoszoEsetT MennyiKerdo == Nothing)
+  , teszt "alap-osztó: ki? = élő, mi? = dolog"
+      (kerdoszoOsztoja KiKerdo == Just Elo
+       && kerdoszoOsztoja MitKerdo == Just Dolog)
+  , teszt "a friss kérdés NYITOTT (entrópia-gradiens van)"
+      (megNyitott (megkerdez MiertKerdo))
+  , teszt "a megválaszolt kérdés ZÁRT (a gradiens eltűnt)"
+      (not (megNyitott (megvalaszol (megkerdez MitKerdo) KerdesMi)))
+  , teszt "a bináris válasz betölt (melyik? = felezés)"
+      (not (megNyitott (binarisKerdesBit (megkerdez MelyikKerdo) ElsoFele KerdesMi)))
+  , teszt "a String-es és típusos kerdoszoEset EGYEZIK (miért)"
+      (kerdoszoEset "miért" == kerdoszoEsetT MiertKerdo)
+  , teszt "a String-es és típusos kerdoszoEset EGYEZIK (hol)"
+      (kerdoszoEset "hol" == kerdoszoEsetT HolKerdo)
+  ]
+
+-- ═══════════════════════════════════════════════════════════════
 -- ÖSSZEFOGLALÓ
 -- ═══════════════════════════════════════════════════════════════
 
@@ -572,6 +615,7 @@ osszesTeszt =
   ++ grafTesztek ++ mdlTesztek ++ valoszinusegTesztek ++ lawvereTesztek
   ++ fonetikaTesztek ++ fanoParitasTesztek ++ szotarTesztek
   ++ steaneHamiltonianTesztek ++ lejeuneTesztek ++ hanmagTesztek
+  ++ kerdoszoTesztek ++ kerdoszoTipusosTesztek
 
 public export
 sikeres : List TesztEredmeny
