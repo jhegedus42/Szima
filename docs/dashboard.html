@@ -82,11 +82,16 @@
 <tr><td>Steane-Hamiltonián: tiszta = −6 alapállapot; szindróma = hibapozíció</td><td class="pipa">9 Refl</td></tr>
 </table>
 
+<h2>4a. Idris-számítás → böngésző-rajzolás</h2>
+<p>A float-számítás is Idrisben fut; a weboldal csak <b>megjelenít</b>.
+Élő példa: <a href="zitterbewegung.html">Zitterbewegung — a Dirac-nyelv időfejlődése</a>
+(adat: <code>adatok/zitterbewegung.json</code>, az <code>idris2 --exec jsonKiiras DiracIdoFejlodes.idr</code> generálta).</p>
+
 <h2>5. Hogyan futtasd le te is</h2>
 <pre>git clone https://github.com/jhegedus42/Szima && cd Szima/osveny_index
-idris2 -c Teszt.idr && idris2 --exec main Teszt.idr        # 145/145 + 41 Refl
-idris2 --exec pythonEllenozoKiiras E8Gyokrendszer.idr &gt; e8.py
-python3 e8.py                                               # 240 gyök, norma², …</pre>
+idris2 -c Teszt.idr && idris2 --exec main Teszt.idr        # 164/164 + 50 Refl
+idris2 --exec jsonKiiras DiracIdoFejlodes.idr &gt; ../docs/adatok/zitterbewegung.json
+# (a Python-alapú e8_gyok_ellenorzes.py legacy — átírás alatt Idrisbe)</pre>
 
 <div class="doboz"><b>Kalibráció:</b> <span class="pipa">✓</span> formálisan (Refl) vagy numerikusan bizonyítva ·
 <span class="villam">⚡</span> nyitott hipotézis (semmi halu — a nyitottság jelölve) · a „rezonanciák"

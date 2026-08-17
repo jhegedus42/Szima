@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zitterbewegung — a Dirac-nyelv időfejlődése (Idris-számítás)</title>
+<style>
+  body { font-family: Georgia, serif; background:#f0eee9; color:#1a1a2e; max-width:920px; margin:0 auto; padding:2rem 1rem 4rem; line-height:1.6; }
+  h1 { font-size:1.6rem; }
+  h2 { font-size:1.2rem; border-bottom:1px solid #d8d4cc; padding-bottom:.3rem; margin-top:2rem; }
+  canvas { background:#fafaf7; border:1px solid #d8d4cc; border-radius:6px; width:100%; }
+  .jegyzet { font-size:.85rem; color:#6b7280; }
+  .doboz { background:#fafaf7; border:1px solid #d8d4cc; border-radius:6px; padding:1rem 1.2rem; margin:1rem 0; }
+  code { font-family:Menlo,monospace; background:#eef2f7; border-radius:3px; padding:.1rem .3rem; font-size:.9em; }
+  .legenda span { margin-right:1.2rem; white-space:nowrap; }
+  footer { margin-top:2.5rem; border-top:3px double #1a1a2e; padding-top:1rem; font-size:.85rem; color:#555; }
+</style>
+</head>
+<body>
+
+<h1>Zitterbewegung — a Dirac-nyelv időfejlődése</h1>
+<p>A jelentés oszcillál a <b>térbeli</b> (中文, ψ_L) és az <b>időbeli</b> (magyar, ψ_R)
+nézet között. A görbék minden pontját <b>az Idris számolta</b>
+(<code>DiracIdoFejlodes.idr</code>, Double-aritmetika); ez az oldal csak <b>rajzol</b>.</p>
+
+<div class="legenda jegyzet">
+  <span style="color:#2563eb">━ mátrix-út (spinor-fejlődés γ⁰-ával)</span>
+  <span style="color:#dc2626">┄ zárt képlet sin²(t)</span>
+  <span style="color:#9ca3af">━ szerveri (hibás) γ⁰ — örök 0</span>
+</div>
+<canvas id="abra" height="420"></canvas>
+<p class="jegyzet">Vízszintes tengely: t (0 → π). Függőleges: P(magyar) = |ψ_R|².
+A kék és a piros görbe <b>10⁻¹²-en belül egyezik</b> (164 teszt egyike);
+a szürke vízszintes vonal a szerveri bogár: a 中文↔magyar átjárú sosem nyílik ki.</p>
+
+<div class="doboz">
+<b>Kétféle bizonyítás, egy đồgramon:</b>
+<ul>
+  <li><b>Exakt (Refl, Integer):</b> a γ-mátrixok Clifford-relációi, γ⁵=diag(−1,−1,+1,+1),
+  és hogy a Weyl-γ⁰ <i>keveri</i> a szektorokat míg a szerveri <i>sosem</i> —
+  <code>DiracGammaMatricak.idr</code> (48 Refl a gyűjteményben).</li>
+  <li><b>Numerikus (Idris Double):</b> a két számítási út (mátrix-exponenciál vs
+  sin²-zárt képlet) egyezése ≤10⁻¹² — <code>DiracIdoFejlodes.idr</code> + Teszt.idr.</li>
+</ul>
+</div>
+
+<h2>Az adat útja</h2>
+<pre>osveny_index/DiracIdoFejlodes.idr   (számítás: Idris Double)
+  → idris2 --exec jsonKiiras … > docs/adatok/zitterbewegung.json
+  → ez az oldal (fetch + canvas-rajzolás — a böngésző nem számít, csak jelenít)</pre>
+
+<footer>Szima · a számítás Idrisben, a megjelenítés böngészőben · adat: docs/adatok/zitterbewegung.json (51 pont, Idris-generált)</footer>
+
+<script>
+const PALAYK = 40;  // margó
+async function rajzold() {
+  const vaszon = document.getElementById('abra');
+  const szel = vaszon.clientWidth;
+  const magas = vaszon.height;
+  const ctx = vaszon.getContext('2d');
+  vaszon.width = szel;
+  const adat = await (await fetch('adatok/zitterbewegung.json')).json();
+  const tMax = Math.max(...adat.map(d => d.t));
+  const x = t => PALAYK + (t / tMax) * (szel - 2 * PALAYK);
+  const y = p => magas - PALAYK - p * (magas - 2 * PALAYK);
+
+  ctx.clearRect(0, 0, szel, magas);
+  ctx.strokeStyle = '#d8d4cc'; ctx.lineWidth = 1;
+  for (let p = 0; p <= 1.001; p += 0.25) {
+    ctx.beginPath(); ctx.moveTo(PALAYK, y(p)); ctx.lineTo(szel - PALAYK, y(p)); ctx.stroke();
+    ctx.fillStyle = '#6b7280'; ctx.font = '11px Menlo';
+    ctx.fillText(p.toFixed(2), 6, y(p) + 4);
+  }
+  ctx.fillText('P(magyar)', 6, PALAYK - 8);
+  ctx.fillText('t → π', szel - PALAYK - 30, magas - 10);
+
+  const vonal = (kulcs, szin, szaggatott) => {
+    ctx.strokeStyle = szin; ctx.lineWidth = 2.2;
+    ctx.setLineDash(szaggatott ? [7, 5] : []);
+    ctx.beginPath();
+    adat.forEach((d, i) => i ? ctx.lineTo(x(d.t), y(d[kulcs])) : ctx.moveTo(x(d.t), y(d[kulcs])));
+    ctx.stroke(); ctx.setLineDash([]);
+  };
+  vonal('pMagyarSzerveri', '#9ca3af', false);
+  vonal('pMagyarZart',     '#dc2626', true);
+  vonal('pMagyarWeyl',     '#2563eb', false);
+}
+rajzold();
+window.addEventListener('resize', rajzold);
+</script>
+</body>
+</html>

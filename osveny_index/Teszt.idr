@@ -29,6 +29,7 @@ import Kerdoszo
 import E8Gyokrendszer
 import DiracGammaMatricak
 import OktonionAlgebra
+import DiracIdoFejlodes
 
 %default total
 
@@ -211,6 +212,8 @@ bizonyitasLista =
   , "bizCayleyTablaAlternatív: oktonion 49 pár × 3 törvény [Refl]"
   , "bizCayleyFanoSík       : minden pár pontosan 1 vonalon [Refl]"
   , "bizNemAsszociatív      : (e₁e₂)e₃=−e₆ ≠ e₁(e₂e₃)=+e₆ [Refl]"
+  , "zitterbewegung: két út ≤10⁻¹² (π/4, π/2, π/3) [Idris Double]"
+  , "szerveri γ⁰: P(magyar)=0 PONTOSAN (a bogár numerikusan)"
   ]
 
 public export
@@ -702,6 +705,32 @@ oktonionTesztek =
   ]
 
 -- ═══════════════════════════════════════════════════════════════
+-- DIRAC-IDŐFEJLŐDÉS TESZTEK — numerikus precizitás (Idris Double)
+-- ═══════════════════════════════════════════════════════════════
+
+public export
+diracIdoTesztek : List TesztEredmeny
+diracIdoTesztek =
+  [ teszt "Zitterbewegung: mátrix-út == zárt képlet t=π/4 (≤10⁻¹²)"
+      (kisebbMintPrecizitas
+        (magyarValoszinusegMatrixUt 1.0 (3.141592653589793 / 4.0) -
+         magyarValoszinusegWeyl     1.0 (3.141592653589793 / 4.0)))
+  , teszt "Zitterbewegung: mátrix-út == zárt képlet t=π/2 (≤10⁻¹²)"
+      (kisebbMintPrecizitas
+        (magyarValoszinusegMatrixUt 1.0 (3.141592653589793 / 2.0) -
+         magyarValoszinusegWeyl     1.0 (3.141592653589793 / 2.0)))
+  , teszt "Zitterbewegung: mátrix-út == zárt képlet t=π/3 (≤10⁻¹²)"
+      (kisebbMintPrecizitas
+        (magyarValoszinusegMatrixUt 1.0 (3.141592653589793 / 3.0) -
+         magyarValoszinusegWeyl     1.0 (3.141592653589793 / 3.0)))
+  , teszt "P(magyar)(π/2) = 1.0 (a teljes átváltás) ≤10⁻¹²"
+      (kisebbMintPrecizitas (magyarValoszinusegMatrixUt 1.0 (3.141592653589793 / 2.0) - 1.0))
+  , teszt "szerveri γ⁰-val P(magyar) = 0 PONTOSAN (örök elkülönülés)"
+      (magyarValoszinusegSzerveri 1.0 0.7 == 0.0
+       && magyarValoszinusegSzerveri 1.0 1.5 == 0.0)
+  ]
+
+-- ═══════════════════════════════════════════════════════════════
 -- ÖSSZEFOGLALÓ
 -- ═══════════════════════════════════════════════════════════════
 
@@ -713,7 +742,7 @@ osszesTeszt =
   ++ fonetikaTesztek ++ fanoParitasTesztek ++ szotarTesztek
   ++ steaneHamiltonianTesztek ++ lejeuneTesztek ++ hanmagTesztek
   ++ kerdoszoTesztek ++ kerdoszoTipusosTesztek ++ e8GyokTesztek
-  ++ diracGammaTesztek ++ oktonionTesztek
+  ++ diracGammaTesztek ++ oktonionTesztek ++ diracIdoTesztek
 
 public export
 sikeres : List TesztEredmeny
