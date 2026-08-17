@@ -28,6 +28,7 @@ import HanMagKodolas
 import Kerdoszo
 import E8Gyokrendszer
 import DiracGammaMatricak
+import OktonionAlgebra
 
 %default total
 
@@ -207,6 +208,9 @@ bizonyitasLista =
   , "bizGammaOtWeyl         : γ⁵=diag(−1,−1,+1,+1), γ⁵²=I [Refl]"
   , "bizWeylGammaKeveri     : γ⁰.mező20=+1 → 中文↔magyar él [Refl]"
   , "bizSzerveriNemKeveri   : szerveri γ⁰.mező20=0 → törött [Refl]"
+  , "bizCayleyTablaAlternatív: oktonion 49 pár × 3 törvény [Refl]"
+  , "bizCayleyFanoSík       : minden pár pontosan 1 vonalon [Refl]"
+  , "bizNemAsszociatív      : (e₁e₂)e₃=−e₆ ≠ e₁(e₂e₃)=+e₆ [Refl]"
   ]
 
 public export
@@ -673,6 +677,31 @@ diracGammaTesztek =
   ]
 
 -- ═══════════════════════════════════════════════════════════════
+-- OKTONION TESZTEK — a Cayley-tábla kernel-ellenőrizve
+-- ═══════════════════════════════════════════════════════════════
+
+public export
+oktonionTesztek : List TesztEredmeny
+oktonionTesztek =
+  [ teszt "e₁·e₂ = +e₄ (a Cayley-irány pozitív)"
+      (egysegSzorzatTabla E1 E2 == PozitivGyok E4)
+  , teszt "e₂·e₁ = −e₄ (fordított sorrend előjelet vált)"
+      (egysegSzorzatTabla E2 E1 == NegativGyok E4)
+  , teszt "eᵢ·eᵢ = −1 (mind a 7 gyökre)"
+      (all (\g => egysegSzorzatTabla g g == ValosMinuszEgy) mindGyokLista)
+  , teszt "alternativitás: mind a 49 pár × 3 törvény (a Python-hiba visszajelzés)"
+      MindParErvenyes
+  , teszt "Fano-sík: minden pár pontosan egy vonalon"
+      MindParPontosanEgyVonalon
+  , teszt "NEM asszociatív: (e₁e₂)e₃ ≠ e₁(e₂e₃)"
+      (not NemAsszociativEgyeznek)
+  , teszt "konkrét: (e₁e₂)e₃ = −e₆"
+      (elojelesSzorozGyok (egysegSzorzatTabla E1 E2) E3 == NegativGyok E6)
+  , teszt "konkrét: e₁(e₂e₃) = +e₆"
+      (gyokSzorozElojeles E1 (egysegSzorzatTabla E2 E3) == PozitivGyok E6)
+  ]
+
+-- ═══════════════════════════════════════════════════════════════
 -- ÖSSZEFOGLALÓ
 -- ═══════════════════════════════════════════════════════════════
 
@@ -684,7 +713,7 @@ osszesTeszt =
   ++ fonetikaTesztek ++ fanoParitasTesztek ++ szotarTesztek
   ++ steaneHamiltonianTesztek ++ lejeuneTesztek ++ hanmagTesztek
   ++ kerdoszoTesztek ++ kerdoszoTipusosTesztek ++ e8GyokTesztek
-  ++ diracGammaTesztek
+  ++ diracGammaTesztek ++ oktonionTesztek
 
 public export
 sikeres : List TesztEredmeny

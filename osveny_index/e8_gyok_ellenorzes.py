@@ -1,3 +1,6 @@
+# SZABALY0-IDRISBEN-LEHETETLEN(átmeneti) — 2026-08-18: a 240 gyök generálása
+# ÁTÍRANDÓ Idrisbe (E8Pont = 8 Kubit pontosan tudja!); ez a fáxl legacy-ként marad.
+# Az algebra (112+128=240 stb.) az E8Gyokrendszer.idr-ben Refl-lel bizonyítva.
 import numpy as np
 import math
 

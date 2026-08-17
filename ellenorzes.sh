@@ -53,6 +53,20 @@ if command -v find >/dev/null; then
   fi
 fi
 
+# 4. SZABÁLY: MINDEN számítás Idrisben (AGENTS.md 3) — Python CSAK
+# web/API-hoz (SZABALY0-WEB-API) vagy ha Idrisben lehetetlen
+# (SZABALY0-IDRISBEN-LEHETETLEN, indoklással). Float-számítás is Idrisben
+# (Double, l. Komplex.idr); teljesítményhez codegen vagy C/Rust FFI.
+MarkerNelkuliPy=$(find "$GYOKER" -name '*.py' -not -path '*/tanulsagok/*' -not -path '*/source/*' -not -path '*/horgony/szerver/*' 2>/dev/null | while IFS= read -r f; do
+  grep -q 'SZABALY0-WEB-API\|SZABALY0-IDRISBEN-LEHETETLEN' "$f" || echo "$f"
+done)
+if [ -n "$MarkerNelkuliPy" ]; then
+  echo "FIGYELMEZTETÉS [marker nélküli .py] — AGENTS.md 3: MINDEN számítás Idrisben:"
+  echo "$MarkerNelkuliPy" | sed 's/^/  /'
+  echo "  → Írd át Idrisbe (Double is megy: Komplex.idr minta); ha web/API:"
+  echo "    '# SZABALY0-WEB-API'; ha valóban lehetetlen: '# SZABALY0-IDRISBEN-LEHETETLEN' + indok"
+fi
+
 if [ "$HIBAK_SZAMA" -eq 0 ]; then
   echo "─── TISZTA: minden mechanikus szabály rendben ───"
 else

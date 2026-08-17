@@ -1,3 +1,5 @@
+# SZABALY0-IDRISBEN-LEHETETLEN(átmeneti) — az EXAKT bizonyítások DiracGammaMatricak.idr-ben
+# (Integer-pontosan, Refl); a Zitterbewegung-kód ÁTÍRANDÓ Idris Double-be (Komplex.idr minta).
 #!/usr/bin/env python3
 # ═══════════════════════════════════════════════════════════════
 # DIRAC GAMMA ELLENŐRZÉS — a DiracGammaMatricak.idr numerikus párja
