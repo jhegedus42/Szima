@@ -58,6 +58,13 @@ Ha egy név rövidítésnek tűnik, írd ki teljesen.
 
 ## 1. Kemény Szabályok / Hard Rules (soha nem sérthető)
 
+0. **Minden állítás Idrisben levezetve + numerikusan verifikálva.** Minden
+   releváns számítás szerepeljen Idris-modulban (Refl-bizonyítással), ÉS egy
+   Idris-generált Python/NumPy szkript numerikusan ellenőrizze. A kijövő
+   számok a docs/ dashboardon nyilvánosak, hogy más AI/ember ellenőrizhesse.
+   Cél: **semmi halu** — matematikailag körvonalazott levezetés + numerika.
+   „Nyugodtan leírni mindent Idrisben, ami eszedbe jut — nem kell rövidre fogni."
+
 1. **Nincs szerver írás engedély nélkül.** Ne hozz létre, szerkessz, vagy törölj fájlt a Hetzner szerveren (88.99.218.155) amíg a felhasználó kifejezetten nem kéri. Olvasás rendben. Kérdezz először.
 
 2. **Három egyforma hiba → infrastruktúra javítás.** Ha ugyanazt a hibát 3-szor látod, ne próbálkozz tovább — javítsd meg a gyökérokot (add hozzá AGENTS.md-hez, frissítsd az eszközöket, változtass módszert).

@@ -26,6 +26,7 @@ import SteaneHamiltonian
 import LejeuneTranszformacio
 import HanMagKodolas
 import Kerdoszo
+import E8Gyokrendszer
 
 %default total
 
@@ -195,6 +196,12 @@ bizonyitasLista =
   , "bizKerdesKiGauge       : „ki” IPA = [ki] [Refl]"
   , "bizHogyanDgraf         : „hogyan” gy=[ɟ] [Refl]"
   , "bizMelyikDgraf         : „melyik” ly=[j] [Refl]"
+  , "bizHurwitzHuszonnegy   : a gömb (S³) 24 egysége [Refl]"
+  , "bizE8KetszazNegyven    : 112+128 = 240 E8-gyök [Refl]"
+  , "bizOktonionEgyenloE8   : oktonion egységek = E8 gyökök [Refl]"
+  , "bizFelegeszSzazHuszon. : 128 = 2⁷ félegész gyök [Refl]"
+  , "bizNyolcBit            : 240+16 = 256 (egy bájt!) [Refl]"
+  , "bizE8Dimenzio          : 240+8 = 248 [Refl]"
   ]
 
 public export
@@ -605,6 +612,39 @@ kerdoszoTipusosTesztek =
   ]
 
 -- ═══════════════════════════════════════════════════════════════
+-- E8 GYÖKRENDSZER TESZTEK — a Cayley–Dickson-torony + numerika
+-- ═══════════════════════════════════════════════════════════════
+
+public export
+e8GyokTesztek : List TesztEredmeny
+e8GyokTesztek =
+  [ teszt "torony: ℝ egészek 2 egység"
+      (ValosEgysegekSzama == 2)
+  , teszt "torony: Gauss-egészek 4 egység"
+      (GaussEgysegekSzama == 4)
+  , teszt "torony: a kör (S¹) 8 természetes pontja = 2³ (fázismérés)"
+      (KorTermeszetesPontjai == 2 * 2 * 2)
+  , teszt "torony: A GÖMB (S³) VÁLASZA: Hurwitz 8+16 = 24"
+      (HurwitzEgysegekSzama == 24)
+  , teszt "torony: oktonion 16+224 = 240 = az E8 gyökök"
+      (OktonionEgysegekSzama == 240 && OktonionEgysegekSzama == E8GyokokSzama)
+  , teszt "E8: D8-rész 4·C(8,2) = 4·28 = 112"
+      (NyolcDimenziosGyokokSzama == 112)
+  , teszt "E8: félegész rész = páros paritású bájt = 2⁷ = 128"
+      (FelegeszGyokokSzama == 128)
+  , teszt "E8: 112 + 128 = 240"
+      (E8GyokokSzama == 240)
+  , teszt "E8: dim = gyökök + Cartan = 240 + 8 = 248"
+      (E8GyokokSzama + 8 == 248)
+  , teszt "bináris: 24 öt biten (24+8 = 32 = 2⁵)"
+      (OtBitKapacitas == 32)
+  , teszt "bináris: 240 EGY BÁJTBAN (240+16 = 256 = 2⁸)"
+      (NyolcBitKapacitas == 256)
+  , teszt "rezonancia ⚡: [8,4,4] 16 szava + 240 gyök = 256"
+      (E8GyokokSzama + HammingKodSzavai == 256)
+  ]
+
+-- ═══════════════════════════════════════════════════════════════
 -- ÖSSZEFOGLALÓ
 -- ═══════════════════════════════════════════════════════════════
 
@@ -615,7 +655,7 @@ osszesTeszt =
   ++ grafTesztek ++ mdlTesztek ++ valoszinusegTesztek ++ lawvereTesztek
   ++ fonetikaTesztek ++ fanoParitasTesztek ++ szotarTesztek
   ++ steaneHamiltonianTesztek ++ lejeuneTesztek ++ hanmagTesztek
-  ++ kerdoszoTesztek ++ kerdoszoTipusosTesztek
+  ++ kerdoszoTesztek ++ kerdoszoTipusosTesztek ++ e8GyokTesztek
 
 public export
 sikeres : List TesztEredmeny
