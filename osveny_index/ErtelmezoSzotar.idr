@@ -90,7 +90,7 @@ szóGyűjtemény = [DigrafHang Dgy, MaganhangzoHang Vuee, MassalhangzoHang Mj, M
 -- differentia-betöltők (PATIENS szerepű szavak):
 -- grafikusan: „hangot"
 public export szóHangot : Fonetika
-szóHangot = [MassalhangzoHang Mh, MaganhangzoHang Va, MassalhangzoHang Mn, MassalhangzoHang Mg, MaganhangzoHang Vo, MassalhangzoHang Mt]
+szóHangot = [MassalhangzoHang Mh, MaganhangzoHang Va, MassalhangzoHang Mng, MaganhangzoHang Vo, MassalhangzoHang Mt]
 
 -- grafikusan: „jelet"
 public export szóJelet : Fonetika
@@ -116,10 +116,6 @@ szóSzó = [DigrafHang Dsz, MaganhangzoHang Voo]
 -- grafikusan: „tő"
 public export szóTő : Fonetika
 szóTő = [MassalhangzoHang Mt, MaganhangzoHang Voee]
-
--- grafikusan: „hang"
-public export szóHang : Fonetika
-szóHang = [MassalhangzoHang Mh, MaganhangzoHang Va, MassalhangzoHang Mn, MassalhangzoHang Mg]
 
 -- grafikusan: „szív"
 public export szóSzív : Fonetika

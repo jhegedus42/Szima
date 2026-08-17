@@ -106,8 +106,8 @@ szóÚt = [MaganhangzoHang Vuu, MassalhangzoHang Mt]
 public export
 szóHangvilla : Fonetika
 szóHangvilla =
-  [ MassalhangzoHang Mh, MaganhangzoHang Va, MassalhangzoHang Mn
-  , MassalhangzoHang Mg, MassalhangzoHang Mv, MaganhangzoHang Vi
+  [ MassalhangzoHang Mh, MaganhangzoHang Va, MassalhangzoHang Mng
+  , MassalhangzoHang Mv, MaganhangzoHang Vi
   , MassalhangzoHang Ml, MassalhangzoHang Ml, MaganhangzoHang Va ]
 
 -- grafikusan: „hang" (n→[ŋ] asszimiláció a g előtt)

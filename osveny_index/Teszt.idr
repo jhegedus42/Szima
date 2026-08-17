@@ -464,8 +464,10 @@ szotarTesztek =
       (nemFogalma szóHangvilla == Just szóEszköz)
   , teszt "szótár: funktor nem-fogalma = leképezés"
       (nemFogalma szóFunktor == Just szóLeképezés)
-  , teszt "szótár: a folyamat alá 2 fogalom tartozik"
-      (length (aláTartozók szóFolyamat) == 2)
+  , teszt "szótár: a folyamat alá 1 fogalom tartozik (a keresés)"
+      (length (aláTartozók szóFolyamat) == 1)
+  , teszt "GAUGE: hangot típus == parser (ng→[ŋ] a toldalékozott szóban is)"
+      (ipaForma szóHangot == magyarIPA "hangot")
   , teszt "ragozás: ház+ban fonetikája = ház++ban"
       (ragoz szóHáz ragBan == szóHáz ++ ragFonetika ragBan)
   , teszt "ragozás: ház+ban paritása továbbra is mély"
