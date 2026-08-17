@@ -114,6 +114,15 @@ Ha egy név rövidítésnek tűnik, írd ki teljesen.
 
 ---
 
+## 1a. /tmp TILOS (2026-08-17, a felhasználó utasítása)
+
+**Soha nem írunk a /tmp-be.** Az újraindítás törli, és a munka nyoma elveszik.
+Kísérleti/ideiglenes Idris-fájlok helye:
+- a repón belül: `osveny_index/tanulsagok/` (a tanulság-fájlok archívuma), vagy
+- az előre engedélyezett külső munkakönyvtár:
+  `/var/folders/cw/4jhpxnwn47d7y4jyg2zgvpx80000gn/T/opencode`
+Semmit nem törlünk onnan sem — archiválunk (l. `tanulsagok/OLVASD.md`).
+
 ## 2. Környezet / Environment
 
 - macOS (arm64), shell `zsh`. `~/.zshenv` egy hiányzó `~/.cargo/env`-et hivatkozik — ártalmatlan, ne "javítsd" ki.
