@@ -21,6 +21,7 @@ module FanoParitás
 -- ═══════════════════════════════════════════════════════════════
 
 import Steane713
+import E8E8Algebra
 import Fonetika
 
 %default total
@@ -109,6 +110,10 @@ szóHangvilla =
   , MassalhangzoHang Mg, MassalhangzoHang Mv, MaganhangzoHang Vi
   , MassalhangzoHang Ml, MassalhangzoHang Ml, MaganhangzoHang Va ]
 
+-- grafikusan: „hang" (n→[ŋ] asszimiláció a g előtt)
+public export szóHang : Fonetika
+szóHang = [MassalhangzoHang Mh, MaganhangzoHang Va, MassalhangzoHang Mng]
+
 -- toldalékok (mély és magas pár — a paritásbit hordozói):
 public export
 toldalékBan : Fonetika
@@ -144,13 +149,6 @@ record FanóPont where
   fp2 : Kubit
   fp3 : Kubit
 
-
-public export
-kubitXor : Kubit -> Kubit -> Kubit
-kubitXor Nulla Nulla = Nulla
-kubitXor Nulla Egy   = Egy
-kubitXor Egy   Nulla = Egy
-kubitXor Egy   Egy   = Nulla
 
 public export
 pontXor : FanóPont -> FanóPont -> FanóPont

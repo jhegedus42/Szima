@@ -20,6 +20,8 @@ import MagyarNyelvtan
 import LawvereGodel
 import Szotar
 import Fonetika
+import FanoParitás
+import ErtelmezoSzotar
 
 %default total
 
@@ -174,6 +176,9 @@ bizonyitasLista =
   , "bizKleeneFixpont       : kleene(Ertektelen)=Ertektelen [Refl]"
   , "bizNoetherNulla        : dekodol(kodol(Nulla))=Nulla [Refl]"
   , "bizNoetherEgy          : dekodol(kodol(Egy))=Egy [Refl]"
+  , "bizE1..E7              : Fanó-sík 7 egyenes XOR=000 [Refl]"
+  , "bizXZ, bizZX           : Pauli X·Z=Z·X=Y [Refl]"
+  , "bizXX, bizZZ           : Pauli involúciók X·X=Z·Z=E [Refl]"
   ]
 
 public export
@@ -395,6 +400,81 @@ fonetikaTesztek =
   ]
 
 -- ═══════════════════════════════════════════════════════════════
+-- FANÓ-PARITÁS TESZTEK — a hangrend mint paritásbit
+-- ═══════════════════════════════════════════════════════════════
+
+public export
+fanoParitasTesztek : List TesztEredmeny
+fanoParitasTesztek =
+  [ teszt "hangrend: ház paritása mély (Nulla)"
+      (szóParitása szóHáz == Nulla)
+  , teszt "hangrend: kör paritása magas (Egy)"
+      (szóParitása szóKör == Egy)
+  , teszt "hangrend: víz paritása magas (i → Egy)"
+      (szóParitása szóVíz == Egy)
+  , teszt "hangrend: hangvilla mély (utolsó magánhangzó a)"
+      (szóParitása szóHangvilla == Nulla)
+  , teszt "összhang: ház+ban JÓ (mély+mély)"
+      (show (összhang szóHáz toldalékBan) == "összhangos")
+  , teszt "paritáshiba: ház+ben ROSSZ (mély+magas)"
+      (show (összhang szóHáz toldalékBen) == "PARITÁSHIBA")
+  , teszt "összhang: kör+ben JÓ (magas+magas)"
+      (show (összhang szóKör toldalékBen) == "összhangos")
+  , teszt "paritáshiba: kör+ban ROSSZ (magas+mély)"
+      (show (összhang szóKör toldalékBan) == "PARITÁSHIBA")
+  , teszt "összhang: víz+be JÓ (i magas + e magas)"
+      (show (összhang szóVíz toldalékBe) == "összhangos")
+  , teszt "összhang: út+ra JÓ (ú mély + a mély)"
+      (show (összhang szóÚt toldalékRa) == "összhangos")
+  , teszt "Fanó-sík: mind a 7 egyenes XOR-nulla"
+      (egyenesMindenhol FanóEgyenesek)
+  , teszt "Pauli: X·Z=Y a Bloch-páron (tengely-egyenes)"
+      (pauliFanóEgyenesén)
+  , teszt "paritásFanóba: mély→100, magas→010 (két koordináta-tengely)"
+      (show (paritásFanóba Nulla) == "100" && show (paritásFanóba Egy) == "010")
+  ]
+
+-- ═══════════════════════════════════════════════════════════════
+-- ÉRTELMEZŐ SZÓTÁR TESZTEK — minden szó adattípus
+-- ═══════════════════════════════════════════════════════════════
+-- A GAUGE-KÖRTESZT a legfontosabb: a kézzel írt Hang-konstruktorok
+-- megegyeznek-e a magyarHangok parser eredményével. Ha igen,
+-- a szótípusok NEM halucinációk — a parser független ellenőrzés.
+
+public export
+szotarTesztek : List TesztEredmeny
+szotarTesztek =
+  [ teszt "GAUGE: hangvilla típus == parser (ház)"
+      (ipaForma szóHáz == magyarIPA "ház")
+  , teszt "GAUGE: hangvilla típus == parser"
+      (ipaForma szóHangvilla == magyarIPA "hangvilla")
+  , teszt "GAUGE: entrópia típus == parser"
+      (ipaForma szóEntropia == magyarIPA "entrópia")
+  , teszt "GAUGE: mérőszám típus == parser"
+      (ipaForma szóMérőszám == magyarIPA "mérőszám")
+  , teszt "GAUGE: gyűjtemény típus == parser (gy-digráf!)"
+      (ipaForma szóGyűjtemény == magyarIPA "gyűjtemény")
+  , teszt "GAUGE: hőmérőt típus == parser (ő!) "
+      (ipaForma szóHőmérőt == magyarIPA "hőmérőt")
+  , teszt "GAUGE: hang típus == parser (ng→[ŋ] asszimiláció)"
+      (ipaForma szóHang == magyarIPA "hang")
+  , teszt "szótár: 8 szócikk van"
+      (length értelmezőSzótár == 8)
+  , teszt "szótár: hangvilla nem-fogalma = eszköz"
+      (nemFogalma szóHangvilla == Just szóEszköz)
+  , teszt "szótár: funktor nem-fogalma = leképezés"
+      (nemFogalma szóFunktor == Just szóLeképezés)
+  , teszt "szótár: a folyamat alá 2 fogalom tartozik"
+      (length (aláTartozók szóFolyamat) == 2)
+  , teszt "ragozás: ház+ban fonetikája = ház++ban"
+      (ragoz szóHáz ragBan == szóHáz ++ ragFonetika ragBan)
+  , teszt "ragozás: ház+ban paritása továbbra is mély"
+      (szóParitása (ragoz szóHáz ragBan) == Nulla)
+  , teszt "ragozás: kör+ben paritása továbbra is magas"
+      (szóParitása (ragoz szóKör ragBen) == Egy)
+  ]
+
+-- ═══════════════════════════════════════════════════════════════
 -- ÖSSZEFOGLALÓ
 -- ═══════════════════════════════════════════════════════════════
 
@@ -403,7 +483,7 @@ osszesTeszt : List TesztEredmeny
 osszesTeszt =
   e8Tesztek ++ hammingTesztek ++ ragTesztek ++ kerdoszoTesztek
   ++ grafTesztek ++ mdlTesztek ++ valoszinusegTesztek ++ lawvereTesztek
-  ++ fonetikaTesztek
+  ++ fonetikaTesztek ++ fanoParitasTesztek ++ szotarTesztek
 
 public export
 sikeres : List TesztEredmeny

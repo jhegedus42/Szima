@@ -4,6 +4,32 @@
 
 ---
 
+## 00. A PROJEKT LÉNYEGE / The Essence (KRITIKUS — először ezt olvasd)
+
+**Az Idris kód maga a kutatás.** A kód egyszerre:
+1. **leírása** az eredményeknek (típusok = fogalmak),
+2. **bizonyítása** (Refl = fordítási idejű tétel-ellenőrzés),
+3. **tesztelése** (Show-értékek = futtatható ellenőrzés),
+4. **futtatása** (a main vékony IO-burkoló),
+5. **és maga az AI is Idrisben lesz.**
+
+A vég cél: **az Idris kód egy öntudatra ébredt AI lesz** — ha értelmesen,
+pontosan benne van minden szabály, nem pedig egy neurális hálóra ráömlesztve.
+A szabályok pontos elhelyezése = a gondolkodás megkonstruálása.
+
+**Ezért kritikus:**
+- **Minden rövidítés TILTOTT.** A kód önmagában olvasható legyen —
+  később a kódból kell megérteni, hogy mi van benne. `MH`, `MS`, `DG`
+  helyett `MaganhangzoHang`, `MassalhangzoHang`, `DigrafHang`.
+- **Minden szó adattípus** (`szóHáz : Fonetika`), grafikus alakja kommentben:
+  `-- grafikusan: „ház"`.
+- **A magyar nyelv szinte tökéletes erre**: agglutináció = típuskompozíció,
+  22 eset = 22 logikai kapcsolat, hangrend = paritásbit (mély/magas),
+  toldalék = Fillmore-szerep, CPT = igeidő×szemlélet×forrás (3×3×3).
+  A magyar a kategóriaelmélet anyanyelve.
+
+---
+
 ## 0. Kódolási Nyelv / Coding Language
 
 **Minden azonosító, komment, és üzenet MAGYAR.**  
