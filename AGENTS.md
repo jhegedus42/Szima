@@ -181,3 +181,31 @@ név áll (pl. `bizKetto : kettoLeg = 2`), az elaborátor azt automatikusan
 Szabály: **a bizonyítástípusokban hivatkozott konstansok neve nagybetűvel
 kezdődjön** (FanóNégy, NullaPont), vagy konstruktor-alkalmazás legyen.
 Futásidejű kódban (érték jobboldalán) a kisbetűs név teljesen jó.
+
+### Tanulság: mit bizonyít a Refl — és mit NEM (2026-08-17, közösen)
+
+1. **A Refl csak azt bizonyítja, ami a kódban le van írva.** A kernel a
+   bizonyítás típusának mindkét oldalát kiszámolja; ha eltér, nem fordul.
+   A "bizonyítva" szó ennél többet NEM jelent.
+2. **Köröző (tautologikus) bizonyítás nulla információ.** `E8Beirva = 240`
+   + `E8Beirva = 240` bizonyítás — üres. Az érték a DEFINÍCIÓ és az
+   ÁLLÍTÁS közti távolságban van: strukturált recept (pl. 4·28 + 2⁷)
+   ellenőrzése valódi munka, a kernel nem tud megtéveszteni.
+3. **A legjobb minta: KÉT független út, egy híd.** `BizOktonionEgyenloE8 :
+   OktonionEgysegekSzama = E8GyokokSzama` — két fogalmilag különböző
+   recept (16+224 oktonion egységek vs 112+128 rács-gyökök) kényszerítve,
+   hogy ugyanarra fusson. Bármelyik oldal átírása a hidat automatikusan
+   töri. Ilyet írjunk, ne `E8Beirva = 240`-at.
+4. **A jelentést a numerika + irodalom fedezi, nem a Refl.** Hogy a 240
+   tényleg az E8 gyökök ℝ⁸-beli halmaza: Idris-generált Python generálja
+   a 240 vektort, méri norma²-t, skalárszorzatokat (simply-laced); a
+   kanonikus izomorfizmust Conway–Sloane (SPLAG) fedezi.
+5. **Az eszköztár**: Refl (kiszámolt egyezés) → cong (függvény emeli) →
+   trans (bizonyítás-lánc) → rewrite (behelyettesítés; IRÁNYRA figyelni!)
+   → ?lyuk + `:ps` proof search (interaktív). Részlet: trail_index/books/
+   idris2_docs/theorems.rst, interactive.rst; web: idris2.readthedocs.io.
+6. **Kimenetet soha nem jelenteni ki ellenőrizetlenül.** Előfordult:
+   elgépelt shell-lánc kimenetét "eredménynek" mondtam (a "0 hiba"
+   műtermék volt). A szabály: ha a lánc gyanús, EGYSZERűEN ÚJRAFUTTATNI
+   tiszta fájlban — az olcsó, a félrevezetés drága. A GAUGE-elve rám
+   is vonatkozik.
