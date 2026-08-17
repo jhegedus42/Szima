@@ -25,6 +25,23 @@ export default (async ({ directory, $ }) => {
               ? (output as any).filePath
               : ""
 
+        // /tmp TILOS (AGENTS.md 1a): barmely bash parancs, ami /tmp-be ir
+        const parancs =
+          typeof (input?.args as any)?.command === "string"
+            ? (input?.args as any).command
+            : ""
+        if (/\/tmp\/|>\s*\/tmp\//.test(parancs) && !/rm\s+-\w*\s*\/tmp/.test(parancs)) {
+          const figyelmeztetesTmp =
+            "\n\n⚠️ /tmp TILOS (AGENTS.md 1a): az újraindítás törli a munka nyomát. " +
+            "Ideiglenes fájl: osveny_index/tanulsagok/ vagy " +
+            "/var/folders/cw/4jhpxnwn47d7y4jyg2zgvpx80000gn/T/opencode"
+          if (typeof output.output === "string") {
+            output.output += figyelmeztetesTmp
+          } else {
+            ;(output as any).output = figyelmeztetesTmp
+          }
+        }
+
         const idrisFajltErinthet =
           szerkesztettFajlUtvonal.endsWith(".idr") ||
           JSON.stringify(input?.args ?? {}).includes(".idr")

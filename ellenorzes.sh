@@ -42,6 +42,17 @@ if [ -n "$KisbetusTalalatok" ]; then
   HIBAK_SZAMA=$((HIBAK_SZAMA + KisbetusDb))
 fi
 
+# 3. SZABÁLY: /tmp TILOS (AGENTS.md 1a) — figyelmeztetes friss .idr/.py fajlokra
+# a /tmp-ben (az utobbi 60 percben): jelzes, hogy archivalni kell a tanulsagok/-ba.
+if command -v find >/dev/null; then
+  FrissTmpFajlok=$(find /private/tmp -maxdepth 1 -name '*.idr' -mmin -60 2>/dev/null | head -5)
+  if [ -n "$FrissTmpFajlok" ]; then
+    echo "FIGYELMEZTETÉS [/tmp-ben friss Idris-fájl] — AGENTS.md 1a TILOS:"
+    echo "$FrissTmpFajlok" | sed 's/^/  /'
+    echo "  → archiváld őket: cp /tmp/<név>.idr osveny_index/tanulsagok/"
+  fi
+fi
+
 if [ "$HIBAK_SZAMA" -eq 0 ]; then
   echo "─── TISZTA: minden mechanikus szabály rendben ───"
 else
