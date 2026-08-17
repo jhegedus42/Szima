@@ -27,6 +27,7 @@ import LejeuneTranszformacio
 import HanMagKodolas
 import Kerdoszo
 import E8Gyokrendszer
+import DiracGammaMatricak
 
 %default total
 
@@ -202,6 +203,10 @@ bizonyitasLista =
   , "bizFelegeszSzazHuszon. : 128 = 2⁷ félegész gyök [Refl]"
   , "bizNyolcBit            : 240+16 = 256 (egy bájt!) [Refl]"
   , "bizE8Dimenzio          : 240+8 = 248 [Refl]"
+  , "bizAntikommutátor×6    : Clifford {γᵘ,γᵛ}=0 (Weyl) [Refl]"
+  , "bizGammaOtWeyl         : γ⁵=diag(−1,−1,+1,+1), γ⁵²=I [Refl]"
+  , "bizWeylGammaKeveri     : γ⁰.mező20=+1 → 中文↔magyar él [Refl]"
+  , "bizSzerveriNemKeveri   : szerveri γ⁰.mező20=0 → törött [Refl]"
   ]
 
 public export
@@ -645,6 +650,29 @@ e8GyokTesztek =
   ]
 
 -- ═══════════════════════════════════════════════════════════════
+-- DIRAC GAMMA TESZTEK — a Weyl-bázis és a szerveri bogár
+-- ═══════════════════════════════════════════════════════════════
+
+public export
+diracGammaTesztek : List TesztEredmeny
+diracGammaTesztek =
+  [ teszt "γ⁵ = diag(−1,−1,+1,+1): a bal szektor (中文) −1"
+      (komplexEgyenlo (mezo00 GammaOtWeyl) MinuszEgyKomplex)
+  , teszt "γ⁵ = diag(−1,−1,+1,+1): a jobb szektor (magyar) +1"
+      (komplexEgyenlo (mezo33 GammaOtWeyl) EgyKomplex)
+  , teszt "γ⁵·γ⁵ = egység (involúció, futásidőben)"
+      (komplexEgyenlo (mezo00 (matricaSzoroz GammaOtWeyl GammaOtWeyl)) EgyKomplex
+       && komplexEgyenlo (mezo11 (matricaSzoroz GammaOtWeyl GammaOtWeyl)) EgyKomplex)
+  , teszt "{γ⁰,γ¹}=0 futásidőben (a 00-as mező nulla)"
+      (komplexEgyenlo (mezo00 (matricaOsszead (matricaSzoroz GammaNullaWeyl GammaEgyWeyl)
+                                              (matricaSzoroz GammaEgyWeyl GammaNullaWeyl))) NullaKomplex)
+  , teszt "a Weyl γ⁰ KEVERI a szektort (mező20 = +1)"
+      (komplexEgyenlo (mezo20 GammaNullaWeyl) EgyKomplex)
+  , teszt "a szerveri γ⁰ SOHA nem keveri (mező20 = 0) — a bogár"
+      (komplexEgyenlo (mezo20 GammaNullaSzerveriHibas) NullaKomplex)
+  ]
+
+-- ═══════════════════════════════════════════════════════════════
 -- ÖSSZEFOGLALÓ
 -- ═══════════════════════════════════════════════════════════════
 
@@ -656,6 +684,7 @@ osszesTeszt =
   ++ fonetikaTesztek ++ fanoParitasTesztek ++ szotarTesztek
   ++ steaneHamiltonianTesztek ++ lejeuneTesztek ++ hanmagTesztek
   ++ kerdoszoTesztek ++ kerdoszoTipusosTesztek ++ e8GyokTesztek
+  ++ diracGammaTesztek
 
 public export
 sikeres : List TesztEredmeny

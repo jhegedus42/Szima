@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepSeek "64" — Crystallized Knowledge Base</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --surface2: #334155;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --accent: #6366f1;
+    --accent2: #0ea5e9;
+    --green: #10b981;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --border: #475569;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+    padding: 2rem 2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #818cf8, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header .subtitle { color: var(--text-dim); font-size: 0.95rem; margin-top: 0.3rem; }
+  header .stats { display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  header .stat {
+    background: var(--surface);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  header .stat strong { color: var(--accent2); font-size: 1.1rem; }
+  /* Nav */
+  nav {
+    background: var(--surface);
+    padding: 0 2rem;
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  nav button:hover { color: var(--text); }
+  nav button.active {
+    color: var(--accent2);
+    border-bottom-color: var(--accent2);
+  }
+  /* Main */
+  main { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .card h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+  .card h3 { font-size: 1.1rem; margin-bottom: 0.4rem; color: var(--accent2); }
+  .card p { color: var(--text-dim); margin-bottom: 0.5rem; }
+  /* SVG container */
+  .svg-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    overflow-x: auto;
+  }
+  .svg-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+  }
+  .svg-container .caption {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  th, td {
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th { color: var(--accent2); font-weight: 600; }
+  tr:hover { background: var(--surface2); }
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .badge.category { background: #6366f133; color: #818cf8; }
+  .badge.equation { background: #0ea5e933; color: #38bdf8; }
+  .badge.statement { background: #10b98133; color: #34d399; }
+  .badge.constant { background: #f59e0b33; color: #fbbf24; }
+  .badge.reference { background: #ef444433; color: #f87171; }
+  /* Search */
+  .search-bar {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+  .search-bar:focus { outline: none; border-color: var(--accent); }
+  /* Duality viz */
+  .dual-pair {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem;
+    background: var(--surface2);
+    border-radius: var(--radius);
+    margin-bottom: 0.5rem;
+  }
+  .dual-node {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem;
+    background: var(--bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--accent);
+  }
+  .dual-arrow { color: var(--amber); font-size: 1.2rem; }
+  /* Graph canvas */
+  #graph-canvas {
+    width: 100%;
+    height: 600px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  /* Constants */
+  .const-row {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr;
+    gap: 0.5rem;
+    padding: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .const-row:hover { background: var(--surface2); }
+  .digits-bar {
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .digits-fill {
+    height: 100%;
+    border-radius: 4px;
+  }
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  /* Responsive */
+  @media (max-width: 768px) {
+    header .stats { flex-direction: column; gap: 0.5rem; }
+    .const-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>DeepSeek "64" — Crystallized Knowledge Base</h1>
+  <p class="subtitle">A 105k-word conversation transformed into a verified, crystal-structured, visualizable knowledge base</p>
+  <div class="stats" id="header-stats"></div>
+</header>
+
+<nav>
+  <button class="active" onclick="showTab('overview')">Overview</button>
+  <button onclick="showTab('visualizations')">Visualizations</button>
+  <button onclick="showTab('graph')">Interactive Graph</button>
+  <button onclick="showTab('constants')">Constants</button>
+  <button onclick="showTab('categories')">Categories</button>
+  <button onclick="showTab('units')">Browse Units</button>
+  <button onclick="showTab('duality')">Duality Pairs</button>
+</nav>
+
+<main>
+  <!-- Overview Tab -->
+  <div id="tab-overview" class="tab-content active">
+    <div class="card">
+      <h2>Project Overview</h2>
+      <p>This knowledge base was extracted from a DeepSeek conversation exploring the
+      intersection of category theory, quantum error correction, and physical constants
+      derived from small numbers. The conversation spans 140 turns and over 105,000 words.</p>
+      <p>Every fact has been crystallized into an atomic unit — exactly one JSON file per
+      fact — with source grounding, verification status, and relationship links.</p>
+    </div>
+    <div class="card">
+      <h3>Knowledge Base Statistics</h3>
+      <table id="overview-table"></table>
+    </div>
+    <div class="card">
+      <h3>Key Findings</h3>
+      <p>• <strong>9 category-theory dual pairs</strong> identified, all grounded in Mac Lane CWM / nLab</p>
+      <p>• <strong>8 physical/mathematical constants</strong> approximated from {1,2,3,5,7,64,137}</p>
+      <p>• <strong>42 type-checked Idris2 proofs</strong> (34 duality involution + 3 arithmetic + 8 adjunction)</p>
+      <p>• <strong>758 atomic units</strong> with 15005 relationship edges</p>
+    </div>
+  </div>
+
+  <!-- Visualizations Tab -->
+  <div id="tab-visualizations" class="tab-content">
+    <div class="svg-container">
+      <img src="assets/duality_graph.svg" alt="Category Theory Duality Graph" />
+      <p class="caption">Figure 1: The 9 dual pairs from the conversation. Each pair is related by arrow-reversal (opposite category).</p>
+    </div>
+    <div class="svg-container">
+      <img src="assets/constants_chart.svg" alt="Constants from Small Numbers" />
+      <p class="caption">Figure 2: Physical constants derived from small-number expressions vs CODATA values.</p>
+    </div>
+    <div class="svg-container">
+      <img src="assets/knowledge_graph.svg" alt="Knowledge Graph Overview" />
+      <p class="caption">Figure 3: Overview of all 758 atomic units grouped by kind, with dual_of edges highlighted.</p>
+    </div>
+    <div class="svg-container">
+      <img src="assets/turn_timeline.svg" alt="Concept Emergence Timeline" />
+      <p class="caption">Figure 4: When each category-theory concept first appeared in the conversation.</p>
+    </div>
+  </div>
+
+  <!-- Interactive Graph Tab -->
+  <div id="tab-graph" class="tab-content">
+    <div class="card">
+      <h2>Interactive Knowledge Graph</h2>
+      <p>Force-directed graph of 210 sampled nodes and 703 edges.
+      Drag nodes to explore. Yellow edges = dual_of, gray edges = shares_symbol.</p>
+      <canvas id="graph-canvas"></canvas>
+    </div>
+  </div>
+
+  <!-- Constants Tab -->
+  <div id="tab-constants" class="tab-content">
+    <div class="card">
+      <h2>Physical Constants from Small Numbers</h2>
+      <p>Expressions using only the set &#123;1, 2, 3, 5, 7, 64, 137&#125; compared against CODATA / known values.</p>
+      <div id="constants-table"></div>
+    </div>
+  </div>
+
+  <!-- Categories Tab -->
+  <div id="tab-categories" class="tab-content">
+    <div class="card">
+      <h2>Category Theory Concepts</h2>
+      <p>All 34 category-theory concepts identified in the conversation, with nLab grounding.</p>
+      <input type="text" class="search-bar" id="cat-search" placeholder="Search categories..." oninput="filterCategories()">
+      <div id="categories-list"></div>
+    </div>
+  </div>
+
+  <!-- Browse Units Tab -->
+  <div id="tab-units" class="tab-content">
+    <div class="card">
+      <h2>Browse Atomic Units</h2>
+      <p>Search and explore the 210 curated atomic units.</p>
+      <input type="text" class="search-bar" id="unit-search" placeholder="Search by ID, label, or kind..." oninput="filterUnits()">
+      <div id="units-list"></div>
+    </div>
+  </div>
+
+  <!-- Duality Tab -->
+  <div id="tab-duality" class="tab-content">
+    <div class="card">
+      <h2>Category-Theory Duality Pairs</h2>
+      <p>The 9 dual pairs identified in the conversation, verified by Idris2 type-checking.</p>
+      <div id="duality-pairs"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>Generated from <code>conversation.md</code> (frozen source) ·
+  <a href="../PLAN.md">PLAN.md</a> ·
+  <a href="../PROGRESS.md">PROGRESS.md</a> ·
+  Reproducible via <code>src/*.py</code></p>
+</footer>
+
+<script>
+const DATA = {"nodes":[{"id":"ca-0001","kind":"category","label":"Limit","turn":2,"group":"category"},{"id":"ca-0002","kind":"category","label":"Duality","turn":4,"group":"category"},{"id":"ca-0003","kind":"category","label":"Product","turn":8,"group":"category"},{"id":"ca-0004","kind":"category","label":"Category","turn":11,"group":"category"},{"id":"ca-0005","kind":"category","label":"2-category","turn":16,"group":"category"},{"id":"ca-0006","kind":"category","label":"n-category","turn":16,"group":"category"},{"id":"ca-0007","kind":"category","label":"TQFT","turn":16,"group":"category"},{"id":"ca-0008","kind":"category","label":"3-category","turn":26,"group":"category"},{"id":"ca-0009","kind":"category","label":"Functor","turn":30,"group":"category"},{"id":"ca-0010","kind":"category","label":"Natural transformation","turn":30,"group":"category"},{"id":"ca-0011","kind":"category","label":"Monoidal category","turn":30,"group":"category"},{"id":"ca-0012","kind":"category","label":"Dagger category","turn":30,"group":"category"},{"id":"ca-0013","kind":"category","label":"Cobordism","turn":30,"group":"category"},{"id":"ca-0014","kind":"category","label":"String diagram","turn":30,"group":"category"},{"id":"ca-0015","kind":"category","label":"Monad","turn":30,"group":"category"},{"id":"ca-0016","kind":"category","label":"Comonad","turn":30,"group":"category"},{"id":"ca-0017","kind":"category","label":"Quotient","turn":32,"group":"category"},{"id":"ca-0018","kind":"category","label":"Adjunction","turn":38,"group":"category"},{"id":"ca-0019","kind":"category","label":"Left adjoint","turn":38,"group":"category"},{"id":"ca-0020","kind":"category","label":"Right adjoint","turn":38,"group":"category"},{"id":"ca-0021","kind":"category","label":"Compact closed","turn":38,"group":"category"},{"id":"ca-0022","kind":"category","label":"Colimit","turn":38,"group":"category"},{"id":"ca-0023","kind":"category","label":"Coproduct","turn":38,"group":"category"},{"id":"ca-0024","kind":"category","label":"Equalizer","turn":38,"group":"category"},{"id":"ca-0025","kind":"category","label":"Coequalizer","turn":38,"group":"category"},{"id":"ca-0026","kind":"category","label":"Pullback","turn":38,"group":"category"},{"id":"ca-0027","kind":"category","label":"Pushout","turn":38,"group":"category"},{"id":"ca-0028","kind":"category","label":"Monomorphism","turn":38,"group":"category"},{"id":"ca-0029","kind":"category","label":"Epimorphism","turn":38,"group":"category"},{"id":"ca-0030","kind":"category","label":"Initial object","turn":38,"group":"category"},{"id":"ca-0031","kind":"category","label":"Terminal object","turn":38,"group":"category"},{"id":"ca-0032","kind":"category","label":"Yoneda lemma","turn":38,"group":"category"},{"id":"ca-0033","kind":"category","label":"Free functor","turn":40,"group":"category"},{"id":"ca-0034","kind":"category","label":"Cofree","turn":40,"group":"category"},{"id":"co-0001","kind":"constant","label":"fine-structure","turn":0,"group":"constant"},{"id":"co-0002","kind":"constant","label":"alpha","turn":0,"group":"constant"},{"id":"co-0003","kind":"constant","label":"speed of light","turn":0,"group":"constant"},{"id":"co-0004","kind":"constant","label":"c","turn":0,"group":"constant"},{"id":"co-0005","kind":"constant","label":"planck constant","turn":0,"group":"constant"},{"id":"co-0006","kind":"constant","label":"h","turn":0,"group":"constant"},{"id":"co-0007","kind":"constant","label":"boltzmann","turn":0,"group":"constant"},{"id":"co-0008","kind":"constant","label":"k_B","turn":0,"group":"constant"},{"id":"co-0009","kind":"constant","label":"gravitational","turn":0,"group":"constant"},{"id":"co-0010","kind":"constant","label":"G","turn":0,"group":"constant"},{"id":"co-0011","kind":"constant","label":"electron mass","turn":0,"group":"constant"},{"id":"co-0012","kind":"constant","label":"proton mass","turn":0,"group":"constant"},{"id":"co-0013","kind":"constant","label":"proton/electron","turn":0,"group":"constant"},{"id":"eq-0001","kind":"equation","label":"C \\propto \\|t\\|^{-\\alpha}","turn":2,"group":"equation"},{"id":"eq-0002","kind":"equation","label":"\\langle\\phi\\rangle \\propto (-t)^\\beta","turn":2,"group":"equation"},{"id":"eq-0003","kind":"equation","label":"\\chi \\propto \\|t\\|^{-\\gamma}","turn":2,"group":"equation"},{"id":"eq-0004","kind":"equation","label":"H \\propto \\|\\phi\\|^\\delta","turn":2,"group":"equation"},{"id":"eq-0005","kind":"equation","label":"G(r) \\sim r^{-(d-2+\\eta)}","turn":2,"group":"equation"},{"id":"eq-0006","kind":"equation","label":"t = (T - T_c)/T_c","turn":2,"group":"equation"},{"id":"eq-0007","kind":"equation","label":"G(r)","turn":2,"group":"equation"},{"id":"eq-0008","kind":"equation","label":"\\alpha + 2\\beta + \\gamma = 2","turn":2,"group":"equation"},{"id":"eq-0009","kind":"equation","label":"\\gamma = \\beta(\\delta-1)","turn":2,"group":"equation"},{"id":"eq-0010","kind":"equation","label":"\\nu = \\gamma/(2-\\eta)","turn":2,"group":"equation"},{"id":"eq-0011","kind":"equation","label":"C_V \\propto |t|^{-\\alpha}","turn":4,"group":"equation"},{"id":"eq-0012","kind":"equation","label":"\\Delta V \\propto (-t)^\\beta","turn":4,"group":"equation"},{"id":"eq-0013","kind":"equation","label":"\\kappa_T \\propto |t|^{-\\gamma}","turn":4,"group":"equation"},{"id":"eq-0014","kind":"equation","label":"P-P_c \\propto |V-V_c|^\\delta","turn":4,"group":"equation"},{"id":"eq-0015","kind":"equation","label":"T=T_c","turn":4,"group":"equation"},{"id":"eq-0016","kind":"equation","label":"\\xi \\propto |t|^{-\\nu}","turn":4,"group":"equation"},{"id":"eq-0017","kind":"equation","label":"\\langle O \\rangle \\propto (T_c - T)^{1/2}","turn":4,"group":"equation"},{"id":"eq-0018","kind":"equation","label":"\\text{Poincar\u00e9} \\times \\text{SU(3)} \\times \\text{S","turn":10,"group":"equation"},{"id":"eq-0019","kind":"equation","label":"\\text{Diff}(M_4 \\times K) \\;\\xrightarrow{\\text{com","turn":10,"group":"equation"},{"id":"eq-0020","kind":"equation","label":"\\mathcal{N}=1","turn":10,"group":"equation"},{"id":"eq-0021","kind":"equation","label":"E_8 \\times E_8","turn":10,"group":"equation"},{"id":"eq-0022","kind":"equation","label":"\\text{SU(3)}\\times\\text{SU(2)}\\times\\text{U(1)}","turn":10,"group":"equation"},{"id":"eq-0023","kind":"equation","label":"f: A \\to B","turn":14,"group":"equation"},{"id":"eq-0024","kind":"equation","label":"g: B \\to C","turn":14,"group":"equation"},{"id":"eq-0025","kind":"equation","label":"g \\circ f: A \\to C","turn":14,"group":"equation"},{"id":"eq-0026","kind":"equation","label":"id_A: A \\to A","turn":14,"group":"equation"},{"id":"eq-0027","kind":"equation","label":"k_B T \\ln 2","turn":18,"group":"equation"},{"id":"eq-0028","kind":"equation","label":"7^7 = 823,\\!543 \\text{ physical qubits}","turn":20,"group":"equation"},{"id":"eq-0029","kind":"equation","label":"E = mc^2","turn":20,"group":"equation"},{"id":"eq-0030","kind":"equation","label":"7^3 = 343","turn":22,"group":"equation"},{"id":"eq-0031","kind":"equation","label":"343 - 64 = 279","turn":22,"group":"equation"},{"id":"eq-0032","kind":"equation","label":"7^3 - 64 = 279","turn":22,"group":"equation"},{"id":"eq-0033","kind":"equation","label":"12+3+5+7 = 27","turn":22,"group":"equation"},{"id":"eq-0034","kind":"equation","label":"3^2 \\times 31","turn":22,"group":"equation"},{"id":"eq-0035","kind":"equation","label":"3 \\times 93","turn":22,"group":"equation"},{"id":"eq-0036","kind":"equation","label":"7 \\times 7 \\times 7 - 64","turn":24,"group":"equation"},{"id":"eq-0037","kind":"equation","label":"7^3 - 2^6 = 279","turn":24,"group":"equation"},{"id":"eq-0038","kind":"equation","label":"2^6 = 64","turn":26,"group":"equation"},{"id":"eq-0039","kind":"equation","label":"2^{7+1}=256","turn":26,"group":"equation"},{"id":"eq-0040","kind":"equation","label":"256 - 64 = 192","turn":26,"group":"equation"},{"id":"eq-0041","kind":"equation","label":"7^3 - 64","turn":26,"group":"equation"},{"id":"eq-0042","kind":"equation","label":"F: \\mathcal{T} \\to \\mathcal{C}","turn":30,"group":"equation"},{"id":"eq-0043","kind":"equation","label":"\\eta: I \\to A \\otimes A^*, \\qquad \\varepsilon: A^*","turn":30,"group":"equation"},{"id":"eq-0044","kind":"equation","label":"\\mathcal{T}","turn":30,"group":"equation"},{"id":"eq-0045","kind":"equation","label":"\\mathcal{C}","turn":30,"group":"equation"},{"id":"eq-0046","kind":"equation","label":"f^\\dagger: B \\to A","turn":30,"group":"equation"},{"id":"eq-0047","kind":"equation","label":"\\langle B | A \\rangle = \\sum_{\\text{paths } \\gamma","turn":32,"group":"equation"},{"id":"eq-0048","kind":"equation","label":"\\boxed{Z = \\Sigma_{\\text{all directed 3\u2011paths}}}","turn":32,"group":"equation"},{"id":"eq-0049","kind":"equation","label":"\\mathrm{Hom}(A,B)","turn":32,"group":"equation"},{"id":"eq-0050","kind":"equation","label":"\\Omega \\in \\mathrm{Hom}(A,A)","turn":32,"group":"equation"},{"id":"eq-0051","kind":"equation","label":"\\langle B|A \\rangle = \\sum_{\\gamma \\in \\text{Hom}(","turn":34,"group":"equation"},{"id":"eq-0052","kind":"equation","label":"\\text{\u6709\u5411\u65f6\u95f4\u7bad\u5934} = \\frac{\\text{279 \u4e2a\u52a8\u8bcd\u7684\u603b\u8def\u5f84\u632f\u5e45\uff08\u03a3\uff09}}{\\te","turn":34,"group":"equation"},{"id":"eq-0053","kind":"equation","label":"\\text{Directed arrow of time} = \\frac{\\text{Total ","turn":34,"group":"equation"},{"id":"eq-0054","kind":"equation","label":"\\mathcal{F}(Q)","turn":34,"group":"equation"},{"id":"eq-0055","kind":"equation","label":"3 \\times 10^{-7}","turn":34,"group":"equation"},{"id":"eq-0056","kind":"equation","label":"\\langle \\text{\u7ec8} | \\text{\u521d} \\rangle = \\sum_{\\gamma","turn":36,"group":"equation"},{"id":"eq-0057","kind":"equation","label":"\\langle \\text{final} | \\text{initial} \\rangle = \\s","turn":36,"group":"equation"},{"id":"eq-0058","kind":"equation","label":"F: \\mathcal{F}(Q) \\to \\mathcal{C}","turn":36,"group":"equation"},{"id":"eq-0059","kind":"equation","label":"F(\\gamma)","turn":36,"group":"equation"},{"id":"eq-0060","kind":"equation","label":"\\boxed{\\text{1, 2 (\u6bd4\u7279)}\\;\\xrightarrow{\\text{FREE}}","turn":40,"group":"equation"},{"id":"eq-0061","kind":"equation","label":"q = a + bi + cj + dk","turn":58,"group":"equation"},{"id":"eq-0062","kind":"equation","label":"G = SU(3)_C \\times SU(2)_L \\times U(1)_Y / \\mathbb","turn":60,"group":"equation"},{"id":"eq-0063","kind":"equation","label":"\\mathcal{H}","turn":60,"group":"equation"},{"id":"eq-0064","kind":"equation","label":"[[7,1,3]]","turn":60,"group":"equation"},{"id":"eq-0065","kind":"equation","label":"7 \\times 3 = 21","turn":60,"group":"equation"},{"id":"eq-0066","kind":"equation","label":"7^3 - 64 = 343 - 64 = 279","turn":60,"group":"equation"},{"id":"eq-0067","kind":"equation","label":"2^7 = 128","turn":60,"group":"equation"},{"id":"eq-0068","kind":"equation","label":"PSL(2,7)","turn":60,"group":"equation"},{"id":"eq-0069","kind":"equation","label":"\\mathbb{O}","turn":60,"group":"equation"},{"id":"eq-0070","kind":"equation","label":"SU(3) \\times SU(2) \\times U(1) / \\mathbb{Z}_6","turn":60,"group":"equation"},{"id":"eq-0071","kind":"equation","label":"SO(7)","turn":60,"group":"equation"},{"id":"eq-0072","kind":"equation","label":"8+3+1 = 12","turn":60,"group":"equation"},{"id":"eq-0073","kind":"equation","label":"SU(2)","turn":60,"group":"equation"},{"id":"eq-0074","kind":"equation","label":"H = H_{\\text{SM}}","turn":60,"group":"equation"},{"id":"eq-0075","kind":"equation","label":"4 \\ln 2","turn":64,"group":"equation"},{"id":"eq-0076","kind":"equation","label":"SU(3)\u00d7SU(2)\u00d7U(1)","turn":64,"group":"equation"},{"id":"eq-0077","kind":"equation","label":"b \\in \\{0,1\\}","turn":66,"group":"equation"},{"id":"eq-0078","kind":"equation","label":"\\neg 0 = 1","turn":66,"group":"equation"},{"id":"eq-0079","kind":"equation","label":"\\neg 1 = 0","turn":66,"group":"equation"},{"id":"eq-0080","kind":"equation","label":"\\{0,1\\}","turn":66,"group":"equation"},{"id":"eq-0081","kind":"equation","label":"\\neg(\\neg b)=b","turn":66,"group":"equation"},{"id":"eq-0082","kind":"equation","label":"A = \\{0,1\\}","turn":66,"group":"equation"},{"id":"eq-0083","kind":"equation","label":"X, Y, Z","turn":66,"group":"equation"},{"id":"eq-0084","kind":"equation","label":"\\mathcal{P}_1 = \\{\\pm I, \\pm iI, \\pm X, \\pm iX, \\p","turn":66,"group":"equation"},{"id":"eq-0085","kind":"equation","label":"[[n,k,d]]","turn":66,"group":"equation"},{"id":"eq-0086","kind":"equation","label":"\\mathcal{C} \\subset (\\mathbb{C}^2)^{\\otimes n}","turn":66,"group":"equation"},{"id":"eq-0087","kind":"equation","label":"-I \\notin S","turn":66,"group":"equation"},{"id":"eq-0088","kind":"equation","label":"[[5,1,3]]","turn":66,"group":"equation"},{"id":"eq-0089","kind":"equation","label":"4^{7} = 16384","turn":66,"group":"equation"},{"id":"eq-0090","kind":"equation","label":"2^{14} = 16384","turn":66,"group":"equation"},{"id":"eq-0091","kind":"equation","label":"2^{14}","turn":66,"group":"equation"},{"id":"eq-0092","kind":"equation","label":"3^7 = 2187","turn":66,"group":"equation"},{"id":"eq-0093","kind":"equation","label":"4 \\times 21 = 84","turn":66,"group":"equation"},{"id":"eq-0094","kind":"equation","label":"e^{iS[\\gamma]}","turn":66,"group":"equation"},{"id":"eq-0095","kind":"equation","label":"\\sum_\\gamma e^{iS[\\gamma]}","turn":66,"group":"equation"},{"id":"eq-0096","kind":"equation","label":"5\\sigma","turn":66,"group":"equation"},{"id":"eq-0097","kind":"equation","label":"G_{SM} = SU(3) \\times SU(2) \\times U(1) / \\mathbb{","turn":66,"group":"equation"},{"id":"eq-0098","kind":"equation","label":"\\neg 0=1, \\neg 1=0","turn":66,"group":"equation"},{"id":"eq-0099","kind":"equation","label":"\\Sigma = \\sum_\\gamma e^{iS[\\gamma]}","turn":66,"group":"equation"},{"id":"eq-0100","kind":"equation","label":"G_{SM}","turn":66,"group":"equation"},{"id":"re-0001","kind":"reference","label":"Hawking (1975)","turn":4,"group":"reference"},{"id":"re-0002","kind":"reference","label":"Coleman & Mandula (1967)","turn":10,"group":"reference"},{"id":"re-0003","kind":"reference","label":"Haag, \u0141opusza\u0144ski & Sohnius (1975)","turn":10,"group":"reference"},{"id":"re-0004","kind":"reference","label":"Exceptional Lie group G\u2082","turn":16,"group":"reference"},{"id":"re-0005","kind":"reference","label":"Landauer (1961)","turn":18,"group":"reference"},{"id":"re-0006","kind":"reference","label":"Steane (1996)","turn":18,"group":"reference"},{"id":"re-0007","kind":"reference","label":"Fano plane","turn":18,"group":"reference"},{"id":"re-0008","kind":"reference","label":"Penrose (2010)","turn":19,"group":"reference"},{"id":"re-0009","kind":"reference","label":"Maldacena (1997)","turn":20,"group":"reference"},{"id":"re-0010","kind":"reference","label":"Hurwitz (1898)","turn":26,"group":"reference"},{"id":"re-0011","kind":"reference","label":"Laflamme et al. (1996)","turn":26,"group":"reference"},{"id":"re-0012","kind":"reference","label":"Maldacena & Susskind (2013)","turn":28,"group":"reference"},{"id":"re-0013","kind":"reference","label":"Bekenstein (1973)","turn":64,"group":"reference"},{"id":"st-0001","kind":"statement","label":"Give me all the critical exponents. that are relat","turn":1,"group":"statement"},{"id":"st-0002","kind":"statement","label":"The electroweak symmetry breaking in the Standard ","turn":2,"group":"statement"},{"id":"st-0003","kind":"statement","label":"The static critical exponents that characterize th","turn":2,"group":"statement"},{"id":"st-0004","kind":"statement","label":"| Exponent | Definition | Approx. Value |\n|-------","turn":2,"group":"statement"},{"id":"st-0005","kind":"statement","label":"Here \\(t = (T - T_c)/T_c\\) is the reduced temperat","turn":2,"group":"statement"},{"id":"st-0006","kind":"statement","label":"These six exponents are related by scaling laws (e","turn":2,"group":"statement"},{"id":"st-0007","kind":"statement","label":"Give me the critical exponents. that are uh relate","turn":3,"group":"statement"},{"id":"st-0008","kind":"statement","label":"The phrase \u201cbreaking symmetries in general relativ","turn":4,"group":"statement"},{"id":"st-0009","kind":"statement","label":"### 1. Black hole phase transitions (thermodynamic","turn":4,"group":"statement"},{"id":"st-0010","kind":"statement","label":"When you treat a black hole in an extended phase s","turn":4,"group":"statement"},{"id":"st-0011","kind":"statement","label":"| Exponent | Definition | Mean\u2011field value |\n|----","turn":4,"group":"statement"},{"id":"st-0012","kind":"statement","label":"Here \\(t = (T-T_c)/T_c\\). The order parameter is t","turn":4,"group":"statement"},{"id":"st-0013","kind":"statement","label":"In gauge/gravity duality, a charged black hole can","turn":4,"group":"statement"},{"id":"st-0014","kind":"statement","label":"- Order parameter (condensate) near \\(T_c\\): \\(\\la","turn":4,"group":"statement"},{"id":"st-0015","kind":"statement","label":"Dynamic critical behaviour near quantum critical p","turn":4,"group":"statement"},{"id":"st-0016","kind":"statement","label":"### 3. Breaking of spacetime diffeomorphism symmet","turn":4,"group":"statement"},{"id":"st-0017","kind":"statement","label":"However, because the phrase is ambiguous, the most","turn":4,"group":"statement"},{"id":"st-0018","kind":"statement","label":"I see \u2013 you were asking what symmetries **exist** ","turn":6,"group":"statement"},{"id":"st-0019","kind":"statement","label":"### 1. Diffeomorphism invariance (general covarian","turn":6,"group":"statement"},{"id":"st-0020","kind":"statement","label":"### 2. Local Lorentz invariance\nAt every spacetime","turn":6,"group":"statement"},{"id":"st-0021","kind":"statement","label":"If you now want the critical exponents for a speci","turn":6,"group":"statement"},{"id":"st-0022","kind":"statement","label":"Do these uh symmetries have some sort of um symmet","turn":7,"group":"statement"},{"id":"st-0023","kind":"statement","label":"Yes, absolutely \u2013 each symmetry comes with a well\u2011","turn":8,"group":"statement"},{"id":"st-0024","kind":"statement","label":"### 1. Diffeomorphism invariance\n- **Group:** **Di","turn":8,"group":"statement"},{"id":"st-0025","kind":"statement","label":"### 2. Local Lorentz invariance (in the tetrad/vie","turn":8,"group":"statement"},{"id":"st-0026","kind":"statement","label":"### 3. Isometries of specific solutions\nWhen you h","turn":8,"group":"statement"},{"id":"st-0027","kind":"statement","label":"### In short:\n| Symmetry | Group |\n|----------|---","turn":8,"group":"statement"},{"id":"st-0028","kind":"statement","label":"So yes, these symmetries all have precise group st","turn":8,"group":"statement"},{"id":"st-0029","kind":"statement","label":"Let me know if you\u2019d like the exponents for a spec","turn":8,"group":"statement"},{"id":"st-0030","kind":"statement","label":"And is it somehow known like how the how these sym","turn":9,"group":"statement"},{"id":"st-0031","kind":"statement","label":"The short answer is **yes, but only in a very spec","turn":10,"group":"statement"},{"id":"st-0032","kind":"statement","label":"### 1. The no\u2011go theorem: Coleman\u2013Mandula\nIn ordin","turn":10,"group":"statement"},{"id":"st-0033","kind":"statement","label":"### 2. The only loophole: supersymmetry\nThe Haag\u2013\u0141","turn":10,"group":"statement"},{"id":"st-0034","kind":"statement","label":"A supersymmetry transformation turns a boson (forc","turn":10,"group":"statement"},{"id":"st-0035","kind":"statement","label":"Thus, the unification of GR\u2019s symmetries (diffeomo","turn":10,"group":"statement"},{"id":"st-0036","kind":"statement","label":"So the \u201cbigger group\u201d that contains both Diff(M) a","turn":10,"group":"statement"},{"id":"st-0037","kind":"statement","label":"### 4. Classical Kaluza\u2013Klein (a toy model)\nEven w","turn":10,"group":"statement"},{"id":"st-0038","kind":"statement","label":"### In summary\n| Question | Answer |\n|----------|-","turn":10,"group":"statement"},{"id":"st-0039","kind":"statement","label":"If you want, I can zoom in on a specific scenario ","turn":10,"group":"statement"},{"id":"st-0040","kind":"statement","label":"That\u2019s a fascinating direction. You\u2019re asking whet","turn":12,"group":"statement"},{"id":"st-0041","kind":"statement","label":"### 1. Symmetries as higher groups (2\u2011groups, \u221e\u2011gr","turn":12,"group":"statement"},{"id":"st-0042","kind":"statement","label":"Example: For the Kalb\u2013Ramond \\(B\\)-field, the gaug","turn":12,"group":"statement"},{"id":"st-0043","kind":"statement","label":"### 2. Gravity as a higher gauge theory\nIn MacDowe","turn":12,"group":"statement"},{"id":"st-0044","kind":"statement","label":"- In **teleparallel gravity**, gravity is a gauge ","turn":12,"group":"statement"},{"id":"st-0045","kind":"statement","label":"From that perspective, **the gravitational symmetr","turn":12,"group":"statement"},{"id":"st-0046","kind":"statement","label":"### 3. Categorification as unification without sup","turn":12,"group":"statement"},{"id":"st-0047","kind":"statement","label":"- **Level 0:** the internal gauge group (e.g., SU(","turn":12,"group":"statement"},{"id":"st-0048","kind":"statement","label":"Thus, **the \u201cbigger group\u201d you asked about earlier","turn":12,"group":"statement"},{"id":"st-0049","kind":"statement","label":"### In short:\n| Approach | Unified Symmetry Object","turn":12,"group":"statement"},{"id":"st-0050","kind":"statement","label":"So yes, from a category\u2011theory \u201cbottom\u2011up\u201d perspec","turn":12,"group":"statement"}],"edges":[{"source":"ca-0001","relation":"dual_of","target":"ca-0022","weight":3,"meta":"Limit \u2194 Colimit"},{"source":"ca-0003","relation":"dual_of","target":"ca-0023","weight":3,"meta":"Product \u2194 Coproduct"},{"source":"ca-0024","relation":"dual_of","target":"ca-0025","weight":3,"meta":"Equalizer \u2194 Coequalizer"},{"source":"ca-0026","relation":"dual_of","target":"ca-0027","weight":3,"meta":"Pullback \u2194 Pushout"},{"source":"ca-0028","relation":"dual_of","target":"ca-0029","weight":3,"meta":"Monomorphism \u2194 Epimorphism"},{"source":"ca-0030","relation":"dual_of","target":"ca-0031","weight":3,"meta":"Initial object \u2194 Terminal object"},{"source":"ca-0033","relation":"dual_of","target":"ca-0034","weight":3,"meta":"Free functor \u2194 Cofree"},{"source":"ca-0019","relation":"dual_of","target":"ca-0020","weight":3,"meta":"Left adjoint \u2194 Right adjoint"},{"source":"ca-0015","relation":"dual_of","target":"ca-0016","weight":3,"meta":"Monad \u2194 Comonad"},{"source":"eq-0001","relation":"shares_symbol","target":"eq-0011","weight":1,"meta":"alpha,t"},{"source":"eq-0002","relation":"shares_symbol","target":"eq-0012","weight":1,"meta":"beta,t"},{"source":"eq-0003","relation":"shares_symbol","target":"eq-0013","weight":1,"meta":"gamma,t"},{"source":"eq-0005","relation":"shares_symbol","target":"eq-0019","weight":1,"meta":"d,r"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0018","weight":1,"meta":"(,),r"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0019","weight":1,"meta":"(,),g,r"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0022","weight":1,"meta":"(,)"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0049","weight":1,"meta":"(,)"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0050","weight":1,"meta":"(,)"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0054","weight":1,"meta":"(,)"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0059","weight":1,"meta":"(,)"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"(,),r"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"(,)"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"(,)"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"(,)"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,)"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,)"},{"source":"eq-0007","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,)"},{"source":"eq-0008","relation":"shares_symbol","target":"eq-0009","weight":1,"meta":"beta,gamma"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0019","weight":1,"meta":"(,),a,c,i"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0022","weight":1,"meta":"(,),1,2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0028","weight":1,"meta":"2,3,a,c,i"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0031","weight":1,"meta":"2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0032","weight":1,"meta":"2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0033","weight":1,"meta":"1,2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0034","weight":1,"meta":"1,2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0037","weight":1,"meta":"2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0039","weight":1,"meta":"1,2"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"1,2"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0049","weight":1,"meta":"(,),a,o"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0050","weight":1,"meta":"(,),a,o"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0054","weight":1,"meta":"(,)"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"1,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0059","weight":1,"meta":"(,)"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"(,),1,2,r"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":"1,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"1,2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"1,2"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"(,),2,p,s"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"(,),1,2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"(,),o,s"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"1,2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,),2,s,u"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,),1,2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,),2,c,n"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0087","weight":1,"meta":"i,s"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":"1,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,3"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0094","weight":1,"meta":"i,s"},{"source":"eq-0018","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"i,s"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0021","weight":1,"meta":"_,e"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0022","weight":1,"meta":"(,),s,u"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0025","weight":1,"meta":"f,g"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0027","weight":1,"meta":"_,k,t"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0028","weight":1,"meta":"4,\\,a,c,i"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0047","weight":1,"meta":"e,i"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0049","weight":1,"meta":"(,),a,m,o"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0050","weight":1,"meta":"(,),a,m,o"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0051","weight":1,"meta":"e,i"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0054","weight":1,"meta":"(,),f"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0059","weight":1,"meta":"(,),f"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"(,),4,;,\\"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"(,),p,s"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"(,),_,s,u"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"(,),o,s"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,),s,u"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,),s,u"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0085","weight":1,"meta":"d,k,n"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,),c,n"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0087","weight":1,"meta":"i,s"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0094","weight":1,"meta":"e,i,s"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"_,e,i,s"},{"source":"eq-0019","relation":"shares_symbol","target":"eq-0100","weight":1,"meta":"_,g,m,s"},{"source":"eq-0021","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"_,e"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0028","weight":1,"meta":"2,3,s,u"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0031","weight":1,"meta":"2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0032","weight":1,"meta":"2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0033","weight":1,"meta":"1,2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0034","weight":1,"meta":"1,2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0037","weight":1,"meta":"2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0039","weight":1,"meta":"1,2"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"1,2"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0049","weight":1,"meta":"(,)"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0050","weight":1,"meta":"(,)"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0054","weight":1,"meta":"(,)"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"1,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0059","weight":1,"meta":"(,)"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"(,),1,2"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":"1,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"1,2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"1,2"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"(,),2,s"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"(,),1,2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"(,),s"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"1,2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,),2,s,u"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,),1,2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,),2"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":"1,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,3"},{"source":"eq-0022","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2"},{"source":"eq-0023","relation":"shares_symbol","target":"eq-0025","weight":1,"meta":"A,f"},{"source":"eq-0023","relation":"shares_symbol","target":"eq-0046","weight":1,"meta":"A,B,f"},{"source":"eq-0023","relation":"shares_symbol","target":"eq-0047","weight":1,"meta":"A,B"},{"source":"eq-0023","relation":"shares_symbol","target":"eq-0051","weight":1,"meta":"A,B"},{"source":"eq-0024","relation":"shares_symbol","target":"eq-0025","weight":1,"meta":"C,g"},{"source":"eq-0025","relation":"shares_symbol","target":"eq-0046","weight":1,"meta":"A,f"},{"source":"eq-0027","relation":"shares_symbol","target":"eq-0028","weight":1,"meta":"2,b,t"},{"source":"eq-0027","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"2,_"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0030","weight":1,"meta":"3,4,7,=,^"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0031","weight":1,"meta":"2,3,4,7,="},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0032","weight":1,"meta":"2,3,4,7,="},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0033","weight":1,"meta":"2,3,5,7,="},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0034","weight":1,"meta":"2,3,^"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0036","weight":1,"meta":"4,7"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0037","weight":1,"meta":"2,3,7,=,^"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0038","weight":1,"meta":"2,4,=,^"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0039","weight":1,"meta":"2,5,7,=,^"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"2,4,5,="},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0041","weight":1,"meta":"3,4,7,^"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0049","weight":1,"meta":",,a,b,h"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0050","weight":1,"meta":",,a,h"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"3,7,^"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":",,2,4,5,7"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0061","weight":1,"meta":"a,q"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":",,3,7"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"2,3,7,="},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"2,3,4,7,="},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"2,7,8,=,^"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":",,2,7,l,p"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"2,3,s,u"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"7,s"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"2,3,8,="},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"2,s,u"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0075","weight":1,"meta":"2,4"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"2,3,s,u"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0077","weight":1,"meta":",,\\,b"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0080","weight":1,"meta":",,\\"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0083","weight":1,"meta":",,y"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"2,^,c"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0087","weight":1,"meta":"i,s"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":",,3,5"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"3,4,7,8,="},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"2,3,4,8,="},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"2,4,^"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"2,3,7,8,="},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"2,4,8,="},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0094","weight":1,"meta":"^,i,s"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"^,i,s"},{"source":"eq-0028","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":",,="},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0031","weight":1,"meta":"3,4,7,="},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0032","weight":1,"meta":"3,4,7,=,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0033","weight":1,"meta":"3,7,="},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0034","weight":1,"meta":"3,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0036","weight":1,"meta":"4,7"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0037","weight":1,"meta":"3,7,=,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0038","weight":1,"meta":"4,=,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0039","weight":1,"meta":"7,=,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"4,="},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0041","weight":1,"meta":"3,4,7,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"3,7,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"4,7"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":"3,7"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"3,7,="},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"3,4,7,=,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"7,=,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"3,="},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"3,4,7,=,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"3,4,=,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"4,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"3,7,=,^"},{"source":"eq-0030","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"4,="},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0032","weight":1,"meta":"-,2,3,4,6"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0033","weight":1,"meta":"2,3,7,="},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0034","weight":1,"meta":"2,3"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0035","weight":1,"meta":"3,9"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0036","weight":1,"meta":"-,4,6,7"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0037","weight":1,"meta":"-,2,3,6,7"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0038","weight":1,"meta":"2,4,6,="},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0039","weight":1,"meta":"2,6,7,="},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"-,2,4,6,9"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0041","weight":1,"meta":"-,3,4,6,7"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"-,3,7"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"2,4,6,7,9"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":"3,7"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"2,3,7,="},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"-,2,3,4,6"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"2,7,="},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"2,7"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"2,3,6"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"2,3,="},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0075","weight":1,"meta":"2,4"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"2,3"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"3,4,6,7,="},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"2,3,4,6,="},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"2,4"},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"2,3,7,="},{"source":"eq-0031","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"2,4,="},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0033","weight":1,"meta":"2,3,7,="},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0034","weight":1,"meta":"2,3,^"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0035","weight":1,"meta":"3,9"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0036","weight":1,"meta":"-,4,6,7"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0037","weight":1,"meta":"-,2,3,6,7"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0038","weight":1,"meta":"2,4,6,=,^"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0039","weight":1,"meta":"2,6,7,=,^"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"-,2,4,6,9"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0041","weight":1,"meta":"-,3,4,6,7"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"-,3,7,^"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"2,4,6,7,9"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":"3,7"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"2,3,7,="},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"-,2,3,4,6"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"2,7,=,^"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"2,7"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"2,3,6"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"2,3,="},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0075","weight":1,"meta":"2,4"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"2,3"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"2,^"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"3,4,6,7,="},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"2,3,4,6,="},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"2,4,^"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"2,3,7,=,^"},{"source":"eq-0032","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"2,4,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0034","weight":1,"meta":"1,2,3"},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0037","weight":1,"meta":"2,3,7,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0038","weight":1,"meta":"2,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0039","weight":1,"meta":"+,1,2,5,7"},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"1,2,5,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0041","weight":1,"meta":"3,7"},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"1,3,7"},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"+,1,2,5,7"},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":"1,3,7"},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"1,2,3,7,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"2,3,7,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"1,2,7,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"2,7"},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"1,2,3"},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"+,1,2,3,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"1,2,3"},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0078","weight":1,"meta":"1,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0079","weight":1,"meta":"1,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":"1,3,5"},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,3,7,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,3,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2"},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,3,7,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2,="},{"source":"eq-0033","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"1,="},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0037","weight":1,"meta":"2,3,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0038","weight":1,"meta":"2,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0039","weight":1,"meta":"1,2,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"1,2"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0041","weight":1,"meta":"3,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"1,3,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"1,2"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":"1,3"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"1,2,3"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"2,3,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"1,2,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"1,2,3"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"1,2,3"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"1,2,3"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"2,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":"1,3"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,3,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,3,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,3,^"},{"source":"eq-0034","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2"},{"source":"eq-0035","relation":"shares_symbol","target":"eq-0037","weight":1,"meta":"3,9"},{"source":"eq-0035","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"3,9"},{"source":"eq-0036","relation":"shares_symbol","target":"eq-0037","weight":1,"meta":"-,6,7"},{"source":"eq-0036","relation":"shares_symbol","target":"eq-0038","weight":1,"meta":"4,6"},{"source":"eq-0036","relation":"shares_symbol","target":"eq-0039","weight":1,"meta":"6,7"},{"source":"eq-0036","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"-,4,6"},{"source":"eq-0036","relation":"shares_symbol","target":"eq-0041","weight":1,"meta":"-,4,6,7"},{"source":"eq-0036","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"-,7"},{"source":"eq-0036","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"4,6,7"},{"source":"eq-0036","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"-,4,6,7"},{"source":"eq-0036","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"4,6,7"},{"source":"eq-0036","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"4,6"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0038","weight":1,"meta":"2,6,=,^"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0039","weight":1,"meta":"2,6,7,=,^"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"-,2,6,9,="},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0041","weight":1,"meta":"-,3,6,7,^"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"-,3,7,^"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"2,6,7,9"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":"3,7"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"2,3,7,="},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"-,2,3,6,7"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"2,7,=,^"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"2,7"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"2,3,6"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"2,3,="},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"2,3"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"2,^"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"3,6,7,=,^"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"2,3,6,=,^"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"2,^"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"2,3,7,=,^"},{"source":"eq-0037","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"2,="},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0039","weight":1,"meta":"2,6,=,^"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"2,4,6,="},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0041","weight":1,"meta":"4,6,^"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"2,4,6"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"2,="},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"2,4,6,=,^"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"2,=,^"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"2,6"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"2,="},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0075","weight":1,"meta":"2,4"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"2,^"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"4,6,=,^"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"2,4,6,=,^"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"2,4,^"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"2,=,^"},{"source":"eq-0038","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"2,4,="},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0040","weight":1,"meta":"1,2,5,6,="},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0041","weight":1,"meta":"6,7,^"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"1,7,^"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"+,1,2,5,6"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":"1,7"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"1,2,7,="},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"2,6,7,=,^"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"1,2,7,=,^"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"2,7"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"1,2,6"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"+,1,2,="},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"1,2"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0078","weight":1,"meta":"1,="},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0079","weight":1,"meta":"1,="},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"2,^"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":"1,5"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,6,7,=,^"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,6,=,^"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2,^"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,7,=,^"},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2,="},{"source":"eq-0039","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"1,="},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0041","weight":1,"meta":"-,4,6"},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"-,1"},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"1,2,4,5,6"},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"1,2,="},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"-,2,4,6,9"},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"1,2,="},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"1,2,6"},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"1,2,="},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0075","weight":1,"meta":"2,4"},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"1,2"},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0078","weight":1,"meta":"1,="},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0079","weight":1,"meta":"1,="},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":"1,5"},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,4,6,="},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,4,6,="},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2,4"},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,="},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2,4,="},{"source":"eq-0040","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"1,="},{"source":"eq-0041","relation":"shares_symbol","target":"eq-0055","weight":1,"meta":"-,3,7,^"},{"source":"eq-0041","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"4,6,7"},{"source":"eq-0041","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":"3,7"},{"source":"eq-0041","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"3,7"},{"source":"eq-0041","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"-,3,4,6,7"},{"source":"eq-0041","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"7,^"},{"source":"eq-0041","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"3,6"},{"source":"eq-0041","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"3,4,6,7,^"},{"source":"eq-0041","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"3,4,6,^"},{"source":"eq-0041","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"4,^"},{"source":"eq-0041","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"3,7,^"},{"source":"eq-0042","relation":"shares_symbol","target":"eq-0058","weight":1,"meta":"C,F"},{"source":"eq-0046","relation":"shares_symbol","target":"eq-0047","weight":1,"meta":"A,B"},{"source":"eq-0046","relation":"shares_symbol","target":"eq-0051","weight":1,"meta":"A,B"},{"source":"eq-0047","relation":"shares_symbol","target":"eq-0051","weight":1,"meta":"A,B,S,e,gamma"},{"source":"eq-0047","relation":"shares_symbol","target":"eq-0094","weight":1,"meta":"e,i"},{"source":"eq-0047","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"e,i"},{"source":"eq-0047","relation":"shares_symbol","target":"eq-0099","weight":1,"meta":"e,gamma"},{"source":"eq-0049","relation":"shares_symbol","target":"eq-0050","weight":1,"meta":"(,),,,a,h"},{"source":"eq-0049","relation":"shares_symbol","target":"eq-0054","weight":1,"meta":"(,)"},{"source":"eq-0049","relation":"shares_symbol","target":"eq-0059","weight":1,"meta":"(,)"},{"source":"eq-0049","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"(,),,"},{"source":"eq-0049","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"(,),,"},{"source":"eq-0049","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"(,)"},{"source":"eq-0049","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"(,),o"},{"source":"eq-0049","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,)"},{"source":"eq-0049","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,)"},{"source":"eq-0049","relation":"shares_symbol","target":"eq-0077","weight":1,"meta":",,b"},{"source":"eq-0049","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,)"},{"source":"eq-0050","relation":"shares_symbol","target":"eq-0054","weight":1,"meta":"(,)"},{"source":"eq-0050","relation":"shares_symbol","target":"eq-0059","weight":1,"meta":"(,)"},{"source":"eq-0050","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"(,),,"},{"source":"eq-0050","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"(,),,"},{"source":"eq-0050","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"(,)"},{"source":"eq-0050","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"(,),o"},{"source":"eq-0050","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,)"},{"source":"eq-0050","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,)"},{"source":"eq-0050","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,)"},{"source":"eq-0051","relation":"shares_symbol","target":"eq-0094","weight":1,"meta":"e,i"},{"source":"eq-0051","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"e,i"},{"source":"eq-0051","relation":"shares_symbol","target":"eq-0099","weight":1,"meta":"e,gamma"},{"source":"eq-0054","relation":"shares_symbol","target":"eq-0059","weight":1,"meta":"(,),f"},{"source":"eq-0054","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"(,),f"},{"source":"eq-0054","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"(,)"},{"source":"eq-0054","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"(,)"},{"source":"eq-0054","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"(,)"},{"source":"eq-0054","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,)"},{"source":"eq-0054","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,)"},{"source":"eq-0054","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,)"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"1,7"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":"1,3,7"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"1,3,7"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"-,3,7,^"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"1,7,^"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"1,3"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"1,3"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"1,3"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0077","weight":1,"meta":"0,1"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0078","weight":1,"meta":"0,1"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0079","weight":1,"meta":"0,1"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0080","weight":1,"meta":"0,1"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":"1,3"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,3,7,^"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,3,^"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,^"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,3,7,^"},{"source":"eq-0055","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"0,1"},{"source":"eq-0056","relation":"shares_symbol","target":"eq-0057","weight":1,"meta":"F,Q,gamma"},{"source":"eq-0056","relation":"shares_symbol","target":"eq-0058","weight":1,"meta":"F,Q"},{"source":"eq-0057","relation":"shares_symbol","target":"eq-0058","weight":1,"meta":"F,Q"},{"source":"eq-0059","relation":"shares_symbol","target":"eq-0060","weight":1,"meta":"(,),f"},{"source":"eq-0059","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"(,)"},{"source":"eq-0059","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"(,)"},{"source":"eq-0059","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"(,)"},{"source":"eq-0059","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,)"},{"source":"eq-0059","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,)"},{"source":"eq-0059","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,)"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0064","weight":1,"meta":",,1,7"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"1,2,7"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"2,4,6,7,9"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"1,2,7"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"(,),,,2,7"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"(,),1,2,6"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"(,),7"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"+,1,2"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,),2"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0075","weight":1,"meta":"2,4"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,),1,2"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0077","weight":1,"meta":",,1,\\"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0080","weight":1,"meta":",,1,\\"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,),2"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":",,1,5"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,4,6,7"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,4,6"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2,4"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,7"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2,4"},{"source":"eq-0060","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":",,1"},{"source":"eq-0062","relation":"shares_symbol","target":"eq-0097","weight":1,"meta":"U,Z"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0065","weight":1,"meta":"1,3,7"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"3,7"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"1,7"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":",,7"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"1,3"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"1,3"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"1,3"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0077","weight":1,"meta":",,1"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0080","weight":1,"meta":",,1"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0085","weight":1,"meta":",,[,]"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":",,1,3,[,]"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,3,7"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,3"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,3,7"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0094","weight":1,"meta":"[,]"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"[,]"},{"source":"eq-0064","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":",,1"},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0066","weight":1,"meta":"2,3,7,="},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"1,2,7,="},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"2,7"},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"1,2,3"},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"1,2,3,="},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"1,2,3"},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0078","weight":1,"meta":"1,="},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0079","weight":1,"meta":"1,="},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":"1,3"},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,3,7,="},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,3,="},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2"},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,3,7,="},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2,="},{"source":"eq-0065","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"1,="},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0067","weight":1,"meta":"2,7,=,^"},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"2,7"},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"2,3,6"},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"2,3,="},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0075","weight":1,"meta":"2,4"},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"2,3"},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"2,^"},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"3,4,6,7,="},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"2,3,4,6,="},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"2,4,^"},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"2,3,7,=,^"},{"source":"eq-0066","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"2,4,="},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0068","weight":1,"meta":"2,7"},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"1,2"},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"1,2,8,="},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"1,2"},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0078","weight":1,"meta":"1,="},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0079","weight":1,"meta":"1,="},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"2,^"},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,7,8,=,^"},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,8,=,^"},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2,^"},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,7,8,="},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2,8,="},{"source":"eq-0067","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"1,="},{"source":"eq-0068","relation":"shares_symbol","target":"eq-0070","weight":1,"meta":"(,),2,s"},{"source":"eq-0068","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"(,),7,s"},{"source":"eq-0068","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,),2,s"},{"source":"eq-0068","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,),2,s"},{"source":"eq-0068","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,),2"},{"source":"eq-0068","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"2,7"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0071","weight":1,"meta":"(,),s"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0072","weight":1,"meta":"1,2,3"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,),2,s,u"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,),1,2,3"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,),2"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":"1,3"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,3,6"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,3,6"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,3"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"_,s"},{"source":"eq-0070","relation":"shares_symbol","target":"eq-0100","weight":1,"meta":"_,s"},{"source":"eq-0071","relation":"shares_symbol","target":"eq-0073","weight":1,"meta":"(,),s"},{"source":"eq-0071","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,),s"},{"source":"eq-0071","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,)"},{"source":"eq-0072","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"1,2,3"},{"source":"eq-0072","relation":"shares_symbol","target":"eq-0078","weight":1,"meta":"1,="},{"source":"eq-0072","relation":"shares_symbol","target":"eq-0079","weight":1,"meta":"1,="},{"source":"eq-0072","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":"1,3"},{"source":"eq-0072","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,3,8,="},{"source":"eq-0072","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,3,8,="},{"source":"eq-0072","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2"},{"source":"eq-0072","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,3,8,="},{"source":"eq-0072","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2,8,="},{"source":"eq-0072","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"1,="},{"source":"eq-0073","relation":"shares_symbol","target":"eq-0076","weight":1,"meta":"(,),2,s,u"},{"source":"eq-0073","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,),2"},{"source":"eq-0075","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"2,4"},{"source":"eq-0075","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"2,4"},{"source":"eq-0075","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"2,4"},{"source":"eq-0076","relation":"shares_symbol","target":"eq-0086","weight":1,"meta":"(,),2"},{"source":"eq-0076","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":"1,3"},{"source":"eq-0076","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,3"},{"source":"eq-0076","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,2,3"},{"source":"eq-0076","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2"},{"source":"eq-0076","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,3"},{"source":"eq-0076","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2"},{"source":"eq-0077","relation":"shares_symbol","target":"eq-0078","weight":1,"meta":"0,1"},{"source":"eq-0077","relation":"shares_symbol","target":"eq-0079","weight":1,"meta":"0,1"},{"source":"eq-0077","relation":"shares_symbol","target":"eq-0080","weight":1,"meta":",,0,1,\\"},{"source":"eq-0077","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":",,1"},{"source":"eq-0077","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":",,0,1"},{"source":"eq-0078","relation":"shares_symbol","target":"eq-0079","weight":1,"meta":"0,1,="},{"source":"eq-0078","relation":"shares_symbol","target":"eq-0080","weight":1,"meta":"0,1"},{"source":"eq-0078","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,="},{"source":"eq-0078","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,="},{"source":"eq-0078","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,="},{"source":"eq-0078","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,="},{"source":"eq-0078","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"0,1,="},{"source":"eq-0079","relation":"shares_symbol","target":"eq-0080","weight":1,"meta":"0,1"},{"source":"eq-0079","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,="},{"source":"eq-0079","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,="},{"source":"eq-0079","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,="},{"source":"eq-0079","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,="},{"source":"eq-0079","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"0,1,="},{"source":"eq-0080","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":",,1"},{"source":"eq-0080","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":",,0,1"},{"source":"eq-0085","relation":"shares_symbol","target":"eq-0088","weight":1,"meta":",,[,]"},{"source":"eq-0085","relation":"shares_symbol","target":"eq-0094","weight":1,"meta":"[,]"},{"source":"eq-0085","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"[,]"},{"source":"eq-0086","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"2,^"},{"source":"eq-0086","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"2,^"},{"source":"eq-0086","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"2,^"},{"source":"eq-0087","relation":"shares_symbol","target":"eq-0094","weight":1,"meta":"i,s"},{"source":"eq-0087","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"i,s"},{"source":"eq-0088","relation":"shares_symbol","target":"eq-0089","weight":1,"meta":"1,3"},{"source":"eq-0088","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,3"},{"source":"eq-0088","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,3"},{"source":"eq-0088","relation":"shares_symbol","target":"eq-0094","weight":1,"meta":"[,]"},{"source":"eq-0088","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"[,]"},{"source":"eq-0088","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":",,1"},{"source":"eq-0089","relation":"shares_symbol","target":"eq-0090","weight":1,"meta":"1,3,4,6,8"},{"source":"eq-0089","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,4,^"},{"source":"eq-0089","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,3,7,8,="},{"source":"eq-0089","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,4,8,="},{"source":"eq-0089","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"1,="},{"source":"eq-0090","relation":"shares_symbol","target":"eq-0091","weight":1,"meta":"1,2,4,^"},{"source":"eq-0090","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,3,8,="},{"source":"eq-0090","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2,4,8,="},{"source":"eq-0090","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"1,="},{"source":"eq-0091","relation":"shares_symbol","target":"eq-0092","weight":1,"meta":"1,2,^"},{"source":"eq-0091","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2,4"},{"source":"eq-0092","relation":"shares_symbol","target":"eq-0093","weight":1,"meta":"1,2,8,="},{"source":"eq-0092","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"1,="},{"source":"eq-0093","relation":"shares_symbol","target":"eq-0098","weight":1,"meta":"1,="},{"source":"eq-0094","relation":"shares_symbol","target":"eq-0095","weight":1,"meta":"[,],^,e,i"},{"source":"eq-0095","relation":"shares_symbol","target":"eq-0100","weight":1,"meta":"_,s"},{"source":"eq-0001","relation":"same_turn","target":"ca-0001","weight":1,"meta":"turn 2"},{"source":"eq-0002","relation":"same_turn","target":"ca-0001","weight":1,"meta":"turn 2"},{"source":"eq-0003","relation":"same_turn","target":"ca-0001","weight":1,"meta":"turn 2"},{"source":"eq-0004","relation":"same_turn","target":"ca-0001","weight":1,"meta":"turn 2"},{"source":"eq-0005","relation":"same_turn","target":"ca-0001","weight":1,"meta":"turn 2"},{"source":"eq-0006","relation":"same_turn","target":"ca-0001","weight":1,"meta":"turn 2"},{"source":"eq-0007","relation":"same_turn","target":"ca-0001","weight":1,"meta":"turn 2"},{"source":"eq-0008","relation":"same_turn","target":"ca-0001","weight":1,"meta":"turn 2"},{"source":"eq-0009","relation":"same_turn","target":"ca-0001","weight":1,"meta":"turn 2"},{"source":"eq-0010","relation":"same_turn","target":"ca-0001","weight":1,"meta":"turn 2"},{"source":"eq-0011","relation":"same_turn","target":"ca-0002","weight":1,"meta":"turn 4"},{"source":"eq-0012","relation":"same_turn","target":"ca-0002","weight":1,"meta":"turn 4"},{"source":"eq-0013","relation":"same_turn","target":"ca-0002","weight":1,"meta":"turn 4"},{"source":"eq-0014","relation":"same_turn","target":"ca-0002","weight":1,"meta":"turn 4"},{"source":"eq-0015","relation":"same_turn","target":"ca-0002","weight":1,"meta":"turn 4"},{"source":"eq-0016","relation":"same_turn","target":"ca-0002","weight":1,"meta":"turn 4"},{"source":"eq-0017","relation":"same_turn","target":"ca-0002","weight":1,"meta":"turn 4"},{"source":"eq-0038","relation":"same_turn","target":"ca-0008","weight":1,"meta":"turn 26"},{"source":"eq-0039","relation":"same_turn","target":"ca-0008","weight":1,"meta":"turn 26"},{"source":"eq-0040","relation":"same_turn","target":"ca-0008","weight":1,"meta":"turn 26"},{"source":"eq-0041","relation":"same_turn","target":"ca-0008","weight":1,"meta":"turn 26"},{"source":"eq-0042","relation":"same_turn","target":"ca-0009","weight":1,"meta":"turn 30"},{"source":"eq-0042","relation":"same_turn","target":"ca-0010","weight":1,"meta":"turn 30"},{"source":"eq-0042","relation":"same_turn","target":"ca-0011","weight":1,"meta":"turn 30"},{"source":"eq-0042","relation":"same_turn","target":"ca-0012","weight":1,"meta":"turn 30"},{"source":"eq-0042","relation":"same_turn","target":"ca-0013","weight":1,"meta":"turn 30"},{"source":"eq-0042","relation":"same_turn","target":"ca-0014","weight":1,"meta":"turn 30"},{"source":"eq-0042","relation":"same_turn","target":"ca-0015","weight":1,"meta":"turn 30"},{"source":"eq-0042","relation":"same_turn","target":"ca-0016","weight":1,"meta":"turn 30"},{"source":"eq-0043","relation":"same_turn","target":"ca-0009","weight":1,"meta":"turn 30"},{"source":"eq-0043","relation":"same_turn","target":"ca-0010","weight":1,"meta":"turn 30"},{"source":"eq-0043","relation":"same_turn","target":"ca-0011","weight":1,"meta":"turn 30"},{"source":"eq-0043","relation":"same_turn","target":"ca-0012","weight":1,"meta":"turn 30"},{"source":"eq-0043","relation":"same_turn","target":"ca-0013","weight":1,"meta":"turn 30"},{"source":"eq-0043","relation":"same_turn","target":"ca-0014","weight":1,"meta":"turn 30"},{"source":"eq-0043","relation":"same_turn","target":"ca-0015","weight":1,"meta":"turn 30"},{"source":"eq-0043","relation":"same_turn","target":"ca-0016","weight":1,"meta":"turn 30"},{"source":"eq-0044","relation":"same_turn","target":"ca-0009","weight":1,"meta":"turn 30"},{"source":"eq-0044","relation":"same_turn","target":"ca-0010","weight":1,"meta":"turn 30"},{"source":"eq-0044","relation":"same_turn","target":"ca-0011","weight":1,"meta":"turn 30"},{"source":"eq-0044","relation":"same_turn","target":"ca-0012","weight":1,"meta":"turn 30"},{"source":"eq-0044","relation":"same_turn","target":"ca-0013","weight":1,"meta":"turn 30"},{"source":"eq-0044","relation":"same_turn","target":"ca-0014","weight":1,"meta":"turn 30"},{"source":"eq-0044","relation":"same_turn","target":"ca-0015","weight":1,"meta":"turn 30"},{"source":"eq-0044","relation":"same_turn","target":"ca-0016","weight":1,"meta":"turn 30"},{"source":"eq-0045","relation":"same_turn","target":"ca-0009","weight":1,"meta":"turn 30"},{"source":"eq-0045","relation":"same_turn","target":"ca-0010","weight":1,"meta":"turn 30"},{"source":"eq-0045","relation":"same_turn","target":"ca-0011","weight":1,"meta":"turn 30"},{"source":"eq-0045","relation":"same_turn","target":"ca-0012","weight":1,"meta":"turn 30"},{"source":"eq-0045","relation":"same_turn","target":"ca-0013","weight":1,"meta":"turn 30"},{"source":"eq-0045","relation":"same_turn","target":"ca-0014","weight":1,"meta":"turn 30"},{"source":"eq-0045","relation":"same_turn","target":"ca-0015","weight":1,"meta":"turn 30"},{"source":"eq-0045","relation":"same_turn","target":"ca-0016","weight":1,"meta":"turn 30"},{"source":"eq-0046","relation":"same_turn","target":"ca-0009","weight":1,"meta":"turn 30"},{"source":"eq-0046","relation":"same_turn","target":"ca-0010","weight":1,"meta":"turn 30"},{"source":"eq-0046","relation":"same_turn","target":"ca-0011","weight":1,"meta":"turn 30"},{"source":"eq-0046","relation":"same_turn","target":"ca-0012","weight":1,"meta":"turn 30"},{"source":"eq-0046","relation":"same_turn","target":"ca-0013","weight":1,"meta":"turn 30"},{"source":"eq-0046","relation":"same_turn","target":"ca-0014","weight":1,"meta":"turn 30"},{"source":"eq-0046","relation":"same_turn","target":"ca-0015","weight":1,"meta":"turn 30"},{"source":"eq-0046","relation":"same_turn","target":"ca-0016","weight":1,"meta":"turn 30"},{"source":"eq-0047","relation":"same_turn","target":"ca-0017","weight":1,"meta":"turn 32"},{"source":"eq-0048","relation":"same_turn","target":"ca-0017","weight":1,"meta":"turn 32"},{"source":"eq-0049","relation":"same_turn","target":"ca-0017","weight":1,"meta":"turn 32"},{"source":"eq-0050","relation":"same_turn","target":"ca-0017","weight":1,"meta":"turn 32"},{"source":"eq-0060","relation":"same_turn","target":"ca-0033","weight":1,"meta":"turn 40"},{"source":"eq-0060","relation":"same_turn","target":"ca-0034","weight":1,"meta":"turn 40"},{"source":"st-0013","relation":"mentions","target":"ca-0002","weight":2},{"source":"st-0032","relation":"mentions","target":"ca-0003","weight":2},{"source":"st-0033","relation":"mentions","target":"re-0003","weight":2},{"source":"st-0036","relation":"mentions","target":"ca-0003","weight":2},{"source":"st-0040","relation":"mentions","target":"ca-0004","weight":2},{"source":"st-0046","relation":"mentions","target":"ca-0004","weight":2},{"source":"st-0048","relation":"mentions","target":"ca-0004","weight":2},{"source":"st-0049","relation":"mentions","target":"ca-0004","weight":2},{"source":"st-0050","relation":"mentions","target":"ca-0004","weight":2}],"constants":[{"constant":"fine-structure a","codata":"0.0072973525693","unit":"dimensionless","best_expression":"(1/137)","computed":"0.0072992700729927007299270072992700729927007299270073","digits_agree":4},{"constant":"a^-1 (~137)","codata":"137.035999084","unit":"dimensionless","best_expression":"(2/64+137)","computed":"137.03125","digits_agree":6},{"constant":"proton/electron mass ratio","codata":"1836.15267343","unit":"dimensionless","best_expression":"1836","computed":"1836","digits_agree":5},{"constant":"2*pi","codata":"6.2831853071795864769","unit":"dimensionless","best_expression":"(5/7-7)","computed":"-6.2857142857142857142857142857142857142857142857143","digits_agree":4},{"constant":"e (Euler)","codata":"2.71828182845904523536","unit":"dimensionless","best_expression":"(2/7-3)","computed":"-2.7142857142857142857142857142857142857142857142857","digits_agree":4},{"constant":"sqrt(2)","codata":"1.41421356237309504880","unit":"dimensionless","best_expression":"(64/7+5)","computed":"14.142857142857142857142857142857142857142857142857","digits_agree":6},{"constant":"ln 2","codata":"0.69314718055994530942","unit":"dimensionless","best_expression":"(5+64)","computed":"69","digits_agree":3},{"constant":"pi^2/6 (zeta(2))","codata":"1.64493406684822643647","unit":"dimensionless","best_expression":"(12*137)","computed":"1644","digits_agree":5}],"categories":[{"id":"ca-0001","name":"Limit"},{"id":"ca-0002","name":"Duality"},{"id":"ca-0003","name":"Product"},{"id":"ca-0004","name":"Category"},{"id":"ca-0005","name":"2-category"},{"id":"ca-0006","name":"n-category"},{"id":"ca-0007","name":"TQFT"},{"id":"ca-0008","name":"3-category"},{"id":"ca-0009","name":"Functor"},{"id":"ca-0010","name":"Natural transformation"},{"id":"ca-0011","name":"Monoidal category"},{"id":"ca-0012","name":"Dagger category"},{"id":"ca-0013","name":"Cobordism"},{"id":"ca-0014","name":"String diagram"},{"id":"ca-0015","name":"Monad"},{"id":"ca-0016","name":"Comonad"},{"id":"ca-0017","name":"Quotient"},{"id":"ca-0018","name":"Adjunction"},{"id":"ca-0019","name":"Left adjoint"},{"id":"ca-0020","name":"Right adjoint"},{"id":"ca-0021","name":"Compact closed"},{"id":"ca-0022","name":"Colimit"},{"id":"ca-0023","name":"Coproduct"},{"id":"ca-0024","name":"Equalizer"},{"id":"ca-0025","name":"Coequalizer"},{"id":"ca-0026","name":"Pullback"},{"id":"ca-0027","name":"Pushout"},{"id":"ca-0028","name":"Monomorphism"},{"id":"ca-0029","name":"Epimorphism"},{"id":"ca-0030","name":"Initial object"},{"id":"ca-0031","name":"Terminal object"},{"id":"ca-0032","name":"Yoneda lemma"},{"id":"ca-0033","name":"Free functor"},{"id":"ca-0034","name":"Cofree"}],"manifest":{"units":758,"by_kind":{"statement":223,"equation":475,"category":34,"reference":13,"constant":13},"sha256":"207a5a2f7242fc90a68c44af0f475d3270a255552248bac4879afb3b005d238c","equations":475,"statements":223,"categories":34,"references":13,"constants":13},"stats":{"total_nodes":758,"total_edges":15005,"curated_nodes":210,"curated_edges":703,"by_kind":{"statement":223,"equation":475,"category":34,"reference":13,"constant":13},"edge_types":{"dual_of":9,"shares_symbol":14777,"same_turn":67,"mentions":152}}};
+
+// ── Header stats ──
+(function() {
+  const s = DATA.stats;
+  const html = `
+    <div class="stat"><strong>${s.total_nodes}</strong> atomic units</div>
+    <div class="stat"><strong>${s.total_edges.toLocaleString()}</strong> relationship edges</div>
+    <div class="stat"><strong>9</strong> dual pairs</div>
+    <div class="stat"><strong>42</strong> Idris proofs</div>
+    <div class="stat"><strong>8</strong> constants derived</div>
+  `;
+  document.getElementById('header-stats').innerHTML = html;
+})();
+
+// ── Overview table ──
+(function() {
+  const s = DATA.stats;
+  let html = '<tr><th>Metric</th><th>Value</th></tr>';
+  html += `<tr><td>Total nodes</td><td>${s.total_nodes}</td></tr>`;
+  html += `<tr><td>Total edges</td><td>${s.total_edges.toLocaleString()}</td></tr>`;
+  for (const [k, v] of Object.entries(s.by_kind)) {
+    html += `<tr><td>${k}s</td><td>${v}</td></tr>`;
+  }
+  html += `<tr><td colspan="2" style="border-top:2px solid var(--border)"></td></tr>`;
+  for (const [k, v] of Object.entries(s.edge_types)) {
+    html += `<tr><td>${k} edges</td><td>${v.toLocaleString()}</td></tr>`;
+  }
+  document.getElementById('overview-table').innerHTML = html;
+})();
+
+// ── Constants table ──
+(function() {
+  const maxDigits = Math.max(...DATA.constants.map(d => d.digits_agree));
+  let html = '<div class="const-row" style="font-weight:600;color:var(--accent2)"><span>Constant</span><span>Expression</span><span>CODATA</span><span>Digits</span></div>';
+  for (const d of DATA.constants) {
+    const pct = (d.digits_agree / maxDigits * 100);
+    const color = d.digits_agree >= 5 ? '#10b981' : d.digits_agree >= 4 ? '#f59e0b' : '#ef4444';
+    html += `
+      <div class="const-row">
+        <span><strong>${d.constant}</strong></span>
+        <span style="font-family:monospace">${d.best_expression}</span>
+        <span style="color:var(--text-dim);font-size:0.8rem">${d.codata}</span>
+        <span>
+          <div class="digits-bar"><div class="digits-fill" style="width:${pct}%;background:${color}"></div></div>
+          <span style="color:${color};font-weight:700">${d.digits_agree}</span>
+        </span>
+      </div>`;
+  }
+  document.getElementById('constants-table').innerHTML = html;
+})();
+
+// ── Categories list ──
+function renderCategories(filter) {
+  const cats = DATA.categories.filter(c =>
+    !filter || c.name.toLowerCase().includes(filter.toLowerCase())
+  );
+  let html = '<table><tr><th>ID</th><th>Name</th><th>nLab</th></tr>';
+  const nlabBase = 'https://ncatlab.org/nlab/show/';
+  for (const c of cats) {
+    const slug = c.name.toLowerCase().replace(/\s+/g, '+');
+    html += `<tr>
+      <td><span class="badge category">${c.id}</span></td>
+      <td><strong>${c.name}</strong></td>
+      <td><a href="${nlabBase}${slug}" target="_blank">nLab ↗</a></td>
+    </tr>`;
+  }
+  html += '</table>';
+  document.getElementById('categories-list').innerHTML = html;
+}
+function filterCategories() {
+  renderCategories(document.getElementById('cat-search').value);
+}
+renderCategories('');
+
+// ── Units list ──
+function renderUnits(filter) {
+  const units = DATA.nodes.filter(n => {
+    if (!filter) return true;
+    const f = filter.toLowerCase();
+    return n.id.toLowerCase().includes(f) ||
+           n.label.toLowerCase().includes(f) ||
+           n.kind.toLowerCase().includes(f);
+  }).slice(0, 200); // limit display
+  let html = '<table><tr><th>ID</th><th>Kind</th><th>Label</th><th>Turn</th></tr>';
+  for (const n of units) {
+    html += `<tr>
+      <td><span class="badge ${n.kind}">${n.id}</span></td>
+      <td>${n.kind}</td>
+      <td>${n.label.length > 50 ? n.label.substring(0,47)+'…' : n.label}</td>
+      <td>T${n.turn}</td>
+    </tr>`;
+  }
+  html += '</table>';
+  if (units.length === 200) {
+    html += '<p style="color:var(--text-dim);padding:1rem">Showing first 200 results. Refine search to see more.</p>';
+  }
+  document.getElementById('units-list').innerHTML = html;
+}
+function filterUnits() {
+  renderUnits(document.getElementById('unit-search').value);
+}
+renderUnits('');
+
+// ── Duality pairs ──
+(function() {
+  const dualEdges = DATA.edges.filter(e => e.relation === 'dual_of');
+  const nodeMap = Object.fromEntries(DATA.nodes.map(n => [n.id, n]));
+  let html = '';
+  for (const e of dualEdges) {
+    const s = nodeMap[e.source];
+    const t = nodeMap[e.target];
+    if (!s || !t) continue;
+    html += `
+      <div class="dual-pair">
+        <div class="dual-node">
+          <span class="badge category">${s.id}</span><br>
+          <strong>${s.label}</strong>
+        </div>
+        <span class="dual-arrow">⇄</span>
+        <div class="dual-node">
+          <span class="badge category">${t.id}</span><br>
+          <strong>${t.label}</strong>
+        </div>
+      </div>
+      <p style="color:var(--text-dim);font-size:0.85rem;padding-left:1rem">${e.meta || ''}</p>`;
+  }
+  document.getElementById('duality-pairs').innerHTML = html;
+})();
+
+// ── Tab switching ──
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'graph') {
+    setTimeout(initGraph, 100);
+  }
+}
+
+// ── Interactive force-directed graph ──
+let graphInitialized = false;
+function initGraph() {
+  if (graphInitialized) return;
+  graphInitialized = true;
+
+  const canvas = document.getElementById('graph-canvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+
+  const colors = {
+    category: '#6366f1', equation: '#0ea5e9', statement: '#10b981',
+    constant: '#f59e0b', reference: '#ef4444'
+  };
+
+  // Initialize node positions
+  const nodes = DATA.nodes.map((n, i) => ({
+    ...n,
+    x: W/2 + (Math.random() - 0.5) * 200,
+    y: H/2 + (Math.random() - 0.5) * 200,
+    vx: 0, vy: 0,
+    r: n.kind === 'category' ? 8 : n.kind === 'constant' ? 7 : 4
+  }));
+  const nodeMap = Object.fromEntries(nodes.map(n => [n.id, n]));
+  const edges = DATA.edges.filter(e => nodeMap[e.source] && nodeMap[e.target]);
+
+  // Physics simulation
+  const k = 0.8; // spring constant
+  const repulsion = 800;
+  const damping = 0.85;
+  const centerForce = 0.002;
+
+  function tick() {
+    // Repulsion
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i+1; j < nodes.length; j++) {
+        const dx = nodes[j].x - nodes[i].x;
+        const dy = nodes[j].y - nodes[i].y;
+        const dist = Math.max(1, Math.sqrt(dx*dx + dy*dy));
+        const force = repulsion / (dist * dist);
+        const fx = (dx / dist) * force;
+        const fy = (dy / dist) * force;
+        nodes[i].vx -= fx; nodes[i].vy -= fy;
+        nodes[j].vx += fx; nodes[j].vy += fy;
+      }
+    }
+    // Spring (edges)
+    for (const e of edges) {
+      const s = nodeMap[e.source], t = nodeMap[e.target];
+      const dx = t.x - s.x, dy = t.y - s.y;
+      const dist = Math.max(1, Math.sqrt(dx*dx + dy*dy));
+      const targetLen = e.relation === 'dual_of' ? 120 : 50;
+      const force = k * (dist - targetLen);
+      const fx = (dx / dist) * force;
+      const fy = (dy / dist) * force;
+      s.vx += fx; s.vy += fy;
+      t.vx -= fx; t.vy -= fy;
+    }
+    // Center gravity
+    for (const n of nodes) {
+      n.vx += (W/2 - n.x) * centerForce;
+      n.vy += (H/2 - n.y) * centerForce;
+    }
+    // Update positions
+    for (const n of nodes) {
+      n.vx *= damping; n.vy *= damping;
+      n.x += n.vx; n.y += n.vy;
+      // Keep in bounds
+      n.x = Math.max(n.r, Math.min(W - n.r, n.x));
+      n.y = Math.max(n.r, Math.min(H - n.r, n.y));
+    }
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // Draw edges
+    for (const e of edges) {
+      const s = nodeMap[e.source], t = nodeMap[e.target];
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y);
+      ctx.lineTo(t.x, t.y);
+      if (e.relation === 'dual_of') {
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 2;
+        ctx.globalAlpha = 0.8;
+      } else {
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 0.5;
+        ctx.globalAlpha = 0.3;
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+    // Draw nodes
+    for (const n of nodes) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, 2 * Math.PI);
+      ctx.fillStyle = colors[n.kind] || '#888';
+      ctx.globalAlpha = 0.8;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      // Label categories and constants
+      if (n.kind === 'category' || n.kind === 'constant') {
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '9px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(n.label.substring(0, 12), n.x, n.y - n.r - 3);
+      }
+    }
+  }
+
+  // Drag interaction
+  let dragNode = null;
+  let mouseX, mouseY;
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouseX = e.clientX - rect.left;
+    mouseY = e.clientY - rect.top;
+    for (const n of nodes) {
+      const dx = mouseX - n.x, dy = mouseY - n.y;
+      if (Math.sqrt(dx*dx + dy*dy) < n.r + 4) {
+        dragNode = n;
+        break;
+      }
+    }
+  });
+  canvas.addEventListener('mousemove', (e) => {
+    if (!dragNode) return;
+    const rect = canvas.getBoundingClientRect();
+    dragNode.x = e.clientX - rect.left;
+    dragNode.y = e.clientY - rect.top;
+    dragNode.vx = 0; dragNode.vy = 0;
+  });
+  canvas.addEventListener('mouseup', () => { dragNode = null; });
+  canvas.addEventListener('mouseleave', () => { dragNode = null; });
+
+  tick();
+}
+
+</script>
+</body>
+</html>
