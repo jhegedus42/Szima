@@ -12,6 +12,7 @@ import HadMerger
 import FazisOsszeado
 import CarryHoatvitel
 import HamiltonMegmaradas
+import E8Diszkretizacio
 import Data.Vect
 import Data.List
 
@@ -218,3 +219,12 @@ main = do
   putStrLn ("66 + 3456: carry=" ++ show (carry (osszeadasCarryval Hatvanhat Haromezern)) ++ ", Q=" ++ show (hoMennyiseg (osszeadasCarryval Hatvanhat Haromezern)))
   putStrLn ("9999 + 1:  carry=" ++ show (carry (osszeadasCarryval Kilencez EgySzamjegy)) ++ ", Q=" ++ show (hoMennyiseg (osszeadasCarryval Kilencez EgySzamjegy)))
   putStrLn ("A Hamiltoni nem termel hőt — a hő = a csonkolt carry (ΔH = Q, Refl-lel bizonyítva)")
+  putStrLn ""
+
+  -- 13. E8 diszkretizáció: az algebra mint a Hilbert-tér rácsa
+  putStrLn "─── 13. E8 diszkretizáció: bit → E8 torony ───"
+  putStrLn ("E8 mod 2 szimmetrikus? " ++ show e8Szimmetrikus)
+  putStrLn ("E8 mátrix e₀ oszlopa:  " ++ show (e8Hat [1,0,0,0,0,0,0,0]))
+  putStrLn ("E8 mátrix e₇ oszlopa:  " ++ show (e8Hat [0,0,0,0,0,0,0,1]))
+  putStrLn ("-1 mod 2 = 1 (Clifford-szabály): " ++ show (mod2Integer (-1)))
+  putStrLn ("Bit-X (shift): bitX 0 = " ++ show (bitX 0) ++ ", bitX (bitX 0) = " ++ show (bitX (bitX 0)))

@@ -12,6 +12,7 @@ modules = Kina2D
         , FazisOsszeado
         , CarryHoatvitel
         , HamiltonMegmaradas
+        , E8Diszkretizacio
         , MagasabbRendszer
         , Main3D
 
