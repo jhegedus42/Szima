@@ -1,8 +1,11 @@
 module MiertLanc.MiertLanc
 
-import Alap.KategoriaT
-import Steane713
-import Alap.DependensSzamT
+-- Megjegyzes: az eredeti importok (Alap.KategoriaT, Steane713, Alap.DependensSzamT)
+-- elavultak a konyvtarszerkezet valtozasa miatt. A modul nem hasznalja oket
+-- a kodban (csak kommentekben emliti). A javitashoz ujra kellene irni az
+-- import-utvonalakat a jelenlegi osveny_index/ struktura szerint.
+-- A modul csak primitiv tipusokat hasznal (String, Nat, Bool, Maybe, Eq, Show, List).
+-- L. AGENTS.md: "Soha ne hasznalj Pythont. Csak Idris." — a miert-lanc is Idris.
 
 -- ═══════════════════════════════════════════════════════════════
 -- MIÉRT-LÁNC — KATEGÓRIAELMÉLETILEG BEÁGYAZOTT INDEX
@@ -312,3 +315,128 @@ miertLancFom = do
   putStrLn "  A tipus = a bizonyitas (Curry-Howard)."
   putStrLn ""
   putStrLn "Kesz."
+
+-- ═══════════════════════════════════════════════════════════════
+-- 11. ÚJ BEJEGYZÉSEK — A 2026-08-18 FELFEDEZÉSEK
+-- ═══════════════════════════════════════════════════════════════
+-- Ezek a session ses_00a2 (2026-08-18) felfedezései, amelyeket
+-- a miért-láncba INDEXELNI kell (a Mester feladatai szerint).
+-- Mindegyik MiertBejegyzes = morfizmus a témák között.
+-- Forrás: a Git-commitek (5515d91, 8414db7, 0d8ced5, dd8abf8).
+-- =====================================================================
+
+||| E8 szimplektikus: K = MᵀΩM egész, antiszimmetrikus (GKP-érvényes),
+||| K ≡ Ω mod 2 (bináris szimplektikus = qubit-áramkör).
+||| Refl: E8BinarisSzimpleptikus, KAntiszimmetrikus01/23/67.
+||| A kernel MEGCÁFOLTA az első sejtést (MᵀΩM = Ω szigorúan) —
+||| a valódi tétel (mod 2) jött ki. Ez a "semmi halu" elv.
+public export
+wcE8Szimpleptikus : MiertBejegyzes
+wcE8Szimpleptikus = MiertBejegyzesKonstruktor
+  "wc_e8_szimplektikus"
+  TemaKvantum
+  TemaKategoriaelmelet
+  "K = MT(OM) egesz, antiszimmetrikus (GKP-ervenyes); K == Omega mod 2 (binaris szimpleptikus = qubit-aramkor)"
+  "E8Szimplektikus.idr: E8BinarisSzimplektikus Refl"
+  "A Refl nem halu: az elso sejtest (Sp(8,Z)) a kernel megcafolta, a valodi tetel (mod 2) jott ki"
+  2
+
+||| Carry = hőátvitel: ΔH = Q, csak a csonkolás termel hőt.
+||| A carry megőrzött (unitér evolúció), nem disszipáció.
+||| Refl: deltaHamiltoniEgyenloHo9999/66/53 (ΔH = Q).
+public export
+wcCarryHoatvitel : MiertBejegyzes
+wcCarryHoatvitel = MiertBejegyzesKonstruktor
+  "wc_carry_hoatvitel"
+  TemaFizika
+  TemaKvantum
+  "A carry nem ho — megorzott aram (Noether-aram a helyiertek kozott). DH = Q: csak a csonkolas = ho = Landauer-korlat"
+  "HamiltonMegmaradas.idr: deltaHamiltoniEgyenloHo9999 Refl"
+  "Az optimalis AI uniter: a szamitas nem pazarol energiát, csak a csonkolas"
+  2
+
+||| Szám mint nyelv: 66+3456=3522 fordításként.
+||| A kérdés = a nyelv, amire fordítunk. A Carnot-javítási lánc
+||| a fázisállapotot a cél (a válasz) felé javítja.
+public export
+wcSzamMintNyelv : MiertBejegyzes
+wcSzamMintNyelv = MiertBejegyzesKonstruktor
+  "wc_szam_mint_nyelv"
+  TemaNyelv
+  TemaTipusok
+  "A szamok osszeadasa mint nyelvi forditas: a kerdes = a nyelv, amire forditunk. A Carnot-javitas a fázisallapotot a valasz fele huzza"
+  "FazisOsszeado.idr: 66+3456=3522 (Carnot-javitassal)"
+  "A forditas = hibajavitas: a kerdes allapotat a cel allapota fele javitjak"
+  2
+
+||| Steane [[15,1,3]]: a 16 szoba − 1.
+||| 15 kubit = tesserakt sarkai − a nulla-sarok = a 16. dimenzió.
+||| A szindróma = a pozíció bináris alakja. Transzverzális T-kapu.
+public export
+wcSteane153 : MiertBejegyzes
+wcSteane153 = MiertBejegyzesKonstruktor
+  "wc_steane_15_1_3"
+  TemaSzabalyok
+  TemaKvantum
+  "A [[15,1,3]] = a 16 szoba − 1. 15 kubit = tesserakt sarkai − a nulla-sarok (a 16. dimenzio = a meres). A szindroma = a pozicio binaris alakja. Transzverzalis T-kapu"
+  "Steane153.idr: mindKommutal=True, xHibakJavitasa=True, zHibakJavitasa=True"
+  "A fraktal csalad: [[7,1,3]]=8−1, [[15,1,3]]=16−1, [[31,1,3]]=32−1. A T-kapu = a varacs (ami a Cliffordon tul van)"
+  2
+
+||| Mérés = Hadmeres: a fázis → skalár projekció.
+||| A harmadik fázis kiszámítható az első kettőből (Z₈ csoportművelet).
+||| A mérés NEM veszít információt — a koherencia alapja.
+public export
+wcHadmeres : MiertBejegyzes
+wcHadmeres = MiertBejegyzesKonstruktor
+  "wc_hadmeres"
+  TemaKvantum
+  TemaTipusok
+  "A meres = a fazis → skalar projekcio. A harmadik fazis kiszamithato az elso kettobol (Z8 csoportmuvelet). A meres NEM veszit informaciot"
+  "Hadmeres.idr: harmadikFazis = fazisOsszead (Z8)"
+  "A meres = a tipus kiolvasasa: a fazist a szamokkal (tipusokkal) kotjuk ossze"
+  2
+
+-- =====================================================================
+-- 12. AZ ÚJ BEJEGYZÉSEK LISTÁJA ÉS KOMPAKTÁLÁSA
+-- =====================================================================
+
+||| A 2026-08-18-as session új bejegyzései.
+public export
+ujBejegyzesek : List MiertBejegyzes
+ujBejegyzesek = [
+  wcE8Szimpleptikus,
+  wcCarryHoatvitel,
+  wcSzamMintNyelv,
+  wcSteane153,
+  wcHadmeres
+ ]
+
+||| Az összes bejegyzés (pédák + újak).
+public export
+osszesBejegyzes : List MiertBejegyzes
+osszesBejegyzes = peldaBejegyzesek ++ ujBejegyzesek
+
+||| Az új bejegyzések kompaktálása.
+public export
+ujKompaktal : List MiertBejegyzes
+ujKompaktal = kompaktal ujBejegyzesek
+
+||| Az új bejegyzések injektálása (a kontextusba).
+public export
+ujInjectal : String
+ujInjectal = injectal ujBejegyzesek
+
+-- =====================================================================
+-- 13. A TELJES LÁNC KOMPAKTÁLÁSA (pédák + újak).
+-- =====================================================================
+
+||| A teljes lánc kompaktálása — a túlélő oksági fonal.
+public export
+teljesKompaktal : List MiertBejegyzes
+teljesKompaktal = kompaktal osszesBejegyzes
+
+||| A teljes lánc injektálása — az oksági fonal vissza a kontextusba.
+public export
+teljesInjectal : String
+teljesInjectal = injectal osszesBejegyzes
