@@ -11,6 +11,7 @@ import Hadmeres
 import HadMerger
 import FazisOsszeado
 import CarryHoatvitel
+import HamiltonMegmaradas
 import Data.Vect
 import Data.List
 
@@ -210,3 +211,10 @@ main = do
   putStrLn ("  66 + 3456 = " ++ show hoPelda2)
   putStrLn ("  9 + 9 = " ++ show hoPelda3)
   putStrLn ("  999 + 1 = " ++ show hoPelda4 ++ " (a carry végigáramlik minden helyiértéken)")
+  putStrLn ""
+
+  -- 12. Hamilton-megmaradás: a hő a csonkolásból jön
+  putStrLn "─── 12. Hamilton-megmaradás: ΔH = Q ───"
+  putStrLn ("66 + 3456: carry=" ++ show (carry (osszeadasCarryval Hatvanhat Haromezern)) ++ ", Q=" ++ show (hoMennyiseg (osszeadasCarryval Hatvanhat Haromezern)))
+  putStrLn ("9999 + 1:  carry=" ++ show (carry (osszeadasCarryval Kilencez EgySzamjegy)) ++ ", Q=" ++ show (hoMennyiseg (osszeadasCarryval Kilencez EgySzamjegy)))
+  putStrLn ("A Hamiltoni nem termel hőt — a hő = a csonkolt carry (ΔH = Q, Refl-lel bizonyítva)")

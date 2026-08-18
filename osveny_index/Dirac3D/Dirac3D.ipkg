@@ -11,6 +11,7 @@ modules = Kina2D
         , HadMerTeszt
         , FazisOsszeado
         , CarryHoatvitel
+        , HamiltonMegmaradas
         , MagasabbRendszer
         , Main3D
 
