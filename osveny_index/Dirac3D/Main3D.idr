@@ -16,6 +16,7 @@ import E8Diszkretizacio
 import E8Szimplektikus
 import Steane153
 import AktivTanulas
+import KisAI
 import Data.Vect
 import Data.List
 
@@ -259,3 +260,19 @@ main = do
   putStrLn ""
   putStrLn ("A farkas allapota: F4 = hazugsag (180° = NOT)")
   putStrLn ("A ciklus: kerdes → onellenorzes → barkochba-lepes → valasz → miert")
+  putStrLn ""
+
+  -- 17. Kis AI: tanítható, kereshető, asszociálható
+  putStrLn "─── 17. Kis AI: a tanítható baba ───"
+  putStrLn ("Alap szótár: " ++ show (length AlapSzotar) ++ " szó")
+  putStrLn ("Farkas kódja: " ++ show (kodolSzoveg "farkas" AlapSzotar))
+  putStrLn ("Piroska kódja: " ++ show (kodolSzoveg "piroska" AlapSzotar))
+  putStrLn ("Kérdés kódja: " ++ show (kodolSzoveg "Mit mondott a farkas" AlapSzotar))
+  putStrLn ("Piroskával tanított AI:")
+  putStrLn ("  Tudástár mérete: " ++ show (length (tudastar piroskavalTanitottKisAI)))
+  putStrLn ("  Keresés eredménye: " ++ show piroskaKeresesEredmeny)
+  putStrLn ("  Találat távolsága: " ++ show piroskaTalalatTavolsag)
+  putStrLn ("  Találat magyarázata: " ++ show piroskaTalalatMagyarazo)
+  putStrLn ("  Asszociáció: " ++ show (asszocialKisAI piroskavalTanitottKisAI (kodolSzoveg "Mit mondott a farkas" AlapSzotar)))
+  putStrLn ("  Hamming: farkas↔piroska = 3 (3 bit tér el) — Refl bizonyítva")
+  putStrLn ("  Átfedés: farkas↔hazugság = 2 (okság+hang közös) — Refl bizonyítva")

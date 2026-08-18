@@ -15,6 +15,7 @@ modules = Kina2D
         , E8Diszkretizacio
         , Steane153
         , AktivTanulas
+        , KisAI
         , MagasabbRendszer
         , Main3D
 
