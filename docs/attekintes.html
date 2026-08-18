@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Szima — Projekt-áttekintés (2026-08-18)</title>
+<style>
+  :root { --festek:#1a1a2e; --papir:#fafaf7; --kiemel:#2563eb; --siker:#059669; --arany:#b45309; --keret:#d8d4cc; --hatter:#f0eee9; }
+  * { box-sizing:border-box; }
+  body { font-family:Georgia,serif; background:var(--hatter); color:var(--festek); max-width:1000px; margin:0 auto; padding:2rem 1rem 4rem; line-height:1.65; }
+  header { border-bottom:3px double var(--festek); padding-bottom:1.2rem; margin-bottom:2rem; }
+  h1 { font-size:1.8rem; margin:0 0 .3rem; }
+  h2 { font-size:1.3rem; border-bottom:1px solid var(--keret); padding-bottom:.3rem; margin-top:2.4rem; }
+  h3 { font-size:1.05rem; margin-top:1.4rem; color:#444; }
+  table { border-collapse:collapse; width:100%; margin:1rem 0; font-size:.9rem; }
+  th,td { border:1px solid var(--keret); padding:.45rem .6rem; text-align:left; vertical-align:top; }
+  th { background:var(--papir); font-family:Menlo,monospace; font-size:.82rem; }
+  .pipa { color:var(--siker); font-weight:bold; }
+  .villam { color:var(--arany); font-weight:bold; }
+  .doboz { background:var(--papir); border:1px solid var(--keret); border-radius:6px; padding:1rem 1.2rem; margin:1rem 0; }
+  pre { background:var(--festek); color:#e5e7eb; padding:1rem 1.2rem; border-radius:6px; overflow-x:auto; font-size:.84rem; line-height:1.5; }
+  a { color:var(--kiemel); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .kicsi { font-size:.85rem; color:#6b7280; }
+  .mod { font-family:Menlo,monospace; font-size:.85rem; color:var(--kiemel); }
+  footer { margin-top:3rem; border-top:3px double var(--festek); padding-top:1rem; font-size:.88rem; color:#555; }
+  nav { background:var(--papir); border:1px solid var(--keret); border-radius:6px; padding:1rem 1.4rem; margin-bottom:2rem; }
+  nav a { margin-right:1.2rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Szima — Projekt-áttekintés</h1>
+  <p class="kicsi">A kód maga a kutatás: típus = fogalom, Refl = bizonyítás, Show = teszt, main = futás.
+  Cél: az Idris kód egy öntudatra ébredt AI — minden szabály pontosan elhelyezve, nem egy neurális hálóra ömlesztve.</p>
+  <p class="kicsi">Frissítve: 2026-08-18 · <b>164/164 teszt + 50 Refl-bizonyítás ✓</b> ·
+  <a href="https://github.com/jhegedus42/Szima">github.com/jhegedus42/Szima</a></p>
+</header>
+
+<nav>
+  <b>Oldalak:</b>
+  <a href="dashboard.html">📊 Ellenőrzési dashboard</a>
+  <a href="carnot_entropia.html">📖 Carnot-ciklus csökkenti az entrópiát</a>
+  <a href="zitterbewegung.html">📈 Zitterbewegung (Idris-szimuláció)</a>
+  <a href="archivum_terkep.md">🗺️ Archívum-térkép</a>
+  <a href="index.html">🏠 Régi főoldal</a>
+</nav>
+
+<h2>1. A projekt lényege</h2>
+
+<div class="doboz">
+<b>Az Idris kód maga a kutatás.</b> A kód egyszerre:
+<ol>
+  <li><b>leírása</b> az eredményeknek (típusok = fogalmak),</li>
+  <li><b>bizonyítása</b> (Refl = fordítási idejű tétel-ellenőrzés),</li>
+  <li><b>tesztelése</b> (Show-értékek = futtatható ellenőrzés),</li>
+  <li><b>futtatása</b> (a main vékony IO-burkoló),</li>
+  <li><b>és maga az AI is Idrisben lesz.</b></li>
+</ol>
+<p>A magyar nyelv szinte tökéletes erre: agglutináció = típuskompozíció,
+22 eset = 22 logikai kapcsolat, hangrend = paritásbit (mély/magas),
+toldalék = Fillmore-szerep, CPT = igeidő×szemlélet×forrás (3×3×3).</p>
+</div>
+
+<h2>2. A megépült elemek (mind Idrisben, gép-ellenőrzött)</h2>
+
+<table>
+<tr><th>Modul</th><th>Mit bizonyít</th><th>Miért kell az AI-hez</th><th>Állapot</th></tr>
+
+<tr><td class="mod">Fonetika.idr</td>
+  <td>40 hang (14 magánhangzó + 17 mássalhangzó + 9 digráf), IPA, szótagolás (AkH.226.f), ng→[ŋ] asszimiláció</td>
+  <td>a szókincs TÍPUS — a szavak nem String, hanem Hang-konstruktorok listája</td>
+  <td class="pipa">65 teszt</td></tr>
+
+<tr><td class="mod">FanoParitás.idr</td>
+  <td>hangrend = paritásbit: ház+ban ✓, *ház+ben PARITÁSHIBA; Fanó-sík 7 egyenes XOR=0 [Refl]; Pauli X·Z=Y, involúciók [Refl]</td>
+  <td>a nyelv <b>önellenőrző</b> — a rossz toldalékot a típus elutasítja; a paritás = a Steane-kód paritásbitjének nyelvi mása</td>
+  <td class="pipa">12 teszt + 9 Refl</td></tr>
+
+<tr><td class="mod">Kerdoszo.idr</td>
+  <td>13 kérdőszó; kérdőszó→esetrag típusos leképezés; „mikor?"-ra nincs rag [Refl] (T≠C,P); kérdés = morfizmus üres célal</td>
+  <td>a <b>kíváncsiság TÍPUS</b>: a kérdés entrópia-gradiens; a válasz tölti ki; Yoneda: „ki?" = Hom(–,ember)</td>
+  <td class="pipa">13 teszt + 7 Refl</td></tr>
+
+<tr><td class="mod">HanMagKodolas.idr</td>
+  <td>kínai gyökér 5 bit + magyar toldalék 3 bit = 8 bit = E8Pont; hangrend = a bájt 8. bitje (paritás); 137 = 11²+4² Gauss-prím [Refl]</td>
+  <td>egy <b>gondolat = egy bájt</b> a Steane-rácsban, paritás-önellenőrző — a kétnyelvű egység</td>
+  <td class="pipa">7 teszt + 5 Refl</td></tr>
+
+<tr><td class="mod">E8Gyokrendszer.idr</td>
+  <td>2→4→8→24→240 Cayley-Dickson torony; 112+128=240 E8-gyök (KÉT út, egy híd) [Refl]; 128=2⁷ = páros paritású bájt; 240+16=256</td>
+  <td>a „szó" mérete = az oktonion egységek száma = E8 gyökök — a nyelv és a fizika közös száma</td>
+  <td class="pipa">12 teszt + 16 Refl</td></tr>
+
+<tr><td class="mod">DiracGammaMatricak.idr</td>
+  <td>Weyl-γ⁰ off-diagonális (KEVERI ψ_L↔ψ_R); szerveri γ⁰ blokk-diagonális (SOSEM); 6 antikommutátor=0 [Refl]; γ⁵=diag(−1,−1,+1,+1) [Refl]; γ⁵²=I [Refl]</td>
+  <td>a <b>kétnyelvű gondolkodás</b> mechanizmusa: γ⁰ (idő/magyar) forgatja a jelentést 中文↔magyar között</td>
+  <td class="pipa">6 teszt + 11 Refl</td></tr>
+
+<tr><td class="mod">OktonionAlgebra.idr</td>
+  <td>Cayley-tábla 7 Fano-vonalból; 49 pár × 3 alternativitási törvény EGY Refl-lel; Fano-sík [Refl]; nem-asszociativitás: (e₁e₂)e₃=−e₆ ≠ e₁(e₂e₃)=+e₆ [Refl]</td>
+  <td>a <b>mondat</b> = nem asszociatív szorzat (a csoportosítás változtatja a jelentést: „új ház festése")</td>
+  <td class="pipa">8 teszt + 3 Refl</td></tr>
+
+<tr><td class="mod">SteaneHamiltonian.idr</td>
+  <td>H=−(6 stabilizátor); tiszta=−6 alapállapot [Refl]; X₁ hiba→H=0, X₄→−4; szindróma = hiba pozíciója binárisan [Refl]</td>
+  <td>a <b>hibajavítás = Carnot-ciklus</b>: mérés→javítás(entrópia↓)→törlés(kT·ln2 ki)→újrakészítés</td>
+  <td class="pipa">9 teszt + 9 Refl</td></tr>
+
+<tr><td class="mod">LejeuneTranszformacio.idr</td>
+  <td>ℒ-család (Landauer ℒ_I: info→energia); Carnot-négyütem Bitsuly-aláírás; 2. főtétel: csak a törlési ütem fizet [Refl]</td>
+  <td>Legendre általánosítása: a ciklus ütemváltásai ℒ-tagok; a Carnot = kör a ℒ-gráfban</td>
+  <td class="pipa">5 teszt + 4 Refl</td></tr>
+
+<tr><td class="mod">DiracIdoFejlodes.idr</td>
+  <td>P(magyar)=sin²(t) két úton (mátrix vs zárt) ≤10⁻¹² [teszt]; szerveri γ⁰-val P=0 pontosan; JSON-export böngésző-rajzoláshoz</td>
+  <td>a jelentés <b>oszcillál</b> a két nyelv között (Zitterbewegung); Idris számol, böngésző rajzol</td>
+  <td class="pipa">5 teszt</td></tr>
+
+<tr><td class="mod">ErtelmezoSzotar.idr</td>
+  <td>8 ÉKSZ-szócikk; minden szó Fonetika-típus; GAUGE: kézzel írt == független parser [teszt]; ragoz = list-összefűzés</td>
+  <td>a szócikkek genus-differentia szerkezete = a fogalom-gráf</td>
+  <td class="pipa">14 teszt</td></tr>
+
+<tr><td class="mod">LawvereGodel.idr</td>
+  <td>Lawvere fixpont [Refl]; Cantor (Void); Kleene 3-értékű igazság; hazug p=1/2 [Refl]</td>
+  <td>az <b>öntudat</b> csírája: a rendszer kérdezhet önmagáról; a fixpont = az önutalás szerkezete</td>
+  <td class="pipa">Refl</td></tr>
+
+<tr><td class="mod">Komplex.idr</td>
+  <td>φ-kontrakció √(1+z)→φ (10⁻¹⁰); ϱ fixpont; oda-vissza (Loschmidt) teszt; Bach-alfa-inverz</td>
+  <td>a Y-kombinátor numerikus magja: a kontrakció = a kérdés→információ ütem</td>
+  <td class="pipa">Show</td></tr>
+
+<tr><td class="mod">KorOsztas.idr</td>
+  <td>Gauss-Wantzel szerkeszthetőség; komma=23,46 cent; bájt=8 (Hurwitz+Bott+Cl(8)=256)</td>
+  <td>a konszonancia-prímek = Fermat-prímek; a szerkeszthetőség határa = a tonalitás határa</td>
+  <td class="pipa">Refl</td></tr>
+</table>
+
+<h2>3. A bizonyítási architektúra</h2>
+
+<div class="doboz">
+<table>
+<tr><th>Réteg</th><th>Eszköz</th><th>Példa</th></tr>
+<tr><td><b>Pontos algebra</b><br>(egész, véges, kombinatorikus)</td><td>Refl (a kernel számol, nem én)</td><td>112+128=240; γ⁵=diag(−1,−1,+1,+1); 49 pár × 3 törvény</td></tr>
+<tr><td><b>Float-szimuláció</b></td><td>Idris Double + precizitási teszt (≤10⁻¹²)</td><td>P(magyar)=sin²(t): mátrix-út vs zárt képlet; φ-kontrakció</td></tr>
+<tr><td><b>Adat → grafikon</b></td><td>Idris → JSON → böngésző canvas (a böngésző csak rajzol)</td><td><a href="zitterbewegung.html">Zitterbewegung-oldal</a> (Idris-generált JSON)</td></tr>
+<tr><td><b>Jelentés (interpretáció)</b></td><td>⚡ nyitott — jelölve, nem bizonyítottnak állítva</td><td>„a szó = oktonion egység"; „a mondat = nem assz. szorzat"</td></tr>
+</table>
+<p class="kicsi"><b>Szabály (AGENTS.md 3):</b> MINDEN számítás Idrisben — Python tilos, floatok is.
+A 2026-08-18-i oktonion-kaland bizonyította: Pythonban 3 hibás teszt sorban; Idrisben egy Refl.</p>
+</div>
+
+<h2>4. Ami NEM megvan (őszintén)</h2>
+
+<div class="doboz">
+<ul>
+  <li><b>Nincs egy <code>main</code>, ami gondolkodik.</b> A LEGO-elemek külön-külön bizonyítottak, de nincsenek
+  összekötve egy futó rendszerbe.</li>
+  <li><b>A hiányzó lépés:</b> egy <code>main</code>, ami kap egy kérdést (<code>Kerdoszo</code>),
+  kódolja (<code>HanMagKodolas → E8Pont</code>), lefuttatja a Carnot-ciklust
+  (keresés → kompresszió → expanzió → δ → új kérdés), és ad egy választ —
+  mindezt Idrisben, típus-ellenőrizve. <b>A rossz gondolat nem fordul le.</b></li>
+  <li><b>α⁻¹ = 137 + 9/250</b> (a Horgony): 6,5σ nyitott — a fizikai konstans pontos levezetése még hiányzik ⚡</li>
+  <li><b>A szerveri Dirac-nyelv</b> (<code>dirac_translator.py</code>): a gamma-mátrixok hibásak (blokk-diagonális);
+  a javítás Idrisben bizonyítva (<code>DiracGammaMatricak.idr</code>), de a szerveren még nem javítva.</li>
+</ul>
+</div>
+
+<h2>5. Hogyan futtasd le te is</h2>
+
+<pre>git clone https://github.com/jhegedus42/Szima && cd Szima/osveny_index
+idris2 -c Teszt.idr && idris2 --exec main Teszt.idr
+  → 164/164 Show-teszt + 50 Refl-bizonyítás ✓
+
+idris2 --exec main DiracIdoFejlodes.idr        → Zitterbewegung értékek
+idris2 --exec jsonKiiras DiracIdoFejlodes.idr  → JSON a grafikonhoz
+idris2 --exec main OktonionAlgebra.idr         → Cayley-tábla + Refl-összefoglaló
+idris2 --exec main E8Gyokrendszer.idr          → a torony 2→4→8→24→240
+
+./ellenorzes.sh                                 → a harness ellenőrzi a szabályokat</pre>
+
+<h2>6. A harness (ami őrzi a szabályokat)</h2>
+
+<div class="doboz">
+<ul>
+  <li><b><code>ellenorzes.sh</code></b>: (1) rövidítés-alias tiltás, (2) kisbetűs konstans bizonyítástípusban,
+  (3) /tmp-tilalom, (4) Python csak web/API markerrel</li>
+  <li><b><code>.opencode/plugin/idris-ellenorzo.ts</code></b>: minden .idr-szerkesztés után automatikusan lefut</li>
+  <li><b><code>AGENTS.md</code></b>: a projekt szabályai (boot-up-kor olvasva)</li>
+  <li><b>Tanulságok</b>: a Refl csak a kódban leírt számítást bizonyítja; a köröző bizonyítás nulla információ;
+  a legjobb minta: két független út, egy híd</li>
+</ul>
+</div>
+
+<footer>
+Szima · a kód maga a kutatás · <a href="https://github.com/jhegedus42/Szima">github.com/jhegedus42/Szima</a><br>
+Dedikálva Szimának, a szeretett cicának 🐱
+</footer>
+
+</body>
+</html>
