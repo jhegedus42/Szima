@@ -440,3 +440,136 @@ teljesKompaktal = kompaktal osszesBejegyzes
 public export
 teljesInjectal : String
 teljesInjectal = injectal osszesBejegyzes
+
+-- =====================================================================
+-- 14. MÉLYEBB FELISMERÉSEK — A STRATÉGIAI MEGLÁTÁSOK
+-- (2026-08-18, session ses_00a2, "ma")
+-- Ezek nem modulok, hanem KONCEPCIÓK, amelyek a cél felé mutatnak.
+-- =====================================================================
+
+||| A cáfolat mint módszer: a Refl NEM halu.
+||| A kernel megcáfolta az első sejtést (MᵀΩM = Ω szigorúan),
+||| és a valódi tétel (K ≡ Ω mod 2) jött ki. Ez a "semmi halu"
+||| elv: a Refl azt bizonyítja, ami a MATEMATIKÁBAN van, nem
+||| amit szeretnénk. A cáfolat pontosabb tételhez vezetett.
+public export
+wcCafolatModszer : MiertBejegyzes
+wcCafolatModszer = MiertBejegyzesKonstruktor
+  "wc_cafolat_modszer"
+  TemaKategoriaelmelet
+  TemaSzabalyok
+  "A Refl nem halu: az elso sejtest (Sp(8,Z)) a kernel megcafolta (-3 != -1), a valodi tetel (mod 2) jott ki. A cafolat = a tudomany modszere"
+  "E8Szimplektikus.idr: sp8TagsagHamis=True + E8BinarisSzimplektikus Refl"
+  "A kernel a bira — ami fordul, az igaz. A cafolat nem vereseg, hanem pontosabb tétel"
+  2
+
+||| A 16. dimenzió = a mérés helye.
+||| A [[15,1,3]] 15 kubitja = a tesserakt 16 sarka mínusz a
+||| nulla-sarok. A hiányzó sarok = a KÜLSŐ koordináta = a 16.
+||| dimenzió = a mérés helye (NOBEL_CEL_TERKEP 4. szakasz).
+||| A mérés = a 16. dimenzióban történik.
+public export
+wcTizenhatodikDimenzio : MiertBejegyzes
+wcTizenhatodikDimenzio = MiertBejegyzesKonstruktor
+  "wc_tizenhatodik_dimenzio"
+  TemaSzabalyok
+  TemaFizika
+  "A [[15,1,3]] 15 kubitja = tesserakt 16 sarka − a nulla-sarok. A hianyzo sarok = a 16. dimenzio = a meres helye (NOBEL_CEL_TERKEP 4.)"
+  "Steane153.idr: 15 = 2^4 − 1, a nulla-sarok = a kulso koordinata"
+  "A meres NEM a 15-ben van, hanem a 16.-ban. A 15 = a rendszer, a 16. = a megfigyelo"
+  2
+
+||| A bit → E8 → [[15,1,3]] torony.
+||| A fraktál család: [[2³−1,1,3]] = [[7,1,3]] (8 szoba − 1),
+||| [[2⁴−1,1,3]] = [[15,1,3]] (16 szoba − 1), [[2⁵−1,1,3]] = [[31,1,3]].
+||| A klasszikus RM(1,m) = a Barnes–Wall rács konstrukciója —
+||| ugyanaz a torony, mint az E8-diszkretizáció.
+public export
+wcBitE8Torony : MiertBejegyzes
+wcBitE8Torony = MiertBejegyzesKonstruktor
+  "wc_bit_e8_torony"
+  TemaTipusok
+  TemaKvantum
+  "A bit → E8 → [[15,1,3]] fraktal csalad. [[2^n−1,1,3]]: n=3 (Steane), n=4 (Reed-Muller), n=5. A klasszikus RM(1,m) = a Barnes-Wall racs"
+  "E8Diszkretizacio + Steane153 + (Barnes-Wall: Lyu 2026)"
+  "A bit GENERALIZALASA: az E8 mod 2 = qubit-aramkor, mod 8 = kvdit. A torony = a 8 szoba fraktal"
+  2
+
+||| Az optimalitás kritériuma: unitaritás = nincs hő.
+||| Egy optimalis AI szamitasa uniter: ΔH = 0 (nem pazarol
+||| energiát). A hő EGYETLEN forrasa a csonkolas (Landauer:
+||| egy bit eldobása kT ln 2). A carry megőrzött = nem hő.
+public export
+wcOptimalitasKriteriuma : MiertBejegyzes
+wcOptimalitasKriteriuma = MiertBejegyzesKonstruktor
+  "wc_optimalitas_kriteriuma"
+  TemaFizika
+  TemaTipusok
+  "Az optimalis AI uniter: DH = 0 (nem pazarol energiát). A ho egyetlen forrasa a csonkolas (Landauer: kT ln 2). A carry megorzott = nem ho"
+  "HamiltonMegmaradas.idr: deltaHamiltoniEgyenloHo66 Refl (DH = 0)"
+  "A tomoretes = intelligencia (felhasznalo alapelve). Az optimalitas = a tipus biztositja (uniter = nincs ho)"
+  2
+
+||| A "szám mint nyelv" koncepció — a felhasználó víziója.
+||| A kérdés ("Mennyi 66+3456?") = a nyelv, amire fordítunk.
+||| A fordítás = a Carnot-hibajavítási lánc a fázisállapot
+||| a cél (a válasz) felé javítja. A rendszer a SAJÁT
+||| hibajavításával generálja a választ — nem betanított
+||| súlyokkal, hanem a rendszer koherenciájával.
+public export
+wcSzamMintNyelvKoncepcio : MiertBejegyzes
+wcSzamMintNyelvKoncepcio = MiertBejegyzesKonstruktor
+  "wc_szam_mint_nyelv_koncepcio"
+  TemaNyelv
+  TemaCselekves
+  "A kerdes = a nyelv, amire forditunk. A forditas = a Carnot-hibajavitas (a fazisallapotot a valasz fele javitjak). A rendszer a SAJAT koherenciajaval general valaszt — nem betanitott sulyokkal"
+  "FazisOsszeado.idr: 66+3456=3522 (Carnot-javitassal)"
+  "A felhasznalo vizioja: az AI nyelve = a fazister. A szamok = a nyelv. A valasz = a forditas. Ez a cel felé mutat"
+  2
+
+||| Az algebra = a Hilbert-tér diszkretizációja.
+||| A GKP-kódban a rács MAGA a kód — nem "rácsra kódolunk".
+||| A Weyl-reláció: K egész ⇒ stabilizátor-eltolások kommutálnak.
+||| A gondolkodás = rács-dekódolás (legközelebbi rácspont).
+||| A Barnes–Wall-dekódoló determinisztikus O(N log²N).
+public export
+wcAlgebraHilbertTer : MiertBejegyzes
+wcAlgebraHilbertTer = MiertBejegyzesKonstruktor
+  "wc_algebra_hilbert_ter"
+  TemaKategoriaelmelet
+  TemaKvantum
+  "A GKP-kódban a racs MAGA a kod. A Weyl-relacio: K egesz ⇒ stabilizator-eltolasok kommutalnak. A gondolkodas = racs-dekodolas. A Barnes-Wall dekodolo O(N log^2 N)"
+  "E8Szimplektikus.idr (K integral) + GKP irodalom (Chakraborty-Albert, Lyu)"
+  "A memoria = racs. A gondolkodas = dekodolas. A teljesitmeny = determinisztikus (NEM sztochasztikus)"
+  2
+
+-- =====================================================================
+-- 15. AZ ÖSSZES BEJEGYZÉS (pédák + újak + mélyebbek)
+-- =====================================================================
+
+||| A mélyebb felismerések listája.
+public export
+melyebbBejegyzesek : List MiertBejegyzes
+melyebbBejegyzesek = [
+  wcCafolatModszer,
+  wcTizenhatodikDimenzio,
+  wcBitE8Torony,
+  wcOptimalitasKriteriuma,
+  wcSzamMintNyelvKoncepcio,
+  wcAlgebraHilbertTer
+ ]
+
+||| A VALÓDI összes bejegyzés: pédák + újak + mélyebbek.
+public export
+valodiOsszesBejegyzes : List MiertBejegyzes
+valodiOsszesBejegyzes = peldaBejegyzesek ++ ujBejegyzesek ++ melyebbBejegyzesek
+
+||| A teljes lánc kompaktálása — a túlélő oksági fonal.
+public export
+valodiTeljesKompaktal : List MiertBejegyzes
+valodiTeljesKompaktal = kompaktal valodiOsszesBejegyzes
+
+||| A teljes lánc injektálása — az oksági fonal vissza a kontextusba.
+public export
+valodiTeljesInjectal : String
+valodiTeljesInjectal = injectal valodiOsszesBejegyzes
