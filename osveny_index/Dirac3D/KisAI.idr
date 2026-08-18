@@ -365,3 +365,180 @@ fom = do
   putStrLn "  Kérdezz! Üres sor = kilépés."
   putStrLn "═══════════════════════════════════════════════════"
   tanitoCiklus kezdoKisAI
+
+-- =====================================================================
+-- 13. A KÉRDEZŐ MOTOR — a baby AI kérdez, nem csak vár.
+-- =====================================================================
+--
+-- A felhasználó felismerése: "ahhoz, hogy tudja mi egy kérdésre a
+-- válasz, először meg kell kérdeznie magától, tényleg tudja-e,
+-- milyen valószínűséggel tudja, merre lehetnek válaszok, milyen
+-- kérdéseket kell feltennie magának és MIERT."
+--
+-- A kérdező motor: ha a rendszer NEM TUDJA a választ (d > 2),
+-- nem passzívan vár ("magyarázd el"), hanem AKTÍVAN KÉRDEZ:
+-- a kód alapján megmondja, melyik dimenziókban hiányzik az információ,
+-- és ezekről kérdez. Ez az acquisition function: a hiányzó dimenziókból
+-- generált kérdés = a "miért" mint motor.
+-- =====================================================================
+
+||| A 7 dimenzió nevei.
+dimenzioNev : Nat -> String
+dimenzioNev 0 = "ido"
+dimenzioNev 1 = "oksag"
+dimenzioNev 2 = "ter"
+dimenzioNev 3 = "szin"
+dimenzioNev 4 = "hang"
+dimenzioNev 5 = "fazis"
+dimenzioNev 6 = "mod"
+dimenzioNev _ = "ismeretlen"
+
+||| A kódból kiolvassa az aktív dimenziókat (ahol 1-es van).
+aktiveDimenziok : BitKod -> List (Nat, String)
+aktiveDimenziok k = go 7
+  where
+    go : Nat -> List (Nat, String)
+    go Z = []
+    go (S n) =
+      let i = n
+      in (if index (natToFin7b i) k == 1
+          then (i, dimenzioNev i) :: go n
+          else go n)
+      where
+        natToFin7b : Nat -> Fin 7
+        natToFin7b 0 = FZ
+        natToFin7b 1 = FS FZ
+        natToFin7b 2 = FS (FS FZ)
+        natToFin7b 3 = FS (FS (FS FZ))
+        natToFin7b 4 = FS (FS (FS (FS FZ)))
+        natToFin7b 5 = FS (FS (FS (FS (FS FZ))))
+        natToFin7b 6 = FS (FS (FS (FS (FS (FS FZ)))))
+        natToFin7b _ = FZ
+
+||| Kérdés generálása a hiányzó dimenziókból.
+||| "Nem tudom. De a kód [0,1,0,0,1,0,0] = okság + hang.
+|||  Ezek a dimenziók hiányoznak. Kérdezem:
+|||  Mi az okság? Mi a hang?"
+public export
+generalKerdest : BitKod -> String
+generalKerdest k =
+  let aktivek = aktiveDimenziok k
+      nevek = map snd aktivek
+  in if null nevek
+     then "Nem tudom. Nincs utonalvezetes (minden bit 0). Magyarazd el!"
+     else "Nem tudom. De a kod " ++ showKodSegedK k ++ " = " ++
+          unwordsSep nevek ++ ". Ezek a dimenziok hianyoznak. Kerdezem: " ++
+          kerdesek nevek
+  where
+    showKodSegedK : BitKod -> String
+    showKodSegedK k = "[" ++ show (index 0 k) ++ "," ++ show (index 1 k) ++ "," ++
+                     show (index 2 k) ++ "," ++ show (index 3 k) ++ "," ++
+                     show (index 4 k) ++ "," ++ show (index 5 k) ++ "," ++
+                     show (index 6 k) ++ "]"
+    unwordsSep : List String -> String
+    unwordsSep [] = ""
+    unwordsSep [x] = x
+    unwordsSep [x, y] = x ++ " + " ++ y
+    unwordsSep (x :: xs) = x ++ ", " ++ unwordsSep xs
+    kerdesek : List String -> String
+    kerdesek [] = ""
+    kerdesek [x] = "Mi a " ++ x ++ "?"
+    kerdesek (x :: xs) = "Mi a " ++ x ++ "? " ++ kerdesek xs
+
+-- =====================================================================
+-- 14. A 7 DIMENZIÓ MEGTANÍTÁSA — előre feltöltött tudás.
+-- =====================================================================
+
+||| A 7 dimenziómagyarázatok (idő, okság, tér, szín, hang, fázis, mód).
+||| Ezeket a rendszer tudja induláskor — a 7 kategória, amikben gondolkodik.
+dimenzioMagyarazatok : List (BitKod, String)
+dimenzioMagyarazatok = [
+  ([1,0,0,0,0,0,0], "Az ido = a valtozas merhetoseg. Mikor tortent. Az elso dimenzio."),
+  ([0,1,0,0,0,0,0], "Az oksag = a miert. Mi okozta. A masodik dimenzio. A kerdes forrasa."),
+  ([0,0,1,0,0,0,0], "A ter = ahol tortent. Hol. A harmadik dimenzio."),
+  ([0,0,0,1,0,0,0], "A szin = a minosig. Milyen. A negyedik dimenzio."),
+  ([0,0,0,0,1,0,0], "A hang = a kifejezes. Hogyan mondta. Az otodik dimenzio."),
+  ([0,0,0,0,0,1,0], "A fazis = a cselekves. Mit tett. A hatodik dimenzio."),
+  ([0,0,0,0,0,0,1], "A mod = a modszer. Hogyan mukodik. A hetedik dimenzio.")
+ ]
+
+||| A 7 dimenzióval előtanított AI: üres tudástár + alap szótár + 7 dimenzió.
+public export
+kezdoKisAIDimenziokkal : KisAI
+kezdoKisAIDimenziokkal =
+  let ai0 = kezdoKisAI
+      ai1 = tanitKisAI ai0 [1,0,0,0,0,0,0] "Az ido = a valtozas merhetoseg."
+      ai2 = tanitKisAI ai1 [0,1,0,0,0,0,0] "Az oksag = a miert. A kerdes forrasa."
+      ai3 = tanitKisAI ai2 [0,0,1,0,0,0,0] "A ter = ahol tortent."
+      ai4 = tanitKisAI ai3 [0,0,0,1,0,0,0] "A szin = a minosig."
+      ai5 = tanitKisAI ai4 [0,0,0,0,1,0,0] "A hang = a kifejezes."
+      ai6 = tanitKisAI ai5 [0,0,0,0,0,1,0] "A fazis = a cselekves."
+      ai7 = tanitKisAI ai6 [0,0,0,0,0,0,1] "A mod = a modszer."
+  in ai7
+
+-- =====================================================================
+-- 15. A KÉRDEZŐ CIKLUS — ha nem tudja, KÉRDEZ (nem csak vár).
+-- =====================================================================
+
+%default partial
+
+||| A kérdező ciklus: ha nem tudja a választ, nem passzívan vár,
+||| hanem AKTÍVAN KÉRDEZ — a kód alapján generál egy kérdést a
+||| hiányzó dimenziókról. Ez az acquisition function.
+|||
+||| A felhasználó gondolkodásának formalizálva:
+|||   1. "tényleg tudja-e?" → ΔH (keresés: d)
+|||   2. "milyen valószínűséggel tudja?" → d = 0 (biztos), d ≤ 2 (talán)
+|||   3. "merre lehetnek válaszok?" → a kód aktív dimenziói
+|||   4. "milyen kérdéseket kell feltennie?" → generált kérdések
+|||   5. "és MIERT?" → az oksági indoklás (miertKisAI)
+public export
+kerdezoCiklus : KisAI -> IO ()
+kerdezoCiklus ai = do
+  putStr "> "
+  line <- getLine
+  if line == "" then pure () else do
+    let kod = kodolSzoveg line (szotar ai)
+    case keresKisAI ai kod of
+      Just (0, mag) => do
+        putStrLn ("Tudom! " ++ mag)
+        putStrLn ("  " ++ miertKisAI kod mag)
+        kerdezoCiklus ai
+      Just (d, mag) => do
+        if d <= 2
+          then do
+            putStrLn ("Talán (távolság=" ++ show d ++ "): " ++ mag)
+            putStrLn ("  Asszociáció: " ++ show (asszocialKisAI ai kod))
+            kerdezoCiklus ai
+          else do
+            putStrLn (generalKerdest kod)
+            magyaro <- getLine
+            let ai' = tanitKisAI ai kod magyaro
+            putStrLn ("Ertem! Eltároltam. (kód: " ++ showKodSeged kod ++ ")")
+            putStrLn ("  " ++ miertKisAI kod magyaro)
+            kerdezoCiklus ai'
+      Nothing => do
+        putStrLn (generalKerdest kod)
+        magyaro <- getLine
+        let ai' = tanitKisAI ai kod magyaro
+        putStrLn ("Ertem! Eltároltam. (kód: " ++ showKodSeged kod ++ ")")
+        putStrLn ("  " ++ miertKisAI kod magyaro)
+        kerdezoCiklus ai'
+  where
+    showKodSeged : BitKod -> String
+    showKodSeged k = "[" ++ show (index 0 k) ++ "," ++ show (index 1 k) ++ "," ++
+                     show (index 2 k) ++ "," ++ show (index 3 k) ++ "," ++
+                     show (index 4 k) ++ "," ++ show (index 5 k) ++ "," ++
+                     show (index 6 k) ++ "]"
+
+||| A kérdező főprogram: a 7 dimenzióval előtanított AI-val indul.
+public export
+fomKerdezo : IO ()
+fomKerdezo = do
+  putStrLn "═══════════════════════════════════════════════════"
+  putStrLn "  KIS AI — kérdező (nem passzív!)"
+  putStrLn "  A 7 bit: [idő, okság, tér, szín, hang, fázis, mód]"
+  putStrLn "  A 7 dimenzió már megtanítva."
+  putStrLn "  Kérdezz! Ha nem tudom, KÉRDEZEK. Üres sor = kilépés."
+  putStrLn "═══════════════════════════════════════════════════"
+  kerdezoCiklus kezdoKisAIDimenziokkal

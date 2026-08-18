@@ -280,5 +280,5 @@ main = do
 
   -- 18. Élő tanítás: az interaktív ciklus
   putStrLn "─── 18. Élő tanítás (interaktív) ───"
-  putStrLn "Kérdezz! Üres sor = kilépés."
-  fom
+  putStrLn "Kérdezz! Ha nem tudom, KÉRDEZEK. Üres sor = kilépés."
+  fomKerdezo
