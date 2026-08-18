@@ -29,6 +29,16 @@ egyesek nem fordulnak le — ÉPP EZ A TANULSÁG BENNÜK).
 | `BizonyitasEszkozok.idr` | Refl + cong + trans (és a rewrite irány-csapdája) | eszköztár, 0 hibával |
 | `MiertJo.idr` | a típusok összekeverése (KerdoszoT ≠ Esetrag) | fordítási időben elutasítva |
 
+## Az E8 szimpleptikus cáfolat (2026-08-18) — a "semmi halu" elv működésben
+
+| Fájl | Mi | Eredmény |
+|---|---|---|
+| `osveny_index/Dirac3D/E8Szimplektikus.idr` | 1. sejtés: MᵀΩM = Ω (E8 ∈ Sp(8,Z)) | ELUTASÍTVA (kernel: -3 ≠ -1) — a Refl nem azt bizonyítja, amit szeretnénk |
+| ugyanott | a mért igazság: K = MᵀΩM egész, antiszimmetrikus | GKP-érvényes rács, Refl páronként ✓ |
+| ugyanott | `E8BinarisSzimpleptikus`: K ≡ Ω (mod 2), teljes mátrix | Refl ✓ — az E8 mod 2 = qubit-áramkör (Chakraborty–Albert Fig. 5) |
+| ugyanott | `sp8TagsagHamis`: M ∉ Sp(8,Z) rögzítve | a cáfolat mint állandó tulajdonság |
+| `docs/E8_szimpleptikus_felfedezes.md` | a teljes felfedezés dokumentációja (lánc, Refl-jegyzék, hivatkozások) | a 7-modulos bizonyított lánc |
+
 ## Egyéb
 
 | Fájl | Mi |
