@@ -12,6 +12,21 @@ module Attekintes
 
 import Teszt
 import HtmlDsl
+import ModulRegisztracio
+import Fonetika
+import FanoParitás
+import Kerdoszo
+import HanMagKodolas
+import E8Gyokrendszer
+import DiracGammaMatricak
+import OktonionAlgebra
+import SteaneHamiltonian
+import LejeuneTranszformacio
+import DiracIdoFejlodes
+import ErtelmezoSzotar
+import LawvereGodel
+import Komplex
+import KorOsztas
 
 %default covering
 
@@ -25,65 +40,25 @@ record ModulAdat where
   miertKell      : String
   allapotJel     : String
 
+-- A modullista AUTOMATIKUS a regisztrációkból:
+-- minden modul saját magát regisztrálja (ModulRegisztracio.idr)
 public export
-modulok : List ModulAdat
-modulok =
-  [ ModulAdatKonstruktor "Fonetika.idr"
-      "40 hang, IPA, szótagolás (AkH.226.f), ng→[ŋ]"
-      "a szókincs TÍPUS — a szavak nem String, hanem Hang-konstruktorok"
-      "65 teszt"
-  , ModulAdatKonstruktor "FanoParitás.idr"
-      "hangrend = paritásbit; Fanó-sík 7 egyenes XOR=0 [Refl]; Pauli [Refl]"
-      "a nyelv önellenőrző — a rossz toldalékot a típus elutasítja"
-      "12 teszt + 9 Refl"
-  , ModulAdatKonstruktor "Kerdoszo.idr"
-      "kérdőszó→esetrag típusos; „mikor?\"-ra nincs rag [Refl] (T≠C,P)"
-      "a kíváncsiság TÍPUS: kérdés = morfizmus üres célal; Yoneda"
-      "13 teszt + 7 Refl"
-  , ModulAdatKonstruktor "HanMagKodolas.idr"
-      "5 bit kínai + 3 bit magyar = 8 bit = E8Pont; 137=11²+4² [Refl]"
-      "egy gondolat = egy bájt a Steane-rácsban, paritás-önellenőrző"
-      "7 teszt + 5 Refl"
-  , ModulAdatKonstruktor "E8Gyokrendszer.idr"
-      "2→4→8→24→240 torony; 112+128=240 (két út) [Refl]; 128=2⁷"
-      "a szó mérete = oktonion egységek = E8 gyökök"
-      "12 teszt + 16 Refl"
-  , ModulAdatKonstruktor "DiracGammaMatricak.idr"
-      "Weyl γ⁰ keveri ψ_L↔ψ_R; szerveri sosem; γ⁵=diag [Refl]"
-      "a kétnyelvű gondolkodás mechanizmusa: γ⁰ (idő/magyar) forgat"
-      "6 teszt + 11 Refl"
-  , ModulAdatKonstruktor "OktonionAlgebra.idr"
-      "49 pár × 3 törvény EGY Refl-lel; Fano-sík [Refl]; nem-asszoc. [Refl]"
-      "a mondat = nem assz. szorzat (a csoportosítás változtatja a jelentést)"
-      "8 teszt + 3 Refl"
-  , ModulAdatKonstruktor "SteaneHamiltonian.idr"
-      "H=−6 alapállapot [Refl]; szindróma=hibapozíció binárisan [Refl]"
-      "a hibajavítás = Carnot-ciklus (mérés→javítás→törlés→újrakészítés)"
-      "9 teszt + 9 Refl"
-  , ModulAdatKonstruktor "LejeuneTranszformacio.idr"
-      "ℒ-család (Landauer ℒ_I); 2. főtétel: csak a törlési ütem fizet [Refl]"
-      "Legendre általánosítása; a Carnot = kör a ℒ-gráfban"
-      "5 teszt + 4 Refl"
-  , ModulAdatKonstruktor "DiracIdoFejlodes.idr"
-      "P(magyar)=sin²(t) két úton ≤10⁻¹²; szerveri γ⁰-val P=0 pontosan"
-      "a jelentés oszcillál (Zitterbewegung); Idris számol, böngésző rajzol"
-      "5 teszt"
-  , ModulAdatKonstruktor "ErtelmezoSzotar.idr"
-      "8 ÉKSZ-szócikk; GAUGE: kézzel írt == független parser [teszt]"
-      "a szócikkek genus-differentia szerkezete = a fogalom-gráf"
-      "14 teszt"
-  , ModulAdatKonstruktor "LawvereGodel.idr"
-      "Lawvere fixpont [Refl]; hazug p=1/2 [Refl]; Kleene 3-értékű"
-      "az öntudat csírája: a rendszer kérdezhet önmagáról"
-      "Refl"
-  , ModulAdatKonstruktor "Komplex.idr"
-      "φ-kontrakció 10⁻¹⁰; ϱ fixpont; oda-vissza (Loschmidt)"
-      "a Y-kombinátor numerikus magja: a kontrakció = kérdés→információ"
-      "Show"
-  , ModulAdatKonstruktor "KorOsztas.idr"
-      "Gauss-Wantzel; komma=23,46 cent; bájt=8 (256)"
-      "a konszonancia-prímek = Fermat-prímek"
-      "Refl"
+osszesRegisztraltModul : List ModulLeirasT
+osszesRegisztraltModul =
+  [ FonetikaLeiras
+  , FanoParitasLeiras
+  , KerdoszoLeiras
+  , HanMagKodolasLeiras
+  , EGyokrendszerLeiras
+  , DiracGammaLeiras
+  , OktonionLeiras
+  , SteaneHamiltonianLeiras
+  , LejeuneLeiras
+  , DiracIdoLeiras
+  , ErtelmezoSzotarLeiras
+  , LawvereLeiras
+  , KomplexLeiras
+  , KorOsztasLeiras
   ]
 
 -- ─── 2. HTML-SABLON ──────────────────────────────────────
@@ -123,19 +98,19 @@ tesztSzamok =
 -- ─── 4. A MODULTÁBLÁZAT a HtmlDsl-ből ─────────────────────
 
 public export
-modulSorHtml : ModulAdat -> HtmlFa
+modulSorHtml : ModulLeirasT -> HtmlFa
 modulSorHtml m = tr
-  [ tdOsztallyal "mod" (modulNev m)
+  [ tdOsztallyal "mod" (modulNeve m)
   , td (mitBizonyit m)
   , td (miertKell m)
-  , tdOsztallyal "pipa" (allapotJel m)
+  , tdOsztallyal "pipa" (allapotJele m)
   ]
 
 public export
 modulTablazatHtml : HtmlFa
 modulTablazatHtml = tabla
   ( tr [ th "Modul", th "Mit bizonyít", th "Miért kell az AI-hez", th "Állapot" ]
-  :: map modulSorHtml modulok
+  :: map modulSorHtml osszesRegisztraltModul
   )
 
 -- ─── 4a. A TESZTKATEGÓRIÁK ÉS BIZONYÍTÁSOK (automatikus) ──

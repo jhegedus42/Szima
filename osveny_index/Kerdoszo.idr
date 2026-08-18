@@ -28,6 +28,7 @@ import Fonetika
 import MagyarNyelvtan
 import FanoParitás
 import Steane713
+import ModulRegisztracio
 
 %default total
 
@@ -258,3 +259,10 @@ foJelentes =
 
 main : IO ()
 main = putStrLn foJelentes
+
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+KerdoszoLeiras : ModulLeirasT
+KerdoszoLeiras = ModulLeirasKonstruktor
+  "Kerdoszo.idr" "kérdőszó→esetrag; „mikor?”-ra nincs rag [Refl] (T≠C,P)" "a kíváncsiság TÍPUS: kérdés = morfizmus üres célal; Yoneda" "13 teszt + 7 Refl"

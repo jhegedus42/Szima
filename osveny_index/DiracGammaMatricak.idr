@@ -1,5 +1,6 @@
 module DiracGammaMatricak
 
+import ModulRegisztracio
 -- ═══════════════════════════════════════════════════════════════
 -- DIRAC GAMMA-MÁTRIXOK — Weyl-bázis, pontos Integer-aritmetikával
 -- ═══════════════════════════════════════════════════════════════
@@ -304,3 +305,10 @@ foJelentes =
 
 main : IO ()
 main = putStrLn foJelentes
+
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+DiracGammaLeiras : ModulLeirasT
+DiracGammaLeiras = ModulLeirasKonstruktor
+  "DiracGammaMatricak.idr" "Weyl γ⁰ keveri ψ_L↔ψ_R; szerveri sosem; γ⁵=diag [Refl]" "a kétnyelvű gondolkodás mechanizmusa: γ⁰ (idő/magyar) forgat" "6 teszt + 11 Refl"

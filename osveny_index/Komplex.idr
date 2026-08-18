@@ -1,5 +1,6 @@
 module Komplex
 
+import ModulRegisztracio
 -- ═══════════════════════════════════════════════════════════════
 -- KOMPLEX SZÁMOK — a fázis számolásához
 -- ═══════════════════════════════════════════════════════════════
@@ -404,3 +405,9 @@ komplexFom2 = do
   putStrLn "   Y = KARNOT-CIKLUS: elore (kompresszio) + hatra (expanzio)"
   putStrLn "      = a vegtelen ciklus ami eletben tartja a rendszert"
   putStrLn "Kesz2."
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+KomplexLeiras : ModulLeirasT
+KomplexLeiras = ModulLeirasKonstruktor
+  "Komplex.idr" "φ-kontrakció 10⁻¹⁰; ϱ fixpont; oda-vissza (Loschmidt)" "a Y-kombinátor numerikus magja: a kontrakció = kérdés→információ" "Show"

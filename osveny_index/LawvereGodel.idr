@@ -1,5 +1,6 @@
 module LawvereGodel
 
+import ModulRegisztracio
 -- ═══════════════════════════════════════════════════════════════
 -- LAWVERE-GÖDEL — a diagonal kategorikus magja
 -- TÍPUS-ELLENŐRIZVE (Curry–Howard): ha ez a modul lefordul,
@@ -278,3 +279,9 @@ nyelvValasz = NyelvValaszK
   "IGEN — a hazug értéke Ertektelen (kleeneFixpontLetezik : DPair)"
   "IGEN — a hazug p = 1/2: pontosan 1 bit entrópia ára (hazugMegoldasPontos : Refl)"
   "logikai indukció (Christiano és tsai. 2017): P_n konvergál, önmagára is — a 1 bit határeset e tétele felé tart"
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+LawvereLeiras : ModulLeirasT
+LawvereLeiras = ModulLeirasKonstruktor
+  "LawvereGodel.idr" "Lawvere fixpont [Refl]; hazug p=1/2 [Refl]; Kleene 3-értékű" "az öntudat csírája: a rendszer kérdezhet önmagáról" "Refl"

@@ -18,6 +18,7 @@ module DiracIdoFejlodes
 -- ═══════════════════════════════════════════════════════════════
 
 import Komplex
+import ModulRegisztracio
 
 %default total
 
@@ -156,3 +157,10 @@ foJelentes =
 
 main : IO ()
 main = putStrLn foJelentes
+
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+DiracIdoLeiras : ModulLeirasT
+DiracIdoLeiras = ModulLeirasKonstruktor
+  "DiracIdoFejlodes.idr" "P(magyar)=sin²(t) két úton ≤10⁻¹²; szerveri γ⁰-val P=0" "a jelentés oszcillál (Zitterbewegung); Idris számol, böngésző rajzol" "5 teszt"

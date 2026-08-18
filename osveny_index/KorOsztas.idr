@@ -36,6 +36,7 @@ module KorOsztas
 
 import Steane713
 import E8E8Algebra
+import ModulRegisztracio
 
 -- ─── 1. FERMAT-PRÍMEK ──────────────────────────────────────
 
@@ -166,3 +167,9 @@ korOsztasFom = do
   putStrLn "ezert 1 bajt = 8 bit = E8Pont = a projekt alapegysege."
   putStrLn ""
   putStrLn "Kesz."
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+KorOsztasLeiras : ModulLeirasT
+KorOsztasLeiras = ModulLeirasKonstruktor
+  "KorOsztas.idr" "Gauss-Wantzel; komma=23,46 cent; bájt=8 (256)" "a konszonancia-prímek = Fermat-prímek" "Refl"

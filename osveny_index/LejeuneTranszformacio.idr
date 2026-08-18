@@ -23,6 +23,7 @@ module LejeuneTranszformacio
 -- ═══════════════════════════════════════════════════════════════
 
 import Steane713
+import ModulRegisztracio
 
 %default total
 
@@ -189,3 +190,10 @@ foJelentes =
 
 main : IO ()
 main = putStrLn foJelentes
+
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+LejeuneLeiras : ModulLeirasT
+LejeuneLeiras = ModulLeirasKonstruktor
+  "LejeuneTranszformacio.idr" "ℒ-család (Landauer ℒ_I); 2. főtétel: csak a törlési ütem fizet [Refl]" "Legendre általánosítása; a Carnot = kör a ℒ-gráfban" "5 teszt + 4 Refl"

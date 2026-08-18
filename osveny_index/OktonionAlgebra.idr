@@ -1,5 +1,6 @@
 module OktonionAlgebra
 
+import ModulRegisztracio
 -- ═══════════════════════════════════════════════════════════════
 -- OKTONION SZORZATTÁBLA — a Cayley-féle Fano-irányból, Refl-lel
 -- ═══════════════════════════════════════════════════════════════
@@ -253,3 +254,10 @@ foJelentes =
 
 main : IO ()
 main = putStrLn foJelentes
+
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+OktonionLeiras : ModulLeirasT
+OktonionLeiras = ModulLeirasKonstruktor
+  "OktonionAlgebra.idr" "49 pár × 3 törvény EGY Refl-lel; Fano-sík [Refl]; nem-asszoc. [Refl]" "a mondat = nem assz. szorzat (a csoportosítás változtatja a jelentést)" "8 teszt + 3 Refl"

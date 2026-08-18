@@ -53,6 +53,7 @@ module E8Gyokrendszer
 -- ═══════════════════════════════════════════════════════════════
 
 import Steane713
+import ModulRegisztracio
 
 %default total
 
@@ -325,3 +326,10 @@ foJelentes =
 
 main : IO ()
 main = putStrLn foJelentes
+
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+EGyokrendszerLeiras : ModulLeirasT
+EGyokrendszerLeiras = ModulLeirasKonstruktor
+  "E8Gyokrendszer.idr" "2→4→8→24→240 torony; 112+128=240 (két út) [Refl]; 128=2⁷" "a szó mérete = oktonion egységek = E8 gyökök" "12 teszt + 16 Refl"

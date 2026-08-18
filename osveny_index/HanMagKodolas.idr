@@ -22,6 +22,7 @@ module HanMagKodolas
 
 import Steane713
 import E8E8Algebra
+import ModulRegisztracio
 
 %default total
 
@@ -270,3 +271,10 @@ foJelentes =
 
 main : IO ()
 main = putStrLn foJelentes
+
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+HanMagKodolasLeiras : ModulLeirasT
+HanMagKodolasLeiras = ModulLeirasKonstruktor
+  "HanMagKodolas.idr" "5 bit kínai + 3 bit magyar = 8 bit = E8Pont; 137=11²+4² [Refl]" "egy gondolat = egy bájt a Steane-rácsban, paritás-önellenőrző" "7 teszt + 5 Refl"

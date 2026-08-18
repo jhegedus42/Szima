@@ -23,6 +23,7 @@ module FanoParitás
 import Steane713
 import E8E8Algebra
 import Fonetika
+import ModulRegisztracio
 
 %default total
 
@@ -347,3 +348,10 @@ haluJelentés =
 
 main : IO ()
 main = putStrLn haluJelentés
+
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+FanoParitasLeiras : ModulLeirasT
+FanoParitasLeiras = ModulLeirasKonstruktor
+  "FanoParitás.idr" "hangrend = paritásbit; Fanó-sík 7 egyenes [Refl]; Pauli [Refl]" "a nyelv önellenőrző — a rossz toldalékot a típus elutasítja" "12 teszt + 9 Refl"

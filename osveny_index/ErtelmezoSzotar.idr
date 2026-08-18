@@ -19,6 +19,7 @@ module ErtelmezoSzotar
 import Fonetika
 import MagyarNyelvtan
 import FanoParitás
+import ModulRegisztracio
 
 %default total
 
@@ -437,3 +438,10 @@ főJelentés =
 
 main : IO ()
 main = putStrLn főJelentés
+
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+ErtelmezoSzotarLeiras : ModulLeirasT
+ErtelmezoSzotarLeiras = ModulLeirasKonstruktor
+  "ErtelmezoSzotar.idr" "8 ÉKSZ-szócikk; GAUGE: kézzel írt == független parser [teszt]" "a szócikkek genus-differentia szerkezete = a fogalom-gráf" "14 teszt"

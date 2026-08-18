@@ -1,5 +1,6 @@
 module Fonetika
 
+import ModulRegisztracio
 -- ═══════════════════════════════════════════════════════════════
 -- FONETIKA — a magyar hangrendszer + IPA + SZÓTAGOLÁS
 -- ═══════════════════════════════════════════════════════════════
@@ -514,3 +515,9 @@ digrafokSzama = 9
 public export
 hangrendszerSzama : Nat
 hangrendszerSzama = maganhagzokSzama + massalhangzokSzama + digrafokSzama
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+FonetikaLeiras : ModulLeirasT
+FonetikaLeiras = ModulLeirasKonstruktor
+  "Fonetika.idr" "40 hang, IPA, szótagolás (AkH.226.f), ng→[ŋ]" "a szókincs TÍPUS — a szavak nem String, hanem Hang-konstruktorok" "65 teszt"

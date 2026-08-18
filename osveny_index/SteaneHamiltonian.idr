@@ -32,6 +32,7 @@ module SteaneHamiltonian
 
 import Steane713
 import E8E8Algebra
+import ModulRegisztracio
 
 %default total
 
@@ -280,3 +281,10 @@ foJelentes =
 
 main : IO ()
 main = putStrLn foJelentes
+
+
+-- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
+public export
+SteaneHamiltonianLeiras : ModulLeirasT
+SteaneHamiltonianLeiras = ModulLeirasKonstruktor
+  "SteaneHamiltonian.idr" "H=−6 alapállapot [Refl]; szindróma=hibapozíció binárisan [Refl]" "a hibajavítás = Carnot-ciklus (mérés→javítás→törlés→újrakészítés)" "9 teszt + 9 Refl"
