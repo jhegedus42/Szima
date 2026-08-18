@@ -6,6 +6,11 @@ modules = Kina2D
         , Fazis
         , Lagrangian
         , Carnot
+        , Hadmeres
+        , HadMerger
+        , HadMerTeszt
+        , FazisOsszeado
+        , CarryHoatvitel
         , MagasabbRendszer
         , Main3D
 

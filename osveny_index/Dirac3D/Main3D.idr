@@ -7,6 +7,10 @@ import Fazis
 import Lagrangian
 import Carnot
 import MagasabbRendszer
+import Hadmeres
+import HadMerger
+import FazisOsszeado
+import CarryHoatvitel
 import Data.Vect
 import Data.List
 
@@ -181,3 +185,28 @@ main = do
   putStrLn ("5 lépés után H = " ++ show (qhmHamiltonian qhmc5 1.0))
   putStrLn ("  Pozíció entropia: " ++ show (entropia (pozicio qhmc5)))
   putStrLn ("Entropia változás: " ++ show (entropia (pozicio qhmcKezdo)) ++ " → " ++ show (entropia (pozicio qhmc5)))
+  putStrLn ""
+
+  -- 10. Fázisösszeadó: 66 + 3456 mint fordítás
+  putStrLn "─── 10. Fázisösszeadó: számok mint nyelv ───"
+  putStrLn ("Szótár: 0→F0, 1→F1, ..., 7→F7, 8→F0, 9→F1")
+  putStrLn ("66 kódolva:    " ++ show (szamKodol 66))
+  putStrLn ("3456 kódolva:  " ++ show (szamKodol 3456))
+  putStrLn ("Kérdés állapot: " ++ show (kerdesAllapot peldaKerdes))
+  putStrLn ("Carnot fordítás után: " ++ show (fazisok peldaEredmeny))
+  putStrLn ("Válasz: 66 + 3456 = " ++ show peldaValasz)
+  putStrLn ("  5 + 3 = " ++ show teszt1Valasz)
+  putStrLn ("  12 + 34 = " ++ show teszt2Valasz)
+  putStrLn ("  100 + 200 = " ++ show teszt3Valasz)
+  putStrLn ""
+
+  -- 11. Carry mint hőátvitel: a 8/9 számjegyek hője
+  putStrLn "─── 11. Carry mint hőátvitel (Carnot) ───"
+  putStrLn ("8 → (F0, 1 hő): " ++ show (szamjegyHovel 8))
+  putStrLn ("9 → (F1, 1 hő): " ++ show (szamjegyHovel 9))
+  putStrLn ("5 → (F5, 0 hő): " ++ show (szamjegyHovel 5))
+  putStrLn ("Helyiérték 6+6: digit=" ++ show (fst (hoOsszegHelyiertek 6 6 0)) ++ ", carry=" ++ show (snd (hoOsszegHelyiertek 6 6 0)))
+  putStrLn ("  5 + 3 = " ++ show hoPelda1 ++ " (a Z₈ körbefordulás hője a hő-csatornában)")
+  putStrLn ("  66 + 3456 = " ++ show hoPelda2)
+  putStrLn ("  9 + 9 = " ++ show hoPelda3)
+  putStrLn ("  999 + 1 = " ++ show hoPelda4 ++ " (a carry végigáramlik minden helyiértéken)")

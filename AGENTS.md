@@ -69,20 +69,19 @@ Ha egy név rövidítésnek tűnik, írd ki teljesen.
 
 2. **Három egyforma hiba → infrastruktúra javítás.** Ha ugyanazt a hibát 3-szor látod, ne próbálkozz tovább — javítsd meg a gyökérokot (add hozzá AGENTS.md-hez, frissítsd az eszközöket, változtass módszert).
 
-3. **MINDEN számítás Idrisben — Python tilos, floatok is.** Az Idris tud
+3. **MINDEN számítás Idrisben — Python TILTOTT, floatok is.** Az Idris tud
    Double-aritmetikát (l. Komplex.idr: oda-vissza teszt, φ-kontrakció — ezek
    Idris-ben futó numerikák). A 2026-08-18-i oktonion-kaland bizonyította:
    Pythonban sorban három hibás tesztet írtam (előjel, szorzási sorrend,
    törvény-átírás); Idrisben a kernel számol — a 49 pár × 3 törvény egy Refl-lel
    ment, ami Pythonban nem állt össze soha.
+   - **Soha ne használj Pythont.** Csak Idris. Ha találsz `.py` fájlt a
+     projekten belül, írd át Idrisbe, ha lehetséges és van értelme.
+     A Python félrevezet és hibát okoz — ez kemény SZABÁLY.
    - **Pontos algebra (egész, véges, kombinatorikus)** → Refl / Show-teszt Idrisben.
    - **Lebegőpontos szimuláció** → Idris Double (Komplex.idr minta) + Show-teszt.
    - **Teljesítmény kell?** → Idris codegen (C/Python/JS) vagy C/Rust FFI —
      nem kézzel írt Python.
-   - **Python CSAK**: web integráció / API hívás / külső szolgáltatás, vagy ha
-     valami Idrisben LEHETETLEN — ilyenkor `# SZABALY0-IDRISBEN-LEHETETLEN`
-     marker a fájl elején, indoklással. Web/API-hoz `# SZABALY0-WEB-API` marker.
-   - Az ellenorzes.sh ezeket a markereket ellenőrzi.
 
 4. **Ne használj String-et a mag típusokban.** Használj algebrai adattípusokat. A megjelenítéshez használj `Render` vagy `Show` típusosztályt.
 
