@@ -117,12 +117,27 @@ main = do
   putStrLn ("Koherens > Zajos? " ++ show (stab1 > stab2))
   putStrLn ""
 
-  -- 5. Hibajavítás 3 szinten
-  putStrLn "─── 5. Hibajavítás (3 szint: algebrai → geometriai → termodinamikai) ───"
+  -- 5. Hibajavítás 3 szinten — külön-külön és együtt
+  putStrLn "─── 5. Hibajavítás 3 szinten ───"
+  putStrLn "  [1] Algebrai (Steane szindróma → 1 hibás fazis javítása)"
+  let sz2 = algebraiJavitas zajosAllapot celAllapot
+  putStrLn ("  Eredeti entropia:  " ++ show (entropia zajosAllapot))
+  putStrLn ("  Algebrai után:    " ++ show (entropia sz2))
+
+  putStrLn "  [2] Geometriai (Lagrangian geodézia → visszaprojektálás)"
+  let sz3 = geometriaiJavitas sz2 celAllapot
+  putStrLn ("  Geometriai után:  " ++ show (entropia sz3))
+
+  putStrLn "  [3] Termodinamikai (Carnot → entropia csökkentés)"
+  let sz4 = termodinamikaiJavitas sz3 celAllapot 100.0 1.0
+  putStrLn ("  Termodinamikai után: " ++ show (entropia sz4))
+
+  putStrLn ("  Cél entropia:        " ++ show (entropia celAllapot))
+  putStrLn ""
+
+  putStrLn "  Teljes lánc (2→3→4):"
   let javitott = teljesHibajavitas zajosAllapot celAllapot
-  putStrLn ("Eredeti entropia:  " ++ show (entropia zajosAllapot))
-  putStrLn ("Javított entropia: " ++ show (entropia javitott))
-  putStrLn ("Cél entropia:      " ++ show (entropia celAllapot))
+  putStrLn ("  Eredeti → Javított: " ++ show (entropia zajosAllapot) ++ " → " ++ show (entropia javitott))
   putStrLn ""
 
   -- 6. E8×E8, E16, E15
