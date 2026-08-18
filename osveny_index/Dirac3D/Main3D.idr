@@ -14,6 +14,7 @@ import CarryHoatvitel
 import HamiltonMegmaradas
 import E8Diszkretizacio
 import E8Szimplektikus
+import Steane153
 import Data.Vect
 import Data.List
 
@@ -237,3 +238,14 @@ main = do
   putStrLn ("K mod 2 = Ω mod 2 (bináris szimpleptikus)? " ++ show ((map (map Paritas2) E8KommutatorMatrix) == (map (map Paritas2) SzimplektikusForma)))
   putStrLn ("K = Ω (Sp(8,Z))? " ++ show sp8TagsagHamis)
   putStrLn ("K egész és antiszimmetrikus → E8 érvényes GKP-rács (Refl-lel bizonyítva)")
+  putStrLn ""
+
+  -- 15. Steane [[15,1,3]]: a 16 szoba − 1
+  putStrLn "─── 15. Steane [[15,1,3]]: a tetraéderes Reed–Muller kód ───"
+  putStrLn ("4 X-cella + 10 Z-lap kommutál? " ++ show mindKommutal)
+  putStrLn ("X-szindróma (Z-hiba a 3. pozíción) = " ++ show (xSzindroma [0,0,0,1,0,0,0,0,0,0,0,0,0,0,0]))
+  putStrLn ("   = 4 binárisan — a szindróma MAGA a pozíció")
+  putStrLn ("Mind a 15 X-hiba azonosítva? " ++ show xHibakJavitasa)
+  putStrLn ("Mind a 15 Z-hiba azonosítva? " ++ show zHibakJavitasa)
+  putStrLn ("Logikai Z súlya 3, logikai X súlya 7, antikommutálnak (Refl)")
+  putStrLn ("15 = tesserakt sarkai − a nulla-sarok = a 16. dimenzió (a mérés)")

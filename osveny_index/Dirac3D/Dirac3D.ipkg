@@ -13,6 +13,7 @@ modules = Kina2D
         , CarryHoatvitel
         , HamiltonMegmaradas
         , E8Diszkretizacio
+        , Steane153
         , MagasabbRendszer
         , Main3D
 
