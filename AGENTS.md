@@ -67,7 +67,14 @@ Ha egy név rövidítésnek tűnik, írd ki teljesen.
 
 1. **Nincs szerver írás engedély nélkül.** Ne hozz létre, szerkessz, vagy törölj fájlt a Hetzner szerveren (88.99.218.155) amíg a felhasználó kifejezetten nem kéri. Olvasás rendben. Kérdezz először.
 
-2. **Három egyforma hiba → infrastruktúra javítás.** Ha ugyanazt a hibát 3-szor látod, ne próbálkozz tovább — javítsd meg a gyökérokot (add hozzá AGENTS.md-hez, frissítsd az eszközöket, változtass módszert).
+2. **Három egyforma hiba → KERESÉS, nem próbálkozás.** Ha ugyanazt a hibát
+   3-szor látod, ne próbálkozz tovább — KERESS, ebben a sorrendben:
+   1. először a PROJEKTBEN (grep a hasonló mintákra — a repo tele van jó forrással, pl. `%default covering` az Attekintes.idr-ben),
+   2. aztán a NETEN (Context7 dokumentáció, Idris docs, hivatalos források),
+   3. vagy KÉRDEZZ (a felhasználótól, vagy egy alügynöktől a task eszközzel).
+   A vak próbálkozás csak tokeneket fogyaszt — a legjobb megoldás lehet,
+   hogy már kint van a neten. Ha megtaláltad: javítsd meg a gyökérokot
+   (add hozzá AGENTS.md-hez, frissítsd az eszközöket, változtass módszert).
 
 3. **MINDEN számítás Idrisben — Python TILTOTT, floatok is.** Az Idris tud
    Double-aritmetikát (l. Komplex.idr: oda-vissza teszt, φ-kontrakció — ezek
@@ -202,6 +209,36 @@ név áll (pl. `bizKetto : kettoLeg = 2`), az elaborátor azt automatikusan
 Szabály: **a bizonyítástípusokban hivatkozott konstansok neve nagybetűvel
 kezdődjön** (FanóNégy, NullaPont), vagy konstruktor-alkalmazás legyen.
 Futásidejű kódban (érték jobboldalán) a kisbetűs név teljesen jó.
+
+### Idris 2 csapda: a let-lánc felrobbanhat (0.8.0) — de a mechanizmus nyitott
+
+A **mérés** (2026-08-18, KisAI.idr): ha egy konstans értékét egymásba
+ágyazott let-kötések láncával építjük, a fordítási idő a lánc hosszával
+erősen nőtt: 1 bejegyzés = 1.6 mp, 2 = 4 mp, 3 = 18.6 mp, 5 = "lefagyás".
+A **megoldás** (lista-konstans + egyszeri konstrukció): ugyanarra az
+eredményre 1.05 mp, az üres állapottal azonos. **Soha ne építs állapotot
+let-lánccal — mindig lista + egy konstruktor.**
+
+A **mechanizmus NEM ismert pontosan**: 7 féle minimalisztikus próba
+(tanulsagok/LetLancProbe/: primitív, összetett típusú, kétszintű,
+projektoros, literálos, IO-használatos, típusaliasos lánc) MIND lineáris
+(~0.22 mp, n=12-nél is). A robbanás tehát a let-lánc ÉS a teljes fájl
+kontextusának (szótár, sok függvény, rekurzív IO) interakciója — a
+hipotézisem ("a típusellenőrző újra kibontja az előző kötéseket") nem
+állja meg minimálisan. **Akit érdekel, folytassa a bisectet** — a
+bizonyíték-fájlok megvannak. Ez is tanulság: a "miért" megválaszolása
+nem ér véget a működő megoldásnál; a mechanizmus-állítás is bizonyításra
+szorul.
+
+### A hibakeresés módja: bisect, nem próbálgatás (2026-08-18)
+
+Ha valami "lefagy" vagy ismételten hibázik: **vissza az utolsó jó
+állapothoz** (`git checkout <jó commit> -- <fájl>`), ellenőrizd, hogy
+gyorsan fordul (ez a "kályha"), aztán **egyesével** rakd vissza a
+változtatásokat, minden lépésnél mérve az időt. Így azonosítottuk a
+let-lánc csapdát: a rekord-mező OK volt, a rekurzív függvények OK
+voltak, a let-lánc volt a bűnös. A vak próbálgatás elveszíti az embert —
+a bisect megtalálja a gyökérokot.
 
 ### Tanulság: mit bizonyít a Refl — és mit NEM (2026-08-17, közösen)
 

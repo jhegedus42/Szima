@@ -65,6 +65,7 @@ record KisAI where
   constructor KisAIKonstruktor
   tudastar : List (BitKod, String)  -- (kód, magyarázat)
   szotar   : List (String, BitKod)  -- szó → kód
+  miertLanc : List (BitKod, BitKod, String)  -- (előd, utód, "miért")
 
 -- =====================================================================
 -- 3. HAMMING-TÁVOLSÁG = a keresés.
@@ -119,13 +120,71 @@ keresKisAI ai kerdes =
 public export
 tanitKisAI : KisAI -> BitKod -> String -> KisAI
 tanitKisAI ai kod magyaro =
-  KisAIKonstruktor ((kod, magyaro) :: tudastar ai) (szotar ai)
+  KisAIKonstruktor ((kod, magyaro) :: tudastar ai) (szotar ai) (miertLanc ai)
+
+||| Bit-kód szöveges alakja.
+public export
+showBitKod : BitKod -> String
+showBitKod k = "[" ++ show (index 0 k) ++ "," ++ show (index 1 k) ++ "," ++
+               show (index 2 k) ++ "," ++ show (index 3 k) ++ "," ++
+               show (index 4 k) ++ "," ++ show (index 5 k) ++ "," ++
+               show (index 6 k) ++ "]"
+
+||| Új miért-lánc bejegyzés.
+public export
+tanitMiertLanc : KisAI -> BitKod -> BitKod -> String -> KisAI
+tanitMiertLanc ai elodKod utodKod indoklas =
+  KisAIKonstruktor (tudastar ai) (szotar ai) ((elodKod, utodKod, indoklas) :: miertLanc ai)
+
+||| Előd keresése a miért-láncban.
+public export
+keresElodLanc : BitKod -> List (BitKod, BitKod, String) -> Maybe (BitKod, String)
+keresElodLanc _ [] = Nothing
+keresElodLanc k ((e, u, i) :: rest) =
+  if u == k then Just (e, i) else keresElodLanc k rest
 
 ||| Új szó hozzáadása a szótárhoz.
 public export
 szotarBovit : KisAI -> String -> BitKod -> KisAI
 szotarBovit ai szo kod =
-  KisAIKonstruktor (tudastar ai) ((szo, kod) :: szotar ai)
+  KisAIKonstruktor (tudastar ai) ((szo, kod) :: szotar ai) (miertLanc ai)
+
+||| A miért-lánc követése visszafelé, legfeljebb n lépésig.
+||| Ha ciklust észlel (már látott kód), megáll és jelzi:
+||| ez a Y-kombinátor — az ön-referenciális oksági hurok.
+public export
+kovetMiertLancLepes : KisAI -> BitKod -> Nat -> String
+kovetMiertLancLepes ai kod n = kovetSeged ai kod n []
+  where
+    latta : BitKod -> List BitKod -> Bool
+    latta _ [] = False
+    latta x (y :: ys) = x == y || latta x ys
+    kovetSeged : KisAI -> BitKod -> Nat -> List BitKod -> String
+    kovetSeged _ _ Z _ = ""
+    kovetSeged ai k (S m) latottak =
+      if latta k latottak
+      then "~CIKLUS: " ++ showBitKod k ++ "~"
+      else
+        case keresElodLanc k (miertLanc ai) of
+          Nothing => ""
+          Just (e, i) =>
+            let elotte = kovetSeged ai e m (k :: latottak)
+            in (if elotte == "" then "" else elotte ++ " -> ") ++
+               showBitKod e ++ " (" ++ i ++ ")"
+
+||| A miért-lánc követése: egy kódtól visszafelé.
+public export
+kovetMiertLanc : KisAI -> BitKod -> String
+kovetMiertLanc ai kod = kovetMiertLancLepes ai kod 5
+
+||| A teljes oksági fonal: a kódtól a gyökérig.
+public export
+okozatiFonal : KisAI -> BitKod -> String
+okozatiFonal ai kod =
+  let lanc = kovetMiertLanc ai kod
+  in if lanc == ""
+     then showBitKod kod ++ " (nincs elod — ez a gyoker)"
+     else lanc ++ " -> " ++ showBitKod kod
 
 -- =====================================================================
 -- 6. ASSZOCIÁCIÓ: hasonló tények (Clifford-átfedés).
@@ -218,10 +277,32 @@ AlapSzotar = [
   ("mod", [0,0,0,0,0,0,1])
  ]
 
+||| A 7 dimenzió tudástára.
+DimenzioTudastar : List (BitKod, String)
+DimenzioTudastar = [
+  ([1,0,0,0,0,0,0], "Az ido = a valtozas merhetoseg. Mikor tortent."),
+  ([0,1,0,0,0,0,0], "Az oksag = a miert. Mi okozta. A kerdes forrasa."),
+  ([0,0,1,0,0,0,0], "A ter = ahol tortent. Hol."),
+  ([0,0,0,1,0,0,0], "A szin = a minosig. Milyen."),
+  ([0,0,0,0,1,0,0], "A hang = a kifejezes. Hogyan mondta."),
+  ([0,0,0,0,0,1,0], "A fazis = a cselekves. Mit tett. A 180 fokos forgas = a NOT."),
+  ([0,0,0,0,0,0,1], "A mod = a modszer. Hogyan mukodik.")
+ ]
+
+||| A miért-lánc bejegyzései (előd, utód, indoklás).
+MiertLancBejegyzesek : List (BitKod, BitKod, String)
+MiertLancBejegyzesek = [
+  ([1,0,0,0,0,0,0], [0,1,0,0,0,0,0], "az ido az oksag forrasa (mikor tortent -> mi okozta)"),
+  ([0,0,0,0,1,0,0], [0,1,0,0,0,0,0], "a hang az oksagot kifejezi (hogyan mondta -> mi okozta)"),
+  ([0,0,0,0,0,1,0], [0,0,0,0,1,0,0], "a fazis hangot ad (mit tett -> hogyan mondta)"),
+  ([0,0,0,0,0,1,0], [0,1,0,0,1,0,0], "a fazis (180 fok = NOT = hazugsag) az oksag+hang = a farkas"),
+  ([0,1,0,0,1,0,0], [0,0,0,0,0,1,0], "a farkas (oksag+hang) a fazist okozza (a hazugsag cselekves)")
+ ]
+
 ||| A kezdő kis AI: üres tudástár + alap szótár.
 public export
 kezdoKisAI : KisAI
-kezdoKisAI = KisAIKonstruktor [] AlapSzotar
+kezdoKisAI = KisAIKonstruktor [] AlapSzotar []
 
 -- =====================================================================
 -- 9. A "MIÉRT" — az oksági indoklás.
@@ -466,15 +547,7 @@ dimenzioMagyarazatok = [
 public export
 kezdoKisAIDimenziokkal : KisAI
 kezdoKisAIDimenziokkal =
-  let ai0 = kezdoKisAI
-      ai1 = tanitKisAI ai0 [1,0,0,0,0,0,0] "Az ido = a valtozas merhetoseg."
-      ai2 = tanitKisAI ai1 [0,1,0,0,0,0,0] "Az oksag = a miert. A kerdes forrasa."
-      ai3 = tanitKisAI ai2 [0,0,1,0,0,0,0] "A ter = ahol tortent."
-      ai4 = tanitKisAI ai3 [0,0,0,1,0,0,0] "A szin = a minosig."
-      ai5 = tanitKisAI ai4 [0,0,0,0,1,0,0] "A hang = a kifejezes."
-      ai6 = tanitKisAI ai5 [0,0,0,0,0,1,0] "A fazis = a cselekves."
-      ai7 = tanitKisAI ai6 [0,0,0,0,0,0,1] "A mod = a modszer."
-  in ai7
+  KisAIKonstruktor DimenzioTudastar AlapSzotar MiertLancBejegyzesek
 
 -- =====================================================================
 -- 15. A KÉRDEZŐ CIKLUS — ha nem tudja, KÉRDEZ (nem csak vár).
@@ -503,12 +576,14 @@ kerdezoCiklus ai = do
       Just (0, mag) => do
         putStrLn ("Tudom! " ++ mag)
         putStrLn ("  " ++ miertKisAI kod mag)
+        putStrLn ("  Oksági fonal: " ++ okozatiFonal ai kod)
         kerdezoCiklus ai
       Just (d, mag) => do
         if d <= 2
           then do
             putStrLn ("Talán (távolság=" ++ show d ++ "): " ++ mag)
             putStrLn ("  Asszociáció: " ++ show (asszocialKisAI ai kod))
+            putStrLn ("  Oksági fonal: " ++ okozatiFonal ai kod)
             kerdezoCiklus ai
           else do
             putStrLn (generalKerdest kod)
