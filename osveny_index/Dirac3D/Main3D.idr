@@ -276,3 +276,9 @@ main = do
   putStrLn ("  Asszociáció: " ++ show (asszocialKisAI piroskavalTanitottKisAI (kodolSzoveg "Mit mondott a farkas" AlapSzotar)))
   putStrLn ("  Hamming: farkas↔piroska = 3 (3 bit tér el) — Refl bizonyítva")
   putStrLn ("  Átfedés: farkas↔hazugság = 2 (okság+hang közös) — Refl bizonyítva")
+  putStrLn ""
+
+  -- 18. Élő tanítás: az interaktív ciklus
+  putStrLn "─── 18. Élő tanítás (interaktív) ───"
+  putStrLn "Kérdezz! Üres sor = kilépés."
+  fom
