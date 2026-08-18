@@ -13,7 +13,7 @@ module Attekintes
 import Teszt
 import HtmlDsl
 
-%default total
+%default covering
 
 -- ─── 1. A MODULOK LISTÁJA (adattípus, nem String) ───────
 
@@ -112,21 +112,6 @@ nav { background:var(--papir); border:1px solid var(--keret); border-radius:6px;
 nav a { margin-right:1.2rem; }
 """
 
-public export
-modulSor : ModulAdat -> String
-modulSor m =
-  "<tr><td class=\"mod\">" ++ modulNev m ++ "</td>"
-  ++ "<td>" ++ mitBizonyit m ++ "</td>"
-  ++ "<td>" ++ miertKell m ++ "</td>"
-  ++ "<td class=\"pipa\">" ++ allapotJel m ++ "</td></tr>"
-
-public export
-modulTablazat : String
-modulTablazat =
-  "<table>\n<tr><th>Modul</th><th>Mit bizonyít</th><th>Miért kell az AI-hez</th><th>Állapot</th></tr>\n"
-  ++ concatMap (\m => modulSor m ++ "\n") modulok
-  ++ "</table>"
-
 -- ─── 3. A TESZTSZÁMOK A Teszt.idr-BŐL ────────────────────
 
 public export
@@ -135,53 +120,110 @@ tesztSzamok =
   show (sikeresDb tesztJelentes) ++ "/" ++ show (tesztekDb tesztJelentes)
   ++ " teszt + " ++ show (bizonyitasokDb tesztJelentes) ++ " Refl"
 
--- ─── 4. A TELJES HTML ───────────────────────────────────
+-- ─── 4. A MODULTÁBLÁZAT a HtmlDsl-ből ─────────────────────
+
+public export
+modulSorHtml : ModulAdat -> HtmlFa
+modulSorHtml m = tr
+  [ tdOsztallyal "mod" (modulNev m)
+  , td (mitBizonyit m)
+  , td (miertKell m)
+  , tdOsztallyal "pipa" (allapotJel m)
+  ]
+
+public export
+modulTablazatHtml : HtmlFa
+modulTablazatHtml = tabla
+  ( tr [ th "Modul", th "Mit bizonyít", th "Miért kell az AI-hez", th "Állapot" ]
+  :: map modulSorHtml modulok
+  )
+
+-- ─── 4a. A TESZTKATEGÓRIÁK ÉS BIZONYÍTÁSOK (automatikus) ──
+
+public export
+tesztKategoriaSor : (String, List TesztEredmeny) -> HtmlFa
+tesztKategoriaSor (nev, tesztek) = tr
+  [ td nev
+  , td (show (length tesztek))
+  , tdOsztallyal "pipa" (if all sikeres tesztek then "✓" else "✗")
+  ]
+
+public export
+tesztKategoriaTablazat : HtmlFa
+tesztKategoriaTablazat = tabla
+  ( tr [ th "Tesztkategória", th "Darab", th "Állapot" ]
+  :: [ tesztKategoriaSor ("e8", e8Tesztek)
+     , tesztKategoriaSor ("hamming", hammingTesztek)
+     , tesztKategoriaSor ("rag", ragTesztek)
+     , tesztKategoriaSor ("kerdoszo (régi)", kerdoszoTesztek)
+     , tesztKategoriaSor ("graf", grafTesztek)
+     , tesztKategoriaSor ("mdl", mdlTesztek)
+     , tesztKategoriaSor ("valoszinuseg", valoszinusegTesztek)
+     , tesztKategoriaSor ("lawvere", lawvereTesztek)
+     , tesztKategoriaSor ("fonetika", fonetikaTesztek)
+     , tesztKategoriaSor ("fanoParitas", fanoParitasTesztek)
+     , tesztKategoriaSor ("szotar", szotarTesztek)
+     , tesztKategoriaSor ("steaneHamiltonian", steaneHamiltonianTesztek)
+     , tesztKategoriaSor ("lejeune", lejeuneTesztek)
+     , tesztKategoriaSor ("hanmag", hanmagTesztek)
+     , tesztKategoriaSor ("kerdoszo (típusos)", kerdoszoTipusosTesztek)
+     , tesztKategoriaSor ("e8Gyok", e8GyokTesztek)
+     , tesztKategoriaSor ("diracGamma", diracGammaTesztek)
+     , tesztKategoriaSor ("oktonion", oktonionTesztek)
+     , tesztKategoriaSor ("diracIdo", diracIdoTesztek)
+     ]
+  )
+
+public export
+bizonyitasSorHtml : String -> HtmlFa
+bizonyitasSorHtml sz = tr [ tdOsztallyal "pipa" sz ]
+
+public export
+bizonyitasTablazat : HtmlFa
+bizonyitasTablazat = tabla
+  ( tr [ th "Bizonyítás (Refl)" ]
+  :: map bizonyitasSorHtml (toList bizonyitasLista)
+  )
+
+-- ─── 5. A TELJES HTML (HtmlDsl fa → render) ──────────────
 
 public export
 htmlKimenet : String
 htmlKimenet =
-  "<!DOCTYPE html>\n<html lang=\"hu\">\n<head>\n<meta charset=\"UTF-8\">"
-  ++ "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
-  ++ "<title>Szima — Projekt-áttekintés (Idris-generált)</title>\n"
-  ++ "<style>\n" ++ cssSablon ++ "\n</style>\n</head>\n<body>\n\n"
-  ++ "<header>\n  <h1>Szima — Projekt-áttekintés</h1>\n"
-  ++ "  <p class=\"kicsi\">A kód maga a kutatás. Ez az oldalt az <b>Idris generálta</b>"
-  ++ " (<code>idris2 --exec htmlKiiras Attekintes.idr</code>).</p>\n"
-  ++ "  <p class=\"kicsi\">Frissítve: 2026-08-18 · <b>" ++ tesztSzamok ++ " ✓</b> ·"
-  ++ " <a href=\"https://github.com/jhegedus42/Szima\">github.com/jhegedus42/Szima</a></p>\n"
-  ++ "</header>\n\n"
-  ++ "<nav>\n  <b>Oldalak:</b>\n"
-  ++ "  <a href=\"dashboard.html\">📊 Dashboard</a>\n"
-  ++ "  <a href=\"carnot_entropia.html\">📖 Carnot</a>\n"
-  ++ "  <a href=\"zitterbewegung.html\">📈 Zitterbewegung</a>\n"
-  ++ "  <a href=\"index.html\">🏠 Régi főoldal</a>\n"
-  ++ "</nav>\n\n"
-  ++ "<h2>1. A megépült elemek (mind Idrisben, gép-ellenőrzött)</h2>\n\n"
-  ++ modulTablazat ++ "\n\n"
-  ++ "<h2>2. Ami NEM megvan (őszintén)</h2>\n"
-  ++ "<div class=\"doboz\">\n"
-  ++ "<ul>\n"
-  ++ "  <li><b>Nincs egy <code>main</code>, ami gondolkodik.</b>"
-  ++ " A LEGO-elemek külön-külön bizonyítottak, de nincsenek összekötve.</li>\n"
-  ++ "  <li><b>A hiányzó lépés:</b> egy <code>main</code>, ami kap egy kérdést"
-  ++ " (<code>Kerdoszo</code>), kódolja (<code>HanMag→E8Pont</code>),"
-  ++ " lefuttatja a Carnot-ciklust, és ad egy választ — Idrisben.</li>\n"
-  ++ "  <li><b>α⁻¹ = 137 + 9/250</b>: 6,5σ nyitott ⚡</li>\n"
-  ++ "  <li><b>A szerveri Dirac-nyelv</b>: a gammák hibásak (javítva Idrisben, szerveren nem).</li>\n"
-  ++ "</ul>\n</div>\n\n"
-  ++ "<h2>3. Hogyan futtasd</h2>\n"
-  ++ "<pre>git clone https://github.com/jhegedus42/Szima && cd Szima/osveny_index\n"
-  ++ "idris2 -c Teszt.idr && idris2 --exec main Teszt.idr"
-  ++ "  → " ++ tesztSzamok ++ " ✓\n\n"
-  ++ "idris2 --exec htmlKiiras Attekintes.idr > ../docs/attekintes.html"
-  ++ "  → ez az oldal\n"
-  ++ "idris2 --exec jsonKiiras DiracIdoFejlodes.idr > ../docs/adatok/zitterbewegung.json"
-  ++ "  → a grafikon adata\n"
-  ++ "./ellenorzes.sh  → a harness ellenőrzi a szabályokat</pre>\n\n"
-  ++ "<footer>\nSzima · a kód maga a kutatás ·"
-  ++ " <a href=\"https://github.com/jhegedus42/Szima\">github.com/jhegedus42/Szima</a><br>\n"
-  ++ "Dedikálva Szimának, a szeretett cicának 🐱\n</footer>\n\n"
-  ++ "</body>\n</html>\n"
+  dokumentum "Szima — Projekt-áttekintés (Idris-generált)" cssSablon
+    [ header
+        [ h1 "Szima — Projekt-áttekintés"
+        , pSzoveggel "A kód maga a kutatás. Ezt az oldalt az Idris generálta a HtmlDsl-ből."
+        , pSzoveggel ("Frissítve: 2026-08-18 · " ++ tesztSzamok ++ " ✓")
+        ]
+    , nav
+        [ link "📊 Dashboard" "dashboard.html"
+        , link "📖 Carnot" "carnot_entropia.html"
+        , link "📈 Zitterbewegung" "zitterbewegung.html"
+        , link "🏠 Régi főoldal" "index.html"
+        ]
+    , h2 "1. A megépült elemek (mind Idrisben, gép-ellenőrzött)"
+    , modulTablazatHtml
+    , h2 "2. Tesztkategóriák (automatikus a Teszt.idr-ből)"
+    , tesztKategoriaTablazat
+    , h2 "3. A bizonyítások (automatikus a Teszt.idr-ből)"
+    , bizonyitasTablazat
+    , h2 "4. Ami NEM megvan (őszintén)"
+    , dobox
+        [ ul
+            [ li "Nincs egy main, ami gondolkodik. A LEGO-elemek külön-külön bizonyítottak."
+            , li "A hiányzó lépés: egy main ami kap egy kérdést, kódolja, lefuttatja a Carnot-ciklust."
+            , li "α⁻¹ = 137 + 9/250: 6,5σ nyitott ⚡"
+            , li "A szerveri Dirac-nyelv gammái hibásak (javítva Idrisben, szerveren nem)."
+            ]
+        ]
+    , h2 "5. Hogyan futtasd"
+    , pre ("git clone https://github.com/jhegedus42/Szima && cd Szima/osveny_index\\nidris2 -c Teszt.idr && idris2 --exec main Teszt.idr  → " ++ tesztSzamok ++ " ✓\\n\\nidris2 --exec htmlKiiras Attekintes.idr > ../docs/attekintes.html\\n./ellenorzes.sh")
+    , footer
+        [ pSzoveggel "Szima · a kód maga a kutatás · github.com/jhegedus42/Szima"
+        , pSzoveggel "Dedikálva Szimának, a szeretett cicának 🐱"
+        ]
+    ]
 
 public export
 htmlKiiras : IO ()
