@@ -1,0 +1,13 @@
+package Dirac3D
+
+modules = Kina2D
+        , Magyar
+        , Dirac3D
+        , Fazis
+        , Lagrangian
+        , Carnot
+        , Main3D
+
+main = Main3D
+
+executable = Dirac3D
