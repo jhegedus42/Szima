@@ -100,7 +100,7 @@ tesztSzamok =
 public export
 modulSorHtml : ModulLeirasT -> HtmlFa
 modulSorHtml m = tr
-  [ tdOsztallyal "mod" (modulNeve m)
+  [ Cimke "td" [("class", "mod")] [link (modulNeve m) ("https://github.com/jhegedus42/Szima/blob/master/osveny_index/" ++ modulNeve m)]
   , td (mitBizonyit m)
   , td (miertKell m)
   , tdOsztallyal "pipa" (allapotJele m)
@@ -118,7 +118,7 @@ modulTablazatHtml = tabla
 public export
 tesztKategoriaSor : (String, List TesztEredmeny) -> HtmlFa
 tesztKategoriaSor (nev, tesztek) = tr
-  [ td nev
+  [ Cimke "td" [] [link nev "https://github.com/jhegedus42/Szima/blob/master/osveny_index/Teszt.idr"]
   , td (show (length tesztek))
   , tdOsztallyal "pipa" (if all sikeres tesztek then "✓" else "✗")
   ]
@@ -151,7 +151,7 @@ tesztKategoriaTablazat = tabla
 
 public export
 bizonyitasSorHtml : String -> HtmlFa
-bizonyitasSorHtml sz = tr [ tdOsztallyal "pipa" sz ]
+bizonyitasSorHtml sz = tr [ Cimke "td" [("class", "pipa")] [link sz "https://github.com/jhegedus42/Szima/blob/master/osveny_index/Teszt.idr"] ]
 
 public export
 bizonyitasTablazat : HtmlFa
