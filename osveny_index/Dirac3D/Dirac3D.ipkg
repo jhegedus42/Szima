@@ -6,6 +6,7 @@ modules = Kina2D
         , Fazis
         , Lagrangian
         , Carnot
+        , MagasabbRendszer
         , Main3D
 
 main = Main3D
