@@ -14,6 +14,7 @@ modules = Kina2D
         , HamiltonMegmaradas
         , E8Diszkretizacio
         , Steane153
+        , AktivTanulas
         , MagasabbRendszer
         , Main3D
 

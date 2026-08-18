@@ -15,6 +15,7 @@ import HamiltonMegmaradas
 import E8Diszkretizacio
 import E8Szimplektikus
 import Steane153
+import AktivTanulas
 import Data.Vect
 import Data.List
 
@@ -249,3 +250,12 @@ main = do
   putStrLn ("Mind a 15 Z-hiba azonosítva? " ++ show zHibakJavitasa)
   putStrLn ("Logikai Z súlya 3, logikai X súlya 7, antikommutálnak (Refl)")
   putStrLn ("15 = tesserakt sarkai − a nulla-sarok = a 16. dimenzió (a mérés)")
+  putStrLn ""
+
+  -- 16. Aktív tanulás: a "miért" mint acquisition function
+  putStrLn "─── 16. Aktív tanulás: a barkochba-AI ───"
+  putStrLn ("Piroska teszt:")
+  putStrLn piroskaTeszt
+  putStrLn ""
+  putStrLn ("A farkas allapota: F4 = hazugsag (180° = NOT)")
+  putStrLn ("A ciklus: kerdes → onellenorzes → barkochba-lepes → valasz → miert")
