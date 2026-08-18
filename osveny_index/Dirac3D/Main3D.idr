@@ -13,6 +13,7 @@ import FazisOsszeado
 import CarryHoatvitel
 import HamiltonMegmaradas
 import E8Diszkretizacio
+import E8Szimplektikus
 import Data.Vect
 import Data.List
 
@@ -228,3 +229,11 @@ main = do
   putStrLn ("E8 mátrix e₇ oszlopa:  " ++ show (e8Hat [0,0,0,0,0,0,0,1]))
   putStrLn ("-1 mod 2 = 1 (Clifford-szabály): " ++ show (mod2Integer (-1)))
   putStrLn ("Bit-X (shift): bitX 0 = " ++ show (bitX 0) ++ ", bitX (bitX 0) = " ++ show (bitX (bitX 0)))
+  putStrLn ""
+
+  -- 14. E8 szimpleptikus: a kommutátormátrix mérése
+  putStrLn "─── 14. E8 szimpleptikus: K = MᵀΩM ───"
+  putStrLn ("K = " ++ show E8KommutatorMatrix)
+  putStrLn ("K mod 2 = Ω mod 2 (bináris szimpleptikus)? " ++ show ((map (map Paritas2) E8KommutatorMatrix) == (map (map Paritas2) SzimplektikusForma)))
+  putStrLn ("K = Ω (Sp(8,Z))? " ++ show sp8TagsagHamis)
+  putStrLn ("K egész és antiszimmetrikus → E8 érvényes GKP-rács (Refl-lel bizonyítva)")
