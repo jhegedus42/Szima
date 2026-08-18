@@ -24,7 +24,7 @@ import FanoParitás
 import ErtelmezoSzotar
 import SteaneHamiltonian
 import LejeuneTranszformacio
-import HanyNagyarKodolas
+import HanMagyarKodolas
 import Kerdoszo
 import E8Gyokrendszer
 import DiracGammaMatricak
@@ -190,7 +190,7 @@ bizonyitasLista =
   , "bizEgyBitTorles        : Landauer: 1 bit=1 egység [Refl]"
   , "bizHulladekHoVan       : 2. főtétel: a törlési ütem fizet [Refl]"
   , "bizJavitasAdiabata     : a javító ütem hőáram nélkül [Refl]"
-  , "bizZhiBan/MaBen/YuanK. : HanyNagyar 8 bit = gyökér+rág+paritás [Refl]"
+  , "bizZhiBan/MaBen/YuanK. : HanMagyar 8 bit = gyökér+rág+paritás [Refl]"
   , "bizGaussPrimNorma      : 137 = 11²+4² Gauss-prím [Refl]"
   , "bizBanMely/BizBenMagas : hangrend = a bájt paritásbitje [Refl]"
   , "bizKiElo/bizMiDolog    : ki?=élő, mi?=dolog (alap-osztó) [Refl]"
@@ -570,18 +570,18 @@ lejeuneTesztek =
 public export
 hanmagTesztek : List TesztEredmeny
 hanmagTesztek =
-  [ teszt "HanyNagyar: 质-ban = 00000100 (gyökér 00000 + -ban 10 + mély 0)"
+  [ teszt "HanMagyar: 质-ban = 00000100 (gyökér 00000 + -ban 10 + mély 0)"
       (show ZhiBan == "00000100")
-  , teszt "HanyNagyar: 码-ben = 00010111 (gyökér 00010 + -ben 11 + magas 1)"
+  , teszt "HanMagyar: 码-ben = 00010111 (gyökér 00010 + -ben 11 + magas 1)"
       (show MaBen == "00010111")
-  , teszt "HanyNagyar: 圆-kor = 00111101 (gyökér 00111 + -ként + magas 1)"
+  , teszt "HanMagyar: 圆-kor = 00111101 (gyökér 00111 + -ként + magas 1)"
       (show YuanKent == "00111101")
-  , teszt "HanyNagyar: a hangrend mindig a 8. bit (-ban/-ból mély = 0)"
+  , teszt "HanMagyar: a hangrend mindig a 8. bit (-ban/-ból mély = 0)"
       (hangrendParitas BanRag == Nulla && hangrendParitas BolRag == Nulla)
-  , teszt "HanyNagyar: a hangrend mindig a 8. bit (-ben/-ből/-ként magas = 1)"
+  , teszt "HanMagyar: a hangrend mindig a 8. bit (-ben/-ből/-ként magas = 1)"
       (hangrendParitas BeRag == Egy && hangrendParitas BolRagM == Egy
        && hangrendParitas KentRag == Egy)
-  , teszt "HanyNagyar: 26 kínai gyökér (Yi = egy = 25. index)"
+  , teszt "HanMagyar: 26 kínai gyökér (Yi = egy = 25. index)"
       (gyokerKod Yi == 25)
   , teszt "Gauss-prím: 137 = 11² + 4² (a norma Refl-bizonyítva)"
       (TizenegyNegyzetPluszNegyNegyzet == 137)

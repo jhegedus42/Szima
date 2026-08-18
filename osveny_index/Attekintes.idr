@@ -16,7 +16,7 @@ import ModulRegisztracio
 import Fonetika
 import FanoParitás
 import Kerdoszo
-import HanyNagyarKodolas
+import HanMagyarKodolas
 import E8Gyokrendszer
 import DiracGammaMatricak
 import OktonionAlgebra
@@ -48,7 +48,7 @@ osszesRegisztraltModul =
   [ FonetikaLeiras
   , FanoParitasLeiras
   , KerdoszoLeiras
-  , HanyNagyarKodolasLeiras
+  , HanMagyarKodolasLeiras
   , EGyokrendszerLeiras
   , DiracGammaLeiras
   , OktonionLeiras

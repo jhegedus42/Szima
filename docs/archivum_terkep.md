@@ -40,7 +40,7 @@ konstansok dimenzióanalízise (120. sor körül), formális nyelvtan mint fizik
 - **Magyar toldalék = morfizmus (ige/elöljáró)** → 7 rag → **3 bit**
 - **1 szóelem = 5+3 = 8 bit = PONTOSAN EGY BÁJT** ✓
 - Hangrendi harmónia ↔ tónusmappings (1./4. tónus → mély magánhangzók)
-- MDL-mérés: HanyNagyar 250 bit vs. angol 3392 bit (**7,4%**); kódkönyvvel 666 bit (20%)
+- MDL-mérés: HanMagyar 250 bit vs. angol 3392 bit (**7,4%**); kódkönyvvel 666 bit (20%)
 - **„a kódkönyv = a Carnot-gondolkodó-motor által komprimált szótár"** (159. sor körül)
 
 **A kódkönyv numerikus gyöngyei (utóellenőrizve ✓):**
@@ -126,7 +126,7 @@ ugyanaz a `e^(−k·ln μ)` alak, mint a φ-kontrakció. ⚡
 ## 5. Akciólisták a leletekből
 
 1. **Steane-Hamiltonián Idrisben** (szemelyes:280) — a spektrum (−6..+6) Refl-tesztje
-2. **HanyNagyar 8 bit = E8Pont 8 Kubit** — a kettő formális összeegyeztetése
+2. **HanMagyar 8 bit = E8Pont 8 Kubit** — a kettő formális összeegyeztetése
    (kínai gyökér 5 bit + magyar rag 3 bit ↔ E8Pont x1..x8) — ez lenne a
    TobbnyelvuKereso típusos alapja
 3. **Lejeune ℒ mint typeclass** — `LejeuneTranszformacio (ForrasTipus) (CelTipus)`
