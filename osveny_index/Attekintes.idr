@@ -176,6 +176,7 @@ htmlKimenet =
         , link "📖 Carnot" "carnot_entropia.html"
         , link "📈 Zitterbewegung" "zitterbewegung.html"
         , link "🏠 Régi főoldal" "index.html"
+        , link "📊 Vizualizációk" "vizualizaciok.html"
         ]
     , h2 "1. A megépült elemek (mind Idrisben, gép-ellenőrzött)"
     , modulTablazatHtml
