@@ -1,7 +1,7 @@
-module HanMagKodolas
+module HanyNagyarKodolas
 
 -- ═══════════════════════════════════════════════════════════════
--- HANMAG 汉匈码 — a kínai-magyar fúziónyelv 8-bites kódja
+-- HÁNYNAGYAR 汉匈码 — a kínai-magyar fúziónyelv 8-bites kódja
 -- ═══════════════════════════════════════════════════════════════
 -- FORRÁS: Kimi-archívum, transzkript_audit_fuzio.txt 121–160. sor
 -- (2026-07-28).
@@ -214,19 +214,19 @@ BizBenMagas : hangrendParitas BenRag = Egy
 BizBenMagas = Refl
 
 -- ─── 7. A KÓDKÖNYV MDL-MÉRÉSE (az audit_fuzio számítása) ──
--- HanMag: 250 bit vs. angol 3392 bit = 7.4%; kódkönyvvel 666 (20%).
+-- HanyNagyar: 250 bit vs. angol 3392 bit = 7.4%; kódkönyvvel 666 (20%).
 
 public export
 mdlTabla : String
 mdlTabla =
   "MDL (transzkript_audit_fuzio.txt:155-159):\n"
-  ++ "  HanMag mondat: 250 bit\n"
+  ++ "  HanyNagyar mondat: 250 bit\n"
   ++ "  angol mondat:  3392 bit\n"
-  ++ "  HanMag/kódkönyvvel: 666 bit (20%)\n"
+  ++ "  HanyNagyar/kódkönyvvel: 666 bit (20%)\n"
   ++ "  a kódkönyv = 'a Carnot-gondolkodó-motor komprimált szótára'\n"
 
 -- ─── 8. A NUMERIKUS KÓDKÖNYV-TÁRSAK (utóellenőrizve 2026-08-17) ──
--- Ezek a számok a HanMag-kódkönyv gyöngyei voltak; itt a KVÓCIENSEK
+-- Ezek a számok a HanyNagyar-kódkönyv gyöngyei voltak; itt a KVÓCIENSEK
 -- (nem a pontos értékek — azok a Python-numerika rétege):
 --   137 = (11+4i)(11−4i) = 11² + 4² — GAUSS-PRÍM NORMA ✓
 --   m_p/m_e ≈ 6π⁵ (hiba 0.002%) ✓
@@ -275,6 +275,6 @@ main = putStrLn foJelentes
 
 -- ─── REGISZTRÁCIÓ (ModulRegisztracio) ─────────────────────
 public export
-HanMagKodolasLeiras : ModulLeirasT
-HanMagKodolasLeiras = ModulLeirasKonstruktor
-  "HanMagKodolas.idr" "5 bit kínai + 3 bit magyar = 8 bit = E8Pont; 137=11²+4² [Refl]" "egy gondolat = egy bájt a Steane-rácsban, paritás-önellenőrző" "7 teszt + 5 Refl"
+HanyNagyarKodolasLeiras : ModulLeirasT
+HanyNagyarKodolasLeiras = ModulLeirasKonstruktor
+  "HanyNagyarKodolas.idr" "5 bit kínai + 3 bit magyar = 8 bit = E8Pont; 137=11²+4² [Refl]" "egy gondolat = egy bájt a Steane-rácsban, paritás-önellenőrző" "7 teszt + 5 Refl"
