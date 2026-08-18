@@ -11,6 +11,7 @@ module Attekintes
 -- ═══════════════════════════════════════════════════════════════
 
 import Teszt
+import HtmlDsl
 
 %default total
 
