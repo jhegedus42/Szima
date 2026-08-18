@@ -48,21 +48,43 @@ koherenciaHomerseklet a = 1.0 + entropia a
 
 -- =====================================================================
 -- 4. Termodinamikai hibajavítás (4. kategória).
+--
+-- A Carnot-hatásfok megmondja, hány eltérő fazist cserélünk a cél felé.
+-- hatasfok = 1 - T_hideg/T_meleg → [0,1]
+-- Ennyi hányadát az eltérő fazisoknak kicseréljük.
 -- =====================================================================
 
+||| Termodinamikai hibajavítás: hatasfok arányában cserélünk eltérő fazisokat.
+||| Elsőként összegyűjtjük, melyik pozíciók térnek el, majd az első `darab`-ot
+||| kicseréljük a cél értékére.
 public export
 termodinamikaiJavitas : Allapot -> Allapot -> Double -> Double -> Allapot
 termodinamikaiJavitas jelenlegi cel tMeleg tHideg =
   let
     hatasfok = carnotHataskor tMeleg tHideg
-    jelenlegiEntropia = entropia jelenlegi
-    celEntropia = entropia cel
-    maxCsokkenes = hatasfok * (jelenlegiEntropia - celEntropia)
-    ujEntropia = jelenlegiEntropia - maxCsokkenes
-    ujFazisok = if ujEntropia < 0.1
-                   then replicate 8 F0
-                   else fazisok jelenlegi
+    ak = fazisok jelenlegi
+    ce = fazisok cel
+    -- Első 8 Fin pozíció
+    finPozik = [FZ, FS FZ, FS (FS FZ), FS (FS (FS FZ)),
+                FS (FS (FS (FS FZ))), FS (FS (FS (FS (FS FZ)))),
+                FS (FS (FS (FS (FS (FS FZ))))),
+                FS (FS (FS (FS (FS (FS (FS FZ))))))]
+    -- Mely pozíciók térnek el?
+    elterok = filter (\i => index i ak /= index i ce) finPozik
+    -- Hány cserét enged a Carnot-hatásfok?
+    osszesElt = hatasfok * 8.0
+    darabNat = the Nat (cast {from=Double} osszesElt)
+    darab = min darabNat (length elterok)
+    ujFazisok = csereDarab darab ak ce elterok
   in MkAllapot ujFazisok (ido jelenlegi)
+  where
+    ||| darab db pozíciót kicserélünk a `elterok` listából.
+    csereDarab : Nat -> Vect 8 Fazis -> Vect 8 Fazis -> List (Fin 8) -> Vect 8 Fazis
+    csereDarab 0 v _ _ = v
+    csereDarab _ v _ [] = v
+    csereDarab n v ce (p :: ps) =
+      let v' = updateAt p (const (index p ce)) v
+      in csereDarab (minus n 1) v' ce ps
 
 -- =====================================================================
 -- 5. Algebrai hibajavítás (2. kategória: Steane).
