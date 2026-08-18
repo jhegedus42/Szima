@@ -3,115 +3,145 @@ module Main3D
 import Kina2D
 import Magyar
 import Dirac3D
+import Fazis
+import Lagrangian
+import Carnot
+import MagasabbRendszer
+import Data.Vect
 import Data.List
 
 -- =====================================================================
 -- Bemutató: a 3D nyelv működés közben.
---
--- A program futtatása megmutatja:
---   1. Példa 3D ketek (kínai × magyar)
---   2. Szótípusfüggő távolságok kiszámítása
---   3. CPT involúció teszt (CPT² = I ellenőrzés)
---   4. Strukturális bizonyítások (dimenzió, PSL rendje)
 -- =====================================================================
 
 -- =====================================================================
--- 1. Példa 3D ketek összeállítása.
+-- Példa: fázisvektorok E8-hoz (Fazis.modul E8FazisPont).
 -- =====================================================================
 
-||| Kínai karakterek (Kina2D példák) és magyar szavak párosítása 3D kettősségekbe.
-||| Minden pár: (karakter, szó, szemantikai horgony)
-harmadDimPeldak : List Ket3D
-harmadDimPeldak =
-  [ -- 明 (bright) ⊗ ház(in houses)
-    MkKet3D
-      (head peldaKarakterek)
-      (elemzesToKet (elemzes "házakban"))
-      "ház"
-  , -- 明 (bright) ⊗ ház(house) — nominatívusz
-    MkKet3D
-      (head peldaKarakterek)
-      (elemzesToKet (elemzes "ház"))
-      "ház"
-  , -- 休 (rest) ⊗ futott(ran)
-    MkKet3D
-      (head (drop 1 peldaKarakterek))
-      (elemzesToKet (elemzes "futott"))
-      "futás"
-  , -- 森 (forest) ⊗ futás(in running)
-    MkKet3D
-      (head (drop 7 peldaKarakterek))
-      (elemzesToKet (elemzes "futás"))
-      "sűrű"
-  , -- 仙 (immortal) ⊗ ég(skies)
-    MkKet3D
-      (head (drop 5 peldaKarakterek))
-      (elemzesToKet (elemzes "égbolt"))
-      "ég"
+nullaFazisPont : E8FazisPont
+nullaFazisPont = MkE8FazisPont (replicate 8 F0)
+
+egyFazisPont : E8FazisPont
+egyFazisPont = MkE8FazisPont [F0,F1,F2,F3,F4,F5,F6,F7]
+
+mindenFazisPont : E8FazisPont
+mindenFazisPont = MkE8FazisPont [F1,F1,F1,F1,F1,F1,F1,F1]
+
+-- =================================================================----
+-- Példa: Magyar szavak elemzése (Dirac ket).
+-- =====================================================================
+
+peldaSzavak : List (String, Ket1D)
+peldaSzavak =
+  [ ("ház", elemzesToKet (elemzes "ház"))
+  , ("házakban", elemzesToKet (elemzes "házakban"))
+  , ("futott", elemzesToKet (elemzes "futott"))
+  , ("futás", elemzesToKet (elemzes "futás"))
+  , ("égbolt", elemzesToKet (elemzes "égbolt"))
   ]
 
 -- =====================================================================
--- 2. Páros távolságok kiszámítása.
+-- Példa: állapotok a Carnot-hoz.
 -- =====================================================================
 
-||| Szótípus meghatározása: ha a kínai kompozíció Egyeduli, akkor főnév/állapot.
-||| Ha nem Egyeduli, és a magyar feature != 0, akkor morfizmus/művelet.
-szotipusKerdes : Karakter2D -> Ket1D -> Szotipus
-szotipusKerdes ch w =
-  if fanoPont (kompo ch) == 6
-     then FonevAllapot
-     else if ketFeat w == 0
-            then FonevAllapot
-            else MorfMuvelet
+koherensAllapot : Allapot
+koherensAllapot = MkAllapot (replicate 8 F0) 0.0
 
-||| Egy pár távolságainak kiírása.
-parTavolsag : Ket3D -> Ket3D -> String
-parTavolsag k1 k2 =
-  let tipus = szotipusKerdes (char2D k1) (word1D k1)
-      d3 = tavolsag3D tipus k1 k2
-      d2 = tavolsag2D (char2D k1) (char2D k2)
-      d1 = tavolsag1D (word1D k1) (word1D k2)
-      (alpha, beta) = tavolsagSulyok tipus
-  in "  tipus=" ++ show tipus ++
-     "  d3D=" ++ show d3 ++ " (a=" ++ show alpha ++ ",b=" ++ show beta ++ ")" ++
-     "  d2D=" ++ show d2 ++ "  d1D=" ++ show d1
+zajosAllapot : Allapot
+zajosAllapot = MkAllapot [F1,F2,F3,F4,F5,F6,F7,F0] 1.0
 
-||| Összes páros távolság.
-osszesPar : List Ket3D -> List String
-osszesPar [] = []
-osszesPar (x :: xs) = map (parTavolsag x) xs ++ osszesPar xs
+celAllapot : Allapot
+celAllapot = MkAllapot [F0,F1,F2,F0,F0,F1,F2,F0] 2.0
 
 -- =====================================================================
--- 3. Main: futtatás.
+-- Példa: E8×E8, E16, E15 (MagasabbRendszer.modul).
+-- =====================================================================
+
+e8BalPelda : E8Egyseg
+e8BalPelda = MkE8Egyseg [F0,F1,F2,F3,F4,F5,F6,F7]
+
+e8JobbPelda : E8Egyseg
+e8JobbPelda = MkE8Egyseg [F0,F0,F1,F1,F2,F2,F3,F3]
+
+e8xE8Pelda : E8szorzes
+e8xE8Pelda = MkE8szorzes e8BalPelda e8JobbPelda
+
+e16Pelda : E16
+e16Pelda = MkE16
+  (MkE8Egyseg [F0,F1,F2,F3,F4,F5,F6,F7])
+  (MkE8Egyseg [F7,F6,F5,F4,F3,F2,F1,F0])
+
+e15Pelda : E15
+e15Pelda = MkE15
+  (MkE8Egyseg [F0,F1,F2,F3,F4,F5,F6,F7])
+  [F0,F1,F2,F3,F4,F5,F6]
+
+-- =====================================================================
+-- Main: futtatás.
 -- =====================================================================
 
 main : IO ()
 main = do
   putStrLn "═══════════════════════════════════════════════════"
-  putStrLn "  3D NYELV: Kínai(2D) × Magyar(1D)"
-  putStrLn "  Direkt szorzat írásrendszer Dirac jelölésben"
+  putStrLn "  DIRAC 3D: Fázis × Lagrangian × Carnot"
+  putStrLn "  Hibajavítás 3 szinten + QHMC"
   putStrLn "═══════════════════════════════════════════════════"
   putStrLn ""
 
-  putStrLn "─── Példa 3D nyelvi elemek ───"
-  traverse_ (\k => do putStrLn ""; putStrLn (showKet3D k)) harmadDimPeldak
-
+  -- 1. Fázis csoport
+  putStrLn "─── 1. Z₈ fázis csoport ───"
+  putStrLn ("fazisOsszead F2 F3 = " ++ show (fazisOsszead F2 F3))
+  putStrLn ("fazisInverz F3 = " ++ show (fazisInverz F3))
+  putStrLn ("F3 + F5 = F0? " ++ show (fazisOsszead F3 (fazisInverz F3) == F0))
   putStrLn ""
-  putStrLn "─── CPT involúció teszt ───"
-  let k0 = head harmadDimPeldak
-  putStrLn ("Eredeti: " ++ show (ketFeat (word1D k0)))
-  let cptK = cpt3D k0
-  putStrLn ("CPT után: " ++ show (ketFeat (word1D cptK)))
-  let cpt2K = cpt3D cptK
-  putStrLn ("CPT² után: " ++ show (ketFeat (word1D cpt2K)))
-  putStrLn ("CPT² = I? " ++ show (ketFeat (word1D cpt2K) == ketFeat (word1D k0)))
 
+  -- 2. Magyar szavak Dirac-ban
+  putStrLn "─── 2. Magyar szavak Dirac jelölésben ───"
+  traverse_ (\(s, k) => do putStrLn ("  |" ++ s ++ "⟩ = " ++ showKet1D k)) peldaSzavak
   putStrLn ""
-  putStrLn "─── Szótípusfüggő távolságok ───"
-  traverse_ (\s => do putStrLn "") (osszesPar harmadDimPeldak)
 
+  -- 3. Entropia és Carnot
+  putStrLn "─── 3. Entropia és Carnot-hatásfok ───"
+  putStrLn ("Koherens entropia: " ++ show (entropia koherensAllapot))
+  putStrLn ("Zajos entropia:   " ++ show (entropia zajosAllapot))
+  putStrLn ("Carnot hatásfok (T=300K, T0=300K): " ++ show (carnotHataskor 300.0 300.0))
+  putStrLn ("Carnot hatásfok (T=300K, T0=100K): " ++ show (carnotHataskor 300.0 100.0))
   putStrLn ""
-  putStrLn "─── Strukturális bizonyítások ───"
+
+  -- 4. Lehetséges mód stabilitás
+  putStrLn "─── 4. Lehetséges mód stabilitás ───"
+  let stab1 = lehetsegesModStabilitas koherensAllapot 300.0 100.0
+  let stab2 = lehetsegesModStabilitas zajosAllapot 300.0 100.0
+  putStrLn ("Koherens stabilitás: " ++ show stab1)
+  putStrLn ("Zajos stabilitás:   " ++ show stab2)
+  putStrLn ("Koherens > Zajos? " ++ show (stab1 > stab2))
+  putStrLn ""
+
+  -- 5. Hibajavítás 3 szinten
+  putStrLn "─── 5. Hibajavítás (3 szint: algebrai → geometriai → termodinamikai) ───"
+  let javitott = teljesHibajavitas zajosAllapot celAllapot
+  putStrLn ("Eredeti entropia:  " ++ show (entropia zajosAllapot))
+  putStrLn ("Javított entropia: " ++ show (entropia javitott))
+  putStrLn ("Cél entropia:      " ++ show (entropia celAllapot))
+  putStrLn ""
+
+  -- 6. E8×E8, E16, E15
+  putStrLn "─── 6. Magasabb rendszerek ───"
+  putStrLn ("E8×E8 dimenzió: " ++ show e8szorzesDimenzio)
+  putStrLn ("E8×E8 gyökök:   " ++ show e8szorzesGyokok)
+  putStrLn ("E16 dimenzió:    " ++ show e16Dimenzio)
+  putStrLn ("E16 gyökök:      " ++ show e16Gyokok)
+  putStrLn ("E15 dimenzió:    " ++ show e15Dimenzio)
+  putStrLn ""
+
+  -- 7. Steane 7 bit
+  putStrLn "─── 7. Steane 7 bit: {idő, okság, tér, szín, hang, fázis, mód} ───"
+  putStrLn ("steaneIndex Ido = " ++ show (steaneIndex Ido))
+  putStrLn ("steaneIndex Mod = " ++ show (steaneIndex Mod))
+  putStrLn ""
+
+  -- 8. Strukturális bizonyítások
+  putStrLn "─── 8. Strukturális bizonyítások ───"
   putStrLn ("allapotTerDim = " ++ show allapotTerDim ++ " (bizonyítás: 16×27=432)")
   putStrLn ("pslRend = " ++ show pslRend ++ " (bizonyítás: 8×3×7=168)")
   putStrLn ("teljesDim3D = " ++ show teljesDim3D ++ " = 432×7")
