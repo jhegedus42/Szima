@@ -201,6 +201,18 @@ teljesHibajavitas jelenlegi cel =
 
 -- =====================================================================
 -- 6. QHMC: Quantum Hamiltonian Monte Carlo.
+--
+-- A leapfrog integrátor a fázistérben halad:
+--   p(t+dt/2) = p(t) - (dt/2) * ∇V(q(t))
+--   q(t+dt)   = q(t) + dt * p(t+dt/2) / m
+--   p(t+dt)   = p(t+dt/2) - (dt/2) * ∇V(q(t+dt))
+--
+-- Metropolis elfogadás: ΔH = H(új) - H(régi)
+--   ha ΔH < 0 → elfogad
+--   ha ΔH ≥ 0 → elfogad valószínűséggel e^(-ΔH)
+--
+-- A Sebesseg: fazisSebesseg : Vect 8 Fazis, idoSebesseg : Double
+-- A momentum: 8 fázis-komponens (Z₈-ban).
 -- =====================================================================
 
 public export
@@ -215,6 +227,104 @@ qhmHamiltonian q m =
   let t = 0.5 * tinetikusEnergia (momentum q) / m
       v = -entropia (pozicio q)
   in t + v
+
+||| Gradiens: a potenciális energia (negatív entropia) deriváltja.
+||| Közelítés: minden fazis pozícióban ±1 Z₈ lépéssel mérjük az entropiaváltozást.
+public export
+leapfrogGrad : Allapot -> Sebesseg
+leapfrogGrad allap =
+  let akt = fazisok allap
+      baseE = entropia allap
+      g = map (\i => let regi = index i akt
+                         uj = fazisOsszead regi F1
+                         valt = entropia (MkAllapot (replaceAt i uj akt) (ido allap))
+                     in valt - baseE) finPozik
+  in MkSebesseg (map dfz g) 0.0
+  where
+    finPozik : Vect 8 (Fin 8)
+    finPozik = [FZ, FS FZ, FS (FS FZ), FS (FS (FS FZ)),
+                FS (FS (FS (FS FZ))), FS (FS (FS (FS (FS FZ)))),
+                FS (FS (FS (FS (FS (FS FZ))))),
+                FS (FS (FS (FS (FS (FS (FS FZ))))))]
+    dfz : Double -> Fazis
+    dfz d = let n = cast {to=Nat} (the Integer (cast d))
+            in case mod n 8 of
+                 0 => F0
+                 1 => F1
+                 2 => F2
+                 3 => F3
+                 4 => F4
+                 5 => F5
+                 6 => F6
+                 7 => F7
+                 _ => F0
+
+||| Fázis-szorzás: Double → Fazis (növeljük a fazist annyival, amennyi a double).
+public export
+doubleToFazis : Double -> Fazis
+doubleToFazis d = let n = cast {to=Nat} (the Integer (cast d))
+                  in natToFazis (mod n 8)
+  where
+    natToFazis : Nat -> Fazis
+    natToFazis 0 = F0
+    natToFazis 1 = F1
+    natToFazis 2 = F2
+    natToFazis 3 = F3
+    natToFazis 4 = F4
+    natToFazis 5 = F5
+    natToFazis 6 = F6
+    natToFazis 7 = F7
+    natToFazis _ = F0
+
+||| Sebesseg szorzás: minden komponenst szorozunk egy Double-lal.
+public export
+sebessegSzoroz : Double -> Sebesseg -> Sebesseg
+sebessegSzoroz k s =
+  MkSebesseg (map (\f => fazisOsszead F0 (doubleToFazis (k * cast (fazisIndex f)))) (fazisSebesseg s))
+             (k * idoSebesseg s)
+
+||| Sebesseg összeadás.
+public export
+sebessegOsszead : Sebesseg -> Sebesseg -> Sebesseg
+sebessegOsszead a b =
+  MkSebesseg (zipWith fazisOsszead (fazisSebesseg a) (fazisSebesseg b))
+             (idoSebesseg a + idoSebesseg b)
+
+||| Leapfrog lépés: 1 teljes integrációs lépés (dt időlépés).
+public export
+leapfrogLepes : QHMCAllapot -> Double -> Double -> QHMCAllapot
+leapfrogLepes q m dt =
+  let grad1 = leapfrogGrad (pozicio q)
+      f1 = fazisok (pozicio q)
+      -- fél lépés momentum: p -= 0.5*dt*grad
+      félMomentum = sebessegOsszead (momentum q) (sebessegSzoroz (-0.5 * dt) grad1)
+      -- teljes lépés pozíció: minden fazis += dt * p / m
+      ujFazisok = zipWith (\f, p =>
+        let delta = doubleToFazis (dt * cast (fazisIndex p) / m)
+        in fazisOsszead f delta) f1 (fazisSebesseg félMomentum)
+      ujPoz = MkAllapot ujFazisok (ido (pozicio q))
+      -- fél lépés momentum: p -= 0.5*dt*grad2
+      grad2 = leapfrogGrad ujPoz
+      vegeMom = sebessegOsszead félMomentum (sebessegSzoroz (-0.5 * dt) grad2)
+  in MkQHMCAllapot ujPoz vegeMom
+
+||| Metropolis elfogadás: ΔH < 0 → elfogad.
+public export
+metropolisElfogad : Double -> Double -> Bool
+metropolisElfogad deltaH _ = deltaH < 0.0
+
+||| Teljes QHMC lépés: leapfrog + Metropolis.
+public export
+qhmLepes : QHMCAllapot -> Double -> Double -> Double -> QHMCAllapot
+qhmLepes q m dt tMeleg =
+  let
+    regiH = qhmHamiltonian q m
+    ujQ = leapfrogLepes q m dt
+    ujH = qhmHamiltonian ujQ m
+    deltaH = ujH - regiH
+    hatasfok = carnotHataskor tMeleg 1.0
+    elfogad = metropolisElfogad deltaH hatasfok
+  in if elfogad then ujQ else q
 
 -- =====================================================================
 -- 7. Lehetséges mód stabilitása.

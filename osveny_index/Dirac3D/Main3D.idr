@@ -161,3 +161,23 @@ main = do
   putStrLn ("pslRend = " ++ show pslRend ++ " (bizonyítás: 8×3×7=168)")
   putStrLn ("teljesDim3D = " ++ show teljesDim3D ++ " = 432×7")
   putStrLn ("cptMaszk = " ++ show cptMaszk)
+  putStrLn ""
+
+  -- 9. QHMC: Quantum Hamiltonian Monte Carlo
+  putStrLn "─── 9. QHMC mintavétel (leapfrog + Metropolis) ───"
+  let kezdoMom = MkSebesseg [F1,F2,F3,F4,F5,F6,F7,F0] 0.0  -- nem nulla momentum
+  let qhmcKezdo = MkQHMCAllapot zajosAllapot kezdoMom
+  putStrLn ("Kezdeti H = " ++ show (qhmHamiltonian qhmcKezdo 1.0))
+  let qhmc1 = qhmLepes qhmcKezdo 1.0 0.5 100.0
+  putStrLn ("1 lépés után H = " ++ show (qhmHamiltonian qhmc1 1.0))
+  putStrLn ("  Pozíció entropia: " ++ show (entropia (pozicio qhmc1)))
+  let qhmc2 = qhmLepes qhmc1 1.0 0.5 100.0
+  putStrLn ("2 lépés után H = " ++ show (qhmHamiltonian qhmc2 1.0))
+  putStrLn ("  Pozíció entropia: " ++ show (entropia (pozicio qhmc2)))
+  let qhmc3 = qhmLepes qhmc2 1.0 0.5 100.0
+  putStrLn ("3 lépés után H = " ++ show (qhmHamiltonian qhmc3 1.0))
+  putStrLn ("  Pozíció entropia: " ++ show (entropia (pozicio qhmc3)))
+  let qhmc5 = qhmLepes (qhmLepes (qhmLepes qhmc3 1.0 0.5 100.0) 1.0 0.5 100.0) 1.0 0.5 100.0
+  putStrLn ("5 lépés után H = " ++ show (qhmHamiltonian qhmc5 1.0))
+  putStrLn ("  Pozíció entropia: " ++ show (entropia (pozicio qhmc5)))
+  putStrLn ("Entropia változás: " ++ show (entropia (pozicio qhmcKezdo)) ++ " → " ++ show (entropia (pozicio qhmc5)))
