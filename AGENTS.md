@@ -131,6 +131,32 @@ Ha egy név rövidítésnek tűnik, írd ki teljesen.
 
 12. **Hierarchikus olvasó architektúra:** 3 szint — L1: párhuzamos előolvasók (ingyenes), L2: összegző és ellenőrző (GAN hármas), L3: indexelő és tömörítő.
 
+13. **Idris-írás előtti kötelező betöltés (2026-08-19, a felhasználó utasítása).**
+    SOHA ne írj Idris kódot anélkül, hogy előtte elolvastad volna:
+    1. `MANTRA.md`, `HOROG.md`, `AGENTS.md` (a gyökérben),
+    2. a `skills/idris-stilus/SKILL.md` protokollját,
+    3. a `osveny_index/tanulsagok/OLVASD.md` listát (a felfedezett csapdák),
+    4. a `context7` (`/idris-lang/idris2`) aktuális szintaxisát.
+    Az új szabály: a típus legyen ANNYIRA pontos, hogy csak egy implementáció
+    lehetséges; a fordító írja a programot. A "SOHA pattern matching" a
+    függvény-konstrukcióra és a case-of-ra vonatkozik — typeclass instance-ok
+    és dependent return types használata helyett. A meglévő kód stílusát
+    (pl. `Steane713Dependent.idr`, `Alap/KategoriaT.idr`) tanulmányozni kell
+    minden új modul előtt. L. `szima_ter/SZABALY.md` is.
+
+   + **FŐ SZABÁLY (2026-08-19, a felhasználó):** soha ne írj felül semmit,
+     ne módosíts semmit, ne redukálj, ne írj át semmit sem. Mindig újat
+     írunk. Ha javítani kell, új fájlt (vagy `_v2` suffix-szel új verziót)
+     kell létrehozni. A régi megtartandó, és jegyzékben jelezni kell.
+
+14. **Boot-up szekvencia.** Minden session (vagy kompakálás) ELEJÉN kötelező
+    sorrend: (a) a három MD (MANTRA, HOROG, AGENTS), (b) a skill-ek
+    (`idris-stilus`, `boot-up`, `szivdobbanas`), (c) a `MiertJo`-tanulság
+    (a propozíciók vs. típusok), (d) a `KisBetusProjekcioCsapda` (a
+    kisbetűs-név a bizonyítás TÍPUSÁBAN), (e) a `LetLancProbe` (az
+    állapot-lánc-csapda), (f) a tíz-parancsolat a tanulságok mappájából.
+    Ha bármelyik kimarad, a kód biztosan megbukik a tanulság-csapdákon.
+
 ---
 
 ## 1a. /tmp TILOS (2026-08-17, a felhasználó utasítása)
