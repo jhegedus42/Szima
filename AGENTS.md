@@ -210,6 +210,16 @@ Szabály: **a bizonyítástípusokban hivatkozott konstansok neve nagybetűvel
 kezdődjön** (FanóNégy, NullaPont), vagy konstruktor-alkalmazás legyen.
 Futásidejű kódban (érték jobboldalán) a kisbetűs név teljesen jó.
 
+A csapda **függvény-argumentumként is él** (nem csak csupaszon): a
+KisAI.idr esetében még a `tudastar kezdoKisAI = []` legegyszerűbb projekció
+is elbukott, mert a `kezdoKisAI` kisbetűs konstans a bizonyítás TÍPUSÁBAN
+implicit argumentummá vált. A szerkezetileg azonos önálló probe (minden
+konstansa nagybetűs) átment — ezért a vak probe-ok nem találták meg.
+Gyógyítás (MANTRA-konform): a kisbetűs definíció marad (futásidejű kód
+használja), és mellé **nagybetűs alias** kerül a bizonyítások számára:
+`public export KezdoKisAI : KisAI; KezdoKisAI = kezdoKisAI`.
+Példa: `osveny_index/tanulsagok/KisBetusProjekcioCsapda.idr`.
+
 ### Idris 2 csapda: a let-lánc felrobbanhat (0.8.0) — de a mechanizmus nyitott
 
 A **mérés** (2026-08-18, KisAI.idr): ha egy konstans értékét egymásba

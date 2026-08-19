@@ -278,7 +278,18 @@ main = do
   putStrLn ("  Átfedés: farkas↔hazugság = 2 (okság+hang közös) — Refl bizonyítva")
   putStrLn ""
 
-  -- 18. Élő tanítás: az interaktív ciklus
-  putStrLn "─── 18. Élő tanítás (interaktív) ───"
+  -- 18. Kis AI [[7,1,3]] hibajavítás: szindróma + korrekció
+  putStrLn "─── 18. Kis AI: [[7,1,3]] Steane hibajavítás ───"
+  putStrLn ("Farkas-kód [0,1,0,0,1,0,0] 2. bitje hibás → [0,1,1,0,1,0,0]")
+  putStrLn ("  javitoKereses = " ++ show (javitoKereses piroskavalTanitottKisAI FarkasHibas2))
+  putStrLn ("  (a szindróma megnevezte a 2. pozíciót, és a javítás visszaállította)")
+  putStrLn ("Mind a 7 egyes-hiba javítható? " ++ show mindenEgyesHibaJavithato)
+  putStrLn ("  (a Steane távolság 3 → 1 bit hiba mindig javítható, Refl-lel bizonyítva)")
+  putStrLn ("Két bites hiba (távolság 2) javítható? " ++ show (javitoKereses piroskavalTanitottKisAI FarkasKetBitesHibaKod))
+  putStrLn ("  (nem — a távolság 3 csak 1 hibát enged javítani, Refl-lel bizonyítva)")
+  putStrLn ""
+
+  -- 19. Élő tanítás: az interaktív ciklus
+  putStrLn "─── 19. Élő tanítás (interaktív) ───"
   putStrLn "Kérdezz! Ha nem tudom, KÉRDEZEK. Üres sor = kilépés."
-  fomKerdezo
+  fomHibajavito

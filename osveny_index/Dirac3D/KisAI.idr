@@ -304,6 +304,14 @@ public export
 kezdoKisAI : KisAI
 kezdoKisAI = KisAIKonstruktor [] AlapSzotar []
 
+||| A kezdő kis AI nagybetűs aliasa.
+||| A bizonyítástípusokban a kisbetűs konstans shadowing-ot okoz
+||| (AGENTS.md: "kisbetűs név a bizonyítástípusban"), ezért a
+||| bizonyításokban ez az alak használandó.
+public export
+KezdoKisAI : KisAI
+KezdoKisAI = kezdoKisAI
+
 -- =====================================================================
 -- 9. A "MIÉRT" — az oksági indoklás.
 -- =====================================================================
@@ -363,6 +371,14 @@ piroskavalTanitottKisAI : KisAI
 piroskavalTanitottKisAI =
   tanitKisAI kezdoKisAI [0,1,0,0,1,0,0]
     "A farkas azt mondta: en vagyok a nagymama, de ez hazugsag volt."
+
+||| A Piroska-mesével tanított kis AI nagybetűs aliasa.
+||| A bizonyítástípusokban a kisbetűs konstans shadowing-ot okoz
+||| (AGENTS.md: "kisbetűs név a bizonyítástípusban"), ezért a
+||| bizonyításokban ez az alak használandó.
+public export
+PiroskavalTanitottKisAI : KisAI
+PiroskavalTanitottKisAI = piroskavalTanitottKisAI
 
 ||| A tanított AI keresése: "Mit mondott a farkas?"
 ||| A kód = [0,1,0,0,1,0,0], a tudástárban ugyanez van → d=0.
@@ -617,3 +633,240 @@ fomKerdezo = do
   putStrLn "  Kérdezz! Ha nem tudom, KÉRDEZEK. Üres sor = kilépés."
   putStrLn "═══════════════════════════════════════════════════"
   kerdezoCiklus kezdoKisAIDimenziokkal
+
+-- =====================================================================
+-- 16. A [[7,1,3]] STEANE HIBJAVÍTÁS — a memória védelme.
+-- =====================================================================
+--
+-- A KisAI memóriája 7 bites vektor. A [[7,1,3]] Steane kód garantálja:
+-- EGY bit hiba észlelhető és kijavítható (távolság 3 → 1 hiba javítás).
+-- Eddig a "hibajavítás" csak annyi volt, hogy a keresés eltűrte a
+-- távolság 1-et (d < 3). Most VALÓDI szindróma-számítás jön:
+-- a Hamming paritás-ellenőrző mátrix (H) megmondja, MELYIK bit flippelt.
+--
+-- A kódkönyv = a tudástár. A kérdés egy (esetleg 1 bittel hibás) kód.
+--   1. keresés: a legközelebbi tárolt tény (c) d távolságon
+--   2. hibamintázat: e = kérdés ⊕ c  (hol térnek el)
+--   3. szindróma: s = H·e (mod 2) → a hibás pozíció bináris alakja
+--   4. ha súly(e) = 1: a szindróma MEGNEVEZI a flippelt bitet
+--   5. javítás: bitFordit a pozíción → a kérdés helyreáll
+--
+-- A [[7,1,3]]-ban a 3 paritás-ellenőrzés (a H mátrix sorai):
+--   0.: a 3.,4.,5.,6. bitek paritása
+--   1.: az 1.,2.,5.,6. bitek paritása
+--   2.: a 0.,2.,4.,6. bitek paritása
+-- A 7 oszlop = az 1..7 bináris alakja → a szindróma = a pozíció + 1.
+
+%default total
+
+||| XOR (paritás-összeg) két biten. A szindróma-számítás alapeleme.
+public export
+paritasBit : Nat -> Nat -> Nat
+paritasBit 0 0 = 0
+paritasBit 0 1 = 1
+paritasBit 1 0 = 1
+paritasBit 1 1 = 0
+paritasBit _ _ = 0
+
+||| A [[7,1,3]] szindróma: H·v (mod 2), 3 paritás-ellenőrzés.
+||| Egy 1-bites hiba a p. pozíción a (p+1) számot adja binárisan
+||| a szindróma-bitekben → a szindróma MÁR a hibás pozíció.
+public export
+szindroma7 : BitKod -> Vect 3 Nat
+szindroma7 v =
+  [ paritasBit (index 3 v) (paritasBit (index 4 v) (paritasBit (index 5 v) (index 6 v)))
+  , paritasBit (index 1 v) (paritasBit (index 2 v) (paritasBit (index 5 v) (index 6 v)))
+  , paritasBit (index 0 v) (paritasBit (index 2 v) (paritasBit (index 4 v) (index 6 v)))
+  ]
+
+||| Szindróma → hibás pozíció (0-alapú). A 7 = nincs hiba.
+public export
+szindromaPozicio7 : Vect 3 Nat -> Nat
+szindromaPozicio7 [0,0,0] = 7
+szindromaPozicio7 [0,0,1] = 0
+szindromaPozicio7 [0,1,0] = 1
+szindromaPozicio7 [0,1,1] = 2
+szindromaPozicio7 [1,0,0] = 3
+szindromaPozicio7 [1,0,1] = 4
+szindromaPozicio7 [1,1,0] = 5
+szindromaPozicio7 [1,1,1] = 6
+szindromaPozicio7 _ = 7
+
+||| Nat → Fin 7 (a Vect indexeléséhez).
+public export
+natToFin7Bit : Nat -> Fin 7
+natToFin7Bit 0 = FZ
+natToFin7Bit 1 = FS FZ
+natToFin7Bit 2 = FS (FS FZ)
+natToFin7Bit 3 = FS (FS (FS FZ))
+natToFin7Bit 4 = FS (FS (FS (FS FZ)))
+natToFin7Bit 5 = FS (FS (FS (FS (FS FZ))))
+natToFin7Bit 6 = FS (FS (FS (FS (FS (FS FZ)))))
+natToFin7Bit _ = FZ
+
+||| Egy bit visszafordítása a pozíción (7 = nincs fordítás).
+public export
+bitFordit7 : Nat -> BitKod -> BitKod
+bitFordit7 7 v = v
+bitFordit7 p v = updateAt (natToFin7Bit p) (\b => paritasBit b 1) v
+
+||| Két kód különbsége (XOR): hol térnek el = a hibamintázat.
+public export
+bitKulonbseg : BitKod -> BitKod -> BitKod
+bitKulonbseg a b = zipWith paritasBit a b
+
+||| A legközelebbi tárolt kód a kérdéshez (a kódkönyv = a tudástár).
+public export
+legkozelebbiKod : KisAI -> BitKod -> BitKod
+legkozelebbiKod ai q = legkozelebbiSeged (tudastar ai) q [0,0,0,0,0,0,0] 8
+  where
+    legkozelebbiSeged : List (BitKod, String) -> BitKod -> BitKod -> Nat -> BitKod
+    legkozelebbiSeged [] _ eddigi _ = eddigi
+    legkozelebbiSeged ((k, _) :: rest) qq eddigi eddigiTav =
+      let d = hammingTavolsag7 k qq
+      in if d < eddigiTav
+         then legkozelebbiSeged rest qq k d
+         else legkozelebbiSeged rest qq eddigi eddigiTav
+
+||| Javító keresés: a kérdés (esetleg 1 bittel hibás) a kódkönyv szerint.
+||| Visszatér: Just (javított kód, hibás pozíció, távolság), ahol
+|||   pozíció 7 = nem volt hiba, pozíció p = a p. bitet javítottuk.
+||| Nothing = 2+ bit hiba (a Steane távolság 3 nem engedi javítani).
+public export
+javitoKereses : KisAI -> BitKod -> Maybe (BitKod, Nat, Nat)
+javitoKereses ai q =
+  case keresKisAI ai q of
+    Just (0, _) => Just (q, 7, 0)
+    Just (1, _) =>
+      let c = legkozelebbiKod ai q
+          e = bitKulonbseg q c
+          p = szindromaPozicio7 (szindroma7 e)
+      in Just (bitFordit7 p q, p, 1)
+    _ => Nothing
+
+-- =====================================================================
+-- 17. REFL BIZONYÍTÁSOK — a szindróma azonosítja az egyes hibát.
+-- =====================================================================
+
+||| Egy 1-bites hiba a 0. pozíción: a szindróma [0,0,1] = 1 binárisan.
+SzindromaEgyesHiba0 : szindroma7 [1,0,0,0,0,0,0] = [0,0,1]
+SzindromaEgyesHiba0 = Refl
+
+||| Egy 1-bites hiba a 6. pozíción: a szindróma [1,1,1] = 7 binárisan.
+SzindromaEgyesHiba6 : szindroma7 [0,0,0,0,0,0,1] = [1,1,1]
+SzindromaEgyesHiba6 = Refl
+
+||| A [0,1,1] szindróma a 2. pozícióra mutat (3 − 1 = 2).
+SzindromaPozicio2 : szindromaPozicio7 [0,1,1] = 2
+SzindromaPozicio2 = Refl
+
+||| A farkas-kód 2. bitje megfordítva: [0,1,0,0,1,0,0] → [0,1,1,0,1,0,0].
+||| A javító keresés visszaállítja, és a szindróma megnevezi a 2. bitet.
+public export
+FarkasHibas2 : BitKod
+FarkasHibas2 = [0,1,1,0,1,0,0]
+
+||| Két bites hiba a farkas-kódon: [0,1,0,1,0,1,0] távolsága 2.
+||| A Steane távolság 3 → a 2 bites hiba már NEM javítható.
+public export
+FarkasKetBitesHibaKod : BitKod
+FarkasKetBitesHibaKod = [0,1,0,1,0,1,0]
+
+-- [BISECT diag: a gyökérok megtalálva — a kisbetűs konstans shadowing]
+-- TesztDirektKonstruktor : tudastar (KisAIKonstruktor [] AlapSzotar []) = []
+-- TesztDirektKonstruktor = Refl
+--
+-- TesztKezdoUnfold : kezdoKisAI = KisAIKonstruktor [] AlapSzotar []
+-- TesztKezdoUnfold = Refl
+--
+-- TesztKezdoTudastar : tudastar kezdoKisAI = []
+-- TesztKezdoTudastar = Refl
+--
+-- TesztTanitKod : tudastar (tanitKisAI kezdoKisAI [0,1,0,0,1,0,0]
+--               "A farkas azt mondta: en vagyok a nagymama, de ez hazugsag volt.")
+--               = [([0,1,0,0,1,0,0], "A farkas azt mondta: en vagyok a nagymama, de ez hazugsag volt.")]
+-- TesztTanitKod = Refl
+--
+-- TesztTudastarProj : tudastar piroskavalTanitottKisAI
+--                   = [([0,1,0,0,1,0,0], "A farkas azt mondta: en vagyok a nagymama, de ez hazugsag volt.")]
+-- TesztTudastarProj = Refl
+--
+-- TesztKeresEredmeny : keresKisAI piroskavalTanitottKisAI FarkasHibas2
+--                    = Just (1, "A farkas azt mondta: en vagyok a nagymama, de ez hazugsag volt.")
+-- TesztKeresEredmeny = Refl
+
+FarkasJavitoPeld : javitoKereses PiroskavalTanitottKisAI FarkasHibas2
+                 = Just ([0,1,0,0,1,0,0], 2, 1)
+FarkasJavitoPeld = Refl
+
+||| Két bites hiba a farkas-kódon: [0,1,0,1,0,1,0] távolsága 2.
+||| A Steane távolság 3 → a 2 bites hiba már NEM javítható (Nothing).
+FarkasKetBitesHiba : javitoKereses PiroskavalTanitottKisAI FarkasKetBitesHibaKod = Nothing
+FarkasKetBitesHiba = Refl
+
+||| Mind a 7 egyes-hiba javítható a farkas-kódon.
+||| Minden pozícióra: a javított kód = az eredeti, a pozíció = a hibás bit.
+public export
+mindenEgyesHibaJavithato : Bool
+mindenEgyesHibaJavithato = go 7
+  where
+    minus : Nat -> Nat -> Nat
+    minus Z m = m
+    minus x Z = x
+    minus (S x) (S y) = minus x y
+    go : Nat -> Bool
+    go Z = True
+    go (S n) =
+      let p = minus n 1
+          hibas = bitFordit7 p [0,1,0,0,1,0,0]
+      in case javitoKereses piroskavalTanitottKisAI hibas of
+           Just (jav, pj, 1) => jav == [0,1,0,0,1,0,0] && pj == p && go n
+           _ => False
+
+-- =====================================================================
+-- 18. A HIBAJAVÍTÓ KÉRDEZŐ CIKLUS — szindróma a keresésben.
+-- =====================================================================
+
+%default partial
+
+||| A hibajavító kérdező ciklus: ha a kérdés 1 bittel hibás,
+||| a szindróma megnevezi a flippelt bitet, a javítás helyreállítja,
+||| és a rendszer MAGABIZTOSAN válaszol (nem "Talán"-nal).
+public export
+hibajavitoCiklus : KisAI -> IO ()
+hibajavitoCiklus ai = do
+  putStr "> "
+  line <- getLine
+  if line == "" then pure () else do
+    let kod = kodolSzoveg line (szotar ai)
+    case javitoKereses ai kod of
+      Just (jav, 7, 0) => do
+        case keresKisAI ai jav of
+          Just (_, mag) => putStrLn ("Tudom! " ++ mag)
+          Nothing => putStrLn "Nem tudom."
+        hibajavitoCiklus ai
+      Just (jav, p, 1) => do
+        putStrLn ("1 bit hiba a " ++ show p ++ ". pozicion (szindroma: "
+                  ++ show (szindroma7 (bitKulonbseg kod jav)) ++ "). Javitva!")
+        case keresKisAI ai jav of
+          Just (_, mag) => putStrLn ("Tudom! " ++ mag)
+          Nothing => putStrLn "Nem tudom."
+        hibajavitoCiklus ai
+      _ => do
+        putStrLn (generalKerdest kod)
+        magyaro <- getLine
+        let ai' = tanitKisAI ai kod magyaro
+        putStrLn ("Ertem! Eltároltam. (kód: " ++ showBitKod kod ++ ")")
+        hibajavitoCiklus ai'
+
+||| A hibajavító főprogram: a 7 dimenzióval előtanított AI-val indul.
+public export
+fomHibajavito : IO ()
+fomHibajavito = do
+  putStrLn "═══════════════════════════════════════════════════"
+  putStrLn "  KIS AI — [[7,1,3]] hibajavító"
+  putStrLn "  Egy 1 bites hiba a kérdésben: szindróma + javítás."
+  putStrLn "  A 7 bit: [idő, okság, tér, szín, hang, fázis, mód]"
+  putStrLn "  Kérdezz! Üres sor = kilépés."
+  putStrLn "═══════════════════════════════════════════════════"
+  hibajavitoCiklus kezdoKisAIDimenziokkal

@@ -15,6 +15,7 @@ egyesek nem fordulnak le — ÉPP EZ A TANULSÁG BENNÜK).
 | `ProbaNevvel.idr` | nagybetűs `KettoLegNev` vs `the Nat` | nagybetűs ÁTMEGY, a `the`-s nem |
 | `ProbaKicsi2/3.idr`, `ProbaVegso.idr` | a csapda izolálása lépésről lépésre | a `Delay`/unifikáció működése látszik |
 | `Mutatvany.idr` / `MutatvanyJo.idr` | a csapda és a megoldás, egymás mellett | rossz: Mismatch; jó: exit 0 |
+| `KisBetusProjekcioCsapda.idr` (2026-08-19) | a csapda KISBETŰS konstansszal függvény-argumentumként (KisAI.idr esete) | rossz: `kezdoKisAI .tudastarProbe` nem redukál; jó: nagybetűs alias ÁTMEGY — a gyógyítás: nagybetűs alias, a kisbetűs marad a futásidejű kódnak |
 
 ## A Refl-tanulság felderítése (AGENTS.md: Tanulság: mit bizonyít a Refl)
 
