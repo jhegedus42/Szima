@@ -331,3 +331,107 @@ a bisect megtalálja a gyökérokot.
    műtermék volt). A szabály: ha a lánc gyanús, EGYSZERűEN ÚJRAFUTTATNI
    tiszta fájlban — az olcsó, a félrevezetés drága. A GAUGE-elve rám
    is vonatkozik.
+
+---
+
+## 17. Mérési hiba-kötelezettség (2026-08-19, a felhasználó utasítása)
+
+**Minden fizikai konstans összehasonlításnál a RELATÍV HIBÁT a MÉRÉSI
+BIZONYTALANSÁGHOZ KÉPEST (Δ/σ) kell megadni — soha nem "σ" önállóan,
+soha nem abszolút Δ a szövegben jelentéktelenedve.**
+
+1. **Relatív hiba kötelező:** ha egy levezetett/szerkezeti értéket
+   egy mérési értékkel hasonlítasz össze, a kimenet KÖTELEZŐen tartalmazza:
+   `Δ = érték_levezetett − érték_mért`, `σ = a mérés abszolút
+   bizonytalansága`, és `Δ/σ` (a relativ eltérés a mérési hibához képest).
+   "σ" önmagában (pl. "6.5σ off") ÉRTELMEZhetetlen a σ_C definíciója
+   nélkül — tilos ilyen állítást leírni a σ_C explicit megadása nélkül.
+2. **Mérési hiba belevétele:** a CODATA (vagy más referencia) mérési
+   bizonytalansága KÖTELEZŐ bemenet. Nem lehet "kerülő közelítés" néven
+   figyelmen kívül hagyni. Ha a projekt egy konstanshoz "C_Mach×C_phon"
+   közelítést ad, az közelítés hibáját (|közelítés − pontos| / |pontos|)
+   is meg kell adni — nem "~17%" kijelentés a számolás nélkül.
+3. **Saját dokumentum-ellenőrzés:** ha a projekt saját keretdokumentuma
+   (pl. `trail_index/E9_framework.md`) olyan állítást tesz, amit a
+   projekt SAJÁT számai cáfolnak (pl. "6.5σ off" amikor Δ/σ_C ≈ 40–75),
+   a feladat NEM az állítás ismétlése, hanem a **hibák megjelölése** és
+   a pontos érték kiszámítása. "Ne ismételj, hanem ellenőrizz."
+4. **Kimenet-formátum:** minden fizikai konstans-összehasonlítás
+   kimenete:
+   ```
+   érték_levezetett = <szám>
+   érték_mért       = <szám> (σ = <bizonytalanság>, forrás: <CODATA év>)
+   Δ                = <érték_levezetett − érték_mért>
+   Δ/σ              = <relatív eltérés a mérési hibához képest>
+   ```
+   Ehhez tartozó Idris-modul kötelező (l. `MagyarKinaiTorvenyek_v3.idr`
+   `deltaSzamitott` mintája). A dashboard a `delta.png`-n mutatja.
+
+**Indoklás (2026-08-19):** a projekt korábbi keretdokumentuma "6.5σ off"
+állítást tett a Horgony 137.036 vs CODATA 137.035999177(11) különbségre,
+amit a saját számai cáfolnak (Δ = 8.23×10⁻⁷, σ_C = 1.1×10⁻⁸ → Δ/σ_C ≈
+74.8; még a lazább σ_C ≈ 2.06×10⁻⁸ esetén is ~40σ). Ez a "haluhalmaz"
+vektörétől jön — a megoldás a kemény relatív-hiba-kötelezettség.
+
+---
+
+## 18. Őszinte verifikáció — a "parasztvakítás" tilalma (2026-08-19)
+
+**Minden "bizonyított" állítást a FORDÍTÓNak kell ellenőriznie; a
+kommentben állított törvény és a típusban lévő állítás különbsége =
+NEM bizonyított.**
+
+1. **Tautológia = nem bizonyítás.** `4 = 4`, `(7,1,3) = (7,1,3)`,
+   `X = X` Refl-lel — nulla információ, tilos "bizonyítottnak" nevezni.
+   A bizonyítás-típus bal és jobb oldala KÜLÖNBÖZŐ konstrukció legyen
+   (pl. `4 * 5 = 20`, `magyarAspektusToKinai X = Y`, `length lista = N`
+   a lista enumerálásából). L. a "Tanulság: mit bizonyít a Refl" fent
+   (2. pont) — ez most KEMÉNY szabály, nem tanulság.
+2. **Komment vs. típus:** ha a `|||` dokumentációs komment "asszociativitást"
+   állít, de a típus csak `X = X` — a komment NEM bizonyított. A típus
+   az igazság; a komment csak szándék. A kettő különbsége = hiányzó
+   bizonyítás, amit külön feladatként kell listázni.
+3. **Független review kötelező:** minden jelentős modul-lánc kiadása
+   előtt egy független alügynök (fris kontextus, l. `docs/Review_20260819_
+   Fuggetlen.md` minta) ellenőrzi a bizonyításokat: valódi vs. tautológia
+   besorolás, ellentmondás-keresés, hiányzó-törvény-lista. A review
+   eredményét a `docs/`-ba kell menteni (információveszteség nélkül).
+4. **Minden állítás kettős fedése:** a jelentést a (a) Idris-bizonyítás
+   + (b) numerikus teszt + (c) irodalmi hivatkozás együtt fedik. Ha
+   valamelyik hiányzik, az állítás "speculatív" jelölést kap (l.
+   `source/quantum_language_engine/hypothesis_mdl_cpt.txt:107` mintája:
+   "STATUS: SPECULATIVE" — ez a minta).
+5. **A "GAUGE-elv" kiterjesztése:** ha egy shell-lánc kimenete gyanús,
+   tiszta fájlban újrafuttatni (l. fent). Ugyanez vonatkozik a
+   bizonyításokra: ha egy Refl "túl könnyen" lefordul, ellenőrizni, hogy
+   a két oldal valóban különbözik-e. A "0 hiba" műtermék (elgépelt lánc)
+   és a "0 hiba" valós (fordul) között a különbség: a valós futtatás
+   kimenetének ÉRTELMEZhetőnek kell lennie, nem csak "exit 0"-nak.
+
+**Indoklás:** a független review (2026-08-19) 67 bizonyításból 20-at
+tautológiának talált, és a projekt saját `AltInverzMegtalalhato`
+deklarációját a modul saját Refl-jei cáfolták. A "haluhalmaz" vád
+részben jogos volt. Ez a szabály megakadályozza az ismétlődését.
+
+---
+
+## 19. ProtonDrive olvasás (2026-08-19, a felhasználó feloldása)
+
+**A ProtonDrive olvasás SZABAD** (a felhasználó feloldotta 2026-08-19).
+A `~/Library/CloudStorage/ProtonDrive-chickenloop42@proton.me-folder/`
+tartalma olvasható, greppelhető, kutatható.
+
+**KIVÉTEL** (továbbra is TILTVA, AGENTS §5):
+- `1Password*.zip`, `1password-credentials*.json`, `1PasswordExport-*.1pux`
+- `AccessKey.csv`, `RAM Access Key AliBaba.txt`, `R12.der`
+- `proton-recovery-phrase.pdf`, `ai/dev/secret_1pw.env`
+- Bármilyen `.env`, recovery kifejezés, credentials fájl.
+
+A ProtonDrive-ban lévő kutatási anyagok (pl. `quantum_language_engine/`,
+`Jul29_Kimi_Agent_Metaforikus_Fizika_File_Request/`) olvasása engedélyezett.
+Ha a ProtonDrive lokálisan nem szinkronizált, a `gondnok-laptop/project/
+target/all_sources/` index tartalmazza a ProtonDrive fájlok másolatait.
+
+**SiteGround (`chickenloop` SSH alias): NEM.** A felhasználó kizárta.
+**Hetzner (88.99.218.155): IGEN**, ha van működő SSH (a `szerver-ismeret`
+skill ellenőrzi). Olvasás rendben, írás tilos (AGENTS §1).
