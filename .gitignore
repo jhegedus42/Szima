@@ -24,3 +24,10 @@ trail_index/.bsp/
 seed.hex
 *.seed
 seed*
+
+# Szima-ter: a forditasi artefaktumok nem mennek a gitbe
+szima_ter/modul/build/
+szima_ter/modul/szima_ter_teszt
+szima_ter/modul/szima_ter_teszt_app/
+# a felhasznalo kutatasi dumpja (5.6 GB) — nem megy a gitbe, nem torlendo
+source/ai/
