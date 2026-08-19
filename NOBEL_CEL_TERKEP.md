@@ -353,7 +353,7 @@ A 8. lépéshez: a felhasználó válaszol a kérdésekre, és a válaszok beép
 - `~/.local/share/opencode/mcp-auth.json` — MCP authentikáció
 - `~/.agents/skills/` — 20+ globális skill (boot-up, szivdobbanas, legkisebb-muvelet, stb.)
 
-### 13.5 A GitHubon (`github.com/jhegedus42/opencode`)
+### 13.5 A GitHubon (`github.com/jhegedus42/Szima`, korábbi neve `opencode`)
 
 - A `git remote` a GitHubra mutat
 - Minden `.idr`, `.md` a GitHubon (kivéve `session-*.md`, `trail_index/build/`)

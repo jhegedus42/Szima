@@ -144,7 +144,7 @@ pdflatex -interaction=nonstopmode konyv.tex  # 2x for TOC
 git add konyv.pdf konyv.tex
 git commit -m "konyv: ..."
 git push
-# Link: https://github.com/jhegedus42/opencode/raw/master/konyv.pdf
+# Link: https://github.com/jhegedus42/Szima/raw/master/konyv.pdf
 ```
 
 ## Tartalomjegyzék

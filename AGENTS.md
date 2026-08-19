@@ -1,6 +1,6 @@
 # AGENTS.md — Ügynök Szabályok / Agent Rules
 
-`/Users/joco/opencode` — Idris 2 kategorikus algebrai alapozás (kategóriaelmélet, E8×E8 Clifford algebra, Steane [[7,1,3]] kvantumhibajavítás). Git repository, GitHubon: https://github.com/jhegedus42/opencode. `gh` authentikálva (`jhegedus42`).
+`/Users/joco/opencode` — Idris 2 kategorikus algebrai alapozás (kategóriaelmélet, E8×E8 Clifford algebra, Steane [[7,1,3]] kvantumhibajavítás). Git repository, GitHubon: https://github.com/jhegedus42/Szima (korábbi neve `opencode`, ÁTNEVEZVE). Remote: `git@github.com:jhegedus42/Szima.git`. `gh` authentikálva (`jhegedus42`).
 
 ---
 
