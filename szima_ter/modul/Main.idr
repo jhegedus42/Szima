@@ -95,7 +95,7 @@ main = do
 
   putStrLn ""
   putStrLn "6. Az üres komplex bájt életjele (vakum = 0):"
-  printLn (komplexBajtEletjel uressKomplexBajt)
+  printLn (komplexBajtEletjel UressKomplexBajt)
 
   putStrLn ""
   putStrLn "Kesz."
