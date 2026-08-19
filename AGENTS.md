@@ -157,6 +157,34 @@ Ha egy név rövidítésnek tűnik, írd ki teljesen.
     állapot-lánc-csapda), (f) a tíz-parancsolat a tanulságok mappájából.
     Ha bármelyik kimarad, a kód biztosan megbukik a tanulság-csapdákon.
 
+15. **A Cat³ (a kategóriák kategóriájának kategóriája) hierarchia
+    (2026-08-19, a felhasználó utasítása: "kategóriák kategóriája a
+    kategóriák kategóriájának a kategóriája").** A projekt magasabb
+    kategóriaelméleti struktúrája:
+    - `Cat^0 = Set` (halmazok kategóriája, 0-sejtek: objektumok).
+    - `Cat^1 = Cat` (kategóriák kategóriája, 1-sejtek: funktorok).
+    - `Cat^2 = Cat^Cat` (funktor-kategória, 2-sejtek: természetes
+      transzformációk).
+    - `Cat^3 = Cat^Cat^Cat` (3-kategóriák kategóriája, 3-sejtek:
+      **módosítások** / modifications — a Mac Lane kocka két lapját
+      kiegyenlítő 3-sejt).
+    - `Cat^∞ = ∞-kategóriák` (az n-kategóriák sorozatának határértéke,
+      az ∞-toposzok előfeltétele).
+    A teljes Cat³ dokumentáció a `docs/Cat3_TeljesDokumentacio.md`
+    fájlban található, a 10 boot-up szint részletes leírása a
+    `docs/BootUp_10Szint_Teljes.md` fájlban, a teljes hivatkozáslista
+    pedig a `docs/Hivatkozasok_Teljes.md` fájlban. Minden
+    felfedezést dokumentálni kell — információveszteség nélkül.
+
+16. **Információveszteség nélküli dokumentáció (2026-08-19, a
+    felhasználó utasítása: "ne dobd el amit felfedeztel, ami ertekes
+    azt ird le").** Minden felfedezést, hivatkozást, struktúrát,
+    Refl-bizonyítékot, típus-definíciót, és gondolatmenetet
+    dokumentálni kell. Az új felfedezések a `docs/` könyvtárba
+    kerülnek (Markdown), az Idris-kód a `szima_ter/modul/`-ba.
+    A "soha ne írj felül" szabály miatt a dokumentáció is ÚJ
+    fájlokba kerül (nem a régit írjuk felül).
+
 ---
 
 ## 1a. /tmp TILOS (2026-08-17, a felhasználó utasítása)
