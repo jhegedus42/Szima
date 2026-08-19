@@ -435,3 +435,20 @@ target/all_sources/` index tartalmazza a ProtonDrive fájlok másolatait.
 **SiteGround (`chickenloop` SSH alias): NEM.** A felhasználó kizárta.
 **Hetzner (88.99.218.155): IGEN**, ha van működő SSH (a `szerver-ismeret`
 skill ellenőrzi). Olvasás rendben, írás tilos (AGENTS §1).
+
+---
+
+## 20. SOHA SEMMIT NEM LEHET TÖRÖLNI (2026-08-19, a felhasználó utasítása)
+
+**SOHA, SEMILYEN KÖRÜLMÉNYEK KÖZÖTT nem szabad fájlt törölni.**
+Nem `rm`, nem `rm -f`, nem `git rm`, nem `git clean`, semmi destruktív.
+
+- Ha egy ideiglenes fájl keletkezik (pl. `GCheck.idr`), az a repóban
+  MARAD — archiváljuk a `osveny_index/tanulsagok/` vagy `szima_ter/modul/`
+  könyvtárba, NE töröljük.
+- A "soha ne írj felül" (AGENTS §13) és a "destruktív operációk tilva"
+  (AGENTS §1) már léteznek, de a `rm` parancsot külön is TILTANI kell.
+- Ha egy fájl feleslegessé válik, jelezd a felhasználónak, de NE töröld.
+
+**Indoklás:** a felhasználó 2026-08-19-én kifejezetten tiltotta: "semit
+nem lehet torolni soha". A `rm -f GCheck.idr` parancs megsértette ezt.

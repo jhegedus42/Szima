@@ -233,3 +233,85 @@ hibája**, amit az audit (AGENTS §17) megjelöl.
 mind dokumentálva. A dashboardon a δ SZÁMÍTOTT értéke látható (delta.png),
 az adatok a `docs/dashboard/adatok.json`-ban. **A projekt NEM állítja, hogy
 α-t PONTOSAN deriválta — mindkét forma VÁZLAT (KIZÁRVA mint pontos formula).**
+
+---
+
+## 5. AZ ÖSSZES α-képlet és rokon hipotézisek (a projekt összes kísérlete)
+
+Forrás: `hanmag_zaras.py` σ-audit táblázat (155-167. sor) + `transzkript_nem_numerologia.txt` (339-395. sor) + `all_constants_exact.py` (121-138. sor).
+
+### 5.1 Az α⁻¹ összes képlete (7 kísérlet)
+
+| # | Képlet | Érték | Forrás (sor) | Státusz |
+|---|---|---|---|---|
+| 1 | `137 + 9/250` (zongora-racionális) | 137.036 | transzkript:339, all_constants:124 | **39σ — VÁZLAT** |
+| 2 | `x = 137 + 31/(2πx)` (Schwinger-fixpont, 31=M(5)) | 137.0360… | hanmag_zaras:48 | **215σ — VÁZLAT** |
+| 3 | `α⁻¹ = Re[(A+iB)^(C+iD)]` (komplex hatvány) | — | transzkript:370 | IRÁNY (nem kiszámolva) |
+| 4 | `1/(137 + 0.036 × e^{iπ/4})` (Bach-korrekció) | 137.025+0.025i | transzkript:395 | IRÁNY (komplex modell) |
+| 5 | `137 + (π−e)/φ` | 137.2616 | transzkript:346 | NEM JÓ |
+| 6 | `137 + 1/(2π)²` | 137.0253 | transzkript:353 | NEM JÓ |
+| 7 | `137 + e^{−π√163}` (Ramanujan) | ≈137 | transzkript:359 | TÚL KÖZEL |
+
+### 5.2 A 9/250 szerkezete (összes felbontás)
+
+| Felbontás | Képlet | Forrás |
+|---|---|---|
+| Dimenziós | `(D_CRIT−1)²/((D_CRIT+1)^(D_CRIT−1)×(D_CRIT−2))`, D_CRIT=4 | all_constants:121-123 |
+| Prímtényezős | `3²/(2×5³)` | all_constants:121 |
+| Zongora | `(3/16)² × diezisz(128/125)` | hanmag_zaras:62 |
+| 5-limesz | `3²/(2×5³)` (a 4:5:6 terc világa) | hanmag_zaras:62 |
+
+### 5.3 A Bach-korrekció és a vákuum-polarizáció
+
+| Tag | Képlet | Forrás (sor) | Jelentés |
+|---|---|---|---|
+| Bach-fázis | `e^{iπ/4} = (1+i)/√2` | transzkript:395, KomplexByte.idr:109 | Möbius-rák-kanon fázisa |
+| Vákuum-polarizáció | `(1+9/250)^(1/40)`, 40=2³×5 | all_constants:136-138 | a G levezetésében is |
+| Komplex α⁻¹ | `α⁻¹ = 137 + 0.036i` (mátrix) | transzkript:454-457 | a sajátértékek = mért érték |
+
+### 5.4 A rokon hipotézisek — ÖSSZES (hanmag_zaras.py σ-audit, Δ/σ rangsor)
+
+| Hipotézis | Képlet | Δ/σ | Státusz |
+|---|---|---|---|
+| H0* = 67.22 (Planck) | H0 = 67.22 km/s/Mpc | **0.36** | ✅ ÉLŐ |
+| sin²θ_W = ln2/3 (MSbar) | sin²θ_W = ln(2)/3 | **4.27** | HATÁR |
+| H0* vs SH0ES | 67.22 vs 73.04±1.04 | **5.60** | HALOTT |
+| VEV/m_Z = 7³/127 | 343/127 | **10.29** | HALOTT |
+| α⁻¹ zongora | 137+9/250 | **39.19** | HALOTT (VÁZLAT) |
+| α⁻¹ Schwinger | 137+31/(2πx) | **215.41** | HALOTT (VÁZLAT) |
+| Koide δ = 2/9 | δ = 2/9 | **925.79** | HALOTT |
+| ρ_Λ = 3ρ_P/2^410 | kozmológiai | **2873.90** | HALOTT |
+| Koide Q = 2/3 | Q = 2/3 | **32781.92** | HALOTT |
+| α_G⁻¹ = 2^127 | gravitációs α | **45454.53** | HALOTT |
+| m_p/m_e = 6π⁵ | 6π⁵ ≈ 1836 | **80383.07** | HALOTT |
+
+### 5.5 Az egyetlen ÉLŐ konstans: G
+
+A `all_constants_exact.py` G levezetése — az EGYETLEN, ami a mérési hibán belül van:
+
+```
+G = (7×11)/(2³×5²) × √3 × (1+9/250)^(1/40) × 10⁻¹⁰
+  = 0.385 × 1.73205 × 1.000885 × 10⁻¹⁰
+  = 6.6742942…×10⁻¹¹
+
+CODATA: 6.67430×10⁻¹¹ (σ = 1.5×10⁻¹⁵)
+Δ/σ = 0.038 — BELÜL ✅
+```
+
+Ezt az Idris is megerősíti (`szima_ter/modul/GCheck.idr`, NEM törölve — AGENTS §20).
+
+### 5.6 A "MINDEN 0% HIBA" cáfolata
+
+Az `all_constants_exact.py` címe "MINDEN FIZIKAI KONSTANS 0% HIBÁVAL" — de a kód
+`'error_is_zero': True`-t állít minden konstansnál, miközben:
+
+- c, h, k_B, N_A, e, μ₀, ε₀: SI 2019 PONTOS definíciók, **nem levezetések**
+  (a kód `'derived': codata.c` — triviális másolás)
+- m_e, m_p: CODATA érték másolása, **nem levezetés**
+- α⁻¹: **39σ** (NEM 0%)
+- G: **0.038σ** (ez az egyetlen valódi siker)
+- m_p/m_e: **355054σ** (NEM 0%)
+
+**A "MINDEN 0% HIBA" cím parasztvakítás** — a legtöbb konstansnál a "levezetett"
+érték egyszerűen a CODATA érték másolása. Csak α⁻¹, G és m_p/m_e valódi
+levezetés, és ezek közül csak a G van a mérési hibán belül.
