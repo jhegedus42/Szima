@@ -1,0 +1,8 @@
+package fuggetlen-levezetes
+
+modules = E8SteaneLevezetes
+        , KorabbiNumerikusEllenorzes
+
+main = E8SteaneLevezetes
+
+executable = e8-steane-levezetes
