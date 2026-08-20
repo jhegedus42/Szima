@@ -720,6 +720,11 @@ gravitaciosSkalazas
     GravitaciosMennyisegKonstruktor (arany * skala)
 
 public export
+mennyisegErteke : Mennyiseg dimenzio -> Double
+mennyisegErteke (DimenziotlanMennyisegKonstruktor ertek) = ertek
+mennyisegErteke (GravitaciosMennyisegKonstruktor ertek) = ertek
+
+public export
 dimenzioAzonositasLehetetlen :
   Dimenziotlan = GravitaciosDimenzio -> Void
 dimenzioAzonositasLehetetlen Refl impossible
@@ -757,14 +762,55 @@ FinomszerkezetiAllandoInverzJelolt : Double
 FinomszerkezetiAllandoInverzJelolt =
   cast HorgonyEgeszResze + HorgonyTort - FinomszerkezetiKorrekcio
 
+-- Ez az E8–Steane paraméterekből kapott konzisztens, dimenziótlan rész.
+-- Fizikai jelentést csak egy megadott tömegskálán kap:
+--
+--   gravitációs csatolás(m) = G·m² / (ℏ·c)
+--
+-- Ha az alábbi számot ezzel a csatolással azonosítjuk, akkor a hozzá
+-- tartozó tömegskála a Planck-tömeg sqrt(arany)-szorosa.
+
+public export
+DimenzioNelKuliGravitaciosCsatolasJelolt : Double
+DimenzioNelKuliGravitaciosCsatolasJelolt =
+  (cast GravitaciosAranySzamlaloja / cast GravitaciosAranyNevezoje)
+  * sqrt (cast KvantumKodTavolsaga)
+  * ((1.0 + HorgonyTort)
+      `pow` (1.0 / cast GravitaciosHatvanyNevezoje))
+
+public export
+PlanckTomeghezViszonyitottModellSkala : Double
+PlanckTomeghezViszonyitottModellSkala =
+  sqrt DimenzioNelKuliGravitaciosCsatolasJelolt
+
+-- A dimenziós eredményhez külön skála szükséges. A 10^-10 itt
+-- névvel és típussal jelölt fizikai bemenet; nem E8-következmény.
+
+public export
+GravitaciosReferenciaSkala :
+  Mennyiseg GravitaciosDimenzio
+GravitaciosReferenciaSkala =
+  GravitaciosMennyisegKonstruktor 1.0e-10
+
+public export
+DimenzioNelKuliGravitaciosCsatolasMennyiseg :
+  Mennyiseg Dimenziotlan
+DimenzioNelKuliGravitaciosCsatolasMennyiseg =
+  DimenziotlanMennyisegKonstruktor
+    DimenzioNelKuliGravitaciosCsatolasJelolt
+
+public export
+GravitaciosAllandoMennyisegJelolt :
+  Mennyiseg GravitaciosDimenzio
+GravitaciosAllandoMennyisegJelolt =
+  gravitaciosSkalazas
+    DimenzioNelKuliGravitaciosCsatolasMennyiseg
+    GravitaciosReferenciaSkala
+
 public export
 GravitaciosAllandoJelolt : Double
 GravitaciosAllandoJelolt =
-  (cast GravitaciosAranySzamlaloja / cast GravitaciosAranyNevezoje)
-  * sqrt (cast KvantumKodTavolsaga)
-  * 1.0e-10
-  * ((1.0 + HorgonyTort)
-      `pow` (1.0 / cast GravitaciosHatvanyNevezoje))
+  mennyisegErteke GravitaciosAllandoMennyisegJelolt
 
 public export
 FinomszerkezetiMeresiReferencia : Double
@@ -814,8 +860,13 @@ main = do
             show (abs (FinomszerkezetiAllandoInverzJelolt -
                        FinomszerkezetiMeresiReferencia) /
                   FinomszerkezetiMeresiBizonytalansag))
-  putStrLn ("  gravitációs állandó: " ++ show GravitaciosAllandoJelolt)
-  putStrLn ("  eltérés / mérési bizonytalanság: " ++
+  putStrLn ("  dimenzió nélküli gravitációs csatolás: " ++
+            show DimenzioNelKuliGravitaciosCsatolasJelolt)
+  putStrLn ("  hozzá tartozó modellskála / Planck-tömeg: " ++
+            show PlanckTomeghezViszonyitottModellSkala)
+  putStrLn ("  külön 10^-10 skálával kapott gravitációs állandó: " ++
+            show GravitaciosAllandoJelolt)
+  putStrLn ("  ennek eltérése / mérési bizonytalanság: " ++
             show (abs (GravitaciosAllandoJelolt -
                        GravitaciosMeresiReferencia) /
                   GravitaciosMeresiBizonytalansag))

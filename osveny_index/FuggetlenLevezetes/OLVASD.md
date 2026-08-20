@@ -73,9 +73,30 @@ A kis energiájú elektromágneses csatoláshoz ezen felül szükséges:
 - a küszöbkorrekciók;
 - a mérési energiaskála.
 
-A gravitációs állandó dimenziós mennyiség. Dimenziótlan E8- és
-kódparaméterekből külön tömeg- vagy hosszskála nélkül nem állítható elő.
-Heterotikus modellekben a szerkezeti összefüggés
+A gravitáció konzisztens, dimenziótlan csatolása egy megadott `m`
+tömegskálán:
+
+```text
+gravitációs csatolás(m) = G × m² / (ℏ × c)
+```
+
+Az E8–Steane-képlet dimenziótlan része ezért külön nevet kap:
+
+```text
+q = (77/200) × sqrt(3) × (259/250)^(1/40)
+```
+
+Ezt lehet egy meghatározandó modellskála gravitációs csatolásaként
+értelmezni. Ekkor:
+
+```text
+modellskála / Planck-tömeg = sqrt(q)
+```
+
+Ez konzisztens és mértékegység-független, de még nem határozza meg G
+dimenziós értékét. Dimenziótlan E8- és kódparaméterekből külön tömeg-
+vagy hosszskála nélkül G nem állítható elő. Heterotikus modellekben a
+szerkezeti összefüggés
 
 ```text
 G₄ ~ húrcsatolás² × húrhossz⁸ / belső térfogat
@@ -83,8 +104,9 @@ G₄ ~ húrcsatolás² × húrhossz⁸ / belső térfogat
 
 alakú. Erősen csatolt E8×E8 modellekben a tizenegy-dimenziós
 gravitációs csatolás, a Calabi–Yau-térfogat és az orbifoldsugár szükséges.
-A képletben szereplő `10^-10` jelenleg ennek a hiányzó dimenziós
-bemenetnek a helyén áll.
+A korábbi képletben szereplő `10^-10` ezért most külön, típusosan
+dimenziós `GravitaciosReferenciaSkala`. Nem része az E8-ból kiszámított
+`DimenzioNelKuliGravitaciosCsatolasJelolt` értéknek.
 
 A
 
