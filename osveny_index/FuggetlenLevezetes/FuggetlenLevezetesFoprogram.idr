@@ -3,6 +3,7 @@ module FuggetlenLevezetesFoprogram
 import E8SteaneLevezetes
 import ParitasBuborek
 import AffinE8KarakterLevezetes
+import MagyarTeriTetrakod
 
 main : IO ()
 main = do
@@ -11,3 +12,5 @@ main = do
   paritasBuborekJelentes
   putStrLn ""
   affinE8KarakterJelentes
+  putStrLn ""
+  magyarTeriTetrakodJelentes

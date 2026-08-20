@@ -4,6 +4,7 @@ modules = E8SteaneLevezetes
         , KorabbiNumerikusEllenorzes
         , ParitasBuborek
         , AffinE8KarakterLevezetes
+        , MagyarTeriTetrakod
         , FuggetlenLevezetesFoprogram
 
 main = FuggetlenLevezetesFoprogram

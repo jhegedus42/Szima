@@ -192,6 +192,83 @@ kategóriájában egyetlen egyszerű objektum van. Ez nem jelenti azt, hogy
 az affin algebra teljes reprezentációkategóriája triviális, és nem
 jelent kétdimenziós kvantumkódteret.
 
+## Magyar térbeli esetek és a ternáris tetrakód
+
+A `MagyarTeriTetrakod.idr` egy pontos, de korlátozott nyelvi
+kódkonstrukciót ellenőriz. A három tértartomány és a három irányállapot
+kilenc jelentést ad:
+
+| Tértartomány | Forrás | Hely | Cél |
+|---|---|---|---|
+| belső tér | `-ból/-ből` | `-ban/-ben` | `-ba/-be` |
+| felszín | `-ról/-ről` | `-on/-en/-ön/-n` | `-ra/-re` |
+| közelség | `-tól/-től` | `-nál/-nél` | `-hoz/-hez/-höz` |
+
+Ez a jelentéstér két trittel indexelhető:
+
+```text
+{belső tér, felszín, közelség}
+×
+{forrás, hely, cél}
+≅ három elemű test × három elemű test.
+```
+
+A modul a ternáris `[4,2,3]` tetrakódot használja:
+
+```text
+(a,b) ↦ (a, a+b, a-b, b).
+```
+
+Véges felsorolással bizonyítja:
+
+- a kilenc magyar térbeli eset és a kilenc tetrakódszó bijekcióját;
+- a tetrakód minden kódszavának különbözőségét;
+- a hármas minimumtávolságot;
+- az önortogonalitást;
+- hogy minden nemnulla kódszó súlya három;
+- mind a hetvenkét lehetséges egytrit-hiba kijavítását;
+- a Hamming-gömbök `9·(1+4·2)=81=3⁴` tökéletes lefedését.
+
+A hat mozgásos eset három forrás–cél pár. Ezeket a választott
+hatszögű gyökrendszer hat gyökéhez rendeli:
+
+```text
+(-1,0), (1,0), (0,-1), (0,1), (-1,-1), (1,1).
+```
+
+A `[[2,-1],[-1,2]]` Gram-mátrix szerint mind a hat gyök normanégyzete
+kettő. Ez a hozzárendelés a három tartományt három gyökegyenesként, a
+forrás–cél ellentétet előjelváltásként őrzi. Nem bizonyítja, hogy a
+magyar nyelvtan teljes Weyl-csoporthatással vagy gyökösszeadással
+rendelkezik.
+
+Ugyanez a tetrakód négy hatszögű rács E8-cá ragasztásában is megjelenik.
+A véges gyökszám:
+
+```text
+négy alaphatszög gyökei:         4·6 = 24
+nyolc nemnulla ragasztási osztály:
+                                8·3³ = 216
+összesen:                       24+216 = 240.
+```
+
+A négy alaprács Gram-determinánsa `3⁴=81`; a kilences ragasztási index
+négyzete szintén `9²=81`. A modul a kapott 240-at az előző,
+Construction A-alapú 240-as gyökszámmal is bizonyítottan azonosítja.
+Az általános `A₂⁴`-ragasztás és E8-rácsizomorfia jelentését az irodalom
+adja, nem a puszta darabszám.
+
+Ez a konstrukció két eltérő költséget választ szét:
+
+- az allomorfok közös jelentéstípusra vonása és a morfológiai
+  faktorizáció tömöríthet;
+- a tetrakód két információtritet négy kódtritre bővít, tehát
+  redundanciát ad és hibát javít, nem tömörít.
+
+A tényleges nyelvmodellbeli nyereséghez még mérni kell a teljes
+nyelvtan, lexikon, kivételek és maradék kódhosszát, valamint az új
+szóalakokra való általánosítást.
+
 ## Mit nem jelent itt az E9 és a buborék?
 
 Az affin E9 Kac–Moody-algebra nem „négy E8 és még egy bit”. Az E8
@@ -356,6 +433,13 @@ idris2 --build FuggetlenLevezetes.ipkg
   213 (2004).
   A nyolcas központi töltésű holomorf vertexoperátor-algebra
   egyértelműsége.
+- Noam Elkies, *The identification of three moduli spaces*,
+  arXiv:math/9905195.
+  E8 előállítása négy hatszögű rács tetrakódos ragasztásával, valamint
+  a `24+216=240` gyökfelbontás.
+- Dékány Éva és Hegedűs Veronika, a magyar térbeli esetek elemzése,
+  DOI:10.1515/9789048544608-004.
+  A térbeli esetek tartomány–irány faktorizációja.
 - Ben Friedrich, Arthur Hebecker és Johannes Walcher, *Cobordism and
   Bubbles of Anything in the String Landscape*, Journal of High Energy
   Physics 2024, 127.
