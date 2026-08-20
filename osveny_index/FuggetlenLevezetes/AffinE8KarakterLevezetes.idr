@@ -1,6 +1,7 @@
 module AffinE8KarakterLevezetes
 
 import Data.List
+import Data.Nat
 import E8SteaneLevezetes
 
 %default total
@@ -159,7 +160,11 @@ E8ThetaHaromFokig =
 
 BizonyitasE8ThetaHaromFokig :
   E8ThetaHaromFokig = [1, 240, 2160, 6720]
-BizonyitasE8ThetaHaromFokig = Refl
+BizonyitasE8ThetaHaromFokig =
+  rewrite BizonyitasE8KodNullaSulyuSzavai in
+  rewrite BizonyitasE8KodNegySulyuSzavai in
+  rewrite BizonyitasE8KodNyolcSulyuSzavai in
+  Refl
 
 -- =====================================================================
 -- 3. NYOLCSZÍNŰ BOZONIKUS OSZCILLÁTORSOR
@@ -231,7 +236,10 @@ AffinE8ElsoSzintuKarakterHaromFokig =
 BizonyitasAffinE8ElsoSzintuKarakterHaromFokig :
   AffinE8ElsoSzintuKarakterHaromFokig =
     [1, 248, 4124, 34752]
-BizonyitasAffinE8ElsoSzintuKarakterHaromFokig = Refl
+BizonyitasAffinE8ElsoSzintuKarakterHaromFokig =
+  rewrite BizonyitasE8ThetaHaromFokig in
+  rewrite BizonyitasNyolcSzinuOszcillatorSorHaromFokig in
+  Refl
 
 public export
 ElsoFokGyokEsCartanUton : Nat
@@ -244,11 +252,16 @@ ElsoFokKarakterUton =
 
 BizonyitasElsoFokKetFuggetlenUton :
   ElsoFokGyokEsCartanUton = ElsoFokKarakterUton
-BizonyitasElsoFokKetFuggetlenUton = Refl
+BizonyitasElsoFokKetFuggetlenUton =
+  rewrite BizonyitasE8MinimalisVektorokSzama in
+  rewrite BizonyitasAffinE8ElsoSzintuKarakterHaromFokig in
+  Refl
 
 BizonyitasElsoFokKetszazNegyvennyolc :
   ElsoFokKarakterUton = 248
-BizonyitasElsoFokKetszazNegyvennyolc = Refl
+BizonyitasElsoFokKetszazNegyvennyolc =
+  rewrite BizonyitasAffinE8ElsoSzintuKarakterHaromFokig in
+  Refl
 
 public export
 MasodikFokFelbontasUton : Nat
@@ -260,7 +273,10 @@ MasodikFokFelbontasUton =
 
 BizonyitasMasodikFokNegyezerSzazHuszonnegy :
   MasodikFokFelbontasUton = 4124
-BizonyitasMasodikFokNegyezerSzazHuszonnegy = Refl
+BizonyitasMasodikFokNegyezerSzazHuszonnegy =
+  rewrite BizonyitasE8ThetaHaromFokig in
+  rewrite BizonyitasNyolcSzinuOszcillatorSorHaromFokig in
+  Refl
 
 public export
 HarmadikFokFelbontasUton : Nat
@@ -274,7 +290,10 @@ HarmadikFokFelbontasUton =
 
 BizonyitasHarmadikFokHarmincNegyezerHetszazOtvenketto :
   HarmadikFokFelbontasUton = 34752
-BizonyitasHarmadikFokHarmincNegyezerHetszazOtvenketto = Refl
+BizonyitasHarmadikFokHarmincNegyezerHetszazOtvenketto =
+  rewrite BizonyitasE8ThetaHaromFokig in
+  rewrite BizonyitasNyolcSzinuOszcillatorSorHaromFokig in
+  Refl
 
 -- =====================================================================
 -- 5. A MODULÁRIS j-INVARIÁNS KÖBGYÖKÉNEK VÉGES ELLENŐRZÉSE
@@ -293,7 +312,9 @@ KarakterBelsoKobeHaromFokig =
 BizonyitasKarakterKobeModularisJInvariansKezdete :
   KarakterBelsoKobeHaromFokig =
     [1, 744, 196884, 21493760]
-BizonyitasKarakterKobeModularisJInvariansKezdete = Refl
+BizonyitasKarakterKobeModularisJInvariansKezdete =
+  rewrite BizonyitasAffinE8ElsoSzintuKarakterHaromFokig in
+  Refl
 
 -- =====================================================================
 -- 6. A NYOLCAS KÖZPONTI TÖLTÉS KÉT ÚTON
@@ -323,11 +344,15 @@ RacsKozpontiToltes = E8Rang
 
 BizonyitasKozpontiToltesKetUton :
   SugawaraKozpontiToltes = RacsKozpontiToltes
-BizonyitasKozpontiToltesKetUton = Refl
+BizonyitasKozpontiToltesKetUton =
+  rewrite BizonyitasE8MinimalisVektorokSzama in
+  Refl
 
 BizonyitasKozpontiToltesNyolc :
   SugawaraKozpontiToltes = 8
-BizonyitasKozpontiToltesNyolc = Refl
+BizonyitasKozpontiToltesNyolc =
+  rewrite BizonyitasE8MinimalisVektorokSzama in
+  Refl
 
 -- =====================================================================
 -- 7. FUTTATHATÓ JELENTÉS

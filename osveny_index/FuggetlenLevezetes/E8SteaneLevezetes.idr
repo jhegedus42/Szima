@@ -297,14 +297,17 @@ BizonyitasE8KodSzavakKulonboznek :
   E8KodSzavakKulonboznek = True
 BizonyitasE8KodSzavakKulonboznek = Refl
 
+public export
 BizonyitasE8KodNullaSulyuSzavai :
   E8KodNullaSulyuSzavai = 1
 BizonyitasE8KodNullaSulyuSzavai = Refl
 
+public export
 BizonyitasE8KodNegySulyuSzavai :
   E8KodNegySulyuSzavai = 14
 BizonyitasE8KodNegySulyuSzavai = Refl
 
+public export
 BizonyitasE8KodNyolcSulyuSzavai :
   E8KodNyolcSulyuSzavai = 1
 BizonyitasE8KodNyolcSulyuSzavai = Refl
@@ -355,6 +358,7 @@ BizonyitasConstructionAKodSzoVektorok :
   ConstructionAKodSzoVektorokSzama = 224
 BizonyitasConstructionAKodSzoVektorok = Refl
 
+public export
 BizonyitasE8MinimalisVektorokSzama :
   E8MinimalisVektorokSzama = 240
 BizonyitasE8MinimalisVektorokSzama = Refl
