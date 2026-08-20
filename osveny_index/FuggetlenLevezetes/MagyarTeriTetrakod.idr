@@ -283,8 +283,13 @@ TernarisNegydimenziosTerMerete : Nat
 TernarisNegydimenziosTerMerete = 3 * 3 * 3 * 3
 
 public export
+NemNullaHibaErtekekSzama : Nat
+NemNullaHibaErtekekSzama = length [TritEgy, TritKetto]
+
+public export
 EgySugaruHammingGombMerete : Nat
-EgySugaruHammingGombMerete = 1 + 4 * (3 - 1)
+EgySugaruHammingGombMerete =
+  1 + 4 * NemNullaHibaErtekekSzama
 
 public export
 TetrakodHammingGombokLefedikATeret : Nat
