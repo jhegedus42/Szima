@@ -381,58 +381,35 @@ BizonyitasHarmadikFokHarmincNegyezerHetszazOtvenketto =
 -- =====================================================================
 
 public export
-egeszListaEgyutthatonkentOsszead :
-  List Integer -> List Integer -> List Integer
-egeszListaEgyutthatonkentOsszead [] jobb = jobb
-egeszListaEgyutthatonkentOsszead bal [] = bal
-egeszListaEgyutthatonkentOsszead
-  (balElem :: tobbiBalElem)
-  (jobbElem :: tobbiJobbElem) =
-    (balElem + jobbElem) ::
-    egeszListaEgyutthatonkentOsszead tobbiBalElem tobbiJobbElem
-
-public export
-egeszPolinomTeljesSzorzata :
-  List Integer -> List Integer -> List Integer
-egeszPolinomTeljesSzorzata [] _ = []
-egeszPolinomTeljesSzorzata (balElem :: tobbiBalElem) jobb =
-  egeszListaEgyutthatonkentOsszead
-    (map (\jobbElem => balElem * jobbElem) jobb)
-    (0 :: egeszPolinomTeljesSzorzata tobbiBalElem jobb)
-
-public export
-egeszPolinomCsonkoltSzorzata :
-  (egyutthatokSzama : Nat) ->
-  List Integer -> List Integer -> List Integer
-egeszPolinomCsonkoltSzorzata egyutthatokSzama bal jobb =
-  take egyutthatokSzama
-    (egeszPolinomTeljesSzorzata bal jobb ++
-     replicate egyutthatokSzama 0)
-
-public export
-egeszPolinomEgyseg : (egyutthatokSzama : Nat) -> List Integer
-egeszPolinomEgyseg Z = []
-egeszPolinomEgyseg (S tobbiEgyutthatoSzama) =
-  1 :: replicate tobbiEgyutthatoSzama 0
-
-public export
-egeszPolinomCsonkoltHatvanya :
-  (egyutthatokSzama : Nat) -> Nat -> List Integer -> List Integer
-egeszPolinomCsonkoltHatvanya egyutthatokSzama Z _ =
-  egeszPolinomEgyseg egyutthatokSzama
-egeszPolinomCsonkoltHatvanya
-  egyutthatokSzama (S kisebbHatvany) polinom =
-    egeszPolinomCsonkoltSzorzata
-      egyutthatokSzama
-      polinom
-      (egeszPolinomCsonkoltHatvanya
-        egyutthatokSzama kisebbHatvany polinom)
-
-public export
 KarakterBelsoKobeHaromFokig : List Integer
 KarakterBelsoKobeHaromFokig =
-  egeszPolinomCsonkoltHatvanya
-    4 3 AffinE8ElsoSzintuKarakterHaromFokig
+  [ listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig
+  , 3 *
+    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig
+  , 3 *
+    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 2 AffinE8ElsoSzintuKarakterHaromFokig +
+    3 *
+    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig
+  , 3 *
+    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 3 AffinE8ElsoSzintuKarakterHaromFokig +
+    6 *
+    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 2 AffinE8ElsoSzintuKarakterHaromFokig +
+    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig *
+    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig
+  ]
 
 BizonyitasKarakterKobeModularisJInvariansKezdete :
   KarakterBelsoKobeHaromFokig =
