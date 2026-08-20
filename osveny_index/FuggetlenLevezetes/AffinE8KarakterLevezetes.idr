@@ -94,87 +94,68 @@ listaElemVagyNulla Z (elem :: _) = elem
 listaElemVagyNulla (S kisebbIndex) (_ :: tobbiElem) =
   listaElemVagyNulla kisebbIndex tobbiElem
 
+public export
+binomialis : Nat -> Nat -> Nat
+binomialis _ Z = 1
+binomialis Z (S _) = 0
+binomialis (S felso) (S also) =
+  binomialis felso also + binomialis felso (S also)
+
 -- =====================================================================
 -- 2. CONSTRUCTION A THÉTA-SOR A KÓD SÚLYELOSZLÁSÁBÓL
 --
--- Negyedfok-egységeket használunk, hogy a páratlan koordináták
--- negyedegész kitevői is természetes számú indexet kapjanak.
+-- A négy szükséges egész fokot a három kódszó-súlyosztály szerint
+-- bontjuk fel. Ez ugyanaz a súlyfelsoroló-helyettesítés, de minden
+-- együttható véges kombinatorikus receptként látható.
 --
--- Páros koordináta:
---   x = 0       -> negyedfok 0, egy lehetőség
---   x = +-2     -> negyedfok 4, két lehetőség.
+-- Nulla súlyú kódszó:
+--   a nemnulla koordináták +-2 értékűek;
+--   az n-edik fokhoz n koordinátát választunk és mindnek két előjele van.
 --
--- Páratlan koordináta:
---   x = +-1     -> negyedfok 1, két lehetőség
---   x = +-3     -> negyedfok 9, két lehetőség.
+-- Négy súlyú kódszó:
+--   az alapállapot négy darab +-1 koordináta, ezért 2^4 lehetőség;
+--   a következő fokokat a négy páros koordináta +-2 gerjesztése,
+--   illetve egy páratlan koordináta +-1 helyett +-3 értéke adja.
 --
--- A tizenkettedik negyedfokig más koordináta nem járul hozzá.
+-- Nyolc súlyú kódszó:
+--   nyolc darab +-1 koordináta, ezért a második fokon 2^8 lehetőség.
 -- =====================================================================
 
 public export
-NegyedfokEgyutthatokSzama : Nat
-NegyedfokEgyutthatokSzama = 13
+NullaSulyuKodSzoThetaEgeszFokSor : List Nat
+NullaSulyuKodSzoThetaEgeszFokSor =
+  listaEgyutthatonkentSkalaz E8KodNullaSulyuSzavai
+    [ 1
+    , binomialis 8 1 * kettoHatvany 1
+    , binomialis 8 2 * kettoHatvany 2
+    , binomialis 8 3 * kettoHatvany 3
+    ]
 
 public export
-ParosKoordinataNegyedfokSor : List Nat
-ParosKoordinataNegyedfokSor =
-  [1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0]
+NegySulyuKodSzoThetaEgeszFokSor : List Nat
+NegySulyuKodSzoThetaEgeszFokSor =
+  listaEgyutthatonkentSkalaz E8KodNegySulyuSzavai
+    [ 0
+    , kettoHatvany 4
+    , (binomialis 4 1 * kettoHatvany 1) * kettoHatvany 4
+    , (binomialis 4 2 * kettoHatvany 2) * kettoHatvany 4 +
+      4 * kettoHatvany 4
+    ]
 
 public export
-ParatlanKoordinataNegyedfokSor : List Nat
-ParatlanKoordinataNegyedfokSor =
-  [0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0]
-
-public export
-NullaSulyuKodSzoThetaTag : List Nat
-NullaSulyuKodSzoThetaTag =
-  listaEgyutthatonkentSkalaz
-    E8KodNullaSulyuSzavai
-    (polinomCsonkoltHatvanya
-      NegyedfokEgyutthatokSzama 8 ParosKoordinataNegyedfokSor)
-
-public export
-NegySulyuKodSzoThetaTag : List Nat
-NegySulyuKodSzoThetaTag =
-  listaEgyutthatonkentSkalaz
-    E8KodNegySulyuSzavai
-    (polinomCsonkoltSzorzata
-      NegyedfokEgyutthatokSzama
-      (polinomCsonkoltHatvanya
-        NegyedfokEgyutthatokSzama 4 ParosKoordinataNegyedfokSor)
-      (polinomCsonkoltHatvanya
-        NegyedfokEgyutthatokSzama 4 ParatlanKoordinataNegyedfokSor))
-
-public export
-NyolcSulyuKodSzoThetaTag : List Nat
-NyolcSulyuKodSzoThetaTag =
-  listaEgyutthatonkentSkalaz
-    E8KodNyolcSulyuSzavai
-    (polinomCsonkoltHatvanya
-      NegyedfokEgyutthatokSzama 8 ParatlanKoordinataNegyedfokSor)
-
-public export
-ConstructionAThetaNegyedfokSor : List Nat
-ConstructionAThetaNegyedfokSor =
-  listaEgyutthatonkentOsszead
-    NullaSulyuKodSzoThetaTag
-    (listaEgyutthatonkentOsszead
-      NegySulyuKodSzoThetaTag
-      NyolcSulyuKodSzoThetaTag)
-
-BizonyitasConstructionAThetaNegyedfokSor :
-  ConstructionAThetaNegyedfokSor =
-    [1, 0, 0, 0, 240, 0, 0, 0, 2160, 0, 0, 0, 6720]
-BizonyitasConstructionAThetaNegyedfokSor = Refl
+NyolcSulyuKodSzoThetaEgeszFokSor : List Nat
+NyolcSulyuKodSzoThetaEgeszFokSor =
+  listaEgyutthatonkentSkalaz E8KodNyolcSulyuSzavai
+    [0, 0, kettoHatvany 8, 0]
 
 public export
 E8ThetaHaromFokig : List Nat
 E8ThetaHaromFokig =
-  [ listaElemVagyNulla 0 ConstructionAThetaNegyedfokSor
-  , listaElemVagyNulla 4 ConstructionAThetaNegyedfokSor
-  , listaElemVagyNulla 8 ConstructionAThetaNegyedfokSor
-  , listaElemVagyNulla 12 ConstructionAThetaNegyedfokSor
-  ]
+  listaEgyutthatonkentOsszead
+    NullaSulyuKodSzoThetaEgeszFokSor
+    (listaEgyutthatonkentOsszead
+      NegySulyuKodSzoThetaEgeszFokSor
+      NyolcSulyuKodSzoThetaEgeszFokSor)
 
 BizonyitasE8ThetaHaromFokig :
   E8ThetaHaromFokig = [1, 240, 2160, 6720]
@@ -190,13 +171,6 @@ BizonyitasE8ThetaHaromFokig = Refl
 --
 -- A harmadik fokig csak az első három frekvenciamód kell.
 -- =====================================================================
-
-public export
-binomialis : Nat -> Nat -> Nat
-binomialis _ Z = 1
-binomialis Z (S _) = 0
-binomialis (S felso) (S also) =
-  binomialis felso also + binomialis felso (S also)
 
 public export
 nyolcSzinuElosztasokSzama : Nat -> Nat
