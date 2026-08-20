@@ -13,5 +13,5 @@ korabbiNumerikusEredmenyekKiirasa : IO ()
 korabbiNumerikusEredmenyekKiirasa = do
   putStrLn ("Finomszerkezeti állandó inverze: " ++
             show FinomszerkezetiAllandoInverzJelolt)
-  putStrLn ("Gravitációs állandó: " ++
-            show GravitaciosAllandoJelolt)
+  putStrLn ("Dimenzió nélküli gravitációs csatolás: " ++
+            show DimenzioNelKuliGravitaciosCsatolasJelolt)

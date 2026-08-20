@@ -720,11 +720,6 @@ gravitaciosSkalazas
     GravitaciosMennyisegKonstruktor (arany * skala)
 
 public export
-mennyisegErteke : Mennyiseg dimenzio -> Double
-mennyisegErteke (DimenziotlanMennyisegKonstruktor ertek) = ertek
-mennyisegErteke (GravitaciosMennyisegKonstruktor ertek) = ertek
-
-public export
 dimenzioAzonositasLehetetlen :
   Dimenziotlan = GravitaciosDimenzio -> Void
 dimenzioAzonositasLehetetlen Refl impossible
@@ -783,35 +778,6 @@ PlanckTomeghezViszonyitottModellSkala : Double
 PlanckTomeghezViszonyitottModellSkala =
   sqrt DimenzioNelKuliGravitaciosCsatolasJelolt
 
--- A dimenziós eredményhez külön skála szükséges. A 10^-10 itt
--- névvel és típussal jelölt fizikai bemenet; nem E8-következmény.
-
-public export
-GravitaciosReferenciaSkala :
-  Mennyiseg GravitaciosDimenzio
-GravitaciosReferenciaSkala =
-  GravitaciosMennyisegKonstruktor 1.0e-10
-
-public export
-DimenzioNelKuliGravitaciosCsatolasMennyiseg :
-  Mennyiseg Dimenziotlan
-DimenzioNelKuliGravitaciosCsatolasMennyiseg =
-  DimenziotlanMennyisegKonstruktor
-    DimenzioNelKuliGravitaciosCsatolasJelolt
-
-public export
-GravitaciosAllandoMennyisegJelolt :
-  Mennyiseg GravitaciosDimenzio
-GravitaciosAllandoMennyisegJelolt =
-  gravitaciosSkalazas
-    DimenzioNelKuliGravitaciosCsatolasMennyiseg
-    GravitaciosReferenciaSkala
-
-public export
-GravitaciosAllandoJelolt : Double
-GravitaciosAllandoJelolt =
-  mennyisegErteke GravitaciosAllandoMennyisegJelolt
-
 public export
 FinomszerkezetiMeresiReferencia : Double
 FinomszerkezetiMeresiReferencia = 137.035999177
@@ -819,14 +785,6 @@ FinomszerkezetiMeresiReferencia = 137.035999177
 public export
 FinomszerkezetiMeresiBizonytalansag : Double
 FinomszerkezetiMeresiBizonytalansag = 2.1e-8
-
-public export
-GravitaciosMeresiReferencia : Double
-GravitaciosMeresiReferencia = 6.67430e-11
-
-public export
-GravitaciosMeresiBizonytalansag : Double
-GravitaciosMeresiBizonytalansag = 1.5e-15
 
 public export
 main : IO ()
@@ -864,10 +822,4 @@ main = do
             show DimenzioNelKuliGravitaciosCsatolasJelolt)
   putStrLn ("  hozzá tartozó modellskála / Planck-tömeg: " ++
             show PlanckTomeghezViszonyitottModellSkala)
-  putStrLn ("  külön 10^-10 skálával kapott gravitációs állandó: " ++
-            show GravitaciosAllandoJelolt)
-  putStrLn ("  ennek eltérése / mérési bizonytalanság: " ++
-            show (abs (GravitaciosAllandoJelolt -
-                       GravitaciosMeresiReferencia) /
-                  GravitaciosMeresiBizonytalansag))
-  putStrLn "Határ: az utolsó két képlet fizikai felvetés, nem E8-tétel."
+  putStrLn "Határ: a fizikai azonosítások felvetések, nem E8-tételek."

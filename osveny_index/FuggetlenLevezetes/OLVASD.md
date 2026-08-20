@@ -104,9 +104,10 @@ G₄ ~ húrcsatolás² × húrhossz⁸ / belső térfogat
 
 alakú. Erősen csatolt E8×E8 modellekben a tizenegy-dimenziós
 gravitációs csatolás, a Calabi–Yau-térfogat és az orbifoldsugár szükséges.
-A korábbi képletben szereplő `10^-10` ezért most külön, típusosan
-dimenziós `GravitaciosReferenciaSkala`. Nem része az E8-ból kiszámított
-`DimenzioNelKuliGravitaciosCsatolasJelolt` értéknek.
+A modul ezért nem állít elő dimenziós G-jelöltet, és nem hasonlít ilyet
+mérési értékhez. Kimenete kizárólag a mértékegység-független
+`DimenzioNelKuliGravitaciosCsatolasJelolt` és a hozzá tartozó
+Planck-tömegarány.
 
 A
 
