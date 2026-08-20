@@ -273,37 +273,51 @@ listaEgeszElemVagyNulla (S kisebbIndex) (_ :: tobbiElem) =
   listaEgeszElemVagyNulla kisebbIndex tobbiElem
 
 public export
+affinE8KarakterRecept : List Nat -> List Nat -> List Integer
+affinE8KarakterRecept thetaSor oszcillatorSor =
+  [ cast (listaElemVagyNulla 0 thetaSor) *
+      cast (listaElemVagyNulla 0 oszcillatorSor)
+  , cast (listaElemVagyNulla 1 thetaSor) *
+      cast (listaElemVagyNulla 0 oszcillatorSor) +
+    cast (listaElemVagyNulla 0 thetaSor) *
+      cast (listaElemVagyNulla 1 oszcillatorSor)
+  , cast (listaElemVagyNulla 2 thetaSor) *
+      cast (listaElemVagyNulla 0 oszcillatorSor) +
+    cast (listaElemVagyNulla 1 thetaSor) *
+      cast (listaElemVagyNulla 1 oszcillatorSor) +
+    cast (listaElemVagyNulla 0 thetaSor) *
+      cast (listaElemVagyNulla 2 oszcillatorSor)
+  , cast (listaElemVagyNulla 3 thetaSor) *
+      cast (listaElemVagyNulla 0 oszcillatorSor) +
+    cast (listaElemVagyNulla 2 thetaSor) *
+      cast (listaElemVagyNulla 1 oszcillatorSor) +
+    cast (listaElemVagyNulla 1 thetaSor) *
+      cast (listaElemVagyNulla 2 oszcillatorSor) +
+    cast (listaElemVagyNulla 0 thetaSor) *
+      cast (listaElemVagyNulla 3 oszcillatorSor)
+  ]
+
+public export
 AffinE8ElsoSzintuKarakterHaromFokig : List Integer
 AffinE8ElsoSzintuKarakterHaromFokig =
-  [ cast (listaElemVagyNulla 0 E8ThetaHaromFokig) *
-      cast (listaElemVagyNulla 0 NyolcSzinuOszcillatorSorHaromFokig)
-  , cast (listaElemVagyNulla 1 E8ThetaHaromFokig) *
-      cast (listaElemVagyNulla 0 NyolcSzinuOszcillatorSorHaromFokig) +
-    cast (listaElemVagyNulla 0 E8ThetaHaromFokig) *
-      cast (listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig)
-  , cast (listaElemVagyNulla 2 E8ThetaHaromFokig) *
-      cast (listaElemVagyNulla 0 NyolcSzinuOszcillatorSorHaromFokig) +
-    cast (listaElemVagyNulla 1 E8ThetaHaromFokig) *
-      cast (listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig) +
-    cast (listaElemVagyNulla 0 E8ThetaHaromFokig) *
-      cast (listaElemVagyNulla 2 NyolcSzinuOszcillatorSorHaromFokig)
-  , cast (listaElemVagyNulla 3 E8ThetaHaromFokig) *
-      cast (listaElemVagyNulla 0 NyolcSzinuOszcillatorSorHaromFokig) +
-    cast (listaElemVagyNulla 2 E8ThetaHaromFokig) *
-      cast (listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig) +
-    cast (listaElemVagyNulla 1 E8ThetaHaromFokig) *
-      cast (listaElemVagyNulla 2 NyolcSzinuOszcillatorSorHaromFokig) +
-    cast (listaElemVagyNulla 0 E8ThetaHaromFokig) *
-      cast (listaElemVagyNulla 3 NyolcSzinuOszcillatorSorHaromFokig)
-  ]
+  affinE8KarakterRecept
+    E8ThetaHaromFokig NyolcSzinuOszcillatorSorHaromFokig
 
 BizonyitasAffinE8ElsoSzintuKarakterHaromFokig :
   AffinE8ElsoSzintuKarakterHaromFokig =
     [1, 248, 4124, 34752]
 BizonyitasAffinE8ElsoSzintuKarakterHaromFokig =
-  rewrite BizonyitasE8ThetaHaromFokig in
-  rewrite BizonyitasNyolcSzinuOszcillatorSorHaromFokig in
-  Refl
+  trans
+    (cong
+      (\thetaSor =>
+        affinE8KarakterRecept
+          thetaSor NyolcSzinuOszcillatorSorHaromFokig)
+      BizonyitasE8ThetaHaromFokig)
+    (trans
+      (cong
+        (affinE8KarakterRecept [1, 240, 2160, 6720])
+        BizonyitasNyolcSzinuOszcillatorSorHaromFokig)
+      Refl)
 
 public export
 AtvettE8GyokokSzama : Nat
@@ -324,49 +338,83 @@ ElsoFokKarakterUton : Integer
 ElsoFokKarakterUton =
   listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig
 
-BizonyitasElsoFokKetFuggetlenUton :
-  ElsoFokGyokEsCartanUton = ElsoFokKarakterUton
-BizonyitasElsoFokKetFuggetlenUton =
-  rewrite BizonyitasAffinE8ElsoSzintuKarakterHaromFokig in
-  Refl
+BizonyitasElsoFokGyokEsCartanKetszazNegyvennyolc :
+  ElsoFokGyokEsCartanUton = 248
+BizonyitasElsoFokGyokEsCartanKetszazNegyvennyolc = Refl
 
 BizonyitasElsoFokKetszazNegyvennyolc :
   ElsoFokKarakterUton = 248
 BizonyitasElsoFokKetszazNegyvennyolc =
-  rewrite BizonyitasAffinE8ElsoSzintuKarakterHaromFokig in
-  Refl
+  cong
+    (listaEgeszElemVagyNulla 1)
+    BizonyitasAffinE8ElsoSzintuKarakterHaromFokig
+
+BizonyitasElsoFokKetFuggetlenUton :
+  ElsoFokGyokEsCartanUton = ElsoFokKarakterUton
+BizonyitasElsoFokKetFuggetlenUton =
+  trans
+    BizonyitasElsoFokGyokEsCartanKetszazNegyvennyolc
+    (sym BizonyitasElsoFokKetszazNegyvennyolc)
+
+public export
+masodikFokFelbontasRecept : List Nat -> List Nat -> Integer
+masodikFokFelbontasRecept thetaSor oszcillatorSor =
+  cast (listaElemVagyNulla 2 thetaSor) +
+  cast (listaElemVagyNulla 1 thetaSor) *
+    cast (listaElemVagyNulla 1 oszcillatorSor) +
+  cast (listaElemVagyNulla 2 oszcillatorSor)
 
 public export
 MasodikFokFelbontasUton : Integer
 MasodikFokFelbontasUton =
-  cast (listaElemVagyNulla 2 E8ThetaHaromFokig) +
-  cast (listaElemVagyNulla 1 E8ThetaHaromFokig) *
-    cast (listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig) +
-  cast (listaElemVagyNulla 2 NyolcSzinuOszcillatorSorHaromFokig)
+  masodikFokFelbontasRecept
+    E8ThetaHaromFokig NyolcSzinuOszcillatorSorHaromFokig
 
 BizonyitasMasodikFokNegyezerSzazHuszonnegy :
   MasodikFokFelbontasUton = 4124
 BizonyitasMasodikFokNegyezerSzazHuszonnegy =
-  rewrite BizonyitasE8ThetaHaromFokig in
-  rewrite BizonyitasNyolcSzinuOszcillatorSorHaromFokig in
-  Refl
+  trans
+    (cong
+      (\thetaSor =>
+        masodikFokFelbontasRecept
+          thetaSor NyolcSzinuOszcillatorSorHaromFokig)
+      BizonyitasE8ThetaHaromFokig)
+    (trans
+      (cong
+        (masodikFokFelbontasRecept [1, 240, 2160, 6720])
+        BizonyitasNyolcSzinuOszcillatorSorHaromFokig)
+      Refl)
+
+public export
+harmadikFokFelbontasRecept : List Nat -> List Nat -> Integer
+harmadikFokFelbontasRecept thetaSor oszcillatorSor =
+  cast (listaElemVagyNulla 3 thetaSor) +
+  cast (listaElemVagyNulla 2 thetaSor) *
+    cast (listaElemVagyNulla 1 oszcillatorSor) +
+  cast (listaElemVagyNulla 1 thetaSor) *
+    cast (listaElemVagyNulla 2 oszcillatorSor) +
+  cast (listaElemVagyNulla 3 oszcillatorSor)
 
 public export
 HarmadikFokFelbontasUton : Integer
 HarmadikFokFelbontasUton =
-  cast (listaElemVagyNulla 3 E8ThetaHaromFokig) +
-  cast (listaElemVagyNulla 2 E8ThetaHaromFokig) *
-    cast (listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig) +
-  cast (listaElemVagyNulla 1 E8ThetaHaromFokig) *
-    cast (listaElemVagyNulla 2 NyolcSzinuOszcillatorSorHaromFokig) +
-  cast (listaElemVagyNulla 3 NyolcSzinuOszcillatorSorHaromFokig)
+  harmadikFokFelbontasRecept
+    E8ThetaHaromFokig NyolcSzinuOszcillatorSorHaromFokig
 
 BizonyitasHarmadikFokHarmincNegyezerHetszazOtvenketto :
   HarmadikFokFelbontasUton = 34752
 BizonyitasHarmadikFokHarmincNegyezerHetszazOtvenketto =
-  rewrite BizonyitasE8ThetaHaromFokig in
-  rewrite BizonyitasNyolcSzinuOszcillatorSorHaromFokig in
-  Refl
+  trans
+    (cong
+      (\thetaSor =>
+        harmadikFokFelbontasRecept
+          thetaSor NyolcSzinuOszcillatorSorHaromFokig)
+      BizonyitasE8ThetaHaromFokig)
+    (trans
+      (cong
+        (harmadikFokFelbontasRecept [1, 240, 2160, 6720])
+        BizonyitasNyolcSzinuOszcillatorSorHaromFokig)
+      Refl)
 
 -- =====================================================================
 -- 5. A MODULÁRIS j-INVARIÁNS KÖBGYÖKÉNEK VÉGES ELLENŐRZÉSE
@@ -381,42 +429,50 @@ BizonyitasHarmadikFokHarmincNegyezerHetszazOtvenketto =
 -- =====================================================================
 
 public export
+karakterKobRecept : List Integer -> List Integer
+karakterKobRecept karakterSor =
+  [ listaEgeszElemVagyNulla 0 karakterSor *
+    listaEgeszElemVagyNulla 0 karakterSor *
+    listaEgeszElemVagyNulla 0 karakterSor
+  , 3 *
+    listaEgeszElemVagyNulla 0 karakterSor *
+    listaEgeszElemVagyNulla 0 karakterSor *
+    listaEgeszElemVagyNulla 1 karakterSor
+  , 3 *
+    listaEgeszElemVagyNulla 0 karakterSor *
+    listaEgeszElemVagyNulla 0 karakterSor *
+    listaEgeszElemVagyNulla 2 karakterSor +
+    3 *
+    listaEgeszElemVagyNulla 0 karakterSor *
+    listaEgeszElemVagyNulla 1 karakterSor *
+    listaEgeszElemVagyNulla 1 karakterSor
+  , 3 *
+    listaEgeszElemVagyNulla 0 karakterSor *
+    listaEgeszElemVagyNulla 0 karakterSor *
+    listaEgeszElemVagyNulla 3 karakterSor +
+    6 *
+    listaEgeszElemVagyNulla 0 karakterSor *
+    listaEgeszElemVagyNulla 1 karakterSor *
+    listaEgeszElemVagyNulla 2 karakterSor +
+    listaEgeszElemVagyNulla 1 karakterSor *
+    listaEgeszElemVagyNulla 1 karakterSor *
+    listaEgeszElemVagyNulla 1 karakterSor
+  ]
+
+public export
 KarakterBelsoKobeHaromFokig : List Integer
 KarakterBelsoKobeHaromFokig =
-  [ listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig
-  , 3 *
-    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig
-  , 3 *
-    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 2 AffinE8ElsoSzintuKarakterHaromFokig +
-    3 *
-    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig
-  , 3 *
-    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 3 AffinE8ElsoSzintuKarakterHaromFokig +
-    6 *
-    listaEgeszElemVagyNulla 0 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 2 AffinE8ElsoSzintuKarakterHaromFokig +
-    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig *
-    listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig
-  ]
+  karakterKobRecept AffinE8ElsoSzintuKarakterHaromFokig
 
 BizonyitasKarakterKobeModularisJInvariansKezdete :
   KarakterBelsoKobeHaromFokig =
     [1, 744, 196884, 21493760]
 BizonyitasKarakterKobeModularisJInvariansKezdete =
-  rewrite BizonyitasAffinE8ElsoSzintuKarakterHaromFokig in
-  Refl
+  trans
+    (cong
+      karakterKobRecept
+      BizonyitasAffinE8ElsoSzintuKarakterHaromFokig)
+    Refl
 
 -- =====================================================================
 -- 6. A NYOLCAS KÖZPONTI TÖLTÉS KÉT ÚTON
