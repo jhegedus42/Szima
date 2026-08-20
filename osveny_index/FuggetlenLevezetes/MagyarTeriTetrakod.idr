@@ -284,7 +284,8 @@ TernarisNegydimenziosTerMerete = 3 * 3 * 3 * 3
 
 public export
 NemNullaHibaErtekekSzama : Nat
-NemNullaHibaErtekekSzama = length [TritEgy, TritKetto]
+NemNullaHibaErtekekSzama =
+  length (the (List Trit) [TritEgy, TritKetto])
 
 public export
 EgySugaruHammingGombMerete : Nat
