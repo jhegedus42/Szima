@@ -1,6 +1,7 @@
 module AffinE8KarakterLevezetes
 
 import Data.List
+import Data.Vect
 import E8SteaneLevezetes
 
 %default total
@@ -300,19 +301,88 @@ BizonyitasHarmadikFokHarmincNegyezerHetszazOtvenketto =
 -- A normalizált karakter q^(-1/3) szorzójának köbe q^(-1).
 -- Ezért az alábbi lista rendre a q^(-1), q^0, q^1 és q^2
 -- együtthatóját adja a karakter köbében.
+--
+-- A köb nagy együtthatóit Integer felett normalizáljuk. Idris 2 0.8.0
+-- a típusszintű Nat-szorzást Peano-alakban végzi, ezért a 248^3
+-- közvetlen Nat-Refl ellenőrzése indokolatlanul nagy fordítási fát ad.
 -- =====================================================================
 
 public export
-KarakterBelsoKobeHaromFokig : List Nat
+termeszetesListaEgeszListava : List Nat -> List Integer
+termeszetesListaEgeszListava = map cast
+
+public export
+egeszListaEgyutthatonkentOsszead :
+  List Integer -> List Integer -> List Integer
+egeszListaEgyutthatonkentOsszead [] jobb = jobb
+egeszListaEgyutthatonkentOsszead bal [] = bal
+egeszListaEgyutthatonkentOsszead
+  (balElem :: tobbiBalElem)
+  (jobbElem :: tobbiJobbElem) =
+    (balElem + jobbElem) ::
+    egeszListaEgyutthatonkentOsszead tobbiBalElem tobbiJobbElem
+
+public export
+egeszPolinomTeljesSzorzata :
+  List Integer -> List Integer -> List Integer
+egeszPolinomTeljesSzorzata [] _ = []
+egeszPolinomTeljesSzorzata (balElem :: tobbiBalElem) jobb =
+  egeszListaEgyutthatonkentOsszead
+    (map (\jobbElem => balElem * jobbElem) jobb)
+    (0 :: egeszPolinomTeljesSzorzata tobbiBalElem jobb)
+
+public export
+egeszPolinomCsonkoltSzorzata :
+  (egyutthatokSzama : Nat) ->
+  List Integer -> List Integer -> List Integer
+egeszPolinomCsonkoltSzorzata egyutthatokSzama bal jobb =
+  take egyutthatokSzama
+    (egeszPolinomTeljesSzorzata bal jobb ++
+     replicate egyutthatokSzama 0)
+
+public export
+egeszPolinomEgyseg : (egyutthatokSzama : Nat) -> List Integer
+egeszPolinomEgyseg Z = []
+egeszPolinomEgyseg (S tobbiEgyutthatoSzama) =
+  1 :: replicate tobbiEgyutthatoSzama 0
+
+public export
+egeszPolinomCsonkoltHatvanya :
+  (egyutthatokSzama : Nat) -> Nat -> List Integer -> List Integer
+egeszPolinomCsonkoltHatvanya egyutthatokSzama Z _ =
+  egeszPolinomEgyseg egyutthatokSzama
+egeszPolinomCsonkoltHatvanya
+  egyutthatokSzama (S kisebbHatvany) polinom =
+    egeszPolinomCsonkoltSzorzata
+      egyutthatokSzama
+      polinom
+      (egeszPolinomCsonkoltHatvanya
+        egyutthatokSzama kisebbHatvany polinom)
+
+public export
+AffinE8ElsoSzintuKarakterHaromFokigEgesz : List Integer
+AffinE8ElsoSzintuKarakterHaromFokigEgesz =
+  termeszetesListaEgeszListava AffinE8ElsoSzintuKarakterHaromFokig
+
+BizonyitasAffinE8ElsoSzintuKarakterHaromFokigEgesz :
+  AffinE8ElsoSzintuKarakterHaromFokigEgesz =
+    [1, 248, 4124, 34752]
+BizonyitasAffinE8ElsoSzintuKarakterHaromFokigEgesz =
+  cong
+    termeszetesListaEgeszListava
+    BizonyitasAffinE8ElsoSzintuKarakterHaromFokig
+
+public export
+KarakterBelsoKobeHaromFokig : List Integer
 KarakterBelsoKobeHaromFokig =
-  polinomCsonkoltHatvanya
-    4 3 AffinE8ElsoSzintuKarakterHaromFokig
+  egeszPolinomCsonkoltHatvanya
+    4 3 AffinE8ElsoSzintuKarakterHaromFokigEgesz
 
 BizonyitasKarakterKobeModularisJInvariansKezdete :
   KarakterBelsoKobeHaromFokig =
     [1, 744, 196884, 21493760]
 BizonyitasKarakterKobeModularisJInvariansKezdete =
-  rewrite BizonyitasAffinE8ElsoSzintuKarakterHaromFokig in
+  rewrite BizonyitasAffinE8ElsoSzintuKarakterHaromFokigEgesz in
   Refl
 
 -- =====================================================================
