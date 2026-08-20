@@ -266,10 +266,36 @@ BizonyitasNyolcSzinuOszcillatorSorHaromFokig = Refl
 -- =====================================================================
 
 public export
-AffinE8ElsoSzintuKarakterHaromFokig : List Nat
+listaEgeszElemVagyNulla : Nat -> List Integer -> Integer
+listaEgeszElemVagyNulla _ [] = 0
+listaEgeszElemVagyNulla Z (elem :: _) = elem
+listaEgeszElemVagyNulla (S kisebbIndex) (_ :: tobbiElem) =
+  listaEgeszElemVagyNulla kisebbIndex tobbiElem
+
+public export
+AffinE8ElsoSzintuKarakterHaromFokig : List Integer
 AffinE8ElsoSzintuKarakterHaromFokig =
-  polinomCsonkoltSzorzata
-    4 E8ThetaHaromFokig NyolcSzinuOszcillatorSorHaromFokig
+  [ cast (listaElemVagyNulla 0 E8ThetaHaromFokig) *
+      cast (listaElemVagyNulla 0 NyolcSzinuOszcillatorSorHaromFokig)
+  , cast (listaElemVagyNulla 1 E8ThetaHaromFokig) *
+      cast (listaElemVagyNulla 0 NyolcSzinuOszcillatorSorHaromFokig) +
+    cast (listaElemVagyNulla 0 E8ThetaHaromFokig) *
+      cast (listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig)
+  , cast (listaElemVagyNulla 2 E8ThetaHaromFokig) *
+      cast (listaElemVagyNulla 0 NyolcSzinuOszcillatorSorHaromFokig) +
+    cast (listaElemVagyNulla 1 E8ThetaHaromFokig) *
+      cast (listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig) +
+    cast (listaElemVagyNulla 0 E8ThetaHaromFokig) *
+      cast (listaElemVagyNulla 2 NyolcSzinuOszcillatorSorHaromFokig)
+  , cast (listaElemVagyNulla 3 E8ThetaHaromFokig) *
+      cast (listaElemVagyNulla 0 NyolcSzinuOszcillatorSorHaromFokig) +
+    cast (listaElemVagyNulla 2 E8ThetaHaromFokig) *
+      cast (listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig) +
+    cast (listaElemVagyNulla 1 E8ThetaHaromFokig) *
+      cast (listaElemVagyNulla 2 NyolcSzinuOszcillatorSorHaromFokig) +
+    cast (listaElemVagyNulla 0 E8ThetaHaromFokig) *
+      cast (listaElemVagyNulla 3 NyolcSzinuOszcillatorSorHaromFokig)
+  ]
 
 BizonyitasAffinE8ElsoSzintuKarakterHaromFokig :
   AffinE8ElsoSzintuKarakterHaromFokig =
@@ -289,13 +315,14 @@ BizonyitasE8GyokszamAtvetele =
   trans BizonyitasE8MinimalisVektorokSzama Refl
 
 public export
-ElsoFokGyokEsCartanUton : Nat
-ElsoFokGyokEsCartanUton = AtvettE8GyokokSzama + E8Rang
+ElsoFokGyokEsCartanUton : Integer
+ElsoFokGyokEsCartanUton =
+  cast AtvettE8GyokokSzama + cast E8Rang
 
 public export
-ElsoFokKarakterUton : Nat
+ElsoFokKarakterUton : Integer
 ElsoFokKarakterUton =
-  listaElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig
+  listaEgeszElemVagyNulla 1 AffinE8ElsoSzintuKarakterHaromFokig
 
 BizonyitasElsoFokKetFuggetlenUton :
   ElsoFokGyokEsCartanUton = ElsoFokKarakterUton
@@ -310,12 +337,12 @@ BizonyitasElsoFokKetszazNegyvennyolc =
   Refl
 
 public export
-MasodikFokFelbontasUton : Nat
+MasodikFokFelbontasUton : Integer
 MasodikFokFelbontasUton =
-  listaElemVagyNulla 2 E8ThetaHaromFokig +
-  listaElemVagyNulla 1 E8ThetaHaromFokig *
-    listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig +
-  listaElemVagyNulla 2 NyolcSzinuOszcillatorSorHaromFokig
+  cast (listaElemVagyNulla 2 E8ThetaHaromFokig) +
+  cast (listaElemVagyNulla 1 E8ThetaHaromFokig) *
+    cast (listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig) +
+  cast (listaElemVagyNulla 2 NyolcSzinuOszcillatorSorHaromFokig)
 
 BizonyitasMasodikFokNegyezerSzazHuszonnegy :
   MasodikFokFelbontasUton = 4124
@@ -325,14 +352,14 @@ BizonyitasMasodikFokNegyezerSzazHuszonnegy =
   Refl
 
 public export
-HarmadikFokFelbontasUton : Nat
+HarmadikFokFelbontasUton : Integer
 HarmadikFokFelbontasUton =
-  listaElemVagyNulla 3 E8ThetaHaromFokig +
-  listaElemVagyNulla 2 E8ThetaHaromFokig *
-    listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig +
-  listaElemVagyNulla 1 E8ThetaHaromFokig *
-    listaElemVagyNulla 2 NyolcSzinuOszcillatorSorHaromFokig +
-  listaElemVagyNulla 3 NyolcSzinuOszcillatorSorHaromFokig
+  cast (listaElemVagyNulla 3 E8ThetaHaromFokig) +
+  cast (listaElemVagyNulla 2 E8ThetaHaromFokig) *
+    cast (listaElemVagyNulla 1 NyolcSzinuOszcillatorSorHaromFokig) +
+  cast (listaElemVagyNulla 1 E8ThetaHaromFokig) *
+    cast (listaElemVagyNulla 2 NyolcSzinuOszcillatorSorHaromFokig) +
+  cast (listaElemVagyNulla 3 NyolcSzinuOszcillatorSorHaromFokig)
 
 BizonyitasHarmadikFokHarmincNegyezerHetszazOtvenketto :
   HarmadikFokFelbontasUton = 34752
@@ -352,10 +379,6 @@ BizonyitasHarmadikFokHarmincNegyezerHetszazOtvenketto =
 -- a típusszintű Nat-szorzást Peano-alakban végzi, ezért a 248^3
 -- közvetlen Nat-Refl ellenőrzése indokolatlanul nagy fordítási fát ad.
 -- =====================================================================
-
-public export
-termeszetesListaEgeszListava : List Nat -> List Integer
-termeszetesListaEgeszListava = map cast
 
 public export
 egeszListaEgyutthatonkentOsszead :
@@ -406,29 +429,16 @@ egeszPolinomCsonkoltHatvanya
         egyutthatokSzama kisebbHatvany polinom)
 
 public export
-AffinE8ElsoSzintuKarakterHaromFokigEgesz : List Integer
-AffinE8ElsoSzintuKarakterHaromFokigEgesz =
-  termeszetesListaEgeszListava AffinE8ElsoSzintuKarakterHaromFokig
-
-BizonyitasAffinE8ElsoSzintuKarakterHaromFokigEgesz :
-  AffinE8ElsoSzintuKarakterHaromFokigEgesz =
-    [1, 248, 4124, 34752]
-BizonyitasAffinE8ElsoSzintuKarakterHaromFokigEgesz =
-  cong
-    termeszetesListaEgeszListava
-    BizonyitasAffinE8ElsoSzintuKarakterHaromFokig
-
-public export
 KarakterBelsoKobeHaromFokig : List Integer
 KarakterBelsoKobeHaromFokig =
   egeszPolinomCsonkoltHatvanya
-    4 3 AffinE8ElsoSzintuKarakterHaromFokigEgesz
+    4 3 AffinE8ElsoSzintuKarakterHaromFokig
 
 BizonyitasKarakterKobeModularisJInvariansKezdete :
   KarakterBelsoKobeHaromFokig =
     [1, 744, 196884, 21493760]
 BizonyitasKarakterKobeModularisJInvariansKezdete =
-  rewrite BizonyitasAffinE8ElsoSzintuKarakterHaromFokigEgesz in
+  rewrite BizonyitasAffinE8ElsoSzintuKarakterHaromFokig in
   Refl
 
 -- =====================================================================
@@ -436,33 +446,33 @@ BizonyitasKarakterKobeModularisJInvariansKezdete =
 -- =====================================================================
 
 public export
-AffinSzint : Nat
+AffinSzint : Integer
 AffinSzint = 1
 
 public export
-E8LieAlgebraDimenzio : Nat
+E8LieAlgebraDimenzio : Integer
 E8LieAlgebraDimenzio = ElsoFokGyokEsCartanUton
 
 public export
-E8DualisCoxeterSzam : Nat
+E8DualisCoxeterSzam : Integer
 E8DualisCoxeterSzam = 30
 
 public export
-SugawaraKozpontiToltesSzamlalo : Nat
+SugawaraKozpontiToltesSzamlalo : Integer
 SugawaraKozpontiToltesSzamlalo =
   AffinSzint * E8LieAlgebraDimenzio
 
 public export
-SugawaraKozpontiToltesNevezo : Nat
+SugawaraKozpontiToltesNevezo : Integer
 SugawaraKozpontiToltesNevezo =
   AffinSzint + E8DualisCoxeterSzam
 
 public export
-RacsKozpontiToltesSzamlalo : Nat
-RacsKozpontiToltesSzamlalo = E8Rang
+RacsKozpontiToltesSzamlalo : Integer
+RacsKozpontiToltesSzamlalo = cast E8Rang
 
 public export
-RacsKozpontiToltesNevezo : Nat
+RacsKozpontiToltesNevezo : Integer
 RacsKozpontiToltesNevezo = 1
 
 BizonyitasKozpontiToltesKetUton :
