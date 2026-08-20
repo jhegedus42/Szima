@@ -1,7 +1,6 @@
 module AffinE8KarakterLevezetes
 
 import Data.List
-import Data.Nat
 import E8SteaneLevezetes
 
 %default total
@@ -333,26 +332,33 @@ E8DualisCoxeterSzam : Nat
 E8DualisCoxeterSzam = 30
 
 public export
-SugawaraKozpontiToltes : Nat
-SugawaraKozpontiToltes =
-  (AffinSzint * E8LieAlgebraDimenzio) `div`
-  (AffinSzint + E8DualisCoxeterSzam)
+SugawaraKozpontiToltesSzamlalo : Nat
+SugawaraKozpontiToltesSzamlalo =
+  AffinSzint * E8LieAlgebraDimenzio
 
 public export
-RacsKozpontiToltes : Nat
-RacsKozpontiToltes = E8Rang
+SugawaraKozpontiToltesNevezo : Nat
+SugawaraKozpontiToltesNevezo =
+  AffinSzint + E8DualisCoxeterSzam
+
+public export
+RacsKozpontiToltesSzamlalo : Nat
+RacsKozpontiToltesSzamlalo = E8Rang
+
+public export
+RacsKozpontiToltesNevezo : Nat
+RacsKozpontiToltesNevezo = 1
 
 BizonyitasKozpontiToltesKetUton :
-  SugawaraKozpontiToltes = RacsKozpontiToltes
+  SugawaraKozpontiToltesSzamlalo * RacsKozpontiToltesNevezo =
+  RacsKozpontiToltesSzamlalo * SugawaraKozpontiToltesNevezo
 BizonyitasKozpontiToltesKetUton =
   rewrite BizonyitasE8MinimalisVektorokSzama in
   Refl
 
-BizonyitasKozpontiToltesNyolc :
-  SugawaraKozpontiToltes = 8
-BizonyitasKozpontiToltesNyolc =
-  rewrite BizonyitasE8MinimalisVektorokSzama in
-  Refl
+BizonyitasRacsKozpontiToltesNyolc :
+  RacsKozpontiToltesSzamlalo = 8
+BizonyitasRacsKozpontiToltesNyolc = Refl
 
 -- =====================================================================
 -- 7. FUTTATHATÓ JELENTÉS
@@ -374,6 +380,8 @@ affinE8KarakterJelentes = do
   putStrLn ("  karakterköb, a moduláris j-invariáns kezdete: " ++
             show KarakterBelsoKobeHaromFokig)
   putStrLn ("  központi töltés két úton: " ++
-            show SugawaraKozpontiToltes ++ " = " ++
-            show RacsKozpontiToltes)
+            show SugawaraKozpontiToltesSzamlalo ++ "/" ++
+            show SugawaraKozpontiToltesNevezo ++ " = " ++
+            show RacsKozpontiToltesSzamlalo ++ "/" ++
+            show RacsKozpontiToltesNevezo)
   putStrLn "Határ: ez affin reprezentációelmélet, nem kvantumhibajavító kód."
