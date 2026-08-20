@@ -59,6 +59,15 @@ kubit fázis nélküli Pauli-tere. A `paritásbuborék` elnevezés ennek a
 könyvtárnak a neve a kilyukasztással létrejövő egydimenziós klasszikus
 öndualitási hiányra. Nem bevett fizikai szakkifejezés.
 
+A globális `±1` és `±i` Pauli-fázisokat megtartó teljes csoporthányados
+nem azonos a négyelemű bináris térrel. A modul a szokásos fázismentes
+szimplektikus címkéket számolja; csoportnyelven a pontos állítás:
+
+```text
+Pauli-normalizátor / (stabilizátor × Pauli-középpont)
+    ≅ kételemű test × kételemű test.
+```
+
 Shubham P. Jain és Victor V. Albert 2024-es általános konstrukciója
 ugyanezt a műveletet használja: kétszeresen páros önduális klasszikus kód
 egy koordinátájának kilyukasztásából egy logikai kubitot kódoló,
@@ -90,6 +99,12 @@ közös véges indexhalmaz, de önmagában nem bizonyít kódekvivalenciát,
 dinamikai azonosságot vagy közvetlen fizikai leképezést. A rostfelbontás
 a választott Construction A koordinátakerettől függ; nem az E8
 gyökrendszer keretfüggetlen felbontása.
+
+Ezek a redukciós rostok nem ortogonális E8-keretek: egyazon rost két
+gyökének skalárszorzata is lehet nemnulla. Az irodalomban ismert másik
+felbontás a 120 antipodális gyöksugarat 15, egyenként 8 sugaras
+ortogonális keretre bontja; az előjeleket visszaadva ott is `15 × 16`
+adódik. A két azonos számosságú felbontást nem szabad azonosítani.
 
 ## Mit nem jelent itt az E9 és a buborék?
 

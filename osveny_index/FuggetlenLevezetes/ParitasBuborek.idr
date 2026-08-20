@@ -22,7 +22,9 @@ import E8SteaneLevezetes
 -- A törölt nyolcadik koordináta pontosan ezt a paritást tárolta.
 -- A Calderbank–Shor–Steane-konstrukcióban a két Pauli-összetevő
 -- két ilyen jelet ad; a normalizátor és a stabilizátor hányadosa
--- ezért négyelemű, nemelfajuló szimplektikus tér: egy logikai kubit.
+-- a globális Pauli-fázisok elhagyása után ezért négyelemű,
+-- nemelfajuló szimplektikus tér: egy logikai kubit. A teljes
+-- Pauli-csoportban a középponttal is hányadosolni kell.
 --
 -- Ez a modul ezt nevezi paritásbuboréknak. A név új, a tartalma
 -- véges kódelméleti állítás, nem fizikai metafora.
@@ -364,6 +366,9 @@ BizonyitasLogikaiPauliTavolsagHarom = Refl
 -- nullakódszó + 14 súlynégyes kódszó. Mindegyikhez 16 gyök tartozik.
 -- A csupa-egy kódszóval való eltolás ezt a címkehalmazt az E8-kód
 -- 15 nemnulla szavára képezi.
+--
+-- Ezek redukciós rostok, nem ortogonális gyökkeretek. Az E8 ismert,
+-- 15 ortogonális keretes felbontása más ekvivalenciarelációt használ.
 -- =====================================================================
 
 public export
