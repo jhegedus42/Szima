@@ -106,6 +106,92 @@ felbontás a 120 antipodális gyöksugarat 15, egyenként 8 sugaras
 ortogonális keretre bontja; az előjeleket visszaadva ott is `15 × 16`
 adódik. A két azonos számosságú felbontást nem szabad azonosítani.
 
+## A másik ág: E8-rácsból affin E8-karakter
+
+Az `AffinE8KarakterLevezetes.idr` szigorúan külön tartja a két,
+ugyanabból a klasszikus kódból induló konstrukciót:
+
+```text
+[8,4,4] kiterjesztett Hamming-kód
+│
+├─ kilyukasztás → [7,4,3] → Calderbank–Shor–Steane → [[7,1,3]]
+│
+└─ Construction A → E8-rács → rács-vertexoperátor-algebra
+                              → affin E8 első szintű alapreprezentáció
+```
+
+Az első ág kvantumhibajavító kód. A második ág affin
+reprezentációelmélet, és nem kódol logikai kubitot.
+
+A Frenkel–Kac-tétel szerint az E8-rács vertexoperátor-algebrája
+izomorf az affin E8 első szintű egyszerű
+vertexoperátor-algebrájával:
+
+```text
+V(E8) ≅ L_E8(1, 0).
+```
+
+Ez az általános izomorfia irodalmi tétel, nem a jelen véges Idris-számítás
+eredménye. A modul a karakter első együtthatóit vezeti le.
+
+A `[8,4,4]` kód `1 + 14·y⁴ + y⁸` súlyfelsorolójából, a Construction A
+páros és páratlan koordinátasorainak behelyettesítésével:
+
+```text
+E8 théta-sor = 1 + 240q + 2160q² + 6720q³ + …
+```
+
+A nyolc Cartan-oszcillátor harmadik fokig:
+
+```text
+oszcillátorsor = 1 + 8q + 44q² + 192q³ + …
+```
+
+A két sor konvolúciója:
+
+```text
+fokozott karakter = 1 + 248q + 4124q² + 34752q³ + …
+```
+
+Az első fok két független úton ugyanaz:
+
+```text
+Construction A: 240 gyök + 8 Cartan-áram = 248
+karakter:       első nemállandó együttható = 248
+```
+
+A pontos második és harmadik fok:
+
+```text
+4124  = 2160 + 240·8 + 44
+34752 = 6720 + 2160·8 + 240·44 + 192
+```
+
+A normalizált karakter elején álló `q^(-1/3)` tényező köbe `q^(-1)`.
+Ezért a karakter belső sorának köbe:
+
+```text
+1 + 744q + 196884q² + 21493760q³ + …
+```
+
+ami a fokeltolás után a moduláris `j`-invariáns
+`q^(-1), q⁰, q¹, q²` együtthatóit adja. A teljes
+karakterköb-azonosság Kac tétele; az Idris-modul csak ezt a véges
+kezdőszeletet ellenőrzi.
+
+A központi töltést is két recept kényszeríti ugyanarra:
+
+```text
+rácsrecept:       rang(E8) = 8
+Sugawara-recept:  1·248 / (1 + 30) = 8
+```
+
+Kategóriaelméletileg az E8-rács öndualitása miatt az első szintű
+vertexoperátor-algebra holomorf: közönséges moduljainak fúziós
+kategóriájában egyetlen egyszerű objektum van. Ez nem jelenti azt, hogy
+az affin algebra teljes reprezentációkategóriája triviális, és nem
+jelent kétdimenziós kvantumkódteret.
+
 ## Mit nem jelent itt az E9 és a buborék?
 
 Az affin E9 Kac–Moody-algebra nem „négy E8 és még egy bit”. Az E8
@@ -256,6 +342,20 @@ idris2 --build FuggetlenLevezetes.ipkg
   E9*, Physical Review D 96, 106022 (2017).
   Az affin E9 mint centrálisan kiterjesztett E8-hurokalgebra
   derivációval.
+- Igor Frenkel és Victor Kac, *Basic Representations of Affine Lie
+  Algebras and Dual Resonance Models*, Inventiones Mathematicae 62
+  (1980).
+  Az E8-rács vertexoperátoros megvalósítása mint az affin E8 első
+  szintű alapreprezentációja.
+- Victor Kac, *E8^(1) and the cube root of the modular invariant j*,
+  Advances in Mathematics 35 (1980).
+  Az első szintű affin E8-karakter és a moduláris `j`-invariáns
+  köbgyökének azonossága.
+- Chongying Dong és Geoffrey Mason, *Holomorphic vertex operator
+  algebras of small central charge*, Pacific Journal of Mathematics
+  213 (2004).
+  A nyolcas központi töltésű holomorf vertexoperátor-algebra
+  egyértelműsége.
 - Ben Friedrich, Arthur Hebecker és Johannes Walcher, *Cobordism and
   Bubbles of Anything in the String Landscape*, Journal of High Energy
   Physics 2024, 127.
