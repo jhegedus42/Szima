@@ -2,7 +2,9 @@ package fuggetlen-levezetes
 
 modules = E8SteaneLevezetes
         , KorabbiNumerikusEllenorzes
+        , ParitasBuborek
+        , FuggetlenLevezetesFoprogram
 
-main = E8SteaneLevezetes
+main = FuggetlenLevezetesFoprogram
 
 executable = e8-steane-levezetes
