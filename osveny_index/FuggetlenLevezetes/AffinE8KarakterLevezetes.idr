@@ -1,7 +1,6 @@
 module AffinE8KarakterLevezetes
 
 import Data.List
-import Data.Vect
 import E8SteaneLevezetes
 
 %default total
@@ -123,9 +122,52 @@ binomialis (S felso) (S also) =
 -- =====================================================================
 
 public export
+AtvettNullaSulyuKodSzavakSzama : Nat
+AtvettNullaSulyuKodSzavakSzama = 1
+
+public export
+AtvettNegySulyuKodSzavakSzama : Nat
+AtvettNegySulyuKodSzavakSzama = 14
+
+public export
+AtvettNyolcSulyuKodSzavakSzama : Nat
+AtvettNyolcSulyuKodSzavakSzama = 1
+
+BizonyitasKodSulyeloszlasAtvetele :
+  [ E8KodNullaSulyuSzavai
+  , E8KodNegySulyuSzavai
+  , E8KodNyolcSulyuSzavai
+  ] =
+  [ AtvettNullaSulyuKodSzavakSzama
+  , AtvettNegySulyuKodSzavakSzama
+  , AtvettNyolcSulyuKodSzavakSzama
+  ]
+BizonyitasKodSulyeloszlasAtvetele =
+  trans
+    (cong
+      (\nullaSulyuSzavakSzama =>
+        [ nullaSulyuSzavakSzama
+        , E8KodNegySulyuSzavai
+        , E8KodNyolcSulyuSzavai
+        ])
+      BizonyitasE8KodNullaSulyuSzavai)
+    (trans
+      (cong
+        (\negySulyuSzavakSzama =>
+          [ 1
+          , negySulyuSzavakSzama
+          , E8KodNyolcSulyuSzavai
+          ])
+        BizonyitasE8KodNegySulyuSzavai)
+      (cong
+        (\nyolcSulyuSzavakSzama =>
+          [1, 14, nyolcSulyuSzavakSzama])
+        BizonyitasE8KodNyolcSulyuSzavai))
+
+public export
 NullaSulyuKodSzoThetaEgeszFokSor : List Nat
 NullaSulyuKodSzoThetaEgeszFokSor =
-  listaEgyutthatonkentSkalaz E8KodNullaSulyuSzavai
+  listaEgyutthatonkentSkalaz AtvettNullaSulyuKodSzavakSzama
     [ 1
     , binomialis 8 1 * kettoHatvany 1
     , binomialis 8 2 * kettoHatvany 2
@@ -135,7 +177,7 @@ NullaSulyuKodSzoThetaEgeszFokSor =
 public export
 NegySulyuKodSzoThetaEgeszFokSor : List Nat
 NegySulyuKodSzoThetaEgeszFokSor =
-  listaEgyutthatonkentSkalaz E8KodNegySulyuSzavai
+  listaEgyutthatonkentSkalaz AtvettNegySulyuKodSzavakSzama
     [ 0
     , kettoHatvany 4
     , (binomialis 4 1 * kettoHatvany 1) * kettoHatvany 4
@@ -146,7 +188,7 @@ NegySulyuKodSzoThetaEgeszFokSor =
 public export
 NyolcSulyuKodSzoThetaEgeszFokSor : List Nat
 NyolcSulyuKodSzoThetaEgeszFokSor =
-  listaEgyutthatonkentSkalaz E8KodNyolcSulyuSzavai
+  listaEgyutthatonkentSkalaz AtvettNyolcSulyuKodSzavakSzama
     [0, 0, kettoHatvany 8, 0]
 
 public export
@@ -160,11 +202,7 @@ E8ThetaHaromFokig =
 
 BizonyitasE8ThetaHaromFokig :
   E8ThetaHaromFokig = [1, 240, 2160, 6720]
-BizonyitasE8ThetaHaromFokig =
-  rewrite BizonyitasE8KodNullaSulyuSzavai in
-  rewrite BizonyitasE8KodNegySulyuSzavai in
-  rewrite BizonyitasE8KodNyolcSulyuSzavai in
-  Refl
+BizonyitasE8ThetaHaromFokig = Refl
 
 -- =====================================================================
 -- 3. NYOLCSZÍNŰ BOZONIKUS OSZCILLÁTORSOR
@@ -242,8 +280,17 @@ BizonyitasAffinE8ElsoSzintuKarakterHaromFokig =
   Refl
 
 public export
+AtvettE8GyokokSzama : Nat
+AtvettE8GyokokSzama = 240
+
+BizonyitasE8GyokszamAtvetele :
+  E8MinimalisVektorokSzama = AtvettE8GyokokSzama
+BizonyitasE8GyokszamAtvetele =
+  trans BizonyitasE8MinimalisVektorokSzama Refl
+
+public export
 ElsoFokGyokEsCartanUton : Nat
-ElsoFokGyokEsCartanUton = E8MinimalisVektorokSzama + E8Rang
+ElsoFokGyokEsCartanUton = AtvettE8GyokokSzama + E8Rang
 
 public export
 ElsoFokKarakterUton : Nat
@@ -253,7 +300,6 @@ ElsoFokKarakterUton =
 BizonyitasElsoFokKetFuggetlenUton :
   ElsoFokGyokEsCartanUton = ElsoFokKarakterUton
 BizonyitasElsoFokKetFuggetlenUton =
-  rewrite BizonyitasE8MinimalisVektorokSzama in
   rewrite BizonyitasAffinE8ElsoSzintuKarakterHaromFokig in
   Refl
 
@@ -422,9 +468,7 @@ RacsKozpontiToltesNevezo = 1
 BizonyitasKozpontiToltesKetUton :
   SugawaraKozpontiToltesSzamlalo * RacsKozpontiToltesNevezo =
   RacsKozpontiToltesSzamlalo * SugawaraKozpontiToltesNevezo
-BizonyitasKozpontiToltesKetUton =
-  rewrite BizonyitasE8MinimalisVektorokSzama in
-  Refl
+BizonyitasKozpontiToltesKetUton = Refl
 
 BizonyitasRacsKozpontiToltesNyolc :
   RacsKozpontiToltesSzamlalo = 8
