@@ -14,9 +14,18 @@
 2. **Build and deployment → Source:** GitHub Actions
 3. Merge / push a `cursor/literature-aaa6` ágra → workflow fut → oldal él
 
-### Vercel / Cloudflare
+### Vercel — ág-specifikus preview (ajánlott)
 
-Import repo, **root directory = `docs`**, nincs build parancs. A `docs/vercel.json` már ott van.
+**[VERCEL_AG_DOCS.md](./VERCEL_AG_DOCS.md)** — teljes útmutató.
+
+- Import repo → gyökér `vercel.json` (build: `docs/scripts/vercel-build.sh`, output: `docs`)
+- **Production:** `master` → fő domain
+- **Minden más ág** → saját preview URL (`*-git-<ág>-*.vercel.app`)
+- Alján branch banner (ág neve + commit)
+
+### Cloudflare Pages
+
+Ugyanaz: output `docs`, build script `bash docs/scripts/vercel-build.sh`, preview branches: all.
 
 ---
 

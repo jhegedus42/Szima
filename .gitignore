@@ -34,3 +34,6 @@ source/ai/
 
 # titok — SOHA nem commitoljuk (push protection)
 source/obsidian-web-clipper-settings.json
+
+# Vercel build — ág-meta (generált)
+docs/adatok/preview_meta.json
