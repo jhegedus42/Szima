@@ -445,3 +445,68 @@ valódi gépi időhorgonyra (20:17:23) cserélve — a saját új szabályom
 间戳；已导出 57 条到 auto_2026-08-21_chat.md），并做了 post-hook：
 `horog-injektor_v2.ts` 在 session.idle（回答保存后）自动把新问答对追加到
 `kutatasi_naplo/auto/auto_日期.md`。v1 保留，配置已指向 v2，重启后生效。
+---
+
+## 20. bejegyzés — "ez jo, koszi, akkor folytassuk, ahol abbahagytuk, hol is hagytuk abba ?" (20:40:36 — gépi időhorgony)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> ez jo, koszi, akkor folytassuk, ahol abbahagytuk, hol is hagytuk abba ?
+
+**VÁLASZ (asszisztens) — a chatben adott teljes szöveg:**
+
+★ NEGYNYELVŰ VÁLASZ: magyar + 中文 + Deutsch + עברית
+
+Hol hagytuk abba — és megyek is tovább rögtön:
+
+**A állapot (kész):**
+- `E8Gyokok_v2.idr`: a **240 szimbólum** (112+128), norma²=8 mind,
+  **W(E8)=696 729 600** két független úton Refl-lel
+- A szabály-infrastruktúra: négynyelvű sablon, kutatási napló,
+  horog-injektor v2 (auto-naplózó `session.idle` post-hookkal), python kirolló
+
+**A következő konkrét lépés (a terv 1. fázisa — E8 teljes anatómia):**
+1. a **240×240 belső szorzat-tábla** — a szorzatok csak {−8,−4,0,+4,+8} lehetnek
+2. szomszéd-számlálás: minden gyöknek **56 szomszédja** (⟨α,β⟩=−4) és
+   **126 merőlegese** (⟨α,β⟩=0) van — az eloszlás (1, 56, 126, 56, 1)
+3. **Weyl-reflexiók**: σ_α(β) = β − (⟨α,β⟩/4)·α — és a **zártság**
+   bizonyítása: reflexió gyökből gyököt csinál (mind az 57 600 párra)
+
+ÉS EZ EL IS KÉSZÜLT — új modul: `szima_ter/modul/E8BelsoSzorzat.idr`:
+- Eq E8Gyok instance; belsoszorzat; gyokKulonbseg/gyokSkalar/gyokEllentett;
+  weylReflexio: σ_α(β) = β − (⟨α,β⟩/4)·α (egész osztás, mert
+  ⟨α,β⟩ ∈ {−8,−4,0,+4,+8} mindig osztható 4-gyel);
+- 6 KERNEL-REFL bizonyítás: BizSzorzatT1T2 (=4), BizSzorzatEllentett
+  (=−8), BizSzorzatMeroleges (=0), BizReflexioOnmagara (σ_α(α)=−α),
+  BizReflexioMeroleges (merőleges önmagára), BizReflexioSzomszed
+  (60°-os szomszéd → gyök marad);
+- KIMERÍTŐ futási ellenőrzés (AGENTS §18 kettős fedés):
+  eloszlasHibakSzama = 0 (minden gyök (1,56,126,56,1) eloszlású),
+  zarasHibakSzama = 0 (mind az 57 600 reflexió gyök!) — 2 mp alatt;
+- A szimbólum-nézet: σ_(++000000)(+0+00000) = "0–+00000" — a reflexió
+  mint ÍRÁSJEL-CSERE a 240 szimbólum ábécéjén.
+
+Fordítás: 2,3 s; futtatás: 2,0 s; hibátlan. Commit: cd304cf (1addd26..cd304cf).
+
+**中文摘要：** 我们停在：E8Gyokok_v2（240 符号 + 外尔群阶双路证明）与规则
+基础设施已完成；下一步是第一阶段"E8 完整解剖"。本次完成新模块
+`E8BelsoSzorzat.idr`：内积函数、向量运算、外尔反射 σ_α(β)=β−(⟨α,β⟩/4)α，
+6 条内核 Refl 证明，以及穷举运行验证——每个根的分布都是 (1,56,126,56,1)，
+57600 个反射全部封闭（0 个非根），2 秒完成。已提交 cd304cf。
+
+**Deutsch:** Wir standen bei: E8Gyokok_v2 (240 Symbole, Weyl-Ordnung doppelt
+bewiesen) und der Regel-Infrastruktur; nächster Schritt war Phase 1, die
+vollständige E8-Anatomie. Neues Modul `E8BelsoSzorzat.idr`: Innerprodukt,
+Vektoroperationen, Weyl-Reflexion σ_α(β)=β−(⟨α,β⟩/4)α, 6 Kernel-Refl-
+Beweise und die erschöpfende Laufzeitprüfung — jede Wurzel hat die
+Verteilung (1,56,126,56,1), alle 57 600 Reflexionen sind abgeschlossen
+(0 Nicht-Wurzeln), in 2 Sekunden. Commit cd304cf.
+
+**עברית:** עמדנו ב: E8Gyokok_v2 (240 סמלים, סדר וייל בשני נתיבים) ותשתית
+הכללים; הצעד הבא היה שלב 1 — האנטומיה המלאה של E8. נוצר מודול חדש
+`E8BelsoSzorzat.idr`: מכפלה פנימית, פעולות וקטוריות, השתקפות וייל
+σ_α(β)=β−(⟨α,β⟩/4)α, 6 הוכחות Refl בליבה, ובדיקה ממצה בזמן ריצה —
+לכל שורש התפלגות (1,56,126,56,1), וכל 57,600 ההשתקפויות סגורות (0
+חריגות) תוך 2 שניות. קומיט cd304cf.
+
+**Következő lépés (1. fázis vége):** a 16 = Cl(4) blade-ek és a
+240+16=256 kódszó-tér; majd a 2. fázis (fázis-kapcsolat).
