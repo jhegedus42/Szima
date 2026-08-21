@@ -489,3 +489,42 @@ it's a research log". A kutatás láncolata így rekonstruálható.
 
 - Ugyanez a szabály a perzisztens plugin-configban is:
   `~/.config/opencode/AGENTS.md` (§N1–§N4) — minden sessionbe betöltendő.
+
+### 22a. A NÉGYNYELVŰ VÁLASZ SABLONA (pontos alak / exact template)
+
+Minden válasz EZEN a formán készül, ebben a sorrendben:
+
+```
+[MAGYAR — a válasz TÖRZSE: a teljes válasz, listákkal, kóddal,
+ számokkal, minden részlettel. Ez az elsődleges szöveg.]
+
+**中文：** [a lényeg tömör összefoglalója kínaiul — KRITIKUS,
+ mindig jelen van, soha nem maradhat el]
+
+**Deutsch:** [die Kernaussage kurz auf Deutsch]
+
+**עברית:** [תמצית התשובה בעברית]
+```
+
+És minden git push ELŐTT külön sorban (a §22 szerint):
+
+```
+★ NEGYNYELVŰ VÁLASZ: magyar + 中文 + Deutsch + עברית ★
+```
+
+PÉLDA (helyes):
+
+```
+A 240 gyök két típusra bomlik: 112 darab (±1,±1,0⁶)-permutáció
+és 128 darab (±½)⁸ páros mínusszal.
+
+**中文：** 240 个根分为两类：112 个 (±1,±1,0⁶) 排列，128 个偶负号 (±½)⁸。
+
+**Deutsch:** Die 240 Wurzeln zerfallen in 112 Permutationen (±1,±1,0⁶)
+und 128 halbzahlige (±½)⁸ mit gerader Minuszahl.
+
+**עברית:** 240 השורשים: 112 תמורות (±1,±1,0⁶) ו־128 מהצורה (±½)⁸ עם מספר זוגי של מינוסים.
+```
+
+ELLENPÉLDA (helytelen — eddig ilyen történt): a válasz magyarul,
+és a többi nyelv csak "lábjegyzet-szerűen" elszórva, sablon nélkül.

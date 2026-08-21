@@ -191,3 +191,19 @@ AGENTS.md §22：push 前以 ★ 行突出四语性，commit 信息同样标注�
 大链条（李代数→碳→密码子→生命→AI→量子电报机）。
 
 
+---
+
+## 11. bejegyzés — "de nem írtál 4 nyelvű választ, írj sablont az agents.md-be" (20:35)
+
+**KÉRDÉS (felhasználó):**
+> de nem  irtal 4 nyelvu valaszt, irjal sablon az agents.md-be, hogy mi a 4 nyelvu valasz
+
+**VÁLASZ (asszisztens):** igaz — a terv-összefoglaló magyarul ment, a többi
+nyelv csak lábjegyzetszerűen. Sablon került a projekt AGENTS.md §22a-ba ÉS
+a pluginba (~/.config/opencode/AGENTS.md §N3a): [MAGYAR törzs] → **中文：**
+→ **Deutsch:** → **עברית:** → push előtt ★ sor. Helyes példa (a 240 gyök
+bomlása) és ellenpélda is a sablonban.
+
+**中文摘要：** 用户指出我上一条回答并非按四语模板。现已在 AGENTS.md §22a
+和插件 §N3a 写入精确模板：[匈牙利语正文] → **中文：** → **Deutsch：** →
+**עברית：**，push 前加 ★ 行。模板含正例与反例。
