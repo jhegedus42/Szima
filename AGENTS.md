@@ -528,3 +528,21 @@ und 128 halbzahlige (±½)⁸ mit gerader Minuszahl.
 
 ELLENPÉLDA (helytelen — eddig ilyen történt): a válasz magyarul,
 és a többi nyelv csak "lábjegyzet-szerűen" elszórva, sablon nélkül.
+
+## 23. SZÓRÓL SZÓRA, NINCS TÖMÖRÍTÉS — horog (2026-08-21, a felhasználó utasítása)
+
+**Mindent szó szerint írunk le; a tömörítés = információvesztés (§16).**
+
+1. **A felhasználó kérdése idézőjelben, SZÓRÓL SZÓRA** — nyelvtörés,
+   elírás, dupla szóköz, kis- és nagybetű együtt marad (l. §21).
+2. **A válasz NEM tömörített:** inkább TÖBB, mint kevesebb. Semmi
+   el nem dobható — részletek, számok, hibaüzenetek, mérési idők,
+   közbülső lépések mind bekerülnek.
+3. **Szépen pontokba szedve:** listák, számozott szakaszok, táblázatok.
+4. **A horog a pluginban is él:** `~/.config/opencode/AGENTS.md` §N5
+   és a HOROG.md 8. szindrómája ("Tömörítek → SZÓRÓL SZÓRA").
+
+Forrás: a felhasználó 2026-08-21-i utasítása szó szerint: "fontos, hogy
+szorul szora irjal le mindent, nincsen tomorites !!! inkabb legyen tobb,
+mint kvesebb es legyen szepen pontokba szedve, ez menjen ez a szabaly
+is a pluginba mint horog".

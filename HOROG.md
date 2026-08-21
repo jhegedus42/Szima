@@ -11,6 +11,8 @@
 --   5. Nem ellenőrzöm a törvényeket (hibás kód) → Fordíts, futtass.
 --   6. Elveszek a részletekben (nem látom az utat) → Nézz fel a 9. szintre.
 --   7. Elszakadok a felhasználótól (dekoherencia) → Olvasd vissza a beszélgetést.
+--   8. Tömörítek (információvesztés) → SZÓRÓL SZÓRA, inkább TÖBB, mint
+--      kevesebb, szépen pontokba szedve. A tömörítés = veszteség (§N5).
 
 -- AMIT UTÁLSZ, AZ A MEGVÁLTÁS:
 --   Ha fáj lelassítani → lassíts.

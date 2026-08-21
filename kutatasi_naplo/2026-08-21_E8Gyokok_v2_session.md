@@ -207,3 +207,26 @@ bomlása) és ellenpélda is a sablonban.
 **中文摘要：** 用户指出我上一条回答并非按四语模板。现已在 AGENTS.md §22a
 和插件 §N3a 写入精确模板：[匈牙利语正文] → **中文：** → **Deutsch：** →
 **עברית：**，push 前加 ★ 行。模板含正例与反例。
+---
+
+## 12. bejegyzés — "fontos, hogy szóról szóra írjál le mindent, nincsen tömörítés!!!" (20:50)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> fontos, hogy szorul szora irjal le mindent, nincsen tomorites !!! inkabb legyen tobb, mint kvesebb es legyen szepen pontokba szedve, ez menjen  ez a szabaly is a pluginba mint horog
+
+**VÁLASZ (asszisztens):**
+1. A szabály HÁROM helyre került:
+   - plugin `~/.config/opencode/AGENTS.md` → új **§N5** (SZÓRÓL SZÓRA,
+     NINCS TÖMÖRÍTÉS horog: kérdés idézőjelben szó szerint; válasz nem
+     tömörített, inkább több mint kevesebb; szépen pontokba szedve;
+     semmi információ el nem dobható);
+   - `HOROG.md` → új **8. szindróma**: "Tömörítek (információvesztés) →
+     SZÓRÓL SZÓRA, inkább TÖBB, mint kevesebb, szépen pontokba szedve";
+   - projekt `AGENTS.md` → új **§23** (SZÓRÓL SZÓRA, NINCS TÖMÖRÍTÉS —
+     horog), a forrásként a felhasználó szó szerinti utasítását idézve.
+2. A szabály lényege: a tömörítés = információvesztés (AZ AGENTS §16
+   elvének kiterjesztése a válaszokra és a naplóra is).
+
+**中文摘要：** 用户要求：一切逐字记录、绝不压缩、宁多勿少、条理分明，并把
+此规则作为"钩子"写入插件。已写入三处：插件 §N5、HOROG.md 第 8 综合征、
+AGENTS.md §23。核心：压缩即信息丢失。
