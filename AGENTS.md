@@ -452,3 +452,32 @@ Nem `rm`, nem `rm -f`, nem `git rm`, nem `git clean`, semmi destruktív.
 
 **Indoklás:** a felhasználó 2026-08-19-én kifejezetten tiltotta: "semit
 nem lehet torolni soha". A `rm -f GCheck.idr` parancs megsértette ezt.
+
+## 21. KUTATÁSI NAPLÓ — minden kérdés–válasz pusholva (2026-08-21, a felhasználó utasítása)
+
+**Minden üzenetváltás (a felhasználó kérdése + az asszisztens válasza)
+időbélyeggel a `kutatasi_naplo/` könyvtárba kerül, és pusholva lesz.**
+
+- Formátum: `kutatasi_naplo/YYYY-MM-DD_<téma>_session.md` — egy fájl
+  sessionenként, azon belül sorszámozott bejegyzések (KÉRDÉS / VÁLASZ),
+  mindegyik időbélyeggel (vagy időhorgonnyal: commit-idő, fájl-mtime).
+- A kérdést idézőjelben, szó szerint (nyelvtörés nélkül) őrzünk — a
+  napló elsődleges forrás, információveszteség nélkül (AGENTS §16).
+- A válasz összefoglalója + a létrejött fájlok/commitok listája.
+- Minden napló-írás után: commit + push (l. §10 ritmus).
+
+**Indoklás:** a felhasználó 2026-08-21-én: "remember, push our
+conversations, each time my question and your answer with timestamp,
+it's a research log". A kutatás láncolata így rekonstruálható.
+
+## 22. NÉGYNYELVŰ VÁLASZOK ÉS KOMMENTEK (2026-08-21, a felhasználó utasítása)
+
+**Minden válasz és kódkomment magyarul MEGY, mellé ahol lehetséges:
+中文 (KRITIKUS — a felhasználó külön kérte), Deutsch, עברית.**
+
+- Magyar az elsődleges nyelv (AGENTS §0); a 中文 / Deutsch / עברית
+  rövid összefoglaló formájában jelenik meg (nem teljes fordítás,
+  ha a hossz aránytalan — de a lényeg mind a négy nyelven).
+- Idris-kommentek: a blokk-fejlécek és a kulcs-tanulságok négynyelvűek;
+  a soronkénti kommentek maradhatnak magyar+kínai párosban.
+- **A kínai NEM opcionális** — "kinai fontos, kritikus" (2026-08-21).
