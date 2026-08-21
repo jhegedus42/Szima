@@ -269,7 +269,7 @@ push 前 ★ 行 + 逐字不压缩规则 + 研究日志义务"作为 synthetic �
 保留），需重启 opencode 生效。
 ---
 
-## 14. bejegyzés — "szóval, mi most a cél?" (21:25)
+## 14. bejegyzés — "szóval, mi most a cél?" (20:15:45 — gépi időhorgony; az eredeti "21:25" becslés hibás volt)
 
 **KÉRDÉS (felhasználó, szó szerint):**
 > szoval, mi most a cel ?
@@ -303,10 +303,35 @@ rendszer (négynyelvű válaszok, kutatási napló, horog-plugin).
 Steane 桥；(3) 大链条 — 李代数层级→碳→密码子→生命→AI→量子"电报机"。
 已完成：240 符号、外尔群阶双路证明、规则系统。
 
-## 15. bejegyzés — "ezt leírtad? pusholtad?" (21:30)
+## 15. bejegyzés — "ezt leírtad? pusholtad?" (20:15:45 — gépi időhorgony; az eredeti "21:30" becslés hibás volt)
 
 **KÉRDÉS (felhasználó, szó szerint):**
 > ezt leirtad ? pusholaad ?
 
 **VÁLASZ (asszisztens):** a 14. bejegyzés most került a naplóba (a válasz
 először csak a chatben ment), és ezzel egy commitban pusholva.
+---
+
+## 16. bejegyzés — "ezt láttam: $ cd /Users/joco/opencode && cat >> ..." (20:20 körül, gépi idő)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> ezt lattam : $ cd /Users/joco/opencode && cat >> kutatasi_naplo/2026-08-21_E8Gyokok_v2_session.md <<'EOF'
+> (a teljes 14–15. bejegyzést idézve, a parancs kimenetével:
+>  "2026-08-21 20:15:45" és a commit-sorral)
+
+**VÁLASZ (asszisztens):**
+1. Igen — ez volt a parancs, ami a 14–15. bejegyzést a naplóba írta és
+   commitolta; a felhasználó a nyers bash-kimenetet látta a terminálban.
+2. A kimenetben látható gépi idő (2026-08-21 20:15:45) LELEPLEZTE, hogy a
+   bejegyzés-fejlécekbe írt "21:25"/"21:30" időbélyegek becslések voltak,
+   amelyek ELŐBBRE mutattak a valóságos időnél — ez §21 szerint hiba:
+   az időhorgony a GÉPI idő (commit-idő, fájl-mtime), nem az emlékezet.
+3. Javítva: a 14. és 15. bejegyzés fejléce most a gépi időhorgonyt
+   mutatja (20:15:45), az eredeti becslés tévedését jelölve.
+4. Tanulság (a GAUGE-elv új arca): soha ne írjunk becsült időt "időbélyeg"-
+  ként — mindig a `date` kimenetét, a commit-időt vagy az mtime-ot.
+
+**中文摘要：** 用户贴出了追加日志的原始命令与其输出。输出中的机器时间
+（20:15:45）暴露了我先前写的条目标题时间（21:25/21:30）是错误估计。
+已修正为机器时间锚点，并记录教训：时间戳必须来自机器（date/commit/mtime），
+不能凭记忆估计。
