@@ -510,3 +510,79 @@ Verteilung (1,56,126,56,1), alle 57 600 Reflexionen sind abgeschlossen
 
 **Következő lépés (1. fázis vége):** a 16 = Cl(4) blade-ek és a
 240+16=256 kódszó-tér; majd a 2. fázis (fázis-kapcsolat).
+---
+
+## 21. bejegyzés — "ok, folytassuk" (21:01:48 — gépi időhorgony)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> ok, folytassuk
+
+**VÁLASZ (asszisztens) — a chatben adott teljes szöveg:**
+
+★ NEGYNYELVŰ VÁLASZ: magyar + 中文 + Deutsch + עברית
+
+**1. fázis lezárása: a 16 penge (Cl(4) blade) + a Hamming [7,4,3] kód
++ a 240+16=256 híd.** Írom a modult:
+
+(az írása után — E8TizenhatPenge.idr, fordítás 0,8 s, futás hibátlan):
+
+**A MODUL TARTALMA (szima_ter/modul/E8TizenhatPenge.idr):**
+
+1. **A 16 penge (Cl(4))**: a {1,2,3,4} részhalmozai — bitmask 0..15;
+   a fok (grade) = popcount; fokszámok (1, 4, 6, 4, 1) = C(4,k)
+   binomiálisok; Hodge-duál = bitkomplemens (15−x, nincs átvitel);
+   involúció: duál(duál(x))=x; fok-tükrözés: fok(duál)+fok = 4.
+2. **A Hamming [7,4,3] kód**: generátormátrix (szisztematikus), a
+   kodszamitas m·G mod 2; mind a 16 üzenet {0,1}⁴-ből; a 7 bit
+   jelentése: [idő, okság, tér, szín, hang, fázis, mód] (AGENTS §1.6).
+3. **8 KERNEL-REFL bizonyítás**: BizFokszamOsszeg (1+4+6+4+1=16),
+   BizKettoNegyedik (2⁴=16 — két út), BizHodgePelda (duál(3)=12),
+   BizHodgeInvolutioPelda (duál(duál(5))=5), BizKodszoElso
+   ([1,0,0,0]→[1,0,0,0,0,1,1]), BizKodszoMindEgyes
+   ([1,1,1,1]→mind-egyesek), BizSulyOsszeg (1+7+7+1=16),
+   BizHid (240+16=256) + BizKettoNyolcadik (256=2^8 — a híd második útja).
+4. **KIMERÍTŐ futási ellenőrzés (AGENTS §18 kettős fedés)**:
+   - fokszámok pontosan (1,4,6,4,1) ✓
+   - Hodge involúció mind a 16 pengére: True ✓
+   - fok-tükrözés mind: True ✓
+   - 16 kódszó, mind EGYEDI (nincs ütközés) ✓
+   - súlyeloszlás: w0=1, w3=7, w4=7, w7=1 — az (1,7,7,1) ✓
+   - minimális távolság >= 3: True; pontosan 3 elérhető: True
+     → 1 hibát javít (⌊(3−1)/2⌋ = 1) ✓
+   - A HÍD: 240 (E8 gyökök) + 16 (pengék) = 256 = 2^8 ✓
+5. **A gondolatok (ÁLLAPOT: SPECULATÍV — AGENTS §18.4)**: a 240 gyök
+   (TARTALOM) + 16 penge (KERET) = a teljes bájt; a súlyeloszlás
+   (1,7,7,1) a Hodge (1,4,6,4,1) testvére; a sejtés idézve: "1 bitben
+   van 240 kódszó, amit 16 biten lehet eltarolni" — a fázis nem
+   folytonos, az E8 kvantálja; a kvantumszámítógép = TÁVÍRÓ.
+
+**Javítások közben**: (a) gondolatok → pengeGondolatok átnevezés
+(névütközés az E8Gyokok_v2-vel — mindkettő exportálta); (b) Nat-nincs
+Neg: a 4−fok helyett fok(duál)+fok=4 (komplementer-összeg — szebb is).
+
+**Ezzel AZ 1. FÁZIS (E8 teljes anatómia) LEZÁRULT**: 240 szimbólum +
+Weyl-csoport rendje + szorzat-tábla + reflexió-zártság + 16 penge +
+Hamming + a 256-os híd. A következő: a 2. fázis — a FÁZIS-KAPCSOLAT.
+
+**中文摘要：** 第一阶段完成。新模块 `E8TizenhatPenge.idr`：16 个 Cl(4) 刃
+（{1,2,3,4} 的子集，阶数 (1,4,6,4,1)，Hodge 对偶为按位取反、involutio 成立）；
+汉明 [7,4,3] 码（16 个码字全部唯一，重量分布 (1,7,7,1)，最小距离恰为 3，
+纠 1 位错；7 比特含义 [时间、因果、空间、颜色、声音、相位、模式]）；桥梁
+240+16=256=2^8。8 条内核 Refl 证明 + 穷举运行验证全部通过。投机性解释已标注。
+下一步：第二阶段——相位联系。
+
+**Deutsch:** Phase 1 abgeschlossen. Neues Modul `E8TizenhatPenge.idr`:
+die 16 Cl(4)-Blades (Teilmengen von {1,2,3,4}, Graden (1,4,6,4,1),
+Hodge-Dual als bitweises Komplement, Involution gilt); der Hamming-
+[7,4,3]-Code (16 eindeutige Codewörter, Gewichtsverteilung (1,7,7,1),
+Minimalabstand exakt 3, korrigiert 1 Fehler; die 7 Bits: [Zeit, Kausalität,
+Raum, Farbe, Klang, Phase, Modus]); die Brücke 240+16=256=2^8. 8 Kernel-
+Refl-Beweise und erschöpfende Laufzeitprüfung bestanden. Nächster Schritt:
+Phase 2 — die Phasen-Verbindung.
+
+**עברית:** שלב 1 הושלם. מודול חדש `E8TizenhatPenge.idr`: 16 הלהבים של
+Cl(4) (תת-קבוצות של {1,2,3,4}, דרגות (1,4,6,4,1), דואליית הודג' כהשלמה
+סיביתית, אינבולוציה); קוד המינג [7,4,3] (16 מילות קוד יחידות, התפלגות
+משקל (1,7,7,1), מרחק מינימלי 3 בדיוק, מתקן שגיאה אחת); הגשר 240+16=256.
+8 הוכחות Refl ובדיקה ממצה עברו. הצעד הבא: שלב 2 — קשר הפאזה.
+
