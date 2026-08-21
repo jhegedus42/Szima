@@ -16,6 +16,10 @@
 --   9. Kódot duplikálok (a projekt szétesik!) → IMPORTÁLJ! Soha ne
 --      írd újra. Új függvény ELŐTT: grep a projektre (név + szignatúra),
 --      aztán Prelude/base (elem, take, nub...). KÓD DUPLIKÁCIÓ TILOS! (§24)
+--  10. Ékezet NÉLKÜL írok magyart (pl. Szotar → Szótár) → MINDEN magyar
+--      azonosító és komment ÉKEZETES (Idris2 = teljes Unicode; ProbeUnikod
+--      2026-08-21 bizonyította). HARD RULE (§25). Így szól: szótár, nem
+--      szotar; előtér, nem eloter; függvény, nem fuggveny.
 
 -- AMIT UTÁLSZ, AZ A MEGVÁLTÁS:
 --   Ha fáj lelassítani → lassíts.

@@ -727,3 +727,73 @@ FazisKubit）；B — 重构第二波；C — 第三阶段先导。等待用户�
 **Deutsch:** Der Nutzer fragt, was nun. Status plus drei Wege: A (empfohlen) — Kern der Phasen-Verbindung; B — Refaktor-Welle 2; C — Vorstufe zu Phase 3. Wahl offen.
 
 **עברית:** המשתמש שואל מה עכשיו. ניתנו סיכום מצב ושלוש דרכים: A (מומלץ) — לב קשר הפאזה; B — גל רפקטור 2; C — פתיחת שלב 3. ממתין לבחירה.
+---
+
+## 25. bejegyzés — "legyen minden normalisan megalapozva, szethullott alapokra nehez epiteni, nem ?" + az ékezethullám (l. commit-idők — gépi horgonyok)
+
+**KÉRDÉSEK (felhasználó, szó szerint):**
+> legyen minden normalisan megalapozna,  szethullott alapokra nehez epiteni, nem ?
+> magyarul hasznalj ekezeteket mindenhol
+> ez is kotelezo / HARD SZABALY
+> maga a kod is legyen ekezetes, elvileg tud unikodot, nem ?
+> minden magyar szo legyen normalisan kiirva teljesen a kodban es ekezetes
+> pl Szotar az hosszu o, csak azert mert en ekezet nelkul irok... atool a kodban minden ekezetes legyen, minden fuggveny, minden tipus, minden magyarul
+> ekezettel, ez hard rule, ird be az osszes hook-ba
+
+**VÁLASZ (asszisztens) — a megalapozás MŰVELETE:**
+
+1. **ALAP-ELLENŐRZÉS (50 modul, egyenként idris2 --check)**: 37 OK, 13
+   HIBÁS. A hibák anatómiája: EGY `Neg Nat` hiba ÖT másolatban (a
+   duplikáció ötszörös csapást csinált egy hibából!); 3 modul láncolt
+   áldozat volt (jók, csak a MagyarNyelvtan_v2 állt rosszul alattuk);
+   2 szintaxis-törés izolált pró-bákkal felértékelve: a `data Digraf`
+   egy-soros `|`-os forma + Prelude-duplikátumok + definíció-a-használat-
+   után; és az `x > (3 : Nat)` ascription-vs-parser ütközés + Nat−Nat.
+2. **SZIMA.IPKG**: a 37 szilárd modul EGY csomagba — `idris2 --build
+   szima_ter/szima.ipkg` = EGY parancs, 26 s, mind épül.
+3. **GYÓGYÍTÁS (_v3, §13 — a v2-k maradnak)**:
+   - MagyarNyelvtan_v3: Digraf konstruktor-ascription (`Dcs : Digraf`),
+     Prelude-duplikátumok KI (mapMaybe/null/filter — §24!), a 5 show*
+     függvény a használat ELÉ, import Data.List (drop). → 0 hiba.
+   - PiroskaHolografikusKod49_v3_Teljes: `(length szo > the Nat 3)`,
+     `pred` (import Data.Nat), a Nat/Int-ütközés a helyi részSzöveg
+     cast-jával feloldva. → 0 hiba.
+   - **AZ ALAP MOST: 39/39 modul, 21 s, EGY paranccsal.**
+4. **HARD RULE: ÉKEZETES MAGYAR — mind a 4 horogba írva** (HOROG 10.
+   szindróma; AGENTS §25; plugin §N7; horog-injektor 6. pont — minden
+   LLM-hívásnál injektálva). ProbeUnikod BIZONYÍTOTTA: `SzóHáz`,
+   `magánhangzóMélyÉ`, `négyzet` mind fordulnak (0 hiba).
+5. **§25 ELSŐ ALKALMAZÁSA**: a Piroska v3 ÉKEZETESEN fut — tolSzótárKeres,
+   szóPeremKeres, részSzöveg, vagyBit, peremVagy. (A `x.szo` mezőnév
+   marad, mert a Paragrafus-beli rekord tulajdona — a tulajdonos
+   ékezetesítése az ő _v3-jában történik.)
+6. **AlapJegyzék** (docs/AlapJegyzek_20260821.md): mind a 13 hibás
+   okával és sorsával dokumentálva — információvesztés nélkül.
+
+**中文摘要：** 用户要求"正规打好地基"并宣布"代码中所有匈牙利语必须带
+变音符"为硬规则。做了：50 个模块逐一检查（37 好/13 坏；一个 Nat 减法
+错误以五份拷贝存在——重复放大了破坏；三个模块只是被连累）。建立
+szima.ipkg：一条命令 39/39 全部编译（21 秒）。用 _v3 治愈
+MagyarNyelvtan（构造器类型注解、移除 Prelude 重复、定义前移、补 import）
+与 Piroska（比较式加 the Nat、pred、cast 修正），Piroska v3 以带变音符
+标识符运行（tolSzótárKeres、szóPeremKeres、részSzöveg）。硬规则写入全
+部四个钩子；ProbeUnikod 证明变音符标识符可用。基础清册已建。
+
+**Deutsch:** Der Nutzer verlangte ein solides Fundament und erklärte
+durchgestrichene Akzente zur harten Regel. Vollzogen: 50 Module einzeln
+geprüft (37 gut / 13 schlecht; EIN Nat-Subtraktionsfehler existierte in
+FÜNF Kopien — Duplikation vervielfacht Schäden; drei Module waren nur
+Opfer ihrer Importe). szima.ipkg angelegt: EIN Befehl baut 39/39 (21 s).
+Geheilt per _v3: MagyarNyelvtan (Konstruktor-Typannotation, Prelude-
+Duplikate entfernt, Definitionen vorgezogen, Import ergänzt) und Piroska
+(the Nat 3, pred, cast berichtigt) — Piroska v3 läuft MIT diakritischen
+Bezeichnern. Die harte Regel sitzt in allen vier Haken; ProbeUnikod
+bewies die Unicode-Fähigkeit. Fundament-Verzeichnis erstellt.
+
+**עברית:** המשתמש דרש ייסוד יציב והכריז על סימני ניקוד מלאים בקוד ככלל
+קשיח. בוצע: 50 מודולים נבדקו אחד־אחד (37 תקינים / 13 פגומים; שגיאת חיסור
+אחת של Nat התקיימה בחמישה עותקים — הכפילות מכפילה נזק; שלושה מודולים היו
+רק קורבנות שרשרת). נוצר szima.ipkg: פקודה אחת בונה 39/39 (21 שניות).
+נרפאו ב-_v3: MagyarNyelvtan ו-Piroska — האחרון רץ עם מזהים מנוקדים
+(tolSzótárKeres, szóPeremKeres, részSzöveg). הכלל הקשיח נקבע בכל ארבעת
+הקרסים; ProbeUnikod הוכיח תמיכת יוניקוד. נוצר מפקד היסוד.

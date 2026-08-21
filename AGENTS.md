@@ -572,3 +572,27 @@ duplikacio tilos !!! ez most prioritas ... kod duplikacio kinyirja az
 egesz projektet, minden szetcsuszik, hasznalhatatlan lesz ... EZ TILOS !!!
 kodot ujra kell hasznallni !!! nem ujra irni !!!!!"
 
+## 25. ÉKEZETES MAGYAR A KÓDBAN — HARD RULE (2026-08-21, a felhasználó utasítása)
+
+**Minden magyar szó a kódban (típusok, függvények, konstruktorok, változók,
+kommentek, üzenetek) a HELYES ÉKEZETES alakján írandó.
+| 代码中所有匈牙利语必须带完整变音符号！ | Alles Ungarische im Code mit
+| vollständigen Diakritika! | כל ההונגרית בקוד עם סימני ניקוד מלאים!**
+
+1. **Az Idris 2 teljes Unicode-azonosítókat támogat** — bizonyítva
+   (ProbeUnikod, 2026-08-21): `SzóHáz`, `magánhangzóMélyÉ`, `négyzet`
+   mind lefordulnak.
+2. **Az ékezet NEM esztétika, hanem INFORMÁCIÓ**: a "Szotar" nem szó —
+   a `Szótár` (hosszú á) az. A hosszú/különböző magánhangzók (ó/ő, ű/ú)
+   jelentéskülönbséget hordoznak; ékezet nélkül a lexikon HAMIS.
+3. **Új kód**: eleve ékezetesen írandó. **Régi kód**: refaktorhullámokban
+   ékezetesítendő (_v3 generáció — §13: a régi marad, az új ékezetes).
+4. **A válaszok, napló, commit-üzenetek UGYANÍGY** — magyarul mindig
+   ékezetekkel.
+
+Forrás (a felhasználó, 2026-08-21, szó szerint): "maga a kod is legyen
+ekezetes, elvileg tud unikodot, nem ?" / "minden magyar szo legyen normalisan
+kiirva teljesen a kodban es ekezetes" / "pl Szotar az hosszu o, csak azert
+mert en ekezet nelkul irok... atool a kodban minden ekezetes legyen, minden
+fuggveny, minden tipus, minden magyarul" / "ekezettel, ez hard rule, ird be
+az osszes hook-ba"
