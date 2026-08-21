@@ -586,3 +586,65 @@ Cl(4) (תת-קבוצות של {1,2,3,4}, דרגות (1,4,6,4,1), דואליית 
 משקל (1,7,7,1), מרחק מינימלי 3 בדיוק, מתקן שגיאה אחת); הגשר 240+16=256.
 8 הוכחות Refl ובדיקה ממצה עברו. הצעד הבא: שלב 2 — קשר הפאזה.
 
+---
+
+## 22. bejegyzés — "ne legyen kod duplikacio!!!!" (l. commit-idő — gépi horgony)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> ne legyen kod duplikacio!!!! A gf2 az E8TizenhatPenge-ben van, ezt a modul nem importálja. Saját gf2Osszeadas helyben <--- ilyenek, keresd meg a problemat miert nem importalja, kod duplikacio tilos !!! ez most prioritas, add hozza a hook-hoz, kod duplikacio kinyirja az egesz projektet, minden szetcsuszik, hasznalhatatlan lesz, kovetkezo lepes, minden kod duplikaciot ellenorzunk es eltuntetunk... anelkul hogy informacio veszne el, ez egy refaktoralas... olvass el idszrisz hasznalatorol irasrol konyveket... keress ra neten, stackoverflow, akarmi, minden... nezd meg a csatolt konyveket... ez nem meno, EZ TILOS !!! kodot ujra kell hasznallni !!! nem ujra irni !!!!!
+
+**VÁLASZ (asszisztens) — a tett lépések:**
+
+1. **GYÖKÉROK**: technikai akadály NEM VOLT — az Idris2 modulrendszere
+   (trail_index/books/idris2_docs/modules.rst elolvasva: a nevek
+   modul-kvalifikáltak, `import E8TizenhatPenge` működött volna) — a hiba
+   a módszeremben volt: nem futtattam grepet új függvény előtt.
+2. **JAVÍTÁS (import, nem újraírás)**: E8FazisKapcsolat.idr →
+   `import E8TizenhatPenge`; a helyi gf2Osszeadas TÖRÖLVE; az importált
+   gf2-t használja. BÓNUSZ: a másolás során belopódzott matematikai hiba
+   (per-tag redukálás → 1+1=2) is kijavult — a kernel leplezte le
+   ("Mismatch between: 0 and 2"); most CSS 0 megsértés ✓, fázis-kvantálás
+   0 kivétel ✓, fordítás 2,2 s.
+3. **SZABÁL A 4 HOROGBAN**: AGENTS.md §24 (KÓD DUPLIKÁCIÓ TILOS —
+   PRIORITÁS, a felhasználó idézetével); HOROG.md 9. szindróma;
+   plugin ~/.config/opencode/AGENTS.md §N6; horog-injektor 5. pont
+   (minden LLM-hívásnál injektálva — újraindítás után).
+4. **PROJEKT-SZINTŰ AUDIT** (osveny_index/tanulsagok/
+   KodDuplikacioAudit_20260821.md):
+   - ProbePrelude kernel-Refl-lel bizonyította, hogy take/elem/nub
+     LÉTEZNEK → elsoN, benVan, benVanLista, egyedi mind újraírások;
+   - valós kereszt-modul duplikációk: delta ×4 fájl, sigmaG ×4 fájl
+     (Alpha* család), hammingTavolsag ×2 (E8TizenhatPenge + E8E8Algebra);
+   - kanonikus helyek rögzítve (gf2 → E8TizenhatPenge);
+   - refaktor-hullámok terve §13 szerint (v1-ek maradnak, _v2-ik
+     importálnak — információvesztés nélkül);
+   - Python-maradvány (kor_ujraolvasa_check.py) nyilvántartva.
+5. **Következő lépés**: refaktor-hullám 1 (Alap/AlphaKozos.idr), majd a
+   2. fázis (fázis-kapcsolat) folytatása.
+
+**中文摘要：** 用户严厉指出代码重复（我在 E8FazisKapcsolat 里重写了
+E8TizenhatPenge 已有的 gf2）。根因：写新函数前没有 grep——并非技术障碍
+（已读 modules.rst 确认 import 机制）。已修复：改用 import 并删除本地副本；
+顺带修掉了复制过程中引入的逐项取模错误（内核报 0 vs 2），CSS 检查现在
+0 违规。规则写入四处钩子（AGENTS §24、HOROG 第 9 综合征、插件 §N6、
+注入器第 5 点）。完成全项目重复审计（take/elem/nub 的存在性用内核 Refl
+证明；delta×4、sigmaG×4、hammingTavolsag×2 等真实重复；规范位置已定；
+按 §13 分波次重构，v1 保留）。
+
+**Deutsch:** Der Nutzer machte hart auf Codeduplikation aufmerksam (ich
+hatte gf2 aus E8TizenhatPenge in E8FazisKapcsolat neu geschrieben).
+Ursache: kein grep vor neuem Code — kein technisches Hindernis (modules.rst
+gelesen). Behoben: Import statt Kopie; dabei auch den beim Kopieren
+eingeschlichenen Reduktionsfehler korrigiert (Kernel meldete 0 vs 2), CSS
+nun 0 Verletzungen. Regel in vier Haken verankert (AGENTS §24, HOROG 9.
+Syndrom, Plugin §N6, Injektor Punkt 5). Projektweites Audit erstellt
+(take/elem/nub per Kernel-Refl als existent bewiesen; delta ×4, sigmaG ×4,
+hammingTavolsag ×2; kanonische Orte festgelegt; Refaktor-Wellen nach §13,
+v1 bleibt erhalten).
+
+**עברית:** המשתמש נזף בי קשות על כפילות קוד (שכפלתי את gf2 מ־
+E8TizenhatPenge ב־E8FazisKapcsolat). הסיבה: לא הרצתי grep לפני כתיבת
+פונקציה חדשה — אין מכשול טכני (קראתי את modules.rst). תוקן: ייבוא
+במקום העתקה; בדרך תוקן גם שגיאת הצמצום שנשתרבבה בהעתקה (הליבה דיווחה
+0 מול 2), וכעת CSS עם 0 הפרות. הכלל נקבע בארבעה קרסים, ונערך ביקורת
+כפילויות בפרויקט כולו עם מקומות קנוניים ותוכנית רפקטור בגלים לפי §13.

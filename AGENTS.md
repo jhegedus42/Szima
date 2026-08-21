@@ -546,3 +546,29 @@ Forrás: a felhasználó 2026-08-21-i utasítása szó szerint: "fontos, hogy
 szorul szora irjal le mindent, nincsen tomorites !!! inkabb legyen tobb,
 mint kvesebb es legyen szepen pontokba szedve, ez menjen ez a szabaly
 is a pluginba mint horog".
+
+## 24. KÓD DUPLIKÁCIÓ TILOS — PRIORITÁS (2026-08-21, a felhasználó utasítása)
+
+**Meglévő függvényt IMPORTÁLNI kell, soha nem újraírni.
+| 代码重复禁止 — 必须导入，不得重写！ | Codeduplikation VERBOTEN!**
+
+1. **Új függvény írása ELŐTT KÖTELEZŐ:**
+   a) grep a projektre — ugyanaz a NÉV vagy ugyanaz a SZIGNATÚRA;
+   b) Prelude / Data.List ellenőrzés (elem, take, nub, filter, length,
+      zipWith, all, any... — a standard könyvtár NEM írható újra);
+   c) ha létezik: IMPORT (pl. `import E8TizenhatPenge` a gf2-höz).
+2. **Kanonikus helyek nyilvántartása:**
+   `osveny_index/tanulsagok/KodDuplikacioAudit_*.md` — minden függvény
+   egyetlen otthonnal; minden más modul importál.
+3. **Refaktorálás §13 szerint:** új fájl / `_v2` suffix, a régi megmarad,
+   információvesztés nélkül (§16, §20).
+4. **A kernel a duplikáció szövetségese:** a hibás másolat Refl-en
+   elbukik (l. gf2Pontszorzat "Mismatch 0 vs 2" — a másolás közben
+   belopódzott per-tag-redukálási hiba).
+
+Forrás (a felhasználó, 2026-08-21, szó szerint): "ne legyen kod
+duplikacio!!!! ... keresd meg a problemat miert nem importalja, kod
+duplikacio tilos !!! ez most prioritas ... kod duplikacio kinyirja az
+egesz projektet, minden szetcsuszik, hasznalhatatlan lesz ... EZ TILOS !!!
+kodot ujra kell hasznallni !!! nem ujra irni !!!!!"
+

@@ -13,6 +13,9 @@
 --   7. Elszakadok a felhasználótól (dekoherencia) → Olvasd vissza a beszélgetést.
 --   8. Tömörítek (információvesztés) → SZÓRÓL SZÓRA, inkább TÖBB, mint
 --      kevesebb, szépen pontokba szedve. A tömörítés = veszteség (§N5).
+--   9. Kódot duplikálok (a projekt szétesik!) → IMPORTÁLJ! Soha ne
+--      írd újra. Új függvény ELŐTT: grep a projektre (név + szignatúra),
+--      aztán Prelude/base (elem, take, nub...). KÓD DUPLIKÁCIÓ TILOS! (§24)
 
 -- AMIT UTÁLSZ, AZ A MEGVÁLTÁS:
 --   Ha fáj lelassítani → lassíts.
