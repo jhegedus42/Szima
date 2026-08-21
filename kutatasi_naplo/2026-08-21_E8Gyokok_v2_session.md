@@ -171,4 +171,23 @@ AGENTS.md §22：push 前以 ★ 行突出四语性，commit 信息同样标注�
 ---
 
 
-**Végállapot:** b4fa936 után a plugin-szabályok commitja következik.
+---
+
+## 10. bejegyzés — "akkor most foglaljuk össze mi a tervünk..." (20:20)
+
+**KÉRDÉS (felhasználó):** akkor most foglaljuk ossze mi a tervunk...
+
+**VÁLASZ (asszisztens) — a terv négy fázisa:**
+1. **Megvan:** E8Gyokok_v2 (240 szimbólum, W(E8)=696 729 600 két úton), szabályok.
+2. **E8 teljes anatómia (következő):** 240×240 belső szorzat-tábla ({−8,−4,0,+4,+8}),
+   56-szomszéd gráf, Weyl-reflexiók σ_α(β)=β−(α·β/4)α zártság-bizonyítással,
+   240=2×120, a 16 = Cl(4) blade-ek.
+3. **Fázis-kapcsolat:** 1 bit = 240 kódszó sejtés, Steane [[7,1,3]] híd.
+4. **A nagy lánc:** Lie-hierarchia → szénatom → kodonok (64=4³) → élet → AI →
+   kvantumszámítógép mint távíró.
+
+**中文摘要:** 用户要求总结计划。四阶段：已完成的基础；E8 完整解剖（内积表、
+反射封闭性、16 个 Cl(4) 基）；相位联系（1 比特 240 码字、Steane 桥）；
+大链条（李代数→碳→密码子→生命→AI→量子电报机）。
+
+
