@@ -50,8 +50,8 @@ horog-injektor 5. pontja (minden prompt után injektálva).
 | név | fájlok | kanonikus hely (döntés) | teendő |
 |---|---|---|---|
 | `gf2` | E8TizenhatPenge (volt: E8FazisKapcsolat is — TÖRÖLVE) | **E8TizenhatPenge** (első otthona; Kodol.idr-ben nincs) | minden új modul importálja |
-| `delta` | AlphaSteane, AlphaSteaneDashboard, AlphaSteaneE8, AlphaSteaneVegso (+) | közös Alpha-alap modul (v2 hullámban) | refaktor-hullám 1 |
-| `sigmaG` | AlphaE8Szigor, AlphaGCheck, AlphaLobaszas, AlphaSteane (+) | közös Alpha-alap modul | refaktor-hullám 1 |
+| `delta` (és a teljes lánc: n,k,d,s,kodSzoTer,kiterjesztettTer,...,lobaszasBase,lobaszasExponens) | AlphaSteane, AlphaSteaneE8, AlphaSteaneVegso (a Dashboard-beli PYTHON-string, NEM Idris-duplikáció) | **Alap.AlphaKozos** (kész, fut, értékek egyeznek) | v1-ek maradnak; _v2-ik importálnak |
+| `sigmaG` (1.5e-15, szó szerint azonos ×4) | AlphaE8Szigor, AlphaGCheck, AlphaLobaszas, AlphaSteane | **Alap.AlphaKozos** (kész) | v1-ek maradnak; _v2-ik importálnak |
 | `hammingTavolsag` | E8TizenhatPenge, osveny_index/E8E8Algebra.idr | **E8TizenhatPenge** (új kód otthona) | E8E8Algebra v2-ben importál |
 | `elsoN` | E8Gyokok, E8Gyokok_v2 (verzió-pár — §13 szerint elfogadható) | Data.List.take (standard!) | új modulokban take |
 | `kodSuly`/`minuszokSzama`/`pengeFok` | E8TizenhatPenge / E8Gyokok_v2 | közös "darab : (a -> Bool) -> List a -> Nat" alap | refaktor-hullám 2 |
@@ -66,8 +66,12 @@ horog-injektor 5. pontja (minden prompt után injektálva).
 ## 4. A refaktorálási terv (§13 szerint — semmi nem vész el)
 
 1. **Hullám 0 (kész, ma)**: gf2 import; szabály a 4 horogban; ez az audit.
-2. **Hullám 1**: `Alap/AlphaKozos.idr` (delta, sigmaG, generátorok) — az
-   Alpha* modulok `_v2`-i importálják; a v1-ek érintetlenül maradnak.
+2. **Hullám 1 (KÉSZ, ma)**: `szima_ter/modul/Alap/AlphaKozos.idr` ELKÉSZÜLT —
+   a teljes Alpha-alapréteg kanonikus otthona (n→k→d→s→kodSzoTer→
+   kiterjesztettTer→...→alphaBare=137.036, delta≈8.23e-7, sigmaG=1.5e-15);
+   fordul (1,0 s), fut, minden érték EGYEZIK a v1 kimenetekkel;
+   a fogyasztói IMPORT bizonyítva (AlphaKozosImportProbe — 2/2 buildek;
+   archiválva). Az Alpha* `_v2`-i innentől importálnak; a v1-ek maradnak.
 3. **Hullám 2**: `Alap/ListaiAlap.idr` (darab/számláló, GF(2) lista-műveletek,
    súly, távolság) — az E8* modulok következő verziói importálják;
    standard-könyvtár (take/elem/nub) ahogy létezik.
