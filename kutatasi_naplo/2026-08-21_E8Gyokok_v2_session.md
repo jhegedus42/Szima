@@ -394,3 +394,54 @@ valódi gépi időhorgonyra (20:17:23) cserélve — a saját új szabályom
 `/Users/joco/opencode/kutatasi_naplo/2026-08-21_E8Gyokok_v2_session.md`
 （该目录下唯一文件，21 021 字节，369 行；第 14–17 条分别位于第 272、306、
 315、340 行）。顺手把第 16 条标题的"约 20:20"改为机器时间锚点 20:17:23。
+---
+
+## 19. bejegyzés — "ezt hol találod? írjál rá python programot... valami opencode sql adatbázisban... ehhez valami post hook kellene?" (gépi idő: l. commit)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> ezt kellett volna : Most már sehol máshol — pontosan ott, ahol lennie kell:
+> (a 17. bejegyzésnél adott teljes válaszem szó szerinti beillesztése)
+> ezt hol talalod ? irjal ra python programot, szerintem valami opencode sql atabazisban... nem ? ehhez valami post hook kellene, ami a valaszod elmentese utan fut, nem ?
+
+**VÁLASZ (asszisztens):**
+
+1. **HOL ÉL A CHAT-SZÖVEG**: az opencode MINDENT SQLite-ban tárol:
+   `~/.local/share/opencode/opencode.db` — `message` tábla
+   (id, session_id, time_created [unix ms], data JSON — benne role),
+   `part` tábla (message_id, data JSON — a
+   `{"type":"text","text":...}` részek; a horog-injekciók
+   `synthetic:true` jelöléssel). A keresett válasz szó szerint
+   megtalálva a part táblában (LIKE '%Most már sehol máshol%').
+
+2. **PYTHON-PROGRAM (kész, fut)**: `kutatasi_naplo/opencode_naplo_kirollo.py`
+   — read-only (WAL-biztonságos) kapcsolat, a legutolsó (vagy adott)
+   session KÉRDÉS–VÁLASZ párjai GÉPI időbélyeggel markdownba.
+   Kapcsolók: --session, --since ISO-idő, --out fájl.
+   Futtatva: 57 bejegyzés → `kutatasi_naplo/auto_2026-08-21_chat.md`
+   (461 sor; a keresett szöveg a 384. és 425. sorban — a válaszom és
+   a felhasználó idézete).
+   Megjegyzés: a "Python tiltott" AGENTS-szabály a projektszámításokra
+   vonatkozik (azok Idrisben mennek); ez DB-eszköz, explicit kérésre.
+
+3. **POST-HOOK (kész, regisztrálva)**: `horog-injektor_v2.ts`
+   (~/.config/opencode/plugin/) — a v1 injekcióját változatlanul
+   tartalmazza, PLUSZ `event: session.idle` horog: amikor a válasz
+   elkészült és a session üresjáratba kapcsol, a plugin READ-ONLY
+   módon kiolvassa a DB-ből az új párokat és gépi időbélyeggel a
+   `<projekt>/kutatasi_naplo/auto/auto_YYYY-MM-DD.md` spool-ba írja.
+   Biztonság: minden DB-művelet try/catch-ben (a naplózó hibája nem
+   töri meg a chatet); synthetic részek kimaradnak; a plugin NEM
+   commitol (a §10 ritmust az asszisztens tartja).
+   A v1 megmaradt (AGENTS §13 — nem írtunk felül semmit); a config a
+   v2-re mutat; ÚJRAINDÍTÁS után él.
+
+4. **A LÁNC most**: user kérdés → horog-injekció minden LLM-hívásnál →
+   válasz → session.idle → auto-spool (gépi idő) → az asszisztens
+   napló-bejegyzése + commit + push.
+
+**中文摘要：** 答案：聊天全文存在 `~/.local/share/opencode/opencode.db`
+（message + part 表，JSON data 字段；钩子注入标记 synthetic）。已写 Python
+提取器 `kutatasi_naplo/opencode_naplo_kirollo.py`（只读、WAL 安全、机器时
+间戳；已导出 57 条到 auto_2026-08-21_chat.md），并做了 post-hook：
+`horog-injektor_v2.ts` 在 session.idle（回答保存后）自动把新问答对追加到
+`kutatasi_naplo/auto/auto_日期.md`。v1 保留，配置已指向 v2，重启后生效。
