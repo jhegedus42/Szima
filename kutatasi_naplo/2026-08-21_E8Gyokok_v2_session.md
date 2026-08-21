@@ -337,7 +337,7 @@ először csak a chatben ment), és ezzel egy commitban pusholva.
 不能凭记忆估计。
 ---
 
-## 17. bejegyzés — "ezt hova írtad le: Igen, ezt láttad..." (a teljes válasz szó szerint) (20:25 körül, gépi idő — l. a commitot)
+## 17. bejegyzés — "ezt hova írtad le: Igen, ezt láttad..." (a teljes válasz szó szerint) (20:18:28 — gépi időhorgony)
 
 **KÉRDÉS (felhasználó, szó szerint):**
 > ezt hova irtad le : Igen, ezt láttad — és jól, hogy láttad, mert leleplezett egy hibámat:
