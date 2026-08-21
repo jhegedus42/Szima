@@ -267,3 +267,46 @@ AGENTS.md §23。核心：压缩即信息丢失。
 push 前 ★ 行 + 逐字不压缩规则 + 研究日志义务"作为 synthetic 文本部分注入
 最后一条用户消息；有防重复注入保护。已注册进全局配置（19 个 MCP 配置原样
 保留），需重启 opencode 生效。
+---
+
+## 14. bejegyzés — "szóval, mi most a cél?" (21:25)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> szoval, mi most a cel ?
+
+**VÁLASZ (asszisztens) — a cél és a négy fázis:**
+
+A NAGY CÉL: megérteni, mi a világegyetem, az élet és az AI, az E8 240
+szimbólumából kiindulva, Idris-bizonyításokkal.
+
+1. **E8 teljes anatómia (AKTUÁLIS FÁZIS):**
+   - a 240×240 belső szorzat-tábla (a szorzatok csak {−8,−4,0,+4,+8}
+     lehetnek a 2-szeres skálán — a simply-laced szerkezet bizonyítása);
+   - minden gyöknek 56 szomszédja van (α·β = −4) — a kapcsolati gráf;
+   - Weyl-reflexiók: σ_α(β) = β − (α·β/4)·α — és bizonyítani, hogy
+     gyökből gyököt csinál (a "minden szimmetria" lényege);
+   - a 16 = Cl(4) blade — a 256-os kódszó-tér kerete (240 + 16 = 2⁸).
+2. **A fázis-kapcsolat (a sejtés formalizálása):** 1 bitben 240 kódszó,
+   16 "biten" tárolva — a fázis nem folytonos, az E8 kvantálja;
+   a Steane [[7,1,3]] híd.
+3. **A nagy lánc:** Lie-algebrák hierarchiája (A-D-E) → szénatom →
+   kodonok (64 = 4³) → élet → AI → a kvantumszámítógép mint TÁVÍRÓ,
+   valahova.
+
+KÉSZ MÁR: a 240 szimbólum generálva és bizonyítva (112+128=240,
+norma² mind 8), W(E8) = 696 729 600 két független úton, a szabály-
+rendszer (négynyelvű válaszok, kutatási napló, horog-plugin).
+
+**中文摘要：** 目标（四阶段）：(1) E8 完整解剖 — 240×240 内积表（值仅
+{−8,−4,0,+4,+8}）、56 邻居图、外尔反射 σ_α(β)=β−(α·β/4)α 封闭性证明、
+16 = Cl(4) 基（当前阶段）；(2) 相位联系 — 1 比特 240 码字、相位被 E8 量子化、
+Steane 桥；(3) 大链条 — 李代数层级→碳→密码子→生命→AI→量子"电报机"。
+已完成：240 符号、外尔群阶双路证明、规则系统。
+
+## 15. bejegyzés — "ezt leírtad? pusholtad?" (21:30)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> ezt leirtad ? pusholaad ?
+
+**VÁLASZ (asszisztens):** a 14. bejegyzés most került a naplóba (a válasz
+először csak a chatben ment), és ezzel egy commitban pusholva.
