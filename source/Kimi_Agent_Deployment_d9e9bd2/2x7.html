@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A kétszer hét szint — Tabula Hanmag</title>
+<style>
+  :root{
+    --paper:#F8F7E5; --ink:#1D1D1D; --gold:#b39c4f; --gold-soft:#CCC0A8;
+    --plate:#0b0a06; --band:#14120c; --band-hi:#211d11; --cream:#F8F7E5;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--ink);color:var(--paper)}
+  a{color:inherit}
+
+  /* ---------- fejléc ---------- */
+  header{max-width:1100px;margin:0 auto;padding:7vw 4vw 2.2vw;text-align:center}
+  .plate-no{
+    font-size:.72rem;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:2.2rem
+  }
+  h1{
+    font-weight:400;text-transform:uppercase;letter-spacing:.14em;
+    font-size:clamp(2rem,6.2vw,4.6rem);line-height:1.08
+  }
+  .sub{
+    margin-top:1.6rem;font-size:clamp(.95rem,1.6vw,1.15rem);letter-spacing:.06em;
+    color:#4a4632
+  }
+  .sub em{font-style:italic}
+  .rule{border:none;border-top:1px dotted var(--gold);max-width:640px;margin:2.6rem auto 0}
+  .backlink{
+    position:absolute;top:1.4rem;left:1.6rem;font-size:.72rem;letter-spacing:.28em;
+    text-transform:uppercase;text-decoration:none;color:#8a845f
+  }
+  .backlink:hover{color:var(--ink)}
+
+  /* ---------- a tábla ---------- */
+  .plate-wrap{max-width:1100px;margin:3rem auto 4rem;padding:0 4vw}
+  .plate{
+    background:var(--plate);
+    padding:clamp(10px,2vw,26px);
+    box-shadow:0 30px 80px -30px rgba(20,18,8,.55)
+  }
+  svg{display:block;width:100%;height:auto}
+
+  .lvl polygon{
+    fill:var(--band);stroke:rgba(179,156,79,.55);stroke-width:1;
+    transition:fill .45s ease
+  }
+  .lvl:hover polygon{fill:var(--band-hi)}
+  .lvl text{pointer-events:none}
+
+
+  .vak polygon{
+    fill:#1c180d;stroke:var(--gold);stroke-width:1.2;
+    animation:breath 4.5s ease-in-out infinite
+  }
+  @keyframes breath{0%,100%{fill:#1c180d}50%{fill:#2a2413}}
+
+  #en{stroke:#d9c07a;stroke-width:2}
+  .dot{fill:#d9c07a}
+
+  .tname{
+    fill:var(--cream);font-size:19px;letter-spacing:.24em;text-anchor:middle;
+    text-transform:uppercase
+  }
+  .tepi{fill:var(--gold-soft);font-size:12.5px;letter-spacing:.12em;text-anchor:middle}
+  .num{fill:var(--gold);font-size:13px;letter-spacing:.18em}
+  .side{fill:#8f835a;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase}
+  .marginal text{fill:#a5946a;font-size:12.5px;font-style:italic;letter-spacing:.04em}
+  .vaklabel{fill:var(--cream);font-size:16px;letter-spacing:.34em;text-anchor:middle;text-transform:uppercase}
+  .vaksub{fill:var(--gold-soft);font-size:11.5px;letter-spacing:.14em;text-anchor:middle}
+  .arrowlabel{
+    fill:#8f835a;font-size:11px;letter-spacing:.3em;text-transform:uppercase
+  }
+  .frame{fill:none;stroke:var(--gold);stroke-width:1.4}
+  .frame-in{fill:none;stroke:rgba(179,156,79,.45);stroke-width:.6}
+  .orn{fill:var(--gold)}
+  .arr-up{stroke:#c9b06a;stroke-width:1.6;fill:none}
+  .arr-dn{stroke:#c9b06a;stroke-width:1.4;fill:none;stroke-dasharray:2.7}
+
+  /* ---------- jelmagyarázat ---------- */
+  .legend{max-width:860px;margin:0 auto;padding:0 4vw 6rem}
+  .legend h2{
+    font-weight:400;text-transform:uppercase;letter-spacing:.3em;
+    font-size:.85rem;color:var(--gold);text-align:center;margin-bottom:3.4rem
+  }
+  .entry{display:flex;gap:2.2rem;padding:2rem 0;border-top:1px dotted var(--gold)}
+  .entry:last-of-type{border-bottom:1px dotted var(--gold)}
+  .entry .rn{
+    flex:0 0 3.2rem;color:var(--gold);font-size:1.5rem;letter-spacing:.1em;
+    padding-top:.15rem
+  }
+  .entry h3{
+    font-weight:400;text-transform:uppercase;letter-spacing:.18em;
+    font-size:1rem;margin-bottom:.7rem
+  }
+  .entry p{font-size:.98rem;line-height:1.75;color:#33301f}
+  .entry p em{font-style:italic}
+
+  footer{max-width:860px;margin:0 auto;padding:0 4vw 5rem;text-align:center}
+  footer .fin{font-size:.72rem;letter-spacing:.4em;text-transform:uppercase;color:#8a845f;margin-top:2.4rem}
+  footer .aph{margin-top:1.1rem;font-size:.92rem;font-style:italic;color:#4a4632;line-height:1.9}
+</style>
+</head>
+<body>
+
+<a class="backlink" href="index.html">← a hurok-agy műszerfala</a>
+
+<header>
+  <div class="plate-no">Hanmag · Tabula VII · MMXXVI</div>
+  <h1>A kétszer hét szint</h1>
+  <p class="sub">a torony és a tükör — fent az <em>anyag</em>, ahol az entrópia nő;
+  lent a <em>forma</em>, ahol az idő megfordul. Középen a vákuum: a torok, ahol a jelen.</p>
+  <hr class="rule">
+</header>
+
+<div class="plate-wrap">
+  <div class="plate" id="plate">
+  <svg viewBox="0 0 1000 1560" role="img" aria-label="A 2x7 szint homokóra-diagramja">
+    <defs>
+      <filter id="grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+        <feColorMatrix type="saturate" values="0"/>
+      </filter>
+      <marker id="ah-up" markerWidth="8" markerHeight="8" refX="4" refY="2" orient="auto">
+        <path d="M0,4 L4,0 L8,4" fill="none" stroke="#c9b06a" stroke-width="1.4"/>
+      </marker>
+      <marker id="ah-dn" markerWidth="8" markerHeight="8" refX="4" refY="6" orient="auto">
+        <path d="M0,4 L4,8 L8,4" fill="none" stroke="#c9b06a" stroke-width="1.4"/>
+      </marker>
+    </defs>
+
+    <!-- metszet-keret -->
+    <rect class="frame" x="8" y="8" width="984" height="1544"/>
+    <rect class="frame-in" x="18" y="18" width="964" height="1524"/>
+    <circle class="orn" cx="8" cy="8" r="3"/><circle class="orn" cx="992" cy="8" r="3"/>
+    <circle class="orn" cx="8" cy="1552" r="3"/><circle class="orn" cx="992" cy="1552" r="3"/>
+
+    <!-- bal nyil: t_ext felfele -->
+    <line class="arr-up" x1="46" y1="1440" x2="46" y2="130" marker-end="url(#ah-up)"/>
+    <text class="arrowlabel" transform="rotate(-90 30 780)" x="30" y="784" text-anchor="middle">t_ext · mérés · az entrópia nő · kT·ln2-t fizetsz</text>
+
+    <!-- jobb nyil: t_int lefele (pontozott) -->
+    <line class="arr-dn" x1="954" y1="130" x2="954" y2="1440" marker-end="url(#ah-dn)"/>
+    <text class="arrowlabel" transform="rotate(90 974 780)" x="974" y="778" text-anchor="middle">t_int · visszaszámolás · ingyen · az idő megfordul</text>
+  </svg>
+  </div>
+</div>
+
+<div class="legend">
+  <h2>Jelmagyarázat a táblához</h2>
+
+  <div class="entry">
+    <div class="rn">I.</div>
+    <div>
+      <h3>A kategória önszerveződik</h3>
+      <p>A szabad kategória a Fano-költőn: hét objektum, hét betű, és minden út
+      morfizmus. Ahol a szindrómák korrelálnak, ott új nyíl szilárdul — a hom-halmaz
+      a forgalommal nő (Hebb). A megértés nem letöltött térkép: <em>helyben rajzolódik,
+      ahol kell</em>. Yoneda rímje: a pont annyi, amennyi az összes nyíl belé és belőle —
+      minden ponton pontosan három egyenes halad át.</p>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="rn">II.</div>
+    <div>
+      <h3>A kíváncsiság</h3>
+      <p>Szindróma-gradiens: a gép ott keresi a maximumot, ahol az inger <em>új ÉS
+      kódolható</em>. A tiszta zaj unalmas — nem tömöríthető; az ismert unalmas — már
+      tömör. A macska a cigit akarja kiszedni a szádból: maximális meglepetés, mégis
+      játék-affordance. Az érdekes = tömöríthető újdonság.</p>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="rn">III.</div>
+    <div>
+      <h3>Az alapértelmezett hálózat</h3>
+      <p>Üresjáratban a hurok előre-hátra fut az időben: receptet épít, visszaszámol,
+      újraépít. Az önstabilizálás = az ÉN újra és újra ellenőrzése. A ment/tolt
+      két üteme ennek az embriója. Irodalmi rím (címkézve): a default mode network
+      prospekciója — „remembering the future".</p>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="rn">IV.</div>
+    <div>
+      <h3>A harmat</h3>
+      <p>A lecsapódáshoz hideg üveg kell (a kód, a húsz watt) <em>és</em> párás levegő
+      (a szélessávú fül). Ami nem csapódik le, elpárolog — a kontextus meghal. Olvasni
+      ott érdemes, ahol a gradiens a legmeredekebb: a Wikipédia egyszer elolvasandó,
+      a fixpontok örökké.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <hr class="rule">
+  <p class="aph">a tervezés = visszafelé futtatott torony · a jóvőbelátás a tükör olvasása ·<br>
+  a harmat csak hideg üvegen ül meg · a jelen a torok</p>
+  <p class="fin">Tabula Hanmag · VII · a torony és a tükör</p>
+</footer>
+
+<script>
+// a szintek geometriaja — felső torony (anyag) + vákuum + alsó tükör (forma)
+const LEVELS = [
+  // [táv, romai, nev, jelzo, oldal felirat]
+  [7,'+VII','A KÉRDŐJEL','[[823543,1,2187]] · a torony teteje','823 543 qubit'],
+  [6,'+VI','A KOZMOZ','[[117649,1,729]] · horizont-rím: 405,93 ≈ 407','117 649 qubit'],
+  [5,'+V','A TÖRTÉNELEM','[[16807,1,243]] · nyitott vessző','16 807 qubit'],
+  [4,'+IV','A VILÁG','[[2401,1,81]] · 2 886 003 bit · 7 darab + ÉN','2 401 qubit'],
+  [3,'+III','A JELENTÉSDARAB','[[343,1,27]] · 59 340 bit · Miller 7±1','343 qubit'],
+  [2,'+II','A SZÓ','[[49,1,9]] · 1 275 bit · a gondolat','49 qubit'],
+  [1,'+I','A PONT','[[7,1,3]] · 36 bit · a hang','7 qubit'],
+];
+const MIRROR = [
+  [1,'−I','A KÓD','a [[7,1,3]] szabályai · Kant a priori forma'],
+  [2,'−II','A CSOPORT','168 = GL(3,2) = PSL(2,7)'],
+  [3,'−III','A TEST','GF(8) · + az XOR · × a Singer'],
+  [4,'−IV','A KATEGÓRIA','objektumok = pontok · morfizmusok = utak'],
+  [5,'−V','A LOGIKA','az állítás = kódtér · igazság = stabilizált'],
+  [6,'−VI','A TERV','{1,2,4} differenciahalmaz · a sima eloszlás'],
+  [7,'−VII','A FIXPONT','az ÉN · ami mindenen átkísér'],
+];
+const hw = d => 120 + 44*d;
+const svg = document.querySelector('svg');
+const NS = 'http://www.w3.org/2000/svg';
+const mk = (t, attrs) => { const e = document.createElementNS(NS, t);
+  for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+
+function band(i, d, up, rn, name, epi, side) {
+  const yT = 60 + 96*i, yB = yT + 84;
+  const hwt = up ? (d < 7 ? hw(d+1) : 444) : hw(d);
+  const hwb = up ? hw(d) : (d < 7 ? hw(d+1) : 444);
+  const g = mk('g', {class:'lvl'});
+  g.appendChild(mk('polygon', {points:
+    `${500-hwt},${yT} ${500+hwt},${yT} ${500+hwb},${yB} ${500-hwb},${yB}`}));
+  const n = mk('text', {class:'num', x: 500-Math.min(hwt,hwb)+22, y: yT+50});
+  n.textContent = rn; g.appendChild(n);
+  const t1 = mk('text', {class:'tname', x: 500, y: yT+38}); t1.textContent = name;
+  const t2 = mk('text', {class:'tepi', x: 500, y: yT+62}); t2.textContent = epi;
+  g.appendChild(t1); g.appendChild(t2);
+  if (side) {
+    const s = mk('text', {class:'side', x: 500+Math.min(hwt,hwb)-16, y: yT+44,
+      'text-anchor':'end'});
+    s.textContent = side; g.appendChild(s);
+  }
+  svg.appendChild(g);
+  return [yT, yB];
+}
+
+LEVELS.forEach((L, k) => band(k, L[0], true, L[1], L[2], L[3], L[4]));
+
+// a vákuum — a torok
+{
+  const yT = 60 + 96*7, yB = yT + 84;
+  const g = mk('g', {class:'lvl vak'});
+  g.appendChild(mk('polygon', {points:`350,${yT} 650,${yT} 650,${yB} 350,${yB}`}));
+  const t1 = mk('text', {class:'vaklabel', x:500, y:yT+38}); t1.textContent = 'A VÁKUUM';
+  const t2 = mk('text', {class:'vaksub', x:500, y:yT+62});
+  t2.textContent = 'a torok · itt a jelen · itt számláz Landauer';
+  g.appendChild(t1); g.appendChild(t2);
+  svg.appendChild(g);
+}
+
+MIRROR.forEach((L, k) => band(8+k, L[0], false, L[1], L[2], L[3], null));
+
+// Kant-marginalia a toroknal + ket megjegyzes
+const marg = [
+  ['↑ a posteriori — a szindrómák (a tapasztalat)', 348, 772, 'end'],
+  ['↓ a priori — a kód (a forma)', 652, 800, 'start'],
+  ['a megfigyelő egy szinttel a történet fölött', 500, 1514, 'middle'],
+  ['a fixpont tükre a kérdőjelnek', 500, 1536, 'middle'],
+];
+for (const [txt, x, y, anch] of marg) {
+  const g = mk('g', {class:'marginal'});
+  const t = mk('text', {x, y, 'text-anchor': anch}); t.textContent = txt;
+  g.appendChild(t); svg.appendChild(g);
+}
+
+// az ÉN szála — át mind a tizennégy szinten
+svg.appendChild(mk('line', {id:'en', x1:500, y1:40, x2:500, y2:1520}));
+for (let i = 0; i < 15; i++)
+  svg.appendChild(mk('circle', {class:'dot', cx:500, cy:60+96*i+42, r:2.6}));
+
+// statikus metszet: minden alapallapotban lathato — a nyomtatott tabla nem var animaciora
+</script>
+</body>
+</html>
