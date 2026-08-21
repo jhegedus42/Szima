@@ -151,4 +151,24 @@ horgonyok.
 
 ---
 
-**Push-állapot a napló írásakor:** master = 6d3fe0b (a titok-mentesített snapshot).
+## 9. bejegyzés — "a válasz 4 nyelvű! ezt külön emeld ki minden push előtt, tedd be a pluginba" (20:05)
+
+**KÉRDÉS (felhasználó):**
+> a valasz 4 nyelvu ! ezt kulon emeld ki minden push-elott, ezeket tedd be a pluginba
+
+**VÁLASZ (asszisztens):**
+- Létrejött a perzisztens plugin-config: `~/.config/opencode/AGENTS.md`
+  (§N1–§N4): négynyelvű válasz (magyar + 中文 kritikus + Deutsch + עברית),
+  push előtti külön kiemelés (★ NEGYNYELVŰ VÁLASZ ★), kódkomment-szabály,
+  kutatási napló kötelezettség.
+- A projekt AGENTS.md §22 kiegészült a push-előtti kiemelés szabályával.
+- Ettől a push-tól kezdve minden commit-üzenet is jelzi a négy nyelvűséget.
+
+**中文摘要:** 用户要求把"回答是四语的"这一点在每次 push 前单独强调，并写入插件。
+已创建持久化插件配置 `~/.config/opencode/AGENTS.md`（§N1–§N4），并补充项目
+AGENTS.md §22：push 前以 ★ 行突出四语性，commit 信息同样标注。
+
+---
+
+
+**Végállapot:** b4fa936 után a plugin-szabályok commitja következik.

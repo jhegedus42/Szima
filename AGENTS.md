@@ -481,3 +481,11 @@ it's a research log". A kutatás láncolata így rekonstruálható.
 - Idris-kommentek: a blokk-fejlécek és a kulcs-tanulságok négynyelvűek;
   a soronkénti kommentek maradhatnak magyar+kínai párosban.
 - **A kínai NEM opcionális** — "kinai fontos, kritikus" (2026-08-21).
+- **MINDEN git push ELŐTT KÜLÖN KIEMELÉS** (a felhasználó 2026-08-21-i
+  utasítása: "a valasz 4 nyelvu! ezt kulon emeld ki minden push-elott"):
+  az asszisztens a push előtt külön sorban jelzi:
+
+    ★ NEGYNYELVŰ VÁLASZ: magyar + 中文 + Deutsch + עברית ★
+
+- Ugyanez a szabály a perzisztens plugin-configban is:
+  `~/.config/opencode/AGENTS.md` (§N1–§N4) — minden sessionbe betöltendő.
