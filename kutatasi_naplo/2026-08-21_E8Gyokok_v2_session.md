@@ -230,3 +230,40 @@ bomlása) és ellenpélda is a sablonban.
 **中文摘要：** 用户要求：一切逐字记录、绝不压缩、宁多勿少、条理分明，并把
 此规则作为"钩子"写入插件。已写入三处：插件 §N5、HOROG.md 第 8 综合征、
 AGENTS.md §23。核心：压缩即信息丢失。
+---
+
+## 13. bejegyzés — "van ts plugin is, amit minden prompt után injektálhatsz" (21:10)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> van ts plugin is, amit minden prompt utan injektalhatsz
+
+**VÁLASZ (asszisztens):**
+1. Betöltöttem a `customize-opencode` skill-t; a plugin-rendszer dokumentációja
+   szerint a `experimental.chat.messages.transform` horog MINDEN LLM-hívásnál
+   lefut, és a plugin a helyben kapott üzenetlistát mutálhatja.
+2. A helyi típusdefiníciókból (~/config/opencode/node_modules/@opencode-ai/
+   plugin/dist/index.d.ts és sdk types.gen.d.ts) pontosan leolvastam a
+   horog alakját:
+   - horog: `(input: {}, output: { messages: { info: Message; parts: Part[] }[] }) => Promise<void>`
+   - UserMessage: `{ id, sessionID, role: "user", ... }`
+   - TextPart: `{ id, sessionID, messageID, type: "text", text, synthetic?, ... }`
+3. Elkészült a plugin: `~/.config/opencode/plugin/horog-injektor.ts`
+   — minden LLM-hívásnál a LEGUTOLSÓ user-üzenet végére injektál egy
+   synthetic TextPart-ként a HOROG-szöveget, amely tartalmazza:
+   a négy nyelvű válasz pontos sablonját (magyar törzs + **中文：** +
+   **Deutsch:** + **עברית:**), a push előtti ★ sort, a SZÓRÓL SZÓRA /
+   nincs tömörítés szabályt, és a kutatási napló kötelezettséget.
+   Duplikáció-védelem: ha az üzenet végén már van horog, nem tesz oda újat.
+4. Regisztrálva a globális configban (`~/.config/opencode/opencode.jsonc`
+   → `"plugin": ["./plugin/horog-injektor.ts"]`); a meglévő 19 MCP-s
+   konfigurációt nem bántottam; a JSONC-t string-tudatos stripperrel
+   validáltam (a naiv `//`-vágás elvágta volna az URL-eket — tanulság).
+5. ÚJRAINDÍTÁS kell: a config egyszer, induláskor töltődik be — a futó
+   session a régi configot használja, amíg újra nem indítják az opencode-ot.
+
+**中文摘要：** 用户提示可以用 TS 插件在每次提示后注入。已创建全局插件
+`~/.config/opencode/plugin/horog-injektor.ts`：通过
+`experimental.chat.messages.transform` 钩子，每次模型调用时把"四语模板 +
+push 前 ★ 行 + 逐字不压缩规则 + 研究日志义务"作为 synthetic 文本部分注入
+最后一条用户消息；有防重复注入保护。已注册进全局配置（19 个 MCP 配置原样
+保留），需重启 opencode 生效。
