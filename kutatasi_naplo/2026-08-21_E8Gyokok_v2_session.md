@@ -312,7 +312,7 @@ Steane 桥；(3) 大链条 — 李代数层级→碳→密码子→生命→AI�
 először csak a chatben ment), és ezzel egy commitban pusholva.
 ---
 
-## 16. bejegyzés — "ezt láttam: $ cd /Users/joco/opencode && cat >> ..." (20:20 körül, gépi idő)
+## 16. bejegyzés — "ezt láttam: $ cd /Users/joco/opencode && cat >> ..." (20:17:23 — gépi időhorgony; a "20:20 körül" becslés pontatlan volt)
 
 **KÉRDÉS (felhasználó, szó szerint):**
 > ezt lattam : $ cd /Users/joco/opencode && cat >> kutatasi_naplo/2026-08-21_E8Gyokok_v2_session.md <<'EOF'
@@ -367,3 +367,30 @@ naplóba, nem csak az összefoglaló.
 **中文摘要：** 用户问："你把这个回答写到哪里了？"——指出我的回答只在聊天里，
 没逐字进日志。现补录（第 17 条），并立规矩：从现在起，回答的完整原文
 （含中文/德文/希伯来文摘要）也逐字写入研究日志。
+---
+
+## 18. bejegyzés — "file-t amit irtal" (20:22 körül → l. commit-idő a pontos horgony)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> file-t amit irtal
+
+**VÁLASZ (asszisztens):**
+
+A fájl, amibe az egész naplót (1–17. bejegyzés) írtam:
+
+  `/Users/joco/opencode/kutatasi_naplo/2026-08-21_E8Gyokok_v2_session.md`
+
+Ellenőrizve (`ls` + `grep`):
+- a `kutatasi_naplo/` könyvtárban EZ az egy session-fájl van (21 021 bájt,
+  369 sor, mtime: Aug 21 20:18);
+- a 14–17. bejegyzések sorszámai: 272, 306, 315, 340;
+- a repóban a GitHubon is ez fut (utolsó push: a8199d4).
+
+Közben javítva: a 16. bejegyzés fejlécének "20:20 körül" becslése a
+valódi gépi időhorgonyra (20:17:23) cserélve — a saját új szabályom
+(időbélyeg = gépi idő) alkalmazása magamra.
+
+**中文摘要：** 用户问"你写的是哪个文件"。答案：全部日志（第 1–17 条）都在
+`/Users/joco/opencode/kutatasi_naplo/2026-08-21_E8Gyokok_v2_session.md`
+（该目录下唯一文件，21 021 字节，369 行；第 14–17 条分别位于第 272、306、
+315、340 行）。顺手把第 16 条标题的"约 20:20"改为机器时间锚点 20:17:23。
