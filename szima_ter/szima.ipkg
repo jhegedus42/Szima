@@ -34,6 +34,7 @@ modules = Alap.AlphaKozos
         , E8BelsoSzorzat
         , E8FazisKapcsolat
         , E8Gyokok_v2
+        , E8Gyökök
         , E8TizenhatPenge
         , FazisKubit
         , GCheck

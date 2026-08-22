@@ -1119,3 +1119,61 @@ Reihenfolge A→B→C vorgeschlagen. Wahl offen.
 **עברית:** בלוק ה-HOROG הופיע בהודעת המשתמש — פלאגין v4 חי ונראה. שלוש
 דרכים: A (מומלץ) גל ניקוד למודולים שלי; B ריפוי משפחת szindromaTer;
 C לב שלב 2. הסדר המוצע A→B→C. ממתין לבחירה.
+---
+
+## 32. bejegyzés — "jo a sorrand, ugyelj a helyesirasra" (l. commit-idő — gépi horgony)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> jo a sorrand, ugyelj a helyesirasra
+> (és a HOROG-blokk a kérdés végén — az injekció működik)
+
+**VÁLASZ (asszisztens) — az (A) ékezet-hullám indulása:**
+
+1. **PRÓBA**: ékezetes MODULNÉV is él (Próba/Gyökér.idr — 0 hiba),
+   tehát az ékezetes nemzedék tiszta neveket kaphat.
+2. **E8Gyökök.idr ELKÉSZÜLT** (a hullám 1. modulja az ötből): a v2
+   minden azonosítója ékezetes alakban (E8Gyök, gyökNorma,
+   típus1GyökTeljes, pozícióPárok, előjelPárok, összesElőjel,
+   listaGyökké, gyökSzimbólum, Faktoriális, bizWeylE8Prím,
+   bizE8Dimenzió, TrialitásSzázharmincöt...); a gondolatok-sztring
+   ÉS a v2 komment-elírásai is javítva (kernellben→kernelben,
+   indit→indít); §24: az elsoN helyett standard `take` (import
+   Data.List). Fordul (1,0 s) és FUT: 112+128=240 ✓, norma²=8 ✓,
+   W(E8)=696 729 600 ✓.
+3. **AZ ŐRSZEM MŰKÖDÉSBEN MUTATKOZOTT MEG**: az E8Gyökök írása után
+   azonnal 2 riasztás — a GAUGE-elvi kivizsgálás szerint MINDKETTŐ
+   HAMIS volt: (a) NagyNat: a `Faktoriális : Nat -> Integer`-nél a
+   Nat csak PARAMÉTER, a 40320 Integer-bizonyításban áll; (b)
+   RoviditesElotag: a "Mi" a gondolatok STRINGJÉBEN áll ("Mi ÉLÜNK"),
+   nem konstruktor. **A v4 plugin két mintája finomítva** (edit
+   eszközzel): NagyNat csak pure-Nat definíciókra lő
+   (`x : Nat` típussort követő értéksor 5+ jegyű literállal);
+   RoviditesElotag EXPLICIT listára váltott (a valaha élt Dcs/Voe/Mb
+   családok — a szabályos magyar szavak (Mi, De) nem lőnek többé).
+   Ez maga a tanulság-őrszem öntanulási köre: riaszt → kivizsgálás →
+   minta-finomítás.
+4. **Az ipkg felvette az E8Gyököket** (40 modul). A hullám folytatása:
+   E8BelsőSzorzat, E8TizenhatPenge_v2, E8FázisKapcsolat,
+   Alap.AlphaKözös (a következő üzenetekben).
+
+**中文摘要：** 用户确认顺序并强调正字法。ékezet-hullám 启动：模块名带变音
+可行（探针证明）；第一个模块 E8Gyökök.idr 完成——所有标识符带变音（E8Gyök、
+típus1Gyökök、gyökSzimbólum 等），字符串与注释拼写修正，take 改用标准库；
+编译运行全部通过（240、norma²=8、W(E8)）。哨兵实战首次亮相：写入后立即
+两条警报，经查均为误报（Nat 只是参数；"Mi" 在字符串里）——已用 edit 细化
+两条正则（纯 Nat 定义才报；显式缩写列表）。这正是哨兵的自我学习循环。
+
+**Deutsch:** Der Nutzer bestätigte die Reihenfolge und betonte die
+Rechtschreibung. Die Akzent-Welle begann: akzentige MODULNAMEN funktionieren
+(Probe); erstes Modul E8Gyökök.idr fertig — alle Bezeichner mit Diakritika,
+Schreibfehler in Strings und Kommentaren korrigiert, take aus der Standard-
+bibliothek; kompiliert und läuft (240, norma²=8, W(E8)). Der Wächter feierte
+Arbeitspremiere: zwei sofortige Alarme, beide laut Prüfung Fehlalarme (Nat nur
+Parameter; „Mi" in einem String) — beide Muster per edit verfeinert. Genau der
+Selbstlernkreis des Wächters.
+
+**עברית:** המשתמש אישר את הסדר והדגיש כתיב תקין. גל הניקוד נפתח: שמות
+מודול מנוקדים עובדים; המודול הראשון E8Gyökök.idr מוכן — כל המזהים מנוקדים,
+שגיאות כתיב תוקנו, take מהספרייה הסטנדרטית; מהודר ורץ (240, norma²=8, W(E8)).
+הזקיף חנך את עבודתו: שתי אזהרות מיידיות, שתיהן התראות שווא לפי הבדיקה —
+שני התבניות חודדו בכלי edit. זה בדיוק מעגל הלמידה העצמית של הזקיף.
