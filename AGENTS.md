@@ -158,7 +158,9 @@ Ha egy név rövidítésnek tűnik, írd ki teljesen.
 
 14. **Boot-up szekvencia.** Minden session (vagy kompakálás) ELEJÉN kötelező
     sorrend: (a) a három MD (MANTRA, HOROG, AGENTS), (b) a skill-ek
-    (`idris-stilus`, `boot-up`, `szivdobbanas`), (c) a `MiertJo`-tanulság
+    (`idris-stilus`, `boot-up`, `szivdobbanas`), (c) a `magyar-matematika`
+    skill (SZIGORÚ — a magyar matematikai szaknyelv és helyesírás; a
+    projekt lényege: a szavak pontossága = a megértés), (c2) a `MiertJo`-tanulság
     (a propozíciók vs. típusok), (d) a `KisBetűsProjekcióCsapda` (a
     kisbetűs-név a bizonyítás TÍPUSÁBAN), (e) a `LetLáncProbe` (az
     állapot-lánc-csapda), (f) a tíz-parancsolat a tanulságok mappájából.

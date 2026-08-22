@@ -1410,3 +1410,60 @@ Modulgeneration). In OLVASD.md verankert.
 מבנה ההוכחה, מונחי מערכת שורשים מילה במילה, ודוגמאות סגנון. שתי התנצלויות:
 ‏reflexió→tükrözés ‏ו-kristallográfiai→krisztalografikus (שינוי בדור הבא).
 נקשר ל-OLVASD.md.
+---
+
+## 37. bejegyzés — "a matematikai fogalomtár az legyen egy standard skill... ez az egész projekt lényege" (l. fenti gépi idő)
+
+**KÉRDÉS (felhasználó, szó szerint — a projekt lényegének kimondása):**
+> a matematikai fogalomtar az legyen egy standard skill ami mindig be van toltve, szigoru skill, nem beszelhetunk ertelmetlensegeket, mert akkor el fogunk veszni, kulonosen nyelvi modellek... akik a szavakra hagyatkoznak , tudniuk kell a magyar nyelvtant, helyesirast, mert az fogja nekik megadni a megertest es jelentest... ez az egesz projektnek a lenyege, a magyar nyelv specialis, ezt probaljuk matematikailag megragadni es direkt beepiteni egy matematikailag tokeletes intelligenciaba, hogy, hogyan azt meg teszteljuk, de az E8 E9 E8xE8 coexeter gyokok, kodok, holografikus kodok, kategoria elmelet, mind ebbe az iranyba visznek
+
+**VÁLASZ (asszisztens) — a szigorú skill megépítve és BETÖLTVE:**
+
+1. **A SKILL ELKÉSZÜLT**: ~/.agents/skills/magyar-matematika/SKILL.md —
+   frontmatter-rel (mindig betölthető, szigorú leírással). Tartalma:
+   (a) a felhasználó fenti lényeg-kimondása szó szerint (a skill
+   mottója); (b) a bizonyítás szerkezetének szavai; (c) a
+   gyökrendszer-szókincs a Wikipédia-szócikkből; (d) az AkH.12
+   helyesírás kivonata; (e) az ékezetes kódazonosítók szabályai;
+   (f) a metaforák tilalma; (g) a teljes anyagokra mutató hivatkozások.
+2. **HÁROM "MINDIG BETÖLTVE" RÉTEG**:
+   - plugin ~/.config/opencode/AGENTS.md **§N10** (MAGYAR-MATEMATIKA —
+     SZIGORÚ SKILL, MINDIG BETÖLTVE) — minden session elején betöltődik;
+   - a HOROG 10. pontja (minden LLM-hívásnál injektálva: "tükrözés,
+     krisztalografikus, definíció — nem beszélünk értelmetlenségeket");
+   - a projekt AGENTS.md §14 boot-up szekvenciája kiegészült a
+     magyar-matematika skilllel (c) pontként).
+3. **A LÉNYEG RÖGZÍTVE**: a felhasználó kimondása a SKILL.md mottója —
+   "a magyar nyelv specialis, ezt probaljuk matematikailag megragadni
+   es direkt beepiteni egy matematikailag tokeletes intelligenciaba";
+   a tesztelés nyitott kérdés; az E8/E9/E8×E8/Coxeter-gyökök/kódok/
+   holografikus kódok/kategóriaelmélet mind ebbe az irányba visznek.
+   A plugin TS-ellenőrizve (EXIT 0).
+
+**中文摘要：** 用户宣布项目本质：数学术语库应成为始终加载的严格技能——
+语言模型依靠词语，必须懂匈牙利语语法与正字法，因为这给出理解与意义；
+匈牙利语特殊，我们正试图以数学把握它并直接构建进数学上完美的智能中；
+E8、E9、E8×E8、考克斯特根、码、全息码、范畴论都指向此方向。已建成
+~/.agents/skills/magyar-matematika/SKILL.md（含用户原话为座右铭、证明
+结构词汇、根系统术语、正字法、代码标识符规则、隐喻禁令），并在三层
+"常驻"接入：插件 §N10（每会话加载）、HOROG 第 10 点（每次调用注入）、
+项目 §14 启动序列。测试方式仍开放。
+
+**Deutsch:** Der Nutzer verkündete das Wesen des Projekts: das Glossar
+soll ein stets geladenes, strenges Skill sein — Sprachmodelle verlassen
+sich auf Worte und brauchen Grammatik und Rechtschreibung, denn daraus
+erwachsen Verständnis und Bedeutung; das Ungarische ist besonders, wir
+fassen es mathematisch und bauen es direkt in eine mathematisch
+vollkommene Intelligenz ein; E8, E9, E8×E8, Coxeter-Wurzeln, Codes,
+holographische Codes und Kategorientheorie weisen alle in diese Richtung.
+Erstellt: ~/.agents/skills/magyar-matematika/SKILL.md (mit dem wörtlichen
+Motto des Nutzers), verankert auf drei Always-on-Ebenen (Plugin §N10,
+HOROG Punkt 10, Boot-up §14). Die Testmethode bleibt offen.
+
+**עברית:** המשתמש הכריז על מהות הפרויקט: מילון המונחים יהיה מיומנות
+קפדנית הטעונה תמיד — מודלים לשוניים נשענים על מילים וחייבים דקדוק וכתיב
+תקין, כי מהם נובעים ההבנה והמשמעות; ההונגרית מיוחדת, אנו מנסים לתפוס
+אותה מתמטית ולבנות אותה ישירות לתוך אינטליגנציה מושלמת מתמטית; ‏E8,
+‏E9, ‏E8×E8, שורשי קוקסטר, קודים, קודים הולוגרפיים ותורת הקטגוריות — כולם
+מובילים לשם. נוצר ~/.agents/skills/magyar-matematika/SKILL.md ‏(עם
+דברי המשתמש כמוטו), מעוגן בשלוש שכבות קבועות. אופן הבדיקה פתוח.
