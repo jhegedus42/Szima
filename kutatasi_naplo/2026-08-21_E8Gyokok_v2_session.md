@@ -1023,3 +1023,63 @@ Mini-Lehre: keine Worterfindung — zweifelhafte Wörter zuerst nachschlagen.
 דווקא ברשומה על חשיבות הכתיב. השגיאה הדגימה את עצמה. תוקן בכלי edit (עם
 שימור עקבות השגיאה); §N9 ונקודה 9 במזריק סומנו כ-KRITIKUS. לקח קטן: לא
 ממציאים מילים — בודקים לפני שכותבים.
+---
+
+## 30. bejegyzés — "szeretném látni amikor a pluginok lefutnak és mit csinálnak... ez legyen látható valahogy" (l. commit-idő)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> szeretnem latni amikor a pluginok lefutnek es mit csinalnak... ez legyen lathato valahogy
+
+**VÁLASZ (asszisztens) — horog-injektor v4 (LÁTHATÓ működés):**
+
+1. **HÁROM láthatósági csatorna** (a v3 minden funkciója megmaradt):
+   - **A TOOL CÍME a TUI-ban** (azonnal látszik, még a kimenet kinyitása
+     előtt): minden .idr-írás címében `✓ fájl.idr — őrszem: tiszta`
+     vagy `⚠ fájl.idr — őrszem: N csapda!` (a plugin API
+     `tool.execute.after` horog `output.title` mezője módosítható —
+     a típusdefiníciókból igazolva);
+   - **A tool kimenetének vége**: az őrszem részletes figyelmeztetései
+     (a modell azonnal látja és javítja — ez a v3-ból);
+   - **ÉLŐ PLUGIN-NAPLÓ**: minden plugin-művelet (INDULÁS, INJEKTOR,
+     ŐRSZEM, NAPLÓ) egy-időbélyeges sora a
+     `kutatasi_naplo/plugin_naplo_YYYY-MM-DD.log` fájlba —
+     `tail -f kutatasi_naplo/plugin_naplo_*.log` parancs élőben
+     követhető. A fájl a repóba kerül (a kutatási napló része).
+2. **A napló formátuma** (bemutató futtatásból):
+   ```
+   [22:15:03] INDULÁS   horog-injektor v4 betöltve (projekt: /Users/joco/opencode)
+   [22:15:10] INJEKTOR  session ses_fe95: horog injektálva (2387 karakter, 9 szabály)
+   [22:15:18] ŐRSZEM    E8Gyokok_v2.idr: ⚠ 2 csapda (NagyNat, RoviditesElotag)
+   [22:15:24] ŐRSZEM    PiroskaHolografikusKod49_v3_Teljes.idr: ✓ tiszta
+   [22:15:31] NAPLÓ     session ses_fe95: 2 pár → auto/auto_2026-08-21.md
+   ```
+3. **Őszintén feljegyezve**: a v4 íása közben elírtam a "LÁTHATÓSÁGI"
+   szót "LAÁTHATÓSÁGI"-ra (kettős ékezet) — a helyesírás-tanulság
+   (29. bejegyzés) azonnali alkalmazásával edit eszközzel javítottam;
+   a hiba nyoma itt a naplóban marad.
+4. **A config a v4-re mutat; a v1/v2/v3 fájlok megmaradtak (§13).**
+   Szintaxis-ellenőrizve (node --experimental-strip-types --check: OK).
+   ÚJRAINDÍTÁS után él — onnantól minden műveletet LÁTSZ.
+
+**中文摘要：** 用户希望看到插件的运行。v4 提供三条可见渠道：(1) TUI 中每
+次 .idr 写入的标题即时显示 ✓ 干净 / ⚠ N 个陷阱（通过 output.title）；
+(2) 工具输出末尾的详细哨兵警告（模型可见）；(3) 实时插件日志
+kutatasi_naplo/plugin_naplo_日期.log，可用 tail -f 跟踪，记录每次注入、
+哨兵、自动日志操作及时间戳。v1–v3 保留，配置指向 v4，重启生效。另：我
+把"LÁTHATÓSÁGI"误写成双重音符，已按正字法教训立即用 edit 修正并留痕。
+
+**Deutsch:** Der Nutzer will die Plugin-Arbeit sehen. v4 bietet drei
+Sichtbarkeitskanäle: (1) der Titel jedes .idr-Schreibens in der TUI zeigt
+sofort ✓ sauber / ⚠ N Fallen (über output.title); (2) die Wächter-Warnungen
+am Ende der Tool-Ausgabe (für das Modell sichtbar); (3) ein Live-Plugin-Log
+in kutatasi_naplo/plugin_naplo_Datum.log, per tail -f verfolgbar — jede
+Injektion, jeder Wächterlauf, jede Protokollierung mit Zeitstempel. v1–v3
+bleiben, die Konfiguration zeigt auf v4, nach Neustart aktiv. Nebenbei: ich
+versah LÁTHATÓSÁGI mit doppeltem Akzent — gemäß der Rechtschreib-Lehre sofort
+mit edit korrigiert und dokumentiert.
+
+**עברית:** המשתמש רוצה לראות את פעולת הפלאגין. v4 מציע שלושה ערוצי נראות:
+כותרת כל כתיבת .idr בממשק מציגה מיד ✓ נקי / ⚠ N מלכודות; אזהרות הזקיף בסוף
+פלט הכלי; ויומן פלאגין חי ב־kutatasi_naplo/plugin_naplo_תאריך.log הניתן למעקב
+ב־tail -f. v1–v3 נשמרים, הקונפיגורציה מצביעה על v4, ייכנס לתוקף אחרי הפעלה
+מחדש. בדרך שגיתי בכתיב (כעי'ת מודגשת) ותיקנתי מיד בכלי edit עם תיעוד.
