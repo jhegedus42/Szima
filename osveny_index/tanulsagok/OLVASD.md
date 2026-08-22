@@ -56,3 +56,12 @@ egyesek nem fordulnak le — ÉPP EZ A TANULSÁG BENNÜK).
 **A szabály:** konstruktor-név = a valóság neve (`Cs` ≠ `Dcs`); rövidítés-
 előtag TILOS (§0+§25); átörökítés (_v2→_v3) előtt NÉV-AUDIT kötelező —
 a javítás nem ad felmentést a hibás neveknek.
+
+## A magyar helyesírás (2026-08-21) — "ha szétcsúszik a magyar nyelv, te is szétcsúszol"
+
+| Fájl | Mi | Eredmény |
+|---|---|---|
+| `MagyarHelyesirasTanulsag.md` | az AkH.12 (helyesiras.mta.hu) gyakorlati kivonata: 4 alapelv + igekötő egybeírás + -val/-vel teljes hasonulás (kóddal, szabállyal) + j/ly + hosszú magánhangzók + vessző a "hogy" előtt + az őrszem szólistájának hibajavítása | a horog-injektor 9. pontja + plugin §N9 |
+
+**A szabály:** "ez tart egyben" — a helyesírás nem esztétika: a toldalékolás
+ugyanaz a szóelemző kompozíció, mint a típusokban.

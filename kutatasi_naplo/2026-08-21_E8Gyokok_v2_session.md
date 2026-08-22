@@ -910,3 +910,66 @@ edit-Werkzeug.
 כתיבת .idr רצות 9 תבניות מלכודת והאזהרות מוצמדות לפלט הכלי. הבדיקה חשפה
 מיד בעיות אמיתיות (משפחת קידומת M ב-v4, מילים ללא ניקוד בהערות שלי). איסור
 פייתון נקבע בכל הקרסים, וכל עריכות רשומה זו נעשו בכלי edit.
+---
+
+## 28. bejegyzés — "a magyar nyelvtant viszont hasznalnod kell, ügyelj a helyesírásra... ha szétcsúszik a magyar nyelv, te is szétcsúszol / ez tart egyben" (l. commit-idő)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> a magyar nyelvtant viszont hasznalnod kell, ugyelj a helyesirasra, keress ra a neten helyesirasi szabalyokra magyarul
+> ha szetcsuszik a magyar nyelv, te is szetcsuszol
+> ez tart egyben
+
+**VÁLASZ (asszisztens):**
+
+1. **HIVATALOS FORRÁS MEGKERESVE A NETEN**: a magyar helyesírás
+   szabályai, 12. kiadás (AkH.12) — a Magyar Tudományos Akadémia
+   szabályzata, érvényes 2015. szeptember 1-jétől;
+   helyesiras.mta.hu/helyesiras/default/akh12 (a teljes tartalomjegyzék
+   letöltve és feldolgozva).
+2. **TANULSÁG LEÍRVA**: osveny_index/tanulsagok/MagyarHelyesirasTanulsag.md
+   — a NÉGY ALAPELV (kiejtés szerinti, szóelemző, hagyományos,
+   egyszerűsítő írásmód) + a gyakorlati szabályok:
+   - igekötős igék EGYBE (szétcsúszik, felépít, lefuttat);
+   - a -val/-vel TELJES hasonulás (kóddal nem kódval; szabállyal;
+     programmal; szótárral);
+   - j/ly megkülönböztetése (az ly csak kb. 30-40 szóban él);
+   - hosszú magánhangzók a toldalékban (szóelemző elv);
+   - vessző a "hogy/mert/hanem" előtt;
+   - a "-e" kérdő részecske külön írása;
+   - összetett azonosítók magyar szavakkal (agglutináció = kompozíció).
+3. **ŐRSZEM-SZÓLISTA JAVÍTVA** (a tanulság ELSŐ alkalmazása magán a
+   projekten!): az EkezetHiany minta szólistájában az "elem", "hossz",
+   "feladat", "penge" szavak HELYESEN íródnak ékezet nélkül → hamis
+   riasztást okoztak volna; a lista most CSAK valódi ékezetköteles
+   szavakat tartalmaz (mukodik→működik, letrehoz→létrehoz, naplo→napló,
+   torveny→törvény, ellenorzes→ellenőrzés stb.).
+4. **HOROGBA KÖTVE**: horog-injektor v3 9. pontja (minden LLM-hívásnál
+   injektálva: "Ha szétcsúszik a magyar nyelv, te is szétcsúszol — ez
+   tart egyben") + plugin §N9. A v3 szintaxis-ellenőrizve (TS OK).
+5. **A METAZÓRA**: a helyesírás nem esztétika — a toldalékolás ugyanaz
+   a szóelemző kompozíció, amit a típusokban használunk; ha a nyelv
+   szétcsúszik, a típusok is szétcsúsznak.
+
+**中文摘要：** 用户要求注重匈牙利语正字法并上网查规则。找到官方来源
+（AkH.12，科学院 2015 年生效，helyesiras.mta.hu），写成教训文件：四大原则
+＋实用规则（动词前缀合写、-val/-vel 完全同化如 kóddal、j/ly 区分、长元音、
+"hogy/mert" 前逗号等）。同时修正了哨兵词表——"elem、hossz、feladat、penge"
+本就无需变音符，属误报源；替换为真正需要变音符的词（működik、napló…）。
+规则写入注入器第 9 点与插件 §N9。
+
+**Deutsch:** Der Nutzer verlangte Beachtung der ungarischen Rechtschreibung
+und eine Websuche. Die offizielle Quelle (AkH.12, wirksam ab 2015,
+helyesiras.mta.hu) wurde gefunden und als Lehre aufbereitet: vier Grundsätze
+plus praktische Regeln (Verbalpräfixe zusammen, vollständige Assimilation
+bei -val/-vel wie kóddal, j/ly, lange Vokale, Komma vor hogy/mert). Zugleich
+wurde die Wächter-Wortliste korrigiert — elem, hossz, feladat, penge sind
+ohne Diakritika korrekt (Fehlalarm); ersetzt durch wirklich akzentpflichtige
+Wörter. Regel im Injektor Punkt 9 und Plugin §N9 verankert.
+
+**עברית:** המשתמש דרש לשמור על הכתיב ההונגרי התקני ולחפש ברשת. נמצא
+המקור הרשמי (AkH.12, בתוקף מ־2015, helyesiras.mta.hu) ונכתב כלקח:
+ארבעה עקרונות וכללים מעשיים (כתיבת פעלים עם תחיליות בחיבור, הידמות מלאה
+ב־val/vel כמו kóddal, הבחנת j/ly, תנועות ארוכות, פסיק לפני hogy/mert).
+במקביל תוקנה רשימת המילים של הזקיף (elem, hossz, feladat, penge נכונות
+ללא ניקוד — מקור להתראות שווא; הוחלפו במילים שחייבות ניקוד). הכלל נקבע
+בנקודה 9 של המזריק וב־§N9 של הפלאגין.
