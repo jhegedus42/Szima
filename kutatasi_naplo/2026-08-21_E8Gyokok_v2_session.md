@@ -797,3 +797,46 @@ bewies die Unicode-Fähigkeit. Fundament-Verzeichnis erstellt.
 נרפאו ב-_v3: MagyarNyelvtan ו-Piroska — האחרון רץ עם מזהים מנוקדים
 (tolSzótárKeres, szóPeremKeres, részSzöveg). הכלל הקשיח נקבע בכל ארבעת
 הקרסים; ProbeUnikod הוכיח תמיכת יוניקוד. נוצר מפקד היסוד.
+---
+
+## 26. bejegyzés — "Dcs nincsen a magyarban... ezt olvasd vissza, keresd vissza, mit tettél hová ?" (l. commit-idő)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> Dcs nincsen  a magyarban... ezt olvasd vissza, keresse viszza, mit tettel hova ?
+
+**VÁLASZ (asszisztens) — visszakeresés + javítás:**
+
+1. **VISSZAKERESVE (grep az egész repóra)**: a `Dcs`-család a
+   MagyarNyelvtan_v2:92-ből jön (`Dcs | Dgy | Dly | Dny | Dsz | Dty |
+   Dzs | Ddz | Ddzs` — korábbi session írta); a v3-ban (102. sor) én
+   ÁTÖRÖKÍTETTEM, csak a szintaxist javítva, a neveket megkérdőjelezés
+   nélkül. A hiba természete: `Dcs` = "D" (Digraf-rövidítés) + cs —
+   §0-sértés (rövidítés tilos), és nem magyar szó.
+2. **UGYANEZ A BŰN A MAGÁNHANGZÓKON IS** (önként feltárva): `Va, Vaa,
+   Voe, Voee...` — a "V" (Maganhangzó) rövidítése.
+3. **JAVÍTVA — MagyarNyelvtan_v4** (§13: új fájl; §25: ékezetesen):
+   - Digraf-konstruktorok: **Cs Gy Ly Ny Sz Ty Zs Dz Dzs** (a valódi
+     digráfok; sorrend-kritikus átnevezés: Dzs→Zs ELŐBB, aztán Ddzs→Dzs);
+   - Magánhangzó-konstruktorok: **A Á E É I Í O Ó Ö Ő U Ú Ü Ű** (a valódi
+     magánhangzók; hosszabbak előbb: Vuee→Ű, Voee→Ő...);
+   - kulcsfüggvények ékezetesen: magánhangzóMélyÉ, karakterbőlMagánhangzó,
+     digrafEgyezés, egyszerűElemzés.
+   Fordítás: 0 hiba. A szima.ipkg v3→v4 cserélve; a csomag ép (EXIT 0).
+
+**中文摘要：** 用户指出"Dcs 不是匈牙利语"。回查证据：D-前缀缩写家族来自
+v2（第 92 行），我在 v3 只修语法、照搬了名字——违反 §0（禁止缩写）。同罪
+还有元音构造器 Va/Vaa/Voe（V = Maganhangzó 缩写）。修复为 v4：构造器改用
+真实字母（Cs Gy Ly Ny Sz Ty Zs Dz Dzs；A Á E É I Í O Ó Ö Ő U Ú Ü Ű），
+关键函数名带变音符。0 错误，包已更新（EXIT 0）。
+
+**Deutsch:** Der Nutzer entlarvte "Dcs" als nicht-ungarisch. Rückverfolgung:
+Die D-Präfix-Familie stammt aus v2 (Zeile 92); ich hatte sie in v3 unverändert
+übernommen — Verstoß gegen §0 (Abkürzungsverbot). Dasselbe gilt für die
+Vokal-Konstruktoren Va/Vaa/Voe (V-Präfix). Behoben in v4: echte Buchstaben
+(Cs Gy Ly Ny Sz Ty Zs Dz Dzs; A Á E É I Í O Ó Ö Ő U Ú Ü Ű), Funktionen mit
+Diakritika. 0 Fehler, Paket aktualisiert.
+
+**עברית:** המשתמש חשף ש-"Dcs" אינו הונגרית. איתור לאחור: משפחת קידומת D מקורה
+ב-v2 (שורה 92); העברתי אותה ל-v3 כמו שהיא — הפרת §0 (איסור קיצורים). באותו
+חטא גם בנאי התנועות Va/Vaa/Voe. תוקן ב-v4: אותיות אמיתיות (Cs…Dzs;
+A Á E É I Í O Ó Ö Ő U Ú Ü Ű) ופונקציות מנוקדות. 0 שגיאות, החבילה עודכנה.

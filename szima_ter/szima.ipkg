@@ -48,7 +48,7 @@ modules = Alap.AlphaKozos
         , MagyarKinaiPar_v2
         , MagyarKinaiParkettazas_v2
         , MagyarKinaiTorvenyek_v3
-        , MagyarNyelvtan_v3
+        , MagyarNyelvtan_v4
         , Main
         , Main_MagyarKinaiGenKod_v2
         , Main_MagyarKinaiInverz_v2
