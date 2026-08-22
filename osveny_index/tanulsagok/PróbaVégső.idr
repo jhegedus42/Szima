@@ -1,4 +1,4 @@
-module ProbaVegso
+module PróbaVégső
 
 public export
 data KubitProba = NullaProba | EgyProba

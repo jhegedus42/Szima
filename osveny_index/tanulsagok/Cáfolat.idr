@@ -1,4 +1,4 @@
-module Cafolat
+module Cáfolat
 
 public export
 KorTermeszetesPontjai : Nat

@@ -1,4 +1,4 @@
-module KetUt
+module KétÚt
 
 -- 1. ÚT: az OKTONION oldalról (egységek: 16 csúcs + 224 fél-pont)
 public export

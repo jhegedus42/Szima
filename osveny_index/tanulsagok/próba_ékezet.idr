@@ -1,4 +1,4 @@
-module ProbaEkezet
+module PróbaÉkezet
 
 public export
 magyarázat : Nat

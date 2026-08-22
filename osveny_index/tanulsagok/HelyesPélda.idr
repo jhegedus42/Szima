@@ -1,4 +1,6 @@
-module MutatvanyJo
+module HelyesPélda
+
+-- HELYES PÉLDA (a kisbetűs-csapda gyógyírát mutatja):
 
 public export
 KorTermeszetesPontjai : Nat

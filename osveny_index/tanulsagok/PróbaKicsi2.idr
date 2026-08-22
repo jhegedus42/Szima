@@ -1,4 +1,4 @@
-module ProbaKicsi2
+module PróbaKicsi2
 
 public export
 data KubitProba = NullaProba | EgyProba

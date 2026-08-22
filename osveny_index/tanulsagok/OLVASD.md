@@ -11,24 +11,24 @@ egyesek nem fordulnak le — ÉPP EZ A TANULSÁG BENNÜK).
 |---|---|---|
 | `PróbaÉkezet.idr` | működnek-e az ékezetes azonosítók? | IGEN (a fájlnevet is egyezni kell) |
 | `proba_ekezet.idr` | ugyanez kisbetűs fájlnévvel | modulnév-egyezés hiba (tanulság) |
-| `ProbaLegkisebb.idr` | `bizKetto : kettoLeg = 2` | ELBUKIK — a csapda minimalisztikusan |
-| `ProbaNevvel.idr` | nagybetűs `KettoLegNev` vs `the Nat` | nagybetűs ÁTMEGY, a `the`-s nem |
-| `ProbaKicsi2/3.idr`, `ProbaVegso.idr` | a csapda izolálása lépésről lépésre | a `Delay`/unifikáció működése látszik |
-| `Mutatvany.idr` / `MutatvanyJo.idr` | a csapda és a megoldás, egymás mellett | rossz: Mismatch; jó: exit 0 |
-| `KisBetusProjekcioCsapda.idr` (2026-08-19) | a csapda KISBETŰS konstansszal függvény-argumentumként (KisAI.idr esete) | rossz: `kezdoKisAI .tudastarProbe` nem redukál; jó: nagybetűs alias ÁTMEGY — a gyógyítás: nagybetűs alias, a kisbetűs marad a futásidejű kódnak |
+| `PróbaLegkisebb.idr` | `bizKetto : kettoLeg = 2` | ELBUKIK — a csapda minimalisztikusan |
+| `PróbaNévvel.idr` | nagybetűs `KettoLegNev` vs `the Nat` | nagybetűs ÁTMEGY, a `the`-s nem |
+| `PróbaKicsi2/3.idr`, `PróbaVégső.idr` | a csapda izolálása lépésről lépésre | a `Delay`/unifikáció működése látszik |
+| `RosszPélda.idr` / `HelyesPélda.idr` (2026-08-22-ig: Mutatvány/MutatványJó) | a csapda és a megoldás, egymás mellett | rossz: Mismatch; jó: exit 0 |
+| `KisBetűsProjekcióCsapda.idr` (2026-08-19) | a csapda KISBETŰS konstansszal függvény-argumentumként (KisAI.idr esete) | rossz: `kezdoKisAI .tudastarProbe` nem redukál; jó: nagybetűs alias ÁTMEGY — a gyógyítás: nagybetűs alias, a kisbetűs marad a futásidejű kódnak |
 
 ## A Refl-tanulság felderítése (AGENTS.md: Tanulság: mit bizonyít a Refl)
 
 | Fájl | Mi | Eredmény |
 |---|---|---|
-| `Cafolat.idr` | SZÁNDÉKOSAN hamis Refl (8 = 9) | ELUTASÍTVA — a kernel számol, nem hisz |
-| `TartalomProba.idr` | köröző vs strukturált definíció, egyszerre | mindkettő "átmegy" — a köröző üres |
-| `TartalomProba2/3.idr` | a shell-lánc-elgépelés nyomai | a "0 hiba" műtermék esete (l. AGENTS.md 6. pont) |
+| `Cáfolat.idr` | SZÁNDÉKOSAN hamis Refl (8 = 9) | ELUTASÍTVA — a kernel számol, nem hisz |
+| `TartalomPróba.idr` | köröző vs strukturált definíció, egyszerre | mindkettő "átmegy" — a köröző üres |
+| `TartalomPróba2/3.idr` | a shell-lánc-elgépelés nyomai | a "0 hiba" műtermék esete (l. AGENTS.md 6. pont) |
 | `TisztaA/B.idr` | a tiszta újrafuttatás: köröző és strukturált elgépelve | MINDKETTŐ elutasítva — helyreállt a rend |
-| `KetUt.idr` | **A HÍD**: két független konstrukció (16+224 vs 112+128) ugyanarra a 240-re | Refl ✓ |
-| `KetUtTorott/Torott2.idr` | a híd bármelyik oldalát átírva | a bizonyítás MAGÁTÓL eltörik |
-| `BizonyitasEszkozok.idr` | Refl + cong + trans (és a rewrite irány-csapdája) | eszköztár, 0 hibával |
-| `MiertJo.idr` | a típusok összekeverése (KerdoszoT ≠ Esetrag) | fordítási időben elutasítva |
+| `KétÚt.idr` | **A HÍD**: két független konstrukció (16+224 vs 112+128) ugyanarra a 240-re | Refl ✓ |
+| `KétÚtElrontva/Elrontva2.idr` (2026-08-22-ig: KetUtTorott/Torott2) | a híd egyik oldalát SZÁNDÉKOSAN elrontva (2·8→2·9, ill. 2⁷→2⁶) | a bizonyítás magától eltörik — a Refl elutasítva |
+| `BizonyításEszközök.idr` | Refl + cong + trans (és a rewrite irány-csapdája) | eszköztár, 0 hibával |
+| `MiértJó.idr` | a típusok összekeverése (KerdoszoT ≠ Esetrag) | fordítási időben elutasítva |
 
 ## Az E8 szimpleptikus cáfolat (2026-08-18) — a "semmi halu" elv működésben
 
@@ -44,14 +44,14 @@ egyesek nem fordulnak le — ÉPP EZ A TANULSÁG BENNÜK).
 
 | Fájl | Mi |
 |---|---|
-| `test_kerdoszo.idr`, `DebugFonetika.idr` | korábbi sessionök hibakereső maradványai (megtartva, semmit nem törlünk) |
+| `test_kérdőszó.idr`, `HibakeresésFonetika.idr` | korábbi sessionök hibakereső maradványai (megtartva, semmit nem törlünk) |
 
 
 ## A rövidítés-előtag csapda (2026-08-21) — "Dcs nincsen a magyarban"
 
 | Fájl | Mi | Eredmény |
 |---|---|---|
-| `RoviditesElotagCsapda.md` | a Dcs/Va (Digraf-/Maganhangzo-rovidites) konstruktor-család két generáción át élte túl a refaktorálást; a v3 szintaxis-javítása ÁLDÁST ADOTT a hibás nevekre | a felhasználó leleplezte; v4: valódi betűk (Cs..Dzs, A..Ű), 0 hiba |
+| `RövidítésElőtagCsapda.md` | a Dcs/Va (Digraf-/Magánhangzó-rövidítés) konstruktor-család két generáción át élte túl a refaktorálást; a v3 szintaxis-javítása ÁLDÁST ADOTT a hibás nevekre | a felhasználó leleplezte; v4: valódi betűk (Cs..Dzs, A..Ű), 0 hiba |
 
 **A szabály:** konstruktor-név = a valóság neve (`Cs` ≠ `Dcs`); rövidítés-
 előtag TILOS (§0+§25); átörökítés (_v2→_v3) előtt NÉV-AUDIT kötelező —

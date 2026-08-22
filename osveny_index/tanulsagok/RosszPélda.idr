@@ -1,6 +1,6 @@
-module Mutatvany
+module RosszPélda
 
--- Rossz: KISBETŰS konstansnév a bizonyítás TÍPUSÁBAN:
+-- ROSSZ PÉLDA (a kisbetűs-csapdára): KISBETŰS konstansnév a bizonyítás TÍPUSÁBAN:
 public export
 korTermeszetesPontjai : Nat
 korTermeszetesPontjai = 2 * 2 * 2

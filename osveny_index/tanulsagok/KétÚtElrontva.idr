@@ -1,4 +1,7 @@
-module KetUtTorott
+module KétÚtElrontva
+
+-- SZÁNDÉKOSAN ELRONTVA (a tanulság demonstrációja): az 1. utat hamisítjuk
+-- (2·8 → 2·9), hogy lássuk: a híd bizonyítása MAGÁTÓL eltörik.
 
 -- 1. ÚT: az OKTONION oldalról (egységek: 16 csúcs + 224 fél-pont)
 public export

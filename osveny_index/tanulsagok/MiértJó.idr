@@ -1,4 +1,4 @@
-module MiertJo
+module MiértJó
 
 import E8Gyokrendszer
 import Kerdoszo

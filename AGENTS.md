@@ -159,8 +159,8 @@ Ha egy név rövidítésnek tűnik, írd ki teljesen.
 14. **Boot-up szekvencia.** Minden session (vagy kompakálás) ELEJÉN kötelező
     sorrend: (a) a három MD (MANTRA, HOROG, AGENTS), (b) a skill-ek
     (`idris-stilus`, `boot-up`, `szivdobbanas`), (c) a `MiertJo`-tanulság
-    (a propozíciók vs. típusok), (d) a `KisBetusProjekcioCsapda` (a
-    kisbetűs-név a bizonyítás TÍPUSÁBAN), (e) a `LetLancProbe` (az
+    (a propozíciók vs. típusok), (d) a `KisBetűsProjekcióCsapda` (a
+    kisbetűs-név a bizonyítás TÍPUSÁBAN), (e) a `LetLáncProbe` (az
     állapot-lánc-csapda), (f) a tíz-parancsolat a tanulságok mappájából.
     Ha bármelyik kimarad, a kód biztosan megbukik a tanulság-csapdákon.
 
@@ -279,7 +279,7 @@ konstansa nagybetűs) átment — ezért a vak probe-ok nem találták meg.
 Gyógyítás (MANTRA-konform): a kisbetűs definíció marad (futásidejű kód
 használja), és mellé **nagybetűs alias** kerül a bizonyítások számára:
 `public export KezdoKisAI : KisAI; KezdoKisAI = kezdoKisAI`.
-Példa: `osveny_index/tanulsagok/KisBetusProjekcioCsapda.idr`.
+Példa: `osveny_index/tanulsagok/KisBetűsProjekcióCsapda.idr`.
 
 ### Idris 2 csapda: a let-lánc felrobbanhat (0.8.0) — de a mechanizmus nyitott
 
@@ -291,7 +291,7 @@ eredményre 1.05 mp, az üres állapottal azonos. **Soha ne építs állapotot
 let-lánccal — mindig lista + egy konstruktor.**
 
 A **mechanizmus NEM ismert pontosan**: 7 féle minimalisztikus próba
-(tanulsagok/LetLancProbe/: primitív, összetett típusú, kétszintű,
+(tanulsagok/LetLáncProbe/: primitív, összetett típusú, kétszintű,
 projektoros, literálos, IO-használatos, típusaliasos lánc) MIND lineáris
 (~0.22 mp, n=12-nél is). A robbanás tehát a let-lánc ÉS a teljes fájl
 kontextusának (szótár, sok függvény, rekurzív IO) interakciója — a
@@ -565,7 +565,7 @@ is a pluginba mint horog".
       zipWith, all, any... — a standard könyvtár NEM írható újra);
    c) ha létezik: IMPORT (pl. `import E8TizenhatPenge` a gf2-höz).
 2. **Kanonikus helyek nyilvántartása:**
-   `osveny_index/tanulsagok/KodDuplikacioAudit_*.md` — minden függvény
+   `osveny_index/tanulsagok/KódDuplikációAudit_*.md` — minden függvény
    egyetlen otthonnal; minden más modul importál.
 3. **Refaktorálás §13 szerint:** új fájl / `_v2` suffix, a régi megmarad,
    információvesztés nélkül (§16, §20).

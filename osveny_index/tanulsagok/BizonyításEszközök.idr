@@ -1,4 +1,4 @@
-module BizonyitasEszkozok
+module BizonyításEszközök
 
 -- 1. ESZKÖZ: Refl — ha a két oldal kiszámolva egyezik (a mi 240-ünk):
 aKetUt : (2 * 8 + 224) = (4 * 28 + 128)

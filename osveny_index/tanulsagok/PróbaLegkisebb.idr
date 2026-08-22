@@ -1,4 +1,4 @@
-module ProbaLegkisebb
+module PróbaLegkisebb
 
 public export
 kettoLeg : Nat

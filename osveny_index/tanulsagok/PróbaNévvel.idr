@@ -1,4 +1,4 @@
-module ProbaNevvel
+module PróbaNévvel
 
 public export
 kettoLeg : Nat

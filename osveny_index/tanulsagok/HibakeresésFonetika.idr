@@ -1,4 +1,4 @@
-module DebugFonetika
+module HibakeresésFonetika
 import Fonetika
 
 mutual

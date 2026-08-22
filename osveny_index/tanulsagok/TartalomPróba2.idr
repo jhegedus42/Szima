@@ -1,4 +1,4 @@
-module TartalomProba2
+module TartalomPróba2
 
 -- 1. KÖRÜLÍRÓ definíció: a tartalom a DEFINÍCIÓBAN van (112+128
 --    = két különböző számítási út), a Reflnek munkája van:

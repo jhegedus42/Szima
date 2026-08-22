@@ -1,4 +1,4 @@
-module KisBetusProjekcioCsapda
+module KisBetűsProjekcióCsapda
 
 import Data.Vect
 

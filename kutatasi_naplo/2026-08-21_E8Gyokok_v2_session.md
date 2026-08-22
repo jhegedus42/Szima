@@ -1285,3 +1285,70 @@ Modul kompiliert weiter. Die historischen Vorkommen im Logbuch bleiben.
 מקורה בלקח ישן ב-AGENTS.md והפצתיה במודולים. המשפט שצוטט אינו קיים כלל
 במאגר — לא ממני. המונחים הנכונים: הגדרה, גזירה, נוסחה, בנייה. תוקנו ארבעה
 קבצים בכלי edit, אפס שאריות, המודול מהודר. הופעות היסטוריות ביומן נשתמרו.
+---
+
+## 35. bejegyzés — "mi az hogy torott ?? mi lehet torott? egy pohar... meg mi az a mutatvany? cirkuszi mutatvany ?" (l. fenti gépi idő)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> mi az hogy torott ?? mi lehet torott ? egy pohar... de akkor is... meg mi az a mutatvany ? cirkuszi mutatvany ?
+
+**VÁLASZ (asszisztens) — a tartalom alapján nevezés:**
+
+1. **MI A "TÖRÖTT" (a diff felgöngyölítése)**: a KétÚtTörött a KétÚt-híd
+   SZÁNDÉKOSAN ELRONTOTT változata — az 1. oldalt hamisították
+   (2·8 → 2·9, azaz 242 ≠ 240), a Törött2 a 2. oldalt (2⁷ → 2⁶).
+   A demonstráció ÉL: mindkettő 1 fordítási hibával elszáll (a kernel
+   elutasítja a Refl-t) — de a NÉV rossz volt: nem pohár törik, a
+   BIZONYÍTÁS omlik össze.
+2. **MI A "MUTATVÁNY"**: a Mutatvány/MutatványJó a kisbetűs-csapda
+   minimál-párja (kisbetűs konstans a bizonyítás típusában → Refl
+   elszáll; nagybetűs → megáll). Cirkuszi szó — helyette ROSSZ PÉLDA /
+   HELYES PÉLDA.
+3. **A MÉLYEBB BŰN (önként feltárva)**: a saját tanulságomat (
+   RövidítésElőtagCsapda 3. pont: "átörökítés előtt NÉV-AUDIT") szegtem
+   meg — az átnevezést GÉPIESEN (ékezetesítéssel) végeztem, a szavak
+   értelmét megkérdőjelezés NÉLKÜL. A felhasználó kérdése maga a
+   hiányzó név-audit.
+4. **JAVÍTVA** (git mv — a történet megmarad; edit — a module-sorok):
+   - KétÚtTörött(.2) → **KétÚtElrontva(.2)** (+ fejléc-komment: mit és
+     miért hamisít);
+   - Mutatvány/MutatványJó → **RosszPélda/HelyesPélda**;
+   - a kimaradt kettő is: BizonyitasEszkozok → **BizonyításEszközök**,
+     DebugFonetika → **HibakeresésFonetika**;
+   - minden module-sor ékezetesítve (PróbaKicsi2/3, PróbaLegkisebb,
+     PróbaNévvel, PróbaVégső, TartalomPróba/2/3, PróbaÉkezet);
+   - OLVASD.md index teljes frissítése (a régi nevek történelmi
+     jegyzetként szerepelnek);
+   - az AGENTS.md és a plugin v4 hivatkozásai az ékezetes fájlnevekre
+     állítva (KódDuplikációAudit, KisBetűsProjekcióCsapda, LetLáncProbe,
+     NagyNatEsÁrvaChezCsapda.md, RövidítésElőtagCsapda.md).
+5. **A ZÁRÓ ELLENŐRZÉS (GAUGE-elv)**: KétÚt 0 hiba; KétÚtElrontva 1,
+   KétÚtElrontva2 1, RosszPélda 1, Cáfolat 1 hiba — MIND hibátlanul
+   működik, mert a hiba ezeknél a DEMONSTRÁCIÓ; HelyesPélda 0,
+   BizonyításEszközök 0. A plugin TS OK. Réginévre hivatkozás: 1 találat
+   = a szándékos történelmi jegyzet.
+
+**中文摘要：** 用户问"törött（碎的）和 mutatvány（马戏节目）到底是什么？"。
+查明：KétÚtTörött 是故意伪造一侧（2·8→2·9）让 Refl 崩溃的演示；Mutatvány
+是大小写陷阱的最小对照对。我犯了违背自己教训的错——改名时只加变音符、
+没审词义。已改为语义正确的名字：KétÚtElrontva(2)、RosszPélda/HelyesPélda
+（另补 BizonyításEszközök、HibakeresésFonetika），所有 module 行与索引、
+插件引用同步更新。验证：该错的错（演示文件 1 错）、该对的零错。
+
+**Deutsch:** Der Nutzer fragte, was "törött" und "mutatvány" bedeuten.
+Aufklärung: KetUtTorott ist die absichtlich gefälschte Seite (2·8→2·9),
+damit der Refl zusammenbricht; Mutatvány war das Minimalpaar der
+Kleinbuchstaben-Falle. Ich verletzte meine eigene Lehre (Namens-Audit
+vor der Übernahme): ich akzentuierte mechanisch, ohne die Worte zu
+hinterfragen. Umbenannt in KétÚtElrontva(2) und RosszPélda/HelyesPélda
+(plus BizonyításEszközök, HibakeresésFonetika); Modulzeilen, Index und
+Plugin-Verweise aktualisiert. Prüfung: die Demo-Dateien fehlem
+beabsichtigt, die guten sind fehlerfrei.
+
+**עברית:** המשתמש שאל מהו "törött" ומהו "mutatvány". התברר: הראשון —
+גרסה שבה זייפו צד אחד של הגשר (2·8→2·9) כדי שההוכחה תקרוס; השני — זוג
+מינימלי של מלכודת האות הקטנה. הפרתי את הלקח שלי עצמי (ביקורת שמות לפני
+העברה): הוספתי ניקוד מכנית בלי לחקור את המילים. שונה ל-KétÚtElrontva(2)
+ו-RosszPélda/HelyesPélda (וכן BizonyításEszközök, HibakeresésFonetika);
+שורות המודול, האינדקס והפניות הפלאגין עודכנו. אימות: קבצי ההדגמה
+שוגים בכוונה, התקינים נקיים.
