@@ -38,6 +38,8 @@ module HaromKategoria_v3
 import KetoldaliE8Fa_v3
 import KetoldaliKategoria_v3
 import MagyarCarnotE9_v3_CodatAlpha
+import KomplexByte  -- (v3) a Kubit közvetlen importja — az import NEM tranzitív
+import Data.Nat  -- (v3) pred — Nat-kivonásra nincs Neg instance a Prelude-ben
 
 %default total
 
@@ -136,11 +138,13 @@ nSzintErtek CatN = 100  -- ∞-kategoria: vegtelen (100 mint "nagy")
 -- 4. A TRANSZCENDENTÁLIS EGYSÉG (Kant: "en gondolom")
 -- ===============================================================
 
-||| A transzcendentalis egyseg: a Horgony Y-kombinatora, a Kant-i
-||| appercepcio, a kategoriaelmélet identity morphismusa.
+||| A transzcendentalis egyseg TÍPUSA: a γ^5 értéktartománya (Kubit).
+||| (v3: ÁTNEVEZVE — a `TranszcendentalisEgyseg` néven a fenti
+|||  HarmadikKategoria-KONSTRUKTOR él; konstruktor és típusálnév
+|||  ugyanabban a névtérben nem lehet — "already defined".)
 public export
-TranszcendentalisEgyseg : Type
-TranszcendentalisEgyseg = Kubit  -- 0 vagy 1 (a γ^5 erteke)
+TranszcendentalisÉrtékTípus : Type
+TranszcendentalisÉrtékTípus = Kubit  -- 0 vagy 1 (a γ^5 erteke)
 
 ||| A transzcendentalis egyseg erteke: a gamma5 (a delta).
 public export
@@ -188,7 +192,7 @@ bootSzintErtek E8FaSzintek  = 8
 bootSzintErtek HaromKateg   = 9
 bootSzintErtek Magasabb     = 10
 
-||| A teljes boot-up 10 szinten megy vegig (a用量 -> a magasabb).
+||| A teljes boot-up 10 szinten megy végig (az alaptól a magasabbig).
 public export
 bootSzintekSzama : Nat
 bootSzintekSzama = 10
@@ -202,7 +206,7 @@ bootSzintekSzama = 10
 ||| (δ × 2^szint, ahogy az E8Fa_v2-ben).
 public export
 deltaSzint : BootSzint -> Double
-deltaSzint szint = delta * pow2 (bootSzintErtek szint - 1)
+deltaSzint szint = delta * pow2 (pred (bootSzintErtek szint))
   where
     pow2 : Nat -> Double
     pow2 0 = 1.0
@@ -232,25 +236,44 @@ hierarchiaDeltaOsszeg =
 -- 7. A 3 KATEGÓRIA + SATÖBBI REFL-BIZONYÍTÁSOK
 -- ===============================================================
 
+-- (v3: NAGYBETŰS aliasok — KisBetűsProjekcióCsapda; a v2 sosem fordult,
+--  ezért a bizonyítás-típusok kisbetűs konstansai beszennyezettek voltak.)
+
+public export
+HaromKMeretKonst : Nat
+HaromKMeretKonst = haromKMeret
+
+public export
+Gamma5ÉrtékKonst : Double
+Gamma5ÉrtékKonst = MagyarCarnotE9_v3_CodatAlpha.gamma5
+
+public export
+TranszcendentalisEgysegErtekKonst : Gamma5
+TranszcendentalisEgysegErtekKonst = transzcendentalisEgysegErtek
+
+public export
+BootSzintekSzamaKonst : Nat
+BootSzintekSzamaKonst = bootSzintekSzama
+
 ||| Refl -- a harom kategoria elemeinek szama 19 (= 7 + 7 + 5).
 public export
-bizHaromKMeret19 : haromKMeret = 19
+bizHaromKMeret19 : HaromKMeretKonst = 19
 bizHaromKMeret19 = Refl
 
 ||| Refl -- a γ^5 erteke a delta (8.23e-7 a CODATA elteres).
 public export
-bizGamma5Delta2 : gamma5 = delta
+bizGamma5Delta2 : Gamma5ÉrtékKonst = DeltaKonst
 bizGamma5Delta2 = Refl
 
 ||| Refl -- a transzcendentalis egyseg erteke a delta.
 public export
 bizTranszcendentalisDelta :
-  transzcendentalisEgysegErtek = delta
+  TranszcendentalisEgysegErtekKonst = DeltaKonst
 bizTranszcendentalisDelta = Refl
 
 ||| Refl -- a boot-up hierarchia 10 szintet tartalmaz.
 public export
-bizBootSzintek10 : bootSzintekSzama = 10
+bizBootSzintek10 : BootSzintekSzamaKonst = 10
 bizBootSzintek10 = Refl
 
 ||| Refl -- az Alapveto szint a legmelyebb (szint = 1).
@@ -273,10 +296,14 @@ public export
 bizNSzint1 : nSzintErtek Cat1 = 1
 bizNSzint1 = Refl
 
-||| Refl -- a harom kategoria a ketoldali struktura + γ^5.
+||| Refl -- a harom kategoria a VALÓDI három típus hármasa:
+||| a pozitív bit (szintézis) + a negatív bit (dekódolás) +
+||| a HarmadikKategoria (γ^5, a kettő közti átmenet).
+||| (v3, ŐSZINTE JAVÍTÁS: a v2-állítás `HaromK = (PIdo, NIdo,
+|||  Gamma5Atmenet)` TÍPUSOK tuple-jét KONSTRUKTOROKKAL egyenlítette —
+|||  értelmetlen volt; a helyes állítás a három alkotó TÍPUSt nevezi.)
 public export
-bizHaromK :
-  HaromK = (PIdo, NIdo, Gamma5Atmenet)
+bizHaromK : HaromK = (PozitivBit, NegativBit, HarmadikKategoria)
 bizHaromK = Refl
 
 -- ===============================================================

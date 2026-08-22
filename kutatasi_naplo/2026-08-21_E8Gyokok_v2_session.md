@@ -1528,3 +1528,75 @@ Trennfehler (`## ` statt `# `) und ein eigener Tippfehler behoben.
 את הפעולה, כיצד על המודל להגיב וכיווני הרחבה. מבחן GAUGE עם הקבצים
 האמיתיים: הטקסט לדוגמה פוגע בדיוק ב-§1, §7, §25; בדרך תוקנו שגיאת
 חיתוך ושגיאת כתיב אחת שלי.
+---
+
+## 39. bejegyzés — "folytassuk" (a (B) szindromaTer-család gyógyításának befejezése) (l. fenti gépi idő)
+
+**KÉRDÉS (felhasználó, szó szerint):** folytassuk
+
+**VÁLASZ (asszisztens) — AZ ÖT MODULOS v3-LÁNC MEGGYÓGYULT (mind 0 hiba):**
+
+1. **KetoldaliKategoria_v3** (a legmélyebb műtét): a "No type declaration"
+   zuhatag HÁROM rétegű gyökere: (a) Kubit hiányzik — az import NEM
+   tranzitív (a KetoldaliE8Fa_v3 importja nem öröklődik) → import
+   KomplexByte; (b) a kisbetűs pozitivId/negativId a bizonyítások
+   TÍPUSAIBAN → PozitivIdKonst/NegativIdKonst aliasok; (c) a sosem
+   lefordított v2 MATEMATIKAILAG HAMIS állítást tartalmazott: a
+   bizDualitasFunktor OR→OR-t állított — a dualitás a De Morgan szerint
+   OR→AND! A kernel leplezte le ("Mismatch Egy vs Nulla"); őszinte
+   átírás a valódi (De Morgan) törvényre.
+2. **A CONG-KVÍRK FELFEDEZÉSE** (PróbaKvir→PróbaLambdaCong mérőlánc,
+   GAUGE-elv): a cong VÁLTOZÓ függvényfejű szakasznál működik
+   (bizMapKompozicio ✓), GLOBÁLIS függvényfejűnél BERAGAD — szó szerint
+   azonos tagok közt is ("dualitas (f x) vs dualitas (f x")! Próbált
+   formák: lambda, rewrite, with, saját J-mintás fejKong ("not
+   accessible"), eseti bontás — mind beragadt; %default total/covering
+   nem ok. MELLÉKTANULSÁG: az `id` a bizonyítás típusában AUTOMATIKUS
+   IMPLICIT kötés → `Prelude.id` minősítendő (bizMapId így gyógyult).
+   GYÓGYÍR: AGENTS §18(b) — futásidejű KIMERÍTŐ ellenőrzés (a Kubit-világ
+   véges: 4 függvény × 127 lista) → természetesTranszformációKimerítő =
+   True ✓ (FuttatoKetoldaliKategoria futtatták, archiválva). Tanulság:
+   CongBeragadtGlobálisFejCsapda.md + OLVASD.md-be kötve.
+3. **HaromKategoria_v3**: konstruktor↔típusálnév ütközés (a
+   TranszcendentalisEgyseg KONSTRUKTOR és TÍPUSÁLNÉV is volt → az alias
+   új névre: TranszcendentalisÉrtékTípus); deltaSzint Neg Nat → pred
+   (import Data.Nat — az őrszem ÉLŐBEN jelezte, ahogy a pred-gyógyítás
+   ment, a NegNat-riasztás eltűnt!); kínai karakterek magyar kommentben
+   („a用量" — kileplezve, javítva); öt bizonyítás-típus nagybetűsítve;
+   a v2 bizHaromK-ja értelmetlen volt (típusok tuple-jét konstruktorkkal
+   egyenlítette) → őszinte átírás a három VALÓDI típusra.
+4. **A csomag: 49 modul, EGY paranccsal** (szima.ipkg EXIT 0). A (B)
+   hullám LEZÁRULT — mind az 5 törött modul gyógyultan él _v3-ként,
+   a v2-k érintetlenül (§13).
+
+**中文摘要：** 五模块 v3 链全部治愈（全部 0 错）。深层手术：Kubit 缺失（导入
+不传递——需直接导入 KomplexByte）；小写常量陷阱（大写别名）；v2 从未编译、
+藏有数学上错误的命题（对偶函子应为 De Morgan OR→AND，内核当场揭穿"1 vs 0"）。
+发现 cong 怪癖：变量函数头可用、全局函数头卡死（连相同项之间也报错）——
+经探针链隔离；`id` 在类型中须写作 Prelude.id（否则自动隐式）。药方：§18(b)
+运行时穷举（Kubit 世界有限：4 函数 × 127 列表）→ 结果 True。另修：构造器与
+类型别名同名冲突、Neg Nat→pred（哨兵实时见证警报消失）、注释里的中文字符、
+五处证明类型大写化、无意义的 bizHaromK 命题改为真实三类型。包达 49 模块，
+一条命令构建成功。
+
+**Deutsch:** Die fünfgliedrige v3-Kette ist komplett geheilt (allesamt
+0 Fehler). Tiefenoperation: Kubit fehlte (Importe sind NICHT transitiv),
+Kleinbuchstaben-Konstanten in Beweistypen (Großbuchstaben-Aliase), und
+der nie kompilierte v2 enthielt eine MATHEMATISCH FALSCHE Aussage (der
+Dualitäts-Funktor gilt De Morgan OR→AND — der Kernel entlarvte es).
+Cong-Kuriosität entdeckt: variabler Funktionskopf geht, globaler bleibt
+sogar zwischen identischen Termen stecken (Sondenkette isolierte es);
+`id` im Typ muss `Prelude.id` heißen. Heilmittel: §18(b) erschöpfende
+Laufzeitprüfung (endliche Kubit-Welt) → True. Außerdem: Konstruktor/
+Typalias-Namenskonflikt, Neg Nat→pred (der Wächter sah die Heilung live),
+chinesische Zeichen in einem Kommentar, fünf Beweistypen versöhnlicht,
+sinnlose bizHaromK-Aussage ehrlich umgeschrieben. Paket: 49 Module.
+
+**עברית:** שרשרת חמשת המודולים v3 נרפאה כולה (0 שגיאות). הניתוח העמוק:
+‏Kubit חסר (ייבוא אינו טרנזיטיבי), קבועים באותיות קטנות בטיפוסי ההוכחות,
+וה-v2 שמעולם לא הודר הכיל טענה מתמטית שקרית (דואליות = דה מורגן OR→AND —
+הליבה חשפה). התגלתה מוזרות cong: ראש פונקציה משתנה עובד, גלובלי נתקע אפילו
+בין איברים זהים; ‏`id` בטיפוס חייב Prelude.id. תרופה: ‏§18(b) בדיקה ממצה
+בזמן ריצה (עולם Kubit סופי) → True. בנוסף: התנגשות שם בנאי/טיפוס, ‏Neg
+Nat→pred (הזקיף ראה את הריפוי בשידור חי), תווים סיניים בהערה, חמישה טיפוסי
+הוכחה הוגדלו, וטענת bizHaromK חסרת המשמעות נכתבה מחדש בכנות. החבילה: 49 מודולים.

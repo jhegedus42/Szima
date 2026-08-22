@@ -53,6 +53,12 @@ egyesek nem fordulnak le — ÉPP EZ A TANULSÁG BENNÜK).
 |---|---|---|
 | `RövidítésElőtagCsapda.md` | a Dcs/Va (Digraf-/Magánhangzó-rövidítés) konstruktor-család két generáción át élte túl a refaktorálást; a v3 szintaxis-javítása ÁLDÁST ADOTT a hibás nevekre | a felhasználó leleplezte; v4: valódi betűk (Cs..Dzs, A..Ű), 0 hiba |
 
+## A cong globális-fej csapda (2026-08-22) — a KetoldaliKategoria_v3 gyógyításából
+
+| Fájl | Mi | Eredmény |
+|---|---|---|
+| `CongBeragadtGlobálisFejCsapda.md` (+ a T/opencode Próba*-lánc) | a cong VÁLTOZÓ függvényfejű szakasznál megy, GLOBÁLISnál beragad ("Can't solve: X vs X" azonos tagokkal!); `id` a típusban → `Prelude.id` minősítendő (automatikus implicit!); import NEM tranzitív (Kubit → KomplexByte közvetlenül); konstruktor↔típusálnév ütközés | gyógyír: §18(b) futásidejű kimerítés véges világnál (természetesTranszformációKimerítő = True ✓) |
+
 **A szabály:** konstruktor-név = a valóság neve (`Cs` ≠ `Dcs`); rövidítés-
 előtag TILOS (§0+§25); átörökítés (_v2→_v3) előtt NÉV-AUDIT kötelező —
 a javítás nem ad felmentést a hibás neveknek.

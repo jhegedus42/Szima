@@ -34,10 +34,15 @@ modules = Alap.AlphaKözös
         , AlphaSteaneVegso
         , E8BelsoSzorzat
         , E8BelsőSzorzat
+        , E8Fa_v3
         , E8FazisKapcsolat
         , E8FázisKapcsolat
         , E8Gyokok_v2
         , E8Gyökök
+        , HaromKategoria_v3
+        , KetoldaliE8Fa_v3
+        , KetoldaliKategoria_v3
+        , MagyarCarnotE9_v3_CodatAlpha
         , TizenhatPenge
         , E8TizenhatPenge
         , FazisKubit
