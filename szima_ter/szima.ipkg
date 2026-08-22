@@ -23,7 +23,8 @@ sourcedir = "modul"
 -- 基础验证只需一条命令。 | Ein Befehl prüft das Fundament.
 -- ═══════════════════════════════════════════════════════════════
 
-modules = Alap.AlphaKozos
+modules = Alap.AlphaKözös
+        , Alap.AlphaKozos
         , AlphaE8Szigor
         , AlphaGCheck
         , AlphaLobaszas
@@ -32,9 +33,12 @@ modules = Alap.AlphaKozos
         , AlphaSteaneE8
         , AlphaSteaneVegso
         , E8BelsoSzorzat
+        , E8BelsőSzorzat
         , E8FazisKapcsolat
+        , E8FázisKapcsolat
         , E8Gyokok_v2
         , E8Gyökök
+        , TizenhatPenge
         , E8TizenhatPenge
         , FazisKubit
         , GCheck

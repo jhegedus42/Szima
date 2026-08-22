@@ -1177,3 +1177,63 @@ Selbstlernkreis des Wächters.
 שגיאות כתיב תוקנו, take מהספרייה הסטנדרטית; מהודר ורץ (240, norma²=8, W(E8)).
 הזקיף חנך את עבודתו: שתי אזהרות מיידיות, שתיהן התראות שווא לפי הבדיקה —
 שני התבניות חודדו בכלי edit. זה בדיוק מעגל הלמידה העצמית של הזקיף.
+---
+
+## 33. bejegyzés — "folytasd" (+ a HOROG a kérdésben — az injekció él) (l. fenti gépi idő)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> folytasd
+> (és a teljes HOROG-blokk — a v4 plugin injekciója láthatóan működik)
+
+**VÁLASZ (asszisztens) — az ékezet-hullám BEFEJEZÉSE (2/5 → 5/5):**
+
+1. **E8BelsőSzorzat.idr** (2/5): minden azonosító ékezetes (belsőSzorzat,
+   gyökKülönbség, gyökSkalár, weylReflexió, eloszlás, zárásHibákSzáma;
+   BizReflexióÖnmagára, BizSzorzatMerőleges); §24: a benVan a standard
+   Prelude `elem`-re cserélve. Fordul; fut: eloszlás (1,56,126,56,1)
+   minden gyökre ✓, zártság 57 600/57 600 ✓.
+2. **TizenhatPenge.idr** (3/5): új név — matematikailag pontosabb is
+   (a pengék Cl(4)-beliek, nem E8-beliek; az E8-csatlás a hídon él);
+   ékezetes azonosítók (pengeDuál, fokSzámlálók, generátorSorok,
+   kódszámítás, összesÜzenet, mindenKódszó, kódSúly, hammingTávolság,
+   párTávolságok, mindLegalábbHárom; BizHodgePélda, BizSúlyÖsszeg);
+   §24: az egyedi/benVanLista a standard `nub`-ra/`elem`-re cserélve.
+3. **E8FázisKapcsolat.idr** (4/5): ékezetes azonosítók (koszinuszSzámláló,
+   kristallográfiaiSzög, forgásRend, fázisKvantálásHibák, fázisSpektrum,
+   cssHibák; BizFázisEllentett, BizRendekTöbb, BizHCssÖnmaga); a gf2-t
+   a TizenhatPenge-ből importálja (§24 — a kanonikus otthon ékezetes
+   nemzedéke).
+4. **Alap.AlphaKözös.idr** (5/5): a receptek szó szerint (§16), ékezetes
+   nevekkel (kódszóTér, kiterjesztettTér, stabilizátorPluszTávolság,
+   törtrészSzámláló, törtrészNevező, egyesRész, tisztaTér, lobásásBázis,
+   lobásásExponensEgész, pithagorásziHang, logPithagorászi). Fut:
+   kódszóTér=128.0, kiterjesztettTér=256.0, alphaBare=137.036,
+   delta=8.229964521572508e-7, sigmaG=1.5e-15 — mind EGYEZIK a
+   nem-ékezetes generációval (információvesztés: 0).
+5. **ŐRSZEM**: mind a négy írásra ✓ tiszta jelet adott (a finomított
+   minták nem hamisriasztottak — a 32. bejegyzés öntanulása működik).
+6. **A csomag: 44 modul, EGY paranccsal** (idris2 --build szima.ipkg,
+   EXIT 0). A (A) hullám LEZÁRULT. Következik (B): a szindromaTer-család
+   gyógyítása, majd (C): a 2. fázis szíve.
+
+**中文摘要：** 变音符浪潮完成（2-5/5）：E8BelsőSzorzat（benVan→标准 elem；
+分布与封闭性全部通过）、TizenhatPenge（新名更准确——刃属 Cl(4)；egyedi→
+nub）、E8FázisKapcsolat（gf2 从 TizenhatPenge 导入）、Alap.AlphaKözös（配方
+逐字保留、全部数值与旧代一致——零信息丢失）。哨兵对四次写入均报"干净"。
+包增至 44 模块，一条命令构建成功。(A) 完成，下一步 (B) szindromaTer 家族，
+然后 (C) 第二阶段核心。
+
+**Deutsch:** Die Akzent-Welle ist abgeschlossen (2–5/5): E8BelsőSzorzat
+(benVan→Standard-elem; Verteilung und Abschluss bestanden), TizenhatPenge
+(neuer, mathematisch genauer Name — die Blades gehören zu Cl(4); egyedi→
+nub), E8FázisKapcsolat (gf2 importiert), Alap.AlphaKözös (Rezepte wörtlich,
+alle Werte identisch — Informationsverlust 0). Der Wächter meldete viermal
+„sauber". Das Paket umfasst 44 Module, ein Befehl baut alles. (A) fertig;
+als Nächstes (B) die szindromaTer-Familie, dann (C) der Kern von Phase 2.
+
+**עברית:** גל הניקוד הושלם (2–5/5):‏ E8BelsőSzorzat ‏(benVan→elem סטנדרטי;
+ההתפלגות והסגירות עברו), TizenhatPenge (שם חדש ומדויק יותר — הלהבים
+של Cl(4); egyedi→nub), E8FázisKapcsolat (gf2 מיובא), Alap.AlphaKözös
+(המתכונים מילה במילה, כל הערכים זהים — אובדן מידע 0). הזקיף דיווח
+"נקי" ארבע פעמים. החבילה: 44 מודולים בפקודה אחת. ‏(A) הושלם; הלאה (B)
+ואז (C).
