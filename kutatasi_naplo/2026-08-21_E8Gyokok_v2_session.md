@@ -1352,3 +1352,61 @@ beabsichtigt, die guten sind fehlerfrei.
 ו-RosszPélda/HelyesPélda (וכן BizonyításEszközök, HibakeresésFonetika);
 שורות המודול, האינדקס והפניות הפלאגין עודכנו. אימות: קבצי ההדגמה
 שוגים בכוונה, התקינים נקיים.
+---
+
+## 36. bejegyzés — "olvass el valami magyar matematikai szókincset... keress rá, matematikai nyelvezet" (l. fenti gépi idő)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> olvass el valami magyar matemtatikai szokincset... keress ra, matematikai nyelvezet
+
+**VÁLASZ (asszisztens):**
+
+1. **KERESÉS ÉS OLVASÁS**: megtaláltam és elolvastam (a) a magyar
+   Wikipédia Gyökrendszer-szócikkét (a gyökrendszerek kanonikus magyar
+   szakszókincse), (b) a Bolyai János Matematikai Társulat kilencnyelvű
+   Matematikai fogalomtárát (mbuttons.bolyai.hu), (c) a matekarcok.hu
+   fogalom- és tétellistáját.
+2. **SZÓKINCSTÁR LEÍRVA**: osveny_index/tanulsagok/MagyarMatematikaiSzókincs.md
+   — a bizonyítás szerkezetének szavai (tétel, lemma, következmény,
+   állítás, megjegyzés, definíció, axióma, sejtés, cáfolat, bizonyítás);
+   a gyökrendszer-szókincs a szócikkből szó szerint (gyökrendszer EGY
+   szó; tükrözés; hipersík; normálvektor; merőleges vetület; skaláris
+   szorzat / belső szorzat; generátorrendszer; duális tér; izomorfizmus;
+   krisztalografikus tulajdonság; rács); stíluspéldák a matematikai
+   prózához ("Teljesül, hogy…", "egyértelműen meghatározza", "Definíció –
+   Legyen V véges dimenziós vektortér…").
+3. **KÉT AZONNALI JAVÍTÁS A SAJÁT SZAVAINKRA (önkritika)**:
+   - "reflexió" → **tükrözés** (a magyar matematikai nyelv a Weyl-csoport
+     elemeit tükrözésnek hívja; a "reflexió" latinizmus) — a
+     weylReflexió következő generációja: weylTükrözés;
+   - "kristallográfiai" → **krisztalografikus** (a szócikk szerint ez a
+     magyar alak; az enyémben kettős hiba volt: kristallo- + -gráfiai) —
+     a következő generációban krisztalografikusSzög.
+   §13 miatt a mostani modulok maradnak; a javítás a következő _v2-hullám
+   feladata (a szókincstár rögzíti).
+4. **OLVASD.md-be kötve** — minden következő session látja.
+
+**中文摘要：** 用户要求读匈牙利语数学词汇。找到并阅读：匈牙利文维基百科
+"Gyökrendszer"（根系统）条目、鲍耶伊数学会九语言数学术语库、matekarcok
+概念清单。写成 `MagyarMatematikaiSzókincs.md`：证明结构词汇（tétel/lemma/
+következmény/állítás/megjegyzés/definíció/axióma/sejtés/cáfolat）；根系统
+术语逐条（gyökrendszer 一词成词、tükrözés、hipersík、krisztalografikus…）；
+数学习作句式示例。自我纠错两处：reflexió→tükrözés、kristallográfiai→
+krisztalografikus（留待下代模块改名）。已接入 OLVASD.md。
+
+**Deutsch:** Der Nutzer verlangte ungarischen Mathematikwortschatz. Gefunden
+und gelesen: das ungarische Wikipedia-Kapitel „Gyökrendszer", das
+neunsprachige Glossar der Bolyai-Gesellschaft und die Konzeptliste von
+matekarcok. Erstellt: `MagyarMatematikaiSzókincs.md` mit dem Wortschatz der
+Beweisstruktur (tétel, lemma, következmény, állítás, megjegyzés…), den
+Wurzelsystem-Termini wörtlich aus dem Kapitel (tükrözés, hipersík,
+krisztalografikus…) und Stilbeispielen. Zwei Selbstkorrekturen: reflexió→
+tükrözés, kristallográfiai→krisztalografikus (Umbenennung in der nächsten
+Modulgeneration). In OLVASD.md verankert.
+
+**עברית:** המשתמש ביקש לקרוא אוצר מילים מתמטי הונגרי. נמצא ונקרא: ערך
+"Gyökrendszer" בוויקיפדיה ההונגרית, מילון תשע-הלשונות של אגודת בויאי ורשימת
+המושגים של matekarcok. נכתב `MagyarMatematikaiSzókincs.md`: אוצר מילים של
+מבנה ההוכחה, מונחי מערכת שורשים מילה במילה, ודוגמאות סגנון. שתי התנצלויות:
+‏reflexió→tükrözés ‏ו-kristallográfiai→krisztalografikus (שינוי בדור הבא).
+נקשר ל-OLVASD.md.

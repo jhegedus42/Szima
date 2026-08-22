@@ -65,3 +65,9 @@ a javítás nem ad felmentést a hibás neveknek.
 
 **A szabály:** "ez tart egyben" — a helyesírás nem esztétika: a toldalékolás
 ugyanaz a szóelemző kompozíció, mint a típusokban.
+
+## A magyar matematikai szókincs (2026-08-22) — a projekt hivatalos nyelvezete
+
+| Fájl | Mi | Eredmény |
+|---|---|---|
+| `MagyarMatematikaiSzókincs.md` | a Gyökrendszer-szócikk (hu.wiki) + Bolyai-fogalomtár + AkH.12 alapján: tétel/lemma/állítás/megjegyzés szókészlet; tükrözés-hipersík-krisztalografikus szakszavak; KÉT javítás a saját szavainkra: reflexió→tükrözés, kristallográfiai→krisztalografikus (következő _v2-hullámban) | a kommentek, napló, bizonyítások innentől e szókincs szerint |
