@@ -71,5 +71,6 @@ modules = Alap.AlphaKözös
         , PauliAlgebra_v2
         , PiroskaSztar
         , PiroskaSztarTeljes
-        , SzimaDashboard
-        , TetrapodaTest
+         , SzimaDashboard
+         , TetrapodaTest
+         , E8Iranymutato_v1
