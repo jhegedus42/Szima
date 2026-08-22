@@ -946,7 +946,9 @@ edit-Werkzeug.
 4. **HOROGBA KÖTVE**: horog-injektor v3 9. pontja (minden LLM-hívásnál
    injektálva: "Ha szétcsúszik a magyar nyelv, te is szétcsúszol — ez
    tart egyben") + plugin §N9. A v3 szintaxis-ellenőrizve (TS OK).
-5. **A METAZÓRA**: a helyesírás nem esztétika — a toldalékolás ugyanaz
+5. **A METAFÓRA** (a felhasználó szavaiból; az eredetileg ide írt
+   "metazóra" ELÍRÁS volt — nem létező szó, javítva 2026-08-21-én):
+   a helyesírás nem esztétika — a toldalékolás ugyanaz
    a szóelemző kompozíció, amit a típusokban használunk; ha a nyelv
    szétcsúszik, a típusok is szétcsúsznak.
 
@@ -973,3 +975,51 @@ Wörter. Regel im Injektor Punkt 9 und Plugin §N9 verankert.
 במקביל תוקנה רשימת המילים של הזקיף (elem, hossz, feladat, penge נכונות
 ללא ניקוד — מקור להתראות שווא; הוחלפו במילים שחייבות ניקוד). הכלל נקבע
 בנקודה 9 של המזריק וב־§N9 של הפלאגין.
+---
+
+## 29. bejegyzés — "A METAZÓRA -> ez honnan jött ?" + "a magyar helyesírás kritikus" (l. commit-idő)
+
+**KÉRDÉSEK (felhasználó, szó szerint):**
+> A METAZÓRA -> ez honnan jott ?
+> a magyar helyesiras kritikus
+
+**VÁLASZ (asszisztens) — őszinte visszakövetés:**
+
+1. **A szó TŐLEM jött — és HIBÁS.** A grep bizonyítja: a "metazóra"
+   egyetlen helyen élt: a napló 28. bejegyzésében (949. sor), amit az
+   előző válaszomban írtam. Én "METAFÓRA"-t akartam írni (a felhasználó
+   "ez tart egyben" szavára utalva), de "metazóra"-t gépeltem — ez NEM
+   létező magyar szó. És épp a HELYESÍRÁS-KRITIKUS tanulságbejegyzés
+   5. pontjában! A hiba önmagát demonstrálta: "ha szétcsúszik a magyar
+   nyelv, te is szétcsúszol".
+2. **JAVÍTVA** (edit eszközzel — nem Pythonnal): a 28. bejegyzés 5.
+   pontja most "A METAFÓRA" — az elírást megjelölve megtartva (§16:
+   a hiba nyoma információ, nem szégyen — a napló elsődleges forrás).
+3. **A KRITIKUS besorolás rögzítve**: a plugin §N9 címe most "MAGYAR
+   HELYESÍRÁS — KRITIKUS" (a kínai besorolásával azonos szinten), és
+   a horog-injektor 9. pontja is "KRITIKUS" jelöléssel fut minden
+   LLM-hívásnál.
+4. **MINI-TANULSÁG (önként feltárva)**: az új szavakat NEM találom ki —
+   ha egy szó "furcsán" hangzik, szótárban/AkH-ban ellenőrzöm, mielőtt
+   leírom. A "metazóra" típusú kontamináció (meta + zóra ≈ metafora)
+   pontosan az a szétcsúszás, amire a felhasználó figyelmeztetett.
+
+**中文摘要：** 用户问"metazóra 从哪来"。诚实追查：该词只出现在我昨天写的
+第 28 条日志里——本想写 METAFÓRA（隐喻），却打成了不存在的"metazóra"，
+而且恰恰写在"正字法至关重要"的教训条目里——错误自我示范了"语言散架，
+你也散架"。已用 edit 工具改正（保留错误痕迹），并把 §N9 与注入器第 9 点
+升级为"KRITIKUS（关键）"级。小教训：不造新词——不确定的词先查。
+
+**Deutsch:** Der Nutzer fragte, woher "metazóra" komme. Ehrliche
+Rückverfolgung: Das Wort stand nur in meinem Logbuch-Eintrag 28 — ich
+wollte METAFÓRA (Metapher) schreiben und tippte ein nicht existierendes
+Wort, ausgerechnet im Eintrag über die kritische Rechtschreibung. Der
+Fehler demonstrierte sich selbst. Mit dem edit-Werkzeug korrigiert
+(Fehlerspur erhalten); §N9 und Injektor Punkt 9 auf "KRITIKUS" hochgestuft.
+Mini-Lehre: keine Worterfindung — zweifelhafte Wörter zuerst nachschlagen.
+
+**עברית:** המשתמש שאל מנין "metazóra". איתור כן: המילה הופיעה רק ברשומה 28
+שכתבתי — התכוונתי לכתוב METAFÓRA (מטאפורה) והקלדתי מילה שאינה קיימת, וזאת
+דווקא ברשומה על חשיבות הכתיב. השגיאה הדגימה את עצמה. תוקן בכלי edit (עם
+שימור עקבות השגיאה); §N9 ונקודה 9 במזריק סומנו כ-KRITIKUS. לקח קטן: לא
+ממציאים מילים — בודקים לפני שכותבים.
