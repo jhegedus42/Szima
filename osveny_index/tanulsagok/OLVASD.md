@@ -45,3 +45,14 @@ egyesek nem fordulnak le — ÉPP EZ A TANULSÁG BENNÜK).
 | Fájl | Mi |
 |---|---|
 | `test_kerdoszo.idr`, `DebugFonetika.idr` | korábbi sessionök hibakereső maradványai (megtartva, semmit nem törlünk) |
+
+
+## A rövidítés-előtag csapda (2026-08-21) — "Dcs nincsen a magyarban"
+
+| Fájl | Mi | Eredmény |
+|---|---|---|
+| `RoviditesElotagCsapda.md` | a Dcs/Va (Digraf-/Maganhangzo-rovidites) konstruktor-család két generáción át élte túl a refaktorálást; a v3 szintaxis-javítása ÁLDÁST ADOTT a hibás nevekre | a felhasználó leleplezte; v4: valódi betűk (Cs..Dzs, A..Ű), 0 hiba |
+
+**A szabály:** konstruktor-név = a valóság neve (`Cs` ≠ `Dcs`); rövidítés-
+előtag TILOS (§0+§25); átörökítés (_v2→_v3) előtt NÉV-AUDIT kötelező —
+a javítás nem ad felmentést a hibás neveknek.
