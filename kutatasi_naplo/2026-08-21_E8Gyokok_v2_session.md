@@ -1467,3 +1467,64 @@ HOROG Punkt 10, Boot-up §14). Die Testmethode bleibt offen.
 ‏E9, ‏E8×E8, שורשי קוקסטר, קודים, קודים הולוגרפיים ותורת הקטגוריות — כולם
 מובילים לשם. נוצר ~/.agents/skills/magyar-matematika/SKILL.md ‏(עם
 דברי המשתמש כמוטו), מעוגן בשלוש שכבות קבועות. אופן הבדיקה פתוח.
+---
+
+## 38. bejegyzés — "read horog at every 3rd prompt, make this a plugin..." (l. fenti gépi idő)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> read horog at every 3rd prompt, make this a plugin, also read agents at every 3rd prompt and add this to plugn plugin and summarize relevant parts of it regarding the current workflow, and write and document how it should be could be applied
+
+**VÁLASZ (asszisztens) — horog-injektor v5: SZÍVDÖBBANÁS:**
+
+1. **A v5 PLUGIN** (~/.config/opencode/plugin/horog-injektor_v5.ts; §13: v1–v4
+   megmaradnak; a config a v5-re mutat):
+   - minden LLM-hívásnál a HOROG-injekció (12 szabály) — a v4-ből;
+   - **minden 3. user-promptnál PLUSZBAN a ♥ SZÍVDÖBBANÉS blokk**:
+     (A) a HOROG.md FRISS tartalma a LEMEZRŐL (nem beégetett másolat —
+     a fájl szerkesztése azonnal él); (B) az AGENTS.md szakaszai közül
+     a legutóbbi user-üzenet szavaival egyezőek 2-2 lényegi sora +
+     a teljes szakaszjegyzék (a relevancia szóegyezés-alapú, ≥2 találat);
+     (C) §10 emlékeztető: a 3. prompt = git snapshot esedékes;
+   - a duplikáció-védelem és a plugin-napló (♥ SZÍVDÖBB. műveletnév)
+     megmaradt; a compactionet túléli (a user-üzenetszámból számol).
+2. **DOKUMENTÁCIÓ**: docs/SzivdobbanasPlugin_20260822.md — hogyan
+   működik, hogyan ALKALMAZZA a modell (nyugtasson egy sorban + hajtsa
+   végre a §10 ritmust + az új HOROG-szabályok azonnal érvényesek),
+   és hogyan LEHET még alkalmazni (MANTRA/OLVASD olvasása ugyanezen a
+   ritmusal, embedding-es relevancia, TUI-szíverés pin-elt tail -f-fel).
+3. **GAUGE-ELVI TESZT a VALÓDI fájlokkal**: a próba-szövegre
+   („modul fordítás ékezet commit push") a plugin pontosan a §1 Kemény
+   szabályok, §7 Git használat, §25 Ékezetes magyar szakaszokat találja
+   (21 szakaszból) — a relevancia-motor működik. Közben találtam és
+   javítottam egy szétválasztó-hibát (a `## ` címekre kell vágni, nem
+   `# `-re — az első teszt only 1 szakaszt látott) + egy saját elírást
+   (lezegiSorok → lényegiSorok).
+4. **Kapcsolódó szabályok**: AGENTS §10 (3-promptos snapshot-ritmus),
+   HOROG.md fejléce ("5 PERCENKÉNT: Olvasd ezt vissza") — most már a
+   gép tartja a ritmust, nem az emlékezet.
+
+**中文摘要：** 应用户要求，构建 v5 心跳插件：每次第 3 个用户提示时，额外注入
+♥ 心跳块——(A) 从磁盘 freshly 读取的 HOROG.md 全文（文件修改即时生效）；
+(B) AGENTS.md 中与最近用户消息用词匹配的章节摘要（含完整章节目录）；
+(C) §10 提交节奏提醒。文档 docs/SzivdobbanasPlugin_20260822.md 说明运作、
+模型应如何响应（一行确认 + 执行快照 + 新规则立即生效）与扩展方向。用真实
+文件做金标测试：示例文本准确命中 §1、§7、§25 章节；途中发现并修复了按
+`## ` 切分的问题与一处自造词拼写。
+
+**Deutsch:** Auf Nutzerwunsch entstand das v5-Plugin mit Herzschlag:
+bei jedem 3. Nutzerprompt wird zusätzlich ein ♥-Block injiziert —
+(A) der FRISCHE HOROG.md-Inhalt von der Platte (Änderungen wirken
+sofort), (B) eine Zusammenfassung der AGENTS.md-Abschnitte, deren
+Wörter mit der letzten Nutzermeldung übereinstimmen, (C) die §10-
+Commit-Rhythmus-Erinnerung. Die Dokumentation beschreibt Wirkungsweise,
+erwartetes Modellverhalten und Erweiterungen. GAUGE-Test mit echten
+Dateien: Beispieltext trifft exakt §1, §7 und §25; dabei wurden ein
+Trennfehler (`## ` statt `# `) und ein eigener Tippfehler behoben.
+
+**עברית:** לבקשת המשתמש נבנה פלאגין v5 עם פעימת לב: בכל פרומפט
+שלישי מוזרק בלוק ♥ — ‏(A) תוכן HOROG.md טרי מהדיסק (שינויים נכנסים
+לתוקף מיד); ‏(B) סיכום הסעיפים הרלוונטיים ב-AGENTS.md לפי התאמת מילים
+להודעת המשתמש האחרונה; ‏(C) תזכורת קצב הקומיטים של §10. התיעוד מסביר
+את הפעולה, כיצד על המודל להגיב וכיווני הרחבה. מבחן GAUGE עם הקבצים
+האמיתיים: הטקסט לדוגמה פוגע בדיוק ב-§1, §7, §25; בדרך תוקנו שגיאת
+חיתוך ושגיאת כתיב אחת שלי.

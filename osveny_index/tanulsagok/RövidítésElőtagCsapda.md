@@ -35,6 +35,15 @@ magyar szó-e:
    (_v2 → _v3), a nevek is megkérdőjelezendők — a szintaxis-javítás
    NEM ad felmentést a hibás nevek alól. "A javítás áldása a hibás
    névre = a hiba mélyebb rejtése."
+   **ÉS: átírás előtt FUNKCIÓ-ÉRTELMEZÉS** (a felhasználó, 2026-08-22:
+   "azt is értelmezted, hogy mit csinál a függvény mikor átírtál, ne
+   össze-vissza, Level az Szint vagy Levél? ilyenek") — a név
+   jelentését a FUNKCIÓ adja (hol áll a hierarchiában, mit számol),
+   nem a hasonlóság. Példa: a v2 `Level` konstruktorát az angol
+   "leaf" (a fa levele) szándékával írták, de "Level"-t (= szint)
+   írtak — a `FaSzint` típuson belül önhivatkozás lenne; a helyes
+   név `Levél` (a deltaSzint Levél = δ, a legkisebb egység — ez
+   erősíti az értelmezést).
 4. **Az ékezet az információ**: `Voe` → `Ő`, `Vaa` → `Á` — a hosszú
    magánhangzó (ő vs ö) jelentéskülönbség; ékezet nélkül a lexikon HAMIS.
 

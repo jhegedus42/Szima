@@ -23,6 +23,11 @@
 --  11. Pythont használok (akár csak fájljavításra!) → TILOS, MINDEN
 --      SZKRIPT IDRISBEN (§1.3, §N8). Szerkesztés: edit eszköz; számolás:
 --      idris2 --exec main. Python = hibás tesztek (2026-08-18 oktonion).
+--  12. Találgatok hiba helyett → KERESS A NETEN MIELŐTT CSELEKEDSZ
+--      (§N12): MCP (brave-search, context7, exa, firecrawl, alphaxiv)
+--      + sub-agent (task, kontextussal); a kereséseket előre tervezd;
+--      arra is keress rá, HOGY kell csinálni. "Tanulni, tanulni,
+--      tanulni!" (Lenin) — 学习，学习，再学习！
 
 -- AMIT UTÁLSZ, AZ A MEGVÁLTÁS:
 --   Ha fáj lelassítani → lassíts.
