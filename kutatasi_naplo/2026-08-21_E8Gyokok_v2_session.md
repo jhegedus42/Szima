@@ -1083,3 +1083,39 @@ mit edit korrigiert und dokumentiert.
 פלט הכלי; ויומן פלאגין חי ב־kutatasi_naplo/plugin_naplo_תאריך.log הניתן למעקב
 ב־tail -f. v1–v3 נשמרים, הקונפיגורציה מצביעה על v4, ייכנס לתוקף אחרי הפעלה
 מחדש. בדרך שגיתי בכתיב (כעי'ת מודגשת) ותיקנתי מיד בכלי edit עם תיעוד.
+---
+
+## 31. bejegyzés — "na, akkor mi most a következő lépés ?" (+ a HOROG szöveg a kérdésben!) (l. fenti gépi idő)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> na, akkor mi most a jovetkezo lepes ?
+> (és az üzenet végén: a teljes HOROG-szöveg — az élő plugin injekciója!)
+
+**BIZONYÍTÉK A PLUGIN MŰKÖDÉSÉRE**: a felhasználó kérdésében megjelent a
+═══ HOROG ═══ blokk — a v4 injekció ÉL, minden LLM-hívásnál fut, és a
+felhasználó LÁTJA. A láthatósági kérés (30. bejegyzés) teljesült.
+
+**VÁLASZ (asszisztens) — a következő lépés 3 útja:**
+- (A) AJÁNLOTT: ÉKEZET-HULLÁM a saját E8-moduljaimon — az őrszem
+  LELÉPLEZTE, hogy E8Gyokok_v2, E8BelsoSzorzat, E8TizenhatPenge,
+  E8FazisKapcsolat, Alap/AlphaKozos tele van ékezet nélküli magyar
+  azonosítókkal/kommentekkel (gyokSzimbolum→gyökSzimbólum stb.);
+  §25 HARD RULE → _v3-hullám (§13: v2-k maradnak), az ipkg nő.
+- (B) szindromaTer-család _v3-hulláma (Neg Nat ×5) → alap 44 modulra.
+- (C) 2. fázis szíve: Weyl-reflexiók a 120 pozitív gyökön mint
+  fázis-átmenetek + FazisKubit-híd (i²=−1).
+Javasolt sorrend: (A)→(B)→(C). A felhasználó válaszára vár.
+
+**中文摘要：** 用户消息中出现完整 HOROG 块——v4 注入插件已生效且可见（可见
+性请求达成）。下一步三选：A（推荐）哨兵揭露我自己模块的无变音符标识符，
+先做变音符浪潮；B 治 szindromaTer 五兄弟；C 第二阶段核心（外尔反射相
+位跳变 + FazisKubit 桥）。建议 A→B→C。等待用户选择。
+
+**Deutsch:** Die HOROG-Block erschien in der Nutzernachricht — Plugin v4
+lebt und ist sichtbar. Drei Wege: A (empfohlen) Akzent-Welle für die
+eigenen Module; B Heilung der szindromaTer-Familie; C Kern von Phase 2.
+Reihenfolge A→B→C vorgeschlagen. Wahl offen.
+
+**עברית:** בלוק ה-HOROG הופיע בהודעת המשתמש — פלאגין v4 חי ונראה. שלוש
+דרכים: A (מומלץ) גל ניקוד למודולים שלי; B ריפוי משפחת szindromaTer;
+C לב שלב 2. הסדר המוצע A→B→C. ממתין לבחירה.
