@@ -36,6 +36,7 @@ modules = Alap.AlphaKözös
         , E8BelsőSzorzat
         , E8Fa_v3
         , E8FazisKapcsolat
+        , E8FazisKapcsolat_v2
         , E8FázisKapcsolat
         , E8Gyokok_v2
         , E8Gyökök
