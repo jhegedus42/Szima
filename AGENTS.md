@@ -76,15 +76,22 @@ Ha egy név rövidítésnek tűnik, írd ki teljesen.
    hogy már kint van a neten. Ha megtaláltad: javítsd meg a gyökérokot
    (add hozzá AGENTS.md-hez, frissítsd az eszközöket, változtass módszert).
 
-3. **MINDEN számítás Idrisben — Python TILTOTT, floatok is.** Az Idris tud
+3. **MINDEN számítás Idrisben — Python TILTOTT, AKÁR JAVÍTÁRA IS.** Az Idris tud
    Double-aritmetikát (l. Komplex.idr: oda-vissza teszt, φ-kontrakció — ezek
    Idris-ben futó numerikák). A 2026-08-18-i oktonion-kaland bizonyította:
    Pythonban sorban három hibás tesztet írtam (előjel, szorzási sorrend,
    törvény-átírás); Idrisben a kernel számol — a 49 pár × 3 törvény egy Refl-lel
    ment, ami Pythonban nem állt össze soha.
-   - **Soha ne használj Pythont.** Csak Idris. Ha találsz `.py` fájlt a
-     projekten belül, írd át Idrisbe, ha lehetséges és van értelme.
-     A Python félrevezet és hibát okoz — ez kemény SZABÁLY.
+   - **Soha ne használj Pythont — SEHIOLY, MÉG FÁJLJAVÍTÁSRA SEM** (a
+     `python3 - <<'PYEOF'` szerkesztő-blokkok is tiltottak; fájlszerkesztés
+     az `edit` eszközzel, számolás Idrisben). Forrás (2026-08-21): "pythont
+     tilos hasznalni, akar javitasra is".
+   - **Kivétel: a felhasználó EXPLICIT kérésére készült eszköz** (pl. az
+     opencode_naplo_kirollo.py DB-kirolló, 2026-08-21: "irjal ra python
+     programot") — az eszköz maradhat, de az ügynök munkafolyamata (javítás,
+     analízis, számolás) SOHA nem Python.
+   - Ha találsz `.py` fájlt a projekten belül, jelezd; Idrisbe írható át,
+     ha van értelme.
    - **Pontos algebra (egész, véges, kombinatorikus)** → Refl / Show-teszt Idrisben.
    - **Lebegőpontos szimuláció** → Idris Double (Komplex.idr minta) + Show-teszt.
    - **Teljesítmény kell?** → Idris codegen (C/Python/JS) vagy C/Rust FFI —

@@ -20,6 +20,9 @@
 --      azonosító és komment ÉKEZETES (Idris2 = teljes Unicode; ProbeUnikod
 --      2026-08-21 bizonyította). HARD RULE (§25). Így szól: szótár, nem
 --      szotar; előtér, nem eloter; függvény, nem fuggveny.
+--  11. Pythont használok (akár csak fájljavításra!) → TILOS, MINDEN
+--      SZKRIPT IDRISBEN (§1.3, §N8). Szerkesztés: edit eszköz; számolás:
+--      idris2 --exec main. Python = hibás tesztek (2026-08-18 oktonion).
 
 -- AMIT UTÁLSZ, AZ A MEGVÁLTÁS:
 --   Ha fáj lelassítani → lassíts.

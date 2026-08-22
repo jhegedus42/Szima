@@ -840,3 +840,73 @@ Diakritika. 0 Fehler, Paket aktualisiert.
 ב-v2 (שורה 92); העברתי אותה ל-v3 כמו שהיא — הפרת §0 (איסור קיצורים). באותו
 חטא גם בנאי התנועות Va/Vaa/Voe. תוקן ב-v4: אותיות אמיתיות (Cs…Dzs;
 A Á E É I Í O Ó Ö Ő U Ú Ü Ű) ופונקציות מנוקדות. 0 שגיאות, החבילה עודכנה.
+---
+
+## 27. bejegyzés — "de akkor ezeket a tanulságokat használni is kéne, azt hogyan lehetne ?" + a Python-tilalom kiterjesztése (l. commit-idő)
+
+**KÉRDÉSEK (felhasználó, szó szerint):**
+> de akkor ezeket a tanulsagokat hasznalni is kene, azt hogyan lehetne ?
+> pythont tilos hasznalni, akar javitasra is
+> ezt is bele kell tenni a hook-ba / minden szkript idriszben legyen
+
+**VÁLASZ (asszisztens) — a tanulság AKTÍV őrszemmé tétele:**
+
+1. **A MEGOLDÁS: horog-injektor_v3** (~/.config/opencode/plugin/):
+   a `tool.execute.after` horog minden .idr-írás/szerkesztés UTÁN
+   lefuttatja a CSAPDA-MINTÁKAT a fájl tartalmán, és az eredményt a
+   tool-kimenet VÉGÉRE fűzi — a modell AZONNAL látja és javíthatja.
+   A tanulság ezzel passzív olvasmányból AKTÍV ŐRSZEMMÉ vált.
+2. **A 9 csapda-minta** (a tanulsagok/ archívum gépi formája):
+   NagyNat (unáris kernel-robbanás), NegNat (nincs Neg Nat),
+   AscriptionParserCsapda (x > (3 : Nat) vs. the Nat 3),
+   EgySorosDataKonstruktor (Dcs | Dgy forma), PreludeDuplikatum
+   (filter/mapMaybe/null/... újraírása), RoviditesElotag (D…/V…/M…
+   családok), EkezetHiany (szotar→szótár szólista), PowerNemRedukal,
+   DefinicioMainUtan (definíció a main után).
+3. **TESZTELVE valós fájlokon (GAUGE-elv)** — az őrszem az első
+   percben LELEPLEZTE, hogy: (a) a v4-ben MÉG ÉL az M-család
+   (`Mb | Mcs | Md | Mdz...` = Mássalhangzó-rövidítés — jogos jelzés,
+   javítandó!); (b) a saját friss moduljaim kommentjeiben rengeteg
+   ékezet nélküli magyar szó van (EkezetHiany — §25 hullám nyitva);
+   (c) az E8Gyokok_v2-ben van egy Nat-környékű 5-jegyű literál
+   (vizsgálandó). Finomítás: a kód-minták komment-mentes nézeten
+   futnak (a "Mi" kérdőszó miatti hamis riasztás kiküszöbölve).
+4. **A v1/v2/v3 pluginok mind megmaradtak (§13); a config a v3-ra mutat.**
+   A v3 a v2 összes funkcióját tartalmazza (injekció + auto-napló) +
+   az őrszemet. Szintaxis-ellenőrizve (node --experimental-strip-types
+   --check: EXIT 0).
+5. **PYTHON-TILOM MINDEN HOROGBA** (a 28. bejegyzés tárgya): AGENTS
+   §1.3 átírva ("Soha ne használj Pythont — SEHOL, MÉG FÁJLJAVÍTÁSRA
+   SEM; a python3-<<PYEOF szerkesztő-blokkok is tiltottak; szerkesztés:
+   edit eszköz; kivétel: az explicit kérésre készült DB-eszköz");
+   HOROG 11. szindróma; plugin §N8 (+kínai+német sorokkal); injektor
+   8. pont. ÉS betartva: e bejegyzés összes szerkesztése EDIT eszközzel
+   történt — a tanulság használatban van.
+
+**中文摘要：** 用户问"教训怎样才能被真正使用"，随后禁止 Python（包括修文件）。
+方案：horog-injektor_v3 新增 `tool.execute.after` 教训哨兵——每次写/改 .idr
+后自动对文件跑 9 条陷阱正则（大数 Nat、Nat 减法、类型注解解析陷阱、单行
+data 构造器、Prelude 重复、缩写前缀、无变音符词表、power 不归约、main 后
+定义），把警告附到工具输出末尾，模型立刻看到并可修。实测立刻揪出真问题：
+v4 里还活着 M-前缀家族（Mb|Mcs|…，待修）、我自己新模块注释里大量无变音符
+词、E8Gyokok_v2 有待查 Nat 字面量。代码模式在去注释视图上运行以消除误报。
+Python 禁令写入全部钩子（AGENTS §1.3、HOROG 11、插件 §N8、注入器 8），
+且本条目的所有编辑都用 edit 工具完成。
+
+**Deutsch:** Der Nutzer fragte, wie die Lehren wirklich genutzt werden, und
+verbot Python auch zum Datei-Editieren. Lösung: horog-injektor_v3 mit einem
+`tool.execute.after`-Wächter — nach jedem .idr-Schreiben laufen 9 Fallenmuster
+(große Nat-Zahlen, Nat-Subtraktion, Typannotations-Parser-Falle, einzeilige
+Data-Konstruktoren, Prelude-Duplikate, Abkürzungspräfixe, akzentlose
+Wortliste, nicht reduzierendes power, Definitionen nach main); die Warnungen
+werden an die Tool-Ausgabe gehängt — das Modell sieht sie sofort. Der Test
+entlarvte sofort echte Probleme: die M-Präfixfamilie lebt noch in v4, meine
+eigenen Kommentare sind voller akzentloser Wörter. Python-Verbot in allen
+Haken verankert; sämtliche Edits dieses Eintrags erfolgten mit dem
+edit-Werkzeug.
+
+**עברית:** המשתמש שאל כיצד אפשר להשתמש בלקחים בפועל, ואסר פייתון גם לעריכת
+קבצים. הפתרון: horog-injektor_v3 עם זקיף `tool.execute.after` — אחרי כל
+כתיבת .idr רצות 9 תבניות מלכודת והאזהרות מוצמדות לפלט הכלי. הבדיקה חשפה
+מיד בעיות אמיתיות (משפחת קידומת M ב-v4, מילים ללא ניקוד בהערות שלי). איסור
+פייתון נקבע בכל הקרסים, וכל עריכות רשומה זו נעשו בכלי edit.
