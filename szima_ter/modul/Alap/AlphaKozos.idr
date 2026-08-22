@@ -13,7 +13,7 @@ module Alap.AlphaKozos
 --   | 这是 delta / sigmaG 等的唯一规范住所。                      |
 --   | DAS ist die EINE Heimat von delta / sigmaG / ...          |
 --
---   Eddig a receptek 3-4 modulban éltek duplikátumként:
+--   Eddig a definíciók 3-4 modulban éltek duplikátumként:
 --     delta, lobaszasBase, lobaszasExponens, lobaszasExponensEgesz,
 --     tisztaTer, logPithagoraszi, pithagorasziHang:
 --         AlphaSteane.idr, AlphaSteaneE8.idr, AlphaSteaneVegso.idr
@@ -161,6 +161,6 @@ main = do
   putStrLn ("  alphaBare = " ++ show alphaBare ++ "   (várható: 137.036)")
   putStrLn ("  delta = " ++ show delta ++ "   (várható: ≈8.23e-7)")
   putStrLn ("  sigmaG = " ++ show sigmaG ++ "   (várható: 1.5e-15)")
-  putStrLn "  — a receptek szó szerint az AlphaSteane.idrbeliek (§16);"
+  putStrLn "  — a definíciók szó szerint az AlphaSteane.idrbeliek (§16);"
   putStrLn "    az új és _v2 modulok innentől IMPORTÁLJÁK (§24)."
   putStrLn "Kész / 完成 / Fertig / גמר"

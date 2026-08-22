@@ -16,7 +16,7 @@ module Alap.AlphaKözös
 --   | EZ a delta / sigmaG / lobásásBázis / ... EGYETLEN (ékezetes) otthona. |
 --   | 这是 delta / sigmaG 等的唯一（带变音符）规范住所。                   |
 --
---   A receptek 3-4 modulban éltek duplikátumként (l. KodDuplikacioAudit):
+--   A definíciók 3-4 modulban éltek duplikátumként (l. KodDuplikacioAudit):
 --     delta, lobásásBázis, lobásásExponens, lobásásExponensEgész,
 --     tisztaTér, logPithagorászi, pithagorásziHang:
 --         AlphaSteane.idr, AlphaSteaneE8.idr, AlphaSteaneVegso.idr
@@ -158,6 +158,6 @@ main = do
   putStrLn ("  alphaBare = " ++ show alphaBare ++ "   (várható: 137.036)")
   putStrLn ("  delta = " ++ show delta ++ "   (várható: ≈8.23e-7)")
   putStrLn ("  sigmaG = " ++ show sigmaG ++ "   (várható: 1.5e-15)")
-  putStrLn "  — a receptek szó szerint az AlphaSteane.idr-beliek (§16);"
+  putStrLn "  — a definíciók szó szerint az AlphaSteane.idr-beliek (§16);"
   putStrLn "    az ékezetes nemzedék moduljai innentől IMPORTÁLJÁK (§24)."
   putStrLn "Kész / 完成 / Fertig / גמר"

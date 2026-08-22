@@ -1237,3 +1237,51 @@ als Nächstes (B) die szindromaTer-Familie, dann (C) der Kern von Phase 2.
 (המתכונים מילה במילה, כל הערכים זהים — אובדן מידע 0). הזקיף דיווח
 "נקי" ארבע פעמים. החבילה: 44 מודולים בפקודה אחת. ‏(A) הושלם; הלאה (B)
 ואז (C).
+---
+
+## 34. bejegyzés — "mi az hogy recept? ... nem palacsintat csinalunk" (l. fenti gépi idő)
+
+**KÉRDÉS (felhasználó, szó szerint):**
+> mi az hogy recept ? "De vigyázat: minden modulban kicsit más lehet a recept!" - nem palacsintat csinalunk
+
+**VÁLASZ (asszisztens):**
+
+1. **A SZÓ FORRÁSA VISSZAKÖVETVE (grep)**: a "recept" az AGENTS.md-ből
+   származik (321. és 325. sor — egy korábbi session "mit bizonyít a
+   Refl" tanulsága: "strukturált recept (pl. 4·28 + 2⁷)", "két
+   fogalmilag különböző recept") — ÉN hordoztam tovább a modulokba
+   (AlphaKozos, AlphaKözös, OLVASD.md). Szakács-metafora matematikai
+   definíción: pontatlan.
+2. **AZ IDÉZETT MONDAT NEM TŐLEM VALÓ**: a "De vigyázat: minden modulban
+   kicsit más lehet a recept!" mondat a repóban SEHOL nem létezik
+   (grep az egész fára: 0 találat) — nem írtam, nem is áll a
+   feljegyzésekben.
+3. **A HELYES TERMINOLÓGIA** (innentől): DEFINÍCIÓ, LEVEZETÉS, KÉPLET,
+   KONSTRUKCIÓ, SZÁMÍTÁSI ÚT. A "recept" tilos.
+4. **JAVÍTVA edit eszközzel** (4 fájl, 5 hely): AGENTS.md (2×),
+   Alap/AlphaKozos.idr (2×), Alap/AlphaKözös.idr (2×), OLVASD.md (1×).
+   Utó-ellenőrzés: "recept" = 0 találat az élő fájlokban; az AlphaKözös
+   továbbra is fordul (0 hiba). A kutatási naplóban a korábbi előfordulások
+   TÖRTÉNELMI FELJEGYZÉSKÉNT megmaradnak (a napló elsődleges forrás —
+   azt nem írjuk át, l. a metazóra- precedentet is).
+5. **A tanulság**: a metaforák csúsznak — a matematikai szöveg pontos
+   szavakat kíván (definíció ≠ recept); egy rossz metafora a
+   szabályfájlban generációkra elszaporodhat.
+
+**中文摘要：** 用户问"recept（食谱）是什么？我们不是在做煎饼"。追查：该词
+源自 AGENTS.md 早期教训（"strukturált recept"），被我从模块扩散。用户引用
+的那句"每个模块里食谱可能略不同"在仓库中根本不存在——不是我写的。正确
+术语：定义、推导、公式、构造。已用 edit 修正四个文件（AGENTS、两个
+Alpha 模块、OLVASD），复查为零残留，模块仍编译。日志中的历史出现保留。
+
+**Deutsch:** Der Nutzer fragte, was ein "Rezept" sei — wir backen keine
+Pfannkuchen. Rückverfolgung: Das Wort stammt aus einer älteren Lehre in
+AGENTS.md und wurde von mir verbreitet. Das zitierte Satz existiert nirgends
+im Repository — nicht von mir. Korrekte Termini: Definition, Herleitung,
+Formel, Konstruktion. Vier Dateien per edit korrigiert, keine Reste, das
+Modul kompiliert weiter. Die historischen Vorkommen im Logbuch bleiben.
+
+**עברית:** המשתמש שאל מהו "recept" — אנחנו לא מכינים פנקייק. איתור: המילה
+מקורה בלקח ישן ב-AGENTS.md והפצתיה במודולים. המשפט שצוטט אינו קיים כלל
+במאגר — לא ממני. המונחים הנכונים: הגדרה, גזירה, נוסחה, בנייה. תוקנו ארבעה
+קבצים בכלי edit, אפס שאריות, המודול מהודר. הופעות היסטוריות ביומן נשתמרו.

@@ -318,11 +318,11 @@ a bisect megtalálja a gyökérokot.
    A "bizonyítva" szó ennél többet NEM jelent.
 2. **Köröző (tautologikus) bizonyítás nulla információ.** `E8Beirva = 240`
    + `E8Beirva = 240` bizonyítás — üres. Az érték a DEFINÍCIÓ és az
-   ÁLLÍTÁS közti távolságban van: strukturált recept (pl. 4·28 + 2⁷)
+   ÁLLÍTÁS közti távolságban van: strukturált konstrukció (pl. 4·28 + 2⁷)
    ellenőrzése valódi munka, a kernel nem tud megtéveszteni.
 3. **A legjobb minta: KÉT független út, egy híd.** `BizOktonionEgyenloE8 :
    OktonionEgysegekSzama = E8GyokokSzama` — két fogalmilag különböző
-   recept (16+224 oktonion egységek vs 112+128 rács-gyökök) kényszerítve,
+   konstrukció (16+224 oktonion egységek vs 112+128 rács-gyökök) kényszerítve,
    hogy ugyanarra fusson. Bármelyik oldal átírása a hidat automatikusan
    töri. Ilyet írjunk, ne `E8Beirva = 240`-at.
 4. **A jelentést a numerika + irodalom fedezi, nem a Refl.** Hogy a 240
