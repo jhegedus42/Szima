@@ -84,4 +84,5 @@ modules = Alap.AlphaKözös
         , Steane713
         , HaromKubit
         , FazisAlgebra_v2
-        , Mondat_v1
+          , Mondat_v1
+          , Muszerefal_v1

@@ -122,3 +122,17 @@ GyökSzó_v1 ✓ → Fogalom_v1 ✓ → SzintaxisMorfizmus_v1 ✓ → következ�
 
 ### A 3D NYELV ÁLLÁSA (frissítve)
 GyökSzó_v1 ✓ → Fogalom_v1 ✓ → SzintaxisMorfizmus_v1 ✓ → Mondat_v1 ✓ (CPT-réteggel). A nyelv négy rétege ÉL. Következő: W9 dashboard (az összes modul számiból), és a 7 nyitott kérdés átbeszélése.
+
+## Bejegyzés 8 (2026-08-23, W9 — a műszerfal)
+
+### KÉRDÉS / JÓVÁHAGYÁS (a felhasználó szó szerint)
+"ok"
+
+### EREDMÉNY
+- `szima_ter/modul/Muszerefal_v1.idr` (0 hiba, 63 modul): `MűszerfalMutatók` rekord 38 mezővel, `műszerfalMutatók` konstrukció kizárólag importált projekciókból (8 metrika-modul: E8Iranymutato_v1, E8Univerzalitas_v1, CarnotCiklus_v1, GyokSzo_v1, Fogalom_v1, SzintaxisMorfizmus_v1, Mondat_v1, E8FazisKapcsolat_v2 — §24, nulla újraszámolás); az egyetlen új tétel `bizMűszerfalEmeletekHídja` = két importált bizonyítás trans-szim kompozíciója (§18). A main kimenete: (1) E8 geometria 240/112/128/W(E8)=696729600/248/496/híd=256/norma²=8; (2) [[7,1,3]] híd: 120 pozitív gyök, fázis-bit index 5; (3) nyelv: szókincs 240, eloszlás (1,56,126,56,1), 27 bélyeg, fázistényező 1.0; (4) fizika: 2D Ising 0/⅛/7/4/1, Carnot 0.4/0.5/0.625/0.2681, Landauer 2,87×10⁻²¹ J / 9,57×10⁻²⁴ J; (5) GAUGE: mind a 6 kimerítő 0; (6) híd-bizonyítás.
+- `docs/Muszerefal.md`: dokumentált dashboard, négy nyelvű fejlécek, forrás-modul minden szám mellett, teljes szó szerinti main-kimenet, futtatási parancsok (GAUGE-elv: minden szám futtatásból).
+- MÉRNÖKI TANULSÁGOK: (a) a `CarnotCiklus_v1.Hatásfok` nem `public export` — a hatásfokok a publikus `carnotHatekonysag` képletén át jelennek meg (a régi modulhoz §13 szerint nem nyúltunk); (b) a rekord-accesszorok árnyékolják az azonos nevű importált konstansokat — a GAUGE-mezők egyedi neveket kaptak (`szóOsztályHibái`, `bélyegKülönbözőségekSzáma`).
+- ipkg: +1 (63 modul); saját napló: `kutatasi_naplo/2026-08-23_muszerefal_W9_session.md`.
+
+### A PROGRAM ÁLLÁSA (W4–W9 MIND KÉSZ)
+W4 E8-miert ✓ · W5 univerzalitás ✓ · W6 holografikus kódok ✓ · W7 Carnot-hajtás ✓ · W8 3D nyelv (4 réteg) ✓ · W9 műszerfal ✓. HÁTRA: a 7 nyitott kérdés átbeszélése (docs/HaromDimenziosNyelv_Terv.md), a HaPPYPerfektTenzor implementálása, evolúciós algoritmus (Carnot-hajtással), és a régi mérési-hiba-rendezés (§17) auditja.
