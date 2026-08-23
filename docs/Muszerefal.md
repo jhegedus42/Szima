@@ -1,5 +1,7 @@
 # SZIMA MŰSZERFAL v1 — a projekt minden kulcsmutatója egy helyen
 
+> **Webes kiadás:** a műszerfal élő weboldalként is elérhető — `docs/muszerefal.html`, a GitHub Pages kiadás URL-je: `https://jhegedus42.github.io/Szima/muszerefal.html` (a `.github/workflows/pages.yml` workflow minden docs-változásnál automatikusan kiteszi a `/docs` mappát).
+
 # SZIMA INSTRUMENT PANEL v1 · 西玛仪表盘 v1 · Instrumententafel v1 · לוח המחוונים v1
 
 **W9 munkafolyam terméke.** A műszerfal (`szima_ter/modul/Muszerefal_v1.idr`)
