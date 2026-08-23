@@ -159,3 +159,22 @@ W4 E8-miert ✓ · W5 univerzalitás ✓ · W6 holografikus kódok ✓ · W7 Car
 - **Közzététel:** a `gh` token lejárt (401, újrahitelesítés csak interaktívan) → §N12 alternatív út: `.github/workflows/pages.yml` (actions/configure-pages + upload-pages-artifact + deploy-pages; trigger: master push a `docs/**` útvonalon). A repo publikus (ellenőrizve az API-n), így az Actions-út ingyenes.
 - **ÉL:** `https://jhegedus42.github.io/Szima/muszerefal.html` — HTTP 200; a böngészőben megnyitva a szöveges pillanat a teljes oldalt mutatta (6 csoport, 41 kártya); az EGYETLEN konzolhiba a hiányzó `/favicon.ico` (kozmetikai, a GitHub Pages alap-kérése — nem oldalhiba).
 - Commits: `8a993a5` (weboldal) → `6bf71a2` (pages workflow) → `35bd56d` (doksi-megjegyzés, ami elindította a deployt).
+
+## Bejegyzés 11 (2026-08-23, HOL VAN AZ α? — Muszerefal_v2, a teljes műszerfal)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"ok, de most akkor hol van az alpha amit, azt is tedd mar bele rendesen, meg kb amit az elmult 2 hetben csinaltunk, minden fontosat, olvasd vissza a logokat...."
+
+### VÁLASZ RÖVIDEN
+Az α a `szima_ter/modul/AlphaSteane.idr`-ben él (kanonikus; ipkg-tag; build 0 hiba): α⁻¹_bare = 128+2³+1+9/250 = 137.036; δ = (121/128)^(249+ln(9/8)) = 8,22996×10⁻⁷ (lobásás); dressed = 137,035999177004; CODATA 2022: 137,035999177 → Δ = 3,55×10⁻¹², Δ/σ = 0,00017 (BELÜL). Az α-s modulcsalád: AlphaSteane (kanonikus számok), Alap/AlphaKözös (a delta/sigmaG EGY otthona), MagyarCarnotE9_v3_CodatAlpha, AlphaSteaneDashboard (17 lépés), történetiek (AlphaLobaszas, AlphaGCheck, AlphaE8Szigor, AlphaSteaneE8, AlphaSteaneVegso).
+
+### ŐSZINTE ELLENTMONDÁS (a log-archeológus alügynök találta, §17/§18 szerint jelölve)
+A §17 szövege a BARE értékre Δ/σ ≈ 74,8-öt mond (σ=1,1×10⁻⁸, a CODATA "(11)"-éből), a modulok sigmaAlpha = 2,1×10⁻⁸-t használnak (→ Δ/σ ≈ 39,2) — a σ választása tisztázandó; a v2 műszerfal ezt NYITOTT KÉRDÉS kártyaként mutatja, nem titkolja.
+
+### EREDMÉNY (két alügynök, sorrendben)
+1. Log-archeológus (csak olvasó): visszolvasta a kutatasi_naplo/ dátumozott fájljait (08-18 Cayley–Dickson + KisAI; 08-19 repo→Szima + δ-lobásás; 08-20 α_G Mersenne + G-levezetés; 08-21 E8Gyokok_v2 INTEGER-kernel + W(E8) két úttal + 256-híd; 08-22 E8FazisKapcsolat_v2 + 3-pillér; 08-23 W4–W9 + weboldal) + ellenőrizte az α-modulokat (build EXIT 0).
+2. Muszerefal_v2 alügynök: `szima_ter/modul/Muszerefal_v2.idr` (a v1 38-mezős rekordja + híd-bizonyítás IMPORTÁLVA, §24; új Refl: bizSzindrómaHíd 128+112=240) és `docs/muszerefal_v2.html` — 10 csoport, 72 kártya: az eddigi 6 csoport + (7) §17-mért fizikai állandók négysoros formátumban (α dressed BELÜL 0,00017; α bare KÍVÜL 74,82/39,19 σ-ellentmondással őszintén; G 6,67429×10⁻¹¹ vs 6,67430×10⁻¹¹ Δ/σ=0,0382 BELÜL; α_G=2⁻¹²⁷=5,877×10⁻³⁹, log₂=−127), (8) E8-rács/szimmetriák (e8Redundancia 1,875; E9-együttható 16; magyar szimmetria 48; Piroska 154; szindróma-tér 112; 944), (9) a 17 lépés (AlphaSteaneDashboard import), (10) kronológia 08-18→08-23. GAUGE: a nyers futás archiválva `docs/adatok/muszerefal_v2_futas_2026-08-23.txt`. Build: 64 modul, 0 hiba; HTML headless ellenőrizve (0 saját konzolhiba).
+3. `szima_ter/szima.ipkg` + Muszerefal_v2. A v1 fájlok (Muszerefal_v1.idr, muszerefal.html) ÉRINTETLENEK (§13).
+
+### AZ α ÚTJA A MŰSZERFALON (a „rendesen bele")
+§17-négysoros kártyák: érték_levezetett / érték_mért (σ, CODATA 2022) / Δ / Δ/σ — BELÜL-KÍVÜL jelzéssel; a bare-σ-ellentmondás külön kártyán.
