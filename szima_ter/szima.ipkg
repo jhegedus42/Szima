@@ -81,3 +81,7 @@ modules = Alap.AlphaKözös
         , Kategoriak.MagyarOntologia
         , Fogalom_v1
         , SzintaxisMorfizmus_v1
+        , Steane713
+        , HaromKubit
+        , FazisAlgebra_v2
+        , Mondat_v1

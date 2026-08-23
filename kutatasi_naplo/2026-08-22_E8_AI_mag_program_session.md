@@ -108,3 +108,17 @@ W8 implementáció első modulja: `GyökSzó_v1` (alügynökkel), valamint a 7 n
 
 ### A 3D NYELV ÁLLÁSA
 GyökSzó_v1 ✓ → Fogalom_v1 ✓ → SzintaxisMorfizmus_v1 ✓ → következő: `Mondat_v1` (teljes mondattípus + CPT-réteg), utána W9 dashboard.
+
+## Bejegyzés 7 (2026-08-23, Mondat_v1 — CPT-réteg)
+
+### KÉRDÉS / JÓVÁHAGYÁS (a felhasználó szó szerint)
+"ok"
+
+### EREDMÉNY
+- `szima_ter/modul/Mondat_v1.idr` (0 hiba): a `Mondat` + `mondatVégpont` IMPORTÁLVA a SzintaxisMorfizmus_v1-ből (§24), bővítve `CímkézettMondat` = Mondat + `CPTBélyeg` (Forrás×Szemlélet×Igeidő — pontosan 27 kombináció, `bizBélyegHíd` Refl: enumeráció ⟷ 3×3×3). Réteghidak: bélyegIdőBejegyzésre (IdoBeljegyzes), bélyegTöltésParitásIdőre (diagonális homomorfizmus az idoFazisba-n át), fázistényező (fazisFaktorialis; diagonálison 1.0). A végpont CPT-mutatója (végpontFogalom + újraszámolt végpontPálya + végpontBélyeg) lánc-kifejtés ⟷ konstans híddal bizonyítottan a fél-egész D8-pályára mutat. 5 kernel-Refl; main futtatható.
+- `szima_ter/modul/FazisAlgebra_v2.idr` (ÚJ): kiderült, hogy a FazisAlgebra v1 ELEVE NEM FORDUL (nemlétező `atfedes`, nem-importált `CliﬀordKonstruktor`) — a §13 szerinti új alapozás; v1 a repóban maradt.
+- Symlinkek (§24, EGY forrás): Steane713, HaromKubit, E8E8Algebra, FazisAlgebra → `osveny_index/`.
+- ipkg: +4 modul (Steane713, HaromKubit, FazisAlgebra_v2, Mondat_v1 — összesen 62); saját napló: `kutatasi_naplo/2026-08-23_Mondat_v1_CPT_session.md`.
+
+### A 3D NYELV ÁLLÁSA (frissítve)
+GyökSzó_v1 ✓ → Fogalom_v1 ✓ → SzintaxisMorfizmus_v1 ✓ → Mondat_v1 ✓ (CPT-réteggel). A nyelv négy rétege ÉL. Következő: W9 dashboard (az összes modul számiból), és a 7 nyitott kérdés átbeszélése.
