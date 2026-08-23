@@ -66,3 +66,17 @@ W7 (Carnot/termodinamikai hajtás + kvantum evolúciós algoritmus Idrisben) és
 
 ### ÜZEMELTETÉSI MEGJEGYZÉS (2026-08-23)
 A push közben SSH-hiba lépett fel („Permission denied (publickey)" — az ssh-agent kiürült). Gyógyír: `ssh-add ~/.ssh/id_github` (a kulcs jelszó nélküli, a jhegedus42 fiókot hitelesíti). Push sikeres: `f24d535..89942a8`.
+
+## Bejegyzés 4 (2026-08-23, W7 + W8 lezárva)
+
+### KÉRDÉS / JÓVÁHAGYÁS (a felhasználó szó szerint)
+"ok"
+
+### W7 EREDMÉNY
+- `szima_ter/modul/CarnotCiklus_v1.idr` (339 sor, 0 hiba): a `CarnotLepes` típust IMPORTÁLTA a `MagyarCarnotE9_v3_CodatAlpha`-ból (§24 — a projektben már élt a négylépés-definíció); `CarnotLépés` ékezetes alias; `Hatásfok` rekord számláló/nevező párosként; 4 keresztszorzat-Refl (500/300→2/5, 600/300→1/2, 800/300→5/8, 373/273→100/373); Double-híd-Refl (2/5=0,4); Landauer-küszöb kB SI-exakt (300 K = 2,871×10⁻²¹ J — Wikipedia ≈2,9×10⁻²¹ ✓; §17 szerint nincs mérési σ, csak IEEE-754 kerekítés); `CarnotÁllapot` állapotgép, záródás-Refl a négy lépésen át (két kezdőállapotra). ipkg +1 sor (53 modul).
+
+### W8 EREDMÉNY
+- `docs/HaromDimenziosNyelv_Terv.md` (595 sor, 15 forrás): 240 gyök = alapszókincs (`GyökSzó`); 112+128 = két fogalmi szerep (egész = állandó fogalmak, fél-egész = kapcsolati fogalmak — a MagyarOntologia JK-kategoriáira mappezve, jelöletlen döntés = nyitott kérdés); szintaxis = Weyl-tükrözés-kompozíció (`SzintaxisMorfizmus`, E8Tükrözések IMPORT); mondat = láncolt kompozíció; szemantika = ötszintű jelentés-távolság (±1, ±½, 0 — simply-laced, Harnad 1990 geometriai grounding); dinamika = ToltesParitasIdo (27 CPT-bélyeg) + Steane [[7,1,3]] integritás + CarnotCiklus_v1 hajtás. Implementációs sorrend: GyökSzó_v1 → Fogalom_v1 → SzintaxisMorfizmus_v1 → Mondat_v1. 7 nyitott kérdés a felhasználónak.
+
+### KÖVETKEZŐ LÉPÉS
+W8 implementáció első modulja: `GyökSzó_v1` (alügynökkel), valamint a 7 nyitott kérdés végigvitele a felhasználóval; utána W9 dashboard.

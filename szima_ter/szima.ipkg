@@ -75,3 +75,4 @@ modules = Alap.AlphaKözös
           , TetrapodaTest
           , E8Iranymutato_v1
           , E8Univerzalitas_v1
+        , CarnotCiklus_v1
