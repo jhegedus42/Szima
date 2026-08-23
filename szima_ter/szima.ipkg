@@ -77,3 +77,7 @@ modules = Alap.AlphaKözös
           , E8Univerzalitas_v1
         , CarnotCiklus_v1
         , GyokSzo_v1
+        , Alap.KategoriaT
+        , Kategoriak.MagyarOntologia
+        , Fogalom_v1
+        , SzintaxisMorfizmus_v1

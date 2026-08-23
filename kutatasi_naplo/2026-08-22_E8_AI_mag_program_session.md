@@ -93,3 +93,18 @@ W8 implementáció első modulja: `GyökSzó_v1` (alügynökkel), valamint a 7 n
 
 ### KÖVETKEZŐ LÉPÉS
 `Fogalom_v1` (Weyl-pálya + JK-kategória), majd `SzintaxisMorfizmus_v1` (E8Tükrözések láncával); utána W9 dashboard.
+
+## Bejegyzés 6 (2026-08-23, Fogalom_v1 + SzintaxisMorfizmus_v1)
+
+### KÉRDÉS / JÓVÁHAGYÁS (a felhasználó szó szerint)
+"ok"
+
+### EREDMÉNY
+- `szima_ter/modul/Fogalom_v1.idr` (0 hiba): `D8Pálya` + `pályaOsztályból` + `Fogalom` rekord (GyökSzó + pálya + JK-kategória) + `fogalomTár` (240); 7 kernel-Refl két független úttal. A §N12 kutatás alátámasztotta: W(E8) tranzitív a 240 gyökön (egy pálya — triviális), W(D8)=2⁷·8! viszont KÉT pályát ad (112 egész + 128 fél-egész; madore.org + Wikipedia E8 lattice) — a Fogalom a D8-szintű pályát hordozza.
+- `szima_ter/modul/SzintaxisMorfizmus_v1.idr` (0 hiba): `SzintaxisMorfizmus` typeclass (`komponál`, `ellenpont`), GyökSzó- + Fogalom-instance; `Mondat` + `mondatVégpont` (foldl); 6 kernel-Refl. Futtatás: pályaváltás (2,2,0⁶)→(1,1,−1⁶) látszik; involúció visszaadja az eredetit; mondatvégpont (−1)⁸ fél-egész pályán, kategória (egyed) megmarad; kimerítők: 57 600 zártság / 57 600 involúció / 240 ellenpont-pálya — mind 0 hiba.
+- §24-megoldás: `Kategoriak/MagyarOntologia.idr` és `Alap/KategoriaT.idr` SZIMBOLIKUS LINK a kanonikus `osveny_index/` forrásra (EGY forrás, nem másolat). A tükrözés importja: `E8BelsoSzorzat.weylReflexio` (az ékezetes E8Tükrözések típusa nem kompatibilis — indoklás a modul fejlécében).
+- ÚJ TANULSÁG (ProbeFogalomTavolsag): importált where-es függvény Refl-normalizációja elakad, ha a where hivatkozása csak transzitívan érhető el — gyógyír: közvetlen `import E8BelsoSzorzat`.
+- ipkg: +4 modul (Alap.KategoriaT, Kategoriak.MagyarOntologia, Fogalom_v1, SzintaxisMorfizmus_v1); saját napló: `kutatasi_naplo/2026-08-23_fogalom_szintaxis_session.md`.
+
+### A 3D NYELV ÁLLÁSA
+GyökSzó_v1 ✓ → Fogalom_v1 ✓ → SzintaxisMorfizmus_v1 ✓ → következő: `Mondat_v1` (teljes mondattípus + CPT-réteg), utána W9 dashboard.
