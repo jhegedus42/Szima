@@ -63,3 +63,6 @@ W4 elindítva: alügynök írja `docs/E8_Miert_Kiveteles.md`-t (a 3 pillér szin
 
 ### KÖVETKEZŐ LÉPÉS
 W7 (Carnot/termodinamikai hajtás + kvantum evolúciós algoritmus Idrisben) és W8 (3D nyelv/szemantika-szintaxis mag: GyökSzó/Fogalom/SzintaxisMorfizmus).
+
+### ÜZEMELTETÉSI MEGJEGYZÉS (2026-08-23)
+A push közben SSH-hiba lépett fel („Permission denied (publickey)" — az ssh-agent kiürült). Gyógyír: `ssh-add ~/.ssh/id_github` (a kulcs jelszó nélküli, a jhegedus42 fiókot hitelesíti). Push sikeres: `f24d535..89942a8`.
