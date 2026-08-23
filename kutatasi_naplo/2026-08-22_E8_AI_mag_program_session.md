@@ -148,3 +148,14 @@ W4 E8-miert ✓ · W5 univerzalitás ✓ · W6 holografikus kódok ✓ · W7 Car
 - Gondolkodó_v1 első képességei: (1) cél-elérés (A→B útkeresés a gyökrácsban, mondatlánc = gondolat), (2) mintakiegészítés (hiányos mondat fejezése távolság-minimummal), (3) osztályozás (észlelet → pálya + JK-kategória).
 - Még NEM tud: érzékelés (grounding — W11), tanulás/memória (W12), természetes nyelv.
 - Javaslat: W10 = `Gondolkodo_v1` (Carnot-hajtású mondat-kereső hurok, IMPORT-okkal).
+
+## Bejegyzés 10 (2026-08-23, a műszerfal WEBOLDALA — GitHub Pages)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"a dashboard-ot fel kene rakni vercelre, vagy ilyesmi, github page-re, hogy mukodjon, de szeretnem itt is latni... kell eggy weboldal, ezt alugynokkel probald megcsinalni"
+
+### EREDMÉNY
+- **Alügynök** elkészítette `docs/muszerefal.html`-t: egyfájlos statikus oldal (beágyazott CSS+JS, külső függőség NINCS), 41 kártya 6 csoportban, négy nyelvű szakasz-fejlécek, minden kártyán a FORRÁS-MODUL neve, szűrés + rendezés gombok; a lábléc a futtatási parancs + dátum + „minden szám Idris-futtatásból (GAUGE)". A `docs/index.html` MÁR LÉTEZETT („Szima — Az Univerzális Generátor") — §13 szerint NEM írtuk felül, új fájlba került. A headless böngésző-ellenőrzés 2 JS-hibát talált és javított (ASCII idézőjel `„fázis”`-ban → SyntaxError; NFD/NFC-azonosító → ReferenceError) — végeredmény 0 konzolhiba. Minden szám a saját `idris2 --exec main Muszerefal_v1.idr` futásából (a kimenet egyezik a docs/Muszerefal.md-ben rögzítettel).
+- **Közzététel:** a `gh` token lejárt (401, újrahitelesítés csak interaktívan) → §N12 alternatív út: `.github/workflows/pages.yml` (actions/configure-pages + upload-pages-artifact + deploy-pages; trigger: master push a `docs/**` útvonalon). A repo publikus (ellenőrizve az API-n), így az Actions-út ingyenes.
+- **ÉL:** `https://jhegedus42.github.io/Szima/muszerefal.html` — HTTP 200; a böngészőben megnyitva a szöveges pillanat a teljes oldalt mutatta (6 csoport, 41 kártya); az EGYETLEN konzolhiba a hiányzó `/favicon.ico` (kozmetikai, a GitHub Pages alap-kérése — nem oldalhiba).
+- Commits: `8a993a5` (weboldal) → `6bf71a2` (pages workflow) → `35bd56d` (doksi-megjegyzés, ami elindította a deployt).
