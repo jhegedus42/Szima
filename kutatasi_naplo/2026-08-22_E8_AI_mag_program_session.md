@@ -80,3 +80,16 @@ A push közben SSH-hiba lépett fel („Permission denied (publickey)" — az ss
 
 ### KÖVETKEZŐ LÉPÉS
 W8 implementáció első modulja: `GyökSzó_v1` (alügynökkel), valamint a 7 nyitott kérdés végigvitele a felhasználóval; utána W9 dashboard.
+
+## Bejegyzés 5 (2026-08-23, GyökSzó_v1 — a 3D nyelv első modulja)
+
+### KÉRDÉS / JÓVÁHAGYÁS (a felhasználó szó szerint)
+"ok"
+
+### EREDMÉNY
+- `szima_ter/modul/GyokSzo_v1.idr` (~350 sor, 0 hiba, 54 modul): `GyökSzó` rekord (jel + szóOsztály); két szóosztály az importált tipus1/tipus2 listákkal — `EgészGyökSzó` 112 (állandó fogalmak), `FélEgészGyökSzó` 128 (kapcsolati fogalmak); a gyöklista + belső szorzat IMPORTÁLVA (E8Gyokok_v2 + E8BelsoSzorzat, §24 — nulla duplikáció); `jelentésTávolság` ötszintű skálája ⟨α,β⟩/8 ∈ {+1,+½,0,−½,−1} (`HasonlóságÖtSzint`). 11 kernel-Refl két független úttal (enumeráció ⟷ kombinatorika híd: `112 + 128 = length AlapszókincsKonst`). Futásidejű kimerítés: osztály-hibák 0, megengedetlen távolságú párok 0 / 57 600; eloszlás (1, 56, 126, 56, 1) — a binomiális szerkezet nyoma.
+- ÚJ TANULSÁG (Idris 2 0.8.0): `data Név where` teleszkóp nélkül „Missing telescope" hibát ad — helyes házstílus: `data Név : Type where`.
+- Saját napló: `kutatasi_naplo/2026-08-23_gyokszo_v1_session.md`.
+
+### KÖVETKEZŐ LÉPÉS
+`Fogalom_v1` (Weyl-pálya + JK-kategória), majd `SzintaxisMorfizmus_v1` (E8Tükrözések láncával); utána W9 dashboard.
