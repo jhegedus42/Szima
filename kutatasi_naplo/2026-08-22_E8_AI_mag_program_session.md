@@ -178,3 +178,22 @@ A §17 szövege a BARE értékre Δ/σ ≈ 74,8-öt mond (σ=1,1×10⁻⁸, a CO
 
 ### AZ α ÚTJA A MŰSZERFALON (a „rendesen bele")
 §17-négysoros kártyák: érték_levezetett / érték_mért (σ, CODATA 2022) / Δ / Δ/σ — BELÜL-KÍVÜL jelzéssel; a bare-σ-ellentmondás külön kártyán.
+
+## Bejegyzés 12 (2026-08-23, W11 „Kristálytiszta Könyv" — hierarchikus tervezés indul)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"OK, ezt a muszerfalat most ki kene egesziteni minden kartyara, reszletesen, minden aprosagra kiterjedo magyarazattal, peldakal, szamolasokkal, grafikonokkal, amiket lehet generalni tipusosan megirt python szkripttel, amit az idrisz ir, a koveetkezo lepes, hogy minden egyes levezetest ami idriszben van, vizualizalni kell, ez kb 1000-2000 oldal lesz, hosszu ido, de enelkul idot fogunk pocsekolni, mert rossz iranyba megyunk, konkret minden egyenletet kiszamolni, minden szamot kiszamolni, minden egyenloseget, bizonyitast szimulacioval, 5 grafikonnal (hasznalj ehhez konyvtarat, pl sckit vagy R, vagy akarmi) alagenteket hasznalni, szepene lepesrol lepesre, mindent le kell irni ami van, es mindent dokumentalni kell, magyarul kristalytisztan, nemetul kristalytisztan, kinaiul es heberul, ez nagy munka, hierarchikus agenteket kell inditani, hogy megtervezzetek a munkat"
+
+### DEKÓDOLÁS (MIT MIÉRT)
+- W11 = „Kristálytiszta Könyv": minden Idris-levezetés → részletes kártyaoldal: definíciók, példák, lépésről lépésre számítás, MINDEN egyenlet/szám/egyenlőség kiszámolva, bizonyítás szimulációval + 5 grafikon levezetésenként; dokumentáció magyarul/németül/kínaiul/héberül KRISTÁLYTISZTÁN. Méret: kb. 1000–2000 oldal.
+- A grafikongenerátor: IDRIS ÁLTAL ÍRT Python (matplotlib) — az AGENTS §1.0 szentesített mintája („Idris-generált Python/NumPy szkript numerikusan ellenőrizze"); az ügynök SOHA nem ír Pythont kézzel — az Idris-modul írja a szkriptet a Refl-ellenőrzött adatokból; a szkript számol + rajzol + numerikusan visszailleszt (két független út: kernel-Refl ⟷ szimuláció).
+- Hierarchia: P1 leltár (2 párhuzamos ügynök: A–K, L–Z; ki-ki a maga fájljába ír) → P2 főterv-építő (docs/KonyvTerv_v1.md: architektúra, WBS, sablonok, becslés, pilot-fejezet, fejezet-ügynök-protokoll) → utána fejezet-ügynökök szériában.
+
+### ELINDÍTVA (2026-08-23)
+- P1a + P1b (párhuzamos): docs/KonyvLeltar_v1_A.md + _B.md; P2: docs/KonyvTerv_v1.md. (Eredmény a Bejegyzés 12b-ben.)
+
+### Bejegyzés 12b (2026-08-23, a tervezés EREDMÉNYE)
+- P1a (`docs/KonyvLeltar_v1_A.md`): 34 modul (A–K), 218 Refl-bizonyítás, ~15 futásidejű kimerítő, ~135 kártya-jelölt.
+- P1b (`docs/KonyvLeltar_v1_B.md`): 29 modul (L–Z), ~118 bizonyítás-név (~150 Refl-ág; 5 TAUTOLÓGIA őszintén jelölve, 2 negatív tétel, 8+ „két út, egy híd"), ~105 kártya-jelölt.
+- P2 (`docs/KonyvTerv_v1.md`): 11 fejezet (F0 módszertan … F10 műszerfal/kronológia); ~336 bizonyítás-kártya + ~30 szerkezeti kártya; kártyánként 3–5 oldal → ÖSSZESEN ~1000–1700 oldal, négynyelvű. Architektúra: fejezetenként EGY `KonyvAdat_<Fejezet>_v1.idr` (a main IDRIS ÍRJA a matplotlib-Pythont + adat.js; a Python számol, kártyánként 5 grafikont rajzol, és a kernel-Refl ⟷ szimuláció maradékokat írja) + EGY közös quadro-lingvális renderer (docs/konyv/index.html, muszerefal-minta). Kanonikus 5-sávós grafikon-séma: szerkezet / számolás / ellenőrzés / spektrum / híd. PILOT: F2 = E8 gyökrendszer (Integer-kernel, legtöbb látványos gráf) — utána F1 α → F3 Steane → F4 nyelv → … → F0 utoljára. Fejezet-ügynök-protokoll a terv §5-ben szó szerint átadható. matplotlib 3.9.2 + numpy 2.0.2 ELÉRHETŐ. Kockázatok: ~1680 PNG mérete (pilot mér), tautológia-kártyák őszinte jelölése.
+- A következő lépés: pilot F2 fejezet-ügynök indítása.
