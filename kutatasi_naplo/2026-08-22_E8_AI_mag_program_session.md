@@ -44,3 +44,22 @@ A felhasználó a projekt VÉG-CÉLJÁT fogalmazta meg, és egy kutatási progra
 
 ### KÖVETKEZŐ LÉPÉS (ez a session)
 W4 elindítva: alügynök írja `docs/E8_Miert_Kiveteles.md`-t (a 3 pillér szintézise) + egy Idris `E8IrányMutató`/dashboard-adat modult, a meglévő `E8Gyokok`/`E8BelsoSzorzat`/`FazisKubit` IMPORTÁLÁSÁVAL (§24), ékezetesen, négy nyelvű fejléccel.
+
+## Bejegyzés 3 (2026-08-23, W5 + W6 lezárva)
+
+### KÉRDÉS / JÓVÁHAGYÁS (a felhasználó szó szerint)
+"ok ok ok ok ok" — a W5–W9 roadmap folytatásának jóváhagyása.
+
+### W4 EREDMÉNY (előző kör, commit f24d535)
+- `szima_ter/modul/E8Iranymutato_v1.idr` (0 hiba; gyöklista/belső szorzat/16 penge IMPORTÁLVA §24; Refl-ek: 2·348364800=696729600, 16384·243·25·7=696729600, 248·2=496, 240=2·120, 112+128=240; futásidejű: minden gyök norma²=8 → True).
+- `docs/E8_Miert_Kiveteles.md` (240 gyök, W(E8)=696 729 600, 248/496, 2D Ising exponensek, dashboard-táblázat).
+
+### W5 EREDMÉNY (2026-08-23)
+- `szima_ter/modul/E8Univerzalitas_v1.idr`: exponensek pontos törteként skálázott egészként (2D Ising nyolcadokban; 2D perkoláció 72-edekben, Smirnov–Werner arXiv:math/0109120; 2D önkerülő séta ν=3/4, Nienhuis PRL 1982). 9 Refl-bizonyítás: Rushbrooke α+2β+γ=2, hiperskálázás 2−α=d·ν, Fisher γ=ν(2−η) mindhárom pontos osztályra, két független úttal (pl. 96·129 = 72·172 = 12384). 3D Ising konform-bootstrap közelítők (Chang et al. 2025, arXiv:2411.15300) Double-ként, Δ≈10⁻⁸ < 10⁻⁶ maradék-ellenőrzéssel. 2D Double-értékek az E8Iranymutato_v1-ből IMPORTÁLVA (§24). Fordítás: 0 hiba (52/52 modul).
+- `szima_ter/szima.ipkg` +1 sor; saját napló: `kutatasi_naplo/2026-08-23_w5_univerzalitas_session.md`.
+
+### W6 EREDMÉNY (2026-08-23)
+- `docs/HolografikusKodok.md` (550 sor, 29 forrás): AdS/CFT-szótár = kvantumhibajavító kód (Almheiri–Dong–Harlow arXiv:1411.7041); HaPPY-kód ({5,4} parketta, perfekt tenzorok, ráta→1/√5, p_c≈0,26; arXiv:1503.06237); az építőelem [[5,1,3]] Choi-tenzora = AME(6,2). KULCS: a Steane [[7,1,3]] 8-lábú kódoló tenzora NEM lehet perfekt (AME(8,2)/((7,1,4))₂ nem létezik — Huber–Gühne–Siewert PRL 2017). A W2-pillér pontos gerince: Construction A — [7,4,3] Hamming → CSS → Steane-határ, illetve → [8,4,4] → E8 gyökérrács (240=112+128). Vázlat későbbi `HaPPYPerfektTenzor.idr`-hoz; a „retrosicíva" SPECULATÍV jelölést kapott.
+
+### KÖVETKEZŐ LÉPÉS
+W7 (Carnot/termodinamikai hajtás + kvantum evolúciós algoritmus Idrisben) és W8 (3D nyelv/szemantika-szintaxis mag: GyökSzó/Fogalom/SzintaxisMorfizmus).
