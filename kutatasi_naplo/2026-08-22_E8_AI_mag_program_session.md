@@ -271,3 +271,14 @@ liszt es bartok zeneit ugyanigy"
 
 ### TEENDŐ
 Csak-olvasó review-ügynök a két cursor-ágra (ütközés-elemzés + merge-javaslat); párhuzamosan W11 pilot F2 (E8 gyökrendszer fejezet) indul.
+
+## Bejegyzés 18 (2026-08-24, cursor-ág review + pilot újraindítás)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"go on"
+
+### EREDMÉNYEK
+1. **Branch-review (docs/Review_CursorAgak_20260824.md):**
+   - `cursor/idris-javitasok-d1f8` (18 commit, +3332 sor): önálló E8→Steane-levezetési csomag az `osveny_index/FuggetlenLevezetes/`-ben ([8,4,4]→[7,4,3]→[[7,1,3]] véges felsorolással, paritásbuborék, affin E₈-karakter, magyar ternáris tetrakód). Worktree-ben KIPRÓBÁLVA: fordul (6/6 modul, exit 0). Minden fájl ÚJ → KONFLIKTUSMENTES. Javaslat: MERGE egészben (ékezet nélküli azonosítók utólagos _v2-hullámmal).
+   - `cursor/literature-aaa6` (4 commit, +987 sor): literatúra-térkép + literatura.html; a vercel.json Vercel ÁG-PREVIEW-t konfigurál (build: docs/scripts/vercel-build.sh, output: docs/, cleanUrls) + új Pages-workflow és banner 6 HTML-ben. 2 TRIVIÁLIS ÜTKÖZÉS (.gitignore, docs/index.html — mindkét oldal megtartása) + DUBLA Pages-deploy a master pages.yml-jével → EGY utat választani. Javaslat: MERGE kis javítással.
+2. **W11 pilot F2 ügynök ELHASALT** (usage limit: „Usage limit reached for 5 hour. Your limit will reset at 2026-08-24 13:43:39") — nem hozott létre fájlt; újraindítva.
