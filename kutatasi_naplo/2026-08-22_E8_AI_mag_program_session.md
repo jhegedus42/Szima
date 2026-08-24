@@ -336,3 +336,29 @@ Csak-olvasó review-ügynök a két cursor-ágra (ütközés-elemzés + merge-ja
 - Tartalom (a konyv-keszito skill formátuma: bal magyar / jobb angol, TikZ/tikz-cd, alul Idris-kód + bizonyítás + Wikipedia-link): (1) Petrie-projekció GAUGE-PNG-vel; (2) 8!=40320 két úttal (tikz-cd); (3) 112+128=240 (tikz-cd, bizKétÚtHíd szó szerint); (4) norma ⟨α,α⟩=8 hisztogrammal; (5) W(E8)=696 729 600 két úttal (tikz-cd + prímtorony-PNG); (6) 256-híd + Steane [[7,1,3]] lánc (tikz-cd, \lvert…\rangle javítással); (7) eloszlás (1,56,126,56,1) + Hodge-duál PNG-kkel; (8) E8×E8=496 lánc; (9) a 240 szó → F4-híd; GAUGE-táblázat (mindenhol Δ=0).
 - MŰSZAKI TANULSÁGOK: (a) a tikz-cd-ben a `|` karakter FOGALT (a tikz útvonal-nyelve) — kvantumállapot-jelöléshez `\lvert 0\rangle` kell; (b) a kettős-lépcsős nyilak (rdd/ddl/uur) törékenyek — egyszerű rd/ld/dd a stabil; (c) a tikz-cd user-fába telepítve: a .sty csak burkoló, a tikzlibrarycd.code.tex a valódi kód — MINDKETTŐ kell.
 - A 36 kártya teljes webes változata: docs/konyv/e8gyokrendszer/fejezet.html (a PDF a pilot-kivonat; a teljes fejezet a weben él).
+
+## Bejegyzés 23 (2026-08-24, evolúciós algoritmusok — kutatás indul)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"nezzunk ra most evolucios algoritmusokra"
+
+### ÉRTELMEZÉS (MIT MIÉRT)
+- A program eredeti íve (Bejegyzés 1): „evolucios algoritmusokat (carnot ciklus-sal implementalva), esetleg kvantum evolucios algoritmusokat (ugy kevesebb a hoveszteseg)" — ez a W10 Gondolkodó magja.
+- Kutatási terv: (1) az evolúciós algoritmusok alapjai (populáció, fitness, szelekció, mutáció, keresztezés; GA/ES/CMA-ES/GP/DE); (2) kvantum evolúciós algoritmusok (miért kevesebb a hődisszipáció); (3) termodinamikai nézőpont: szelekció = információtörlés = Landauer-költség; a Carnot-ciklus mint generációs hurok;
+- A SZIMA-TERV: populáció = CímkézettMondat-lista (Mondat_v1 IMPORT); mutáció = Weyl-tükrözés (E8BelsoSzorzat.weylReflexio IMPORT); keresztezés = mondat-kompozíció (SzintaxisMorfizmus_v1 IMPORT); fitness = fázistényező (FazisAlgebra_v2) + jelentés-távolság (GyokSzo_v1); hurok-ritmus = Carnot-lépés (CarnotCiklus_v1 IMPORT); Landauer-árazás a szelekcióra. Idris-vázlat: EvolutivKereso_v1.
+- Végrehajtás: EGY kutató alügynök → docs/EvoluciosAlgoritmusok_Tanulas.md (nincs Idris, nincs ipkg, nincs commit).
+
+## Bejegyzés 24 (2026-08-24, pointer-állapotok + QAOA + utazó ügynök)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"Also look at pointer states and extensive research with all relevant mcp-s"
+"look at QAOA"
+"and traveling salesmen"
+
+### ÉRTELMEZÉS
+- Három kutatási szál, mind az evolúciós vonalra építve:
+  (1) POINTER-ÁLLAPOTOK: Zurek einselection/dekoherencia/pointer-bázis/kvantum-darwinizmus — mely állapotok maradnak életben a dekoherenciában; kapcsolat: a projekt fázis-alapú redundancia-szabálya (azonos fázisú fogalmak eldobhatók), a koherencia = a hallucináció ellensége.
+  (2) QAOA: Quantum Approximate Optimization Algorithm (Farhi et al.) — költség-Hamiltonian + keverő-Hamiltonian váltakozó rétegei; a kvantum-evolúciós út konkrét formája; unitér = reverzibilis = Landauer-mentes (a Bejegyzés 23-as tanulság folytatása).
+  (3) UTAZÓ ÜGYNÖK (TSP): NP-nehéz kombinatorikus optimalizálás; heurisztikák (2-opt, Lin–Kernighan); QAOA TSP-re; a Gondolkodó cél-elérése = legrövidebb út a gyökrácson = TSP-rokon; szép kettős értelem: „ügynök" = salesman ÉS = AI-agent.
+- Végrehajtás: 3 párhuzamos kutató alügynök, külön dokumentumokba (docs/PointerAllapotok_Tanulas.md, docs/QAOA_Tanulas.md, docs/UtozoUgynok_TSP_Tanulas.md); MCP-eszközök: brave-search, exa, firecrawl, alphaxiv, scite. Nincs Idris/ipkg/commit az ügynököknek.
+- Bankba tész: a kész docs/EvoluciosAlgoritmusok_Tanulas.md (Bejegyzés 23).
