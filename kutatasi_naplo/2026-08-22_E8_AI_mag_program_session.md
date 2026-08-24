@@ -367,3 +367,15 @@ Csak-olvasó review-ügynök a két cursor-ágra (ütközés-elemzés + merge-ja
 1. **POINTER-ÁLLAPOTOK (docs/PointerAllapotok_Tanulas.md):** Zurek kulcscikkei DOI-vel és alphaXiv ID-vel (1981 PRD 24,1516; 1982; sieve 1993; 1998 quant-ph/9805065; 2000 quant-ph/0011039; RMP 2003 quant-ph/0105127; Quantum Darwinism Nat. Phys. 2009 arXiv:0903.5082; cáfolatok is jelölve — Kofman–Kurizki, Fields, Kastner). A „Pointer basis and the arrow of time" (1983) címre NINCS találat — őszintén jelölve. LEGMÉLYEBB KAPCSOLAT: a `FazisKubit.idr` fejléce (a fázis átmegy a környezetbe: α|0⟩|E₀⟩+β|1⟩|E₁⟩) SZÓ SZERINT a dekoherencia mechanizmusa; a projekt fázis-alapú redundancia-szabálya = einselection-szerű kiválasztás (analógia, jelölve); a ritmus-hipotézis = hipotézis szint.
 2. **QAOA (docs/QAOA_Tanulas.md):** Farhi–Goldstone–Gutmann 2014 (arXiv:1411.4028) teljes cikk elolvasva; H_C (diagonális költség) és H_B = Σσˣ (keverő) váltakozó unitér rétegei; M_p monoton javul, p→∞ → optimum. SZIMA-KAPCSOLAT: a keverő megfelelője a `weylReflexio` (ortogonális ⇒ unitér), H_C megfelelője a fitness (fázistényező + jelentés-távolság), a (γ,β)-evolúció = a Carnot-hajtású klasszikus evolúciós réteg (irodalmi párhuzam: QAOA+GA hibrid, Ha & Ta 2023).
 3. **TSP (docs/UtozoUgynok_TSP_Tanulas.md):** NP-nehéz (Karp 1972), (n−1)!/2 kör; egzakt: Held–Karp Θ(n²2ⁿ), Concorde; heurisztika: 2-opt, Lin–Kernighan; metaheurisztika: GA + szimulált hűtés (Carnot-rokon — őszintén analógia); kvantum: Ising, QAOA, D-Wave. SZIMA-KAPCSOLAT: a gyökrács 240 csúcsa = város, a `jelentésTávolság` = élsúly; példaszámolás: az E→M→F→E kör (5/2) rövidebb, mint E→É→M→E (4) — a Gondolkodó útkereső rétegének váza; az „ügynök" kettős jelentése (salesman + AI-agent).
+
+## Bejegyzés 25 (2026-08-24, MÉLYKUTATÁS: 3 irodalom + szimmetria/kombinatorika/Coq/SAT + Carnot-vs-evolúciós demo)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"Ezeknek az irodalmaknak menjunk alugynokokkel utana nagyon melyen es kossuk ossze oket mindennel, 3 keresot hasznaljunk, toltsunk le cikkeket, elemezzuk oket, indexeljuk oket, szimulaljunk, szamoljunk, reprodukaljuk a cikkek alapjait es kapcsolatokat, Idrisz kotelezo, python tilos, csakis idriszbol generálva ha kell, R-et hasznalhatsz, lean-t hasznalhatsz, erosen keress ra a szimmetriakra es kombinatorikus optimalizaciora, induktiv bizonyitasra, coq-ra, sat solverekre. Hierarchiare, szimulaljunk demo modellt, carnottal es evoluciossal, hasonlitsuk ossze a kettot."
+
+### VÉGREHAJTÁSI TERV (hierarchikus ügynökök)
+- W-A: Pointer-állapotok MÉLYEN (3 kereső, cikk-letöltés az arXiv-ről, elemzés, indexelés trail_index/-be, alapok reprodukálása Idrisben)
+- W-B: QAOA MÉLYEN (ugyanígy + a (γ,β)-evolúció reprodukálása)
+- W-C: TSP MÉLYEN (ugyanígy + 2-opt a gyökrácson)
+- W-D: Kereső-ütem: szimmetriák + kombinatorikus optimalizálás + induktív bizonyítás + Coq + SAT-solverek (kapcsolat: SAT → QAOA-Ising; indukció → Idris Refl)
+- W-E: DEMO-MODELL: Carnot-hajtású VS. evolúciós hajtású kereső — Idrisben (EvolutivKereso_v1 + CarnotCiklus_v1 IMPORT), összehasonlító futtatás, az eredmény a docs/-ba
