@@ -299,3 +299,29 @@ Csak-olvasó review-ügynök a két cursor-ágra (ütközés-elemzés + merge-ja
 ### NYITVA
 - A két cursor-ág merge-döntése (a review: mindkettő merge-ölendő; a literature-ágban a dupla Pages-deploy eldöntése) — a felhasználóra vár.
 - A fejezet.html a Pages-en: https://jhegedus42.github.io/Szima/konyv/e8gyokrendszer/fejezet.html (a következő docs-push után él).
+
+## Bejegyzés 20 (2026-08-24, konyv-keszito skill — tudományos cikkszintű illusztrációk)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"keszitsunk nagyon szep es kiterjed illusztraciokat, tudomanyos cikk szenten" (a konyv-keszito skill betöltve: Idris → LaTeX → PDF, bal magyar / jobb angol, tikz-cd commutative diagramok, 14 fejezetes TOC)
+
+### ÉRTELMEZÉS
+- A W11 webes könyve MELLETT PDF-könyv a konyv-keszito skill architektúrájával: minden oldalon bal magyar / jobb angol, középen TikZ-diagram, alul Idris-kód + bizonyítás-kimenet + Wikipedia-link.
+- A számok GAUGE-elvből: csak Idris-futtatásból (a F2 pilot main_kimenet.txt / maradekok.csv már ilyen).
+- Pilot: E8 gyökrendszer fejezet (a legszebb anyag: 240 gyök Petrie-vetülete, 112+128, 256-híd, W(E8), Steane-lánc) — ha áll, a 14 fejezet következik ügynökökkel.
+
+## Bejegyzés 21 (2026-08-24, konyv-keszito pilot — tikz-cd megoldva, dispatch)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"/Subagent-Driven Development use subagents"
+"/When Stuck - Problem-Solving Dispatch solve it"
+
+### A BERAGADÁS ÉS A MEGOLDÁS (When Stuck dispatch)
+- Probléma: tikz-cd.sty HIÁNYZIK; tlmgr admin-jogot kér (sudo jelszó kell — nincs), user-mód cross-release hibát dob, a CTAN-tükör 404-es HTML-t/158 bájtos „zip"-et ad.
+- §N12 keresés megtalálta a helyes repót: astoff/tikz-cd (GitHub). A .sty csak 823 bájtos BURKOLÓ — a valódi kód a tikzlibrarycd.code.tex (23 072 bájt). MINDKETTŐ letöltve a user-fába (~/Library/texmf/tex/latex/local/).
+- MINIMÁL-TESZT: tikzcd-commutative-diagram teszt.tex → pdflatex EXIT 0, 1 oldal, 30 892 bájt. ✓
+- Eszközlánc KÉSZ: pdflatex (TeX Live 2025) + tikz + tikz-cd + geometry + hyperref + amsmath + amssymb + xcolor.
+- §13: a konyv.tex (júl. 30-i, 30 757 bájt) ÉS a konyv.pdf MÁR LÉTEZIK — NEM írjuk felül; az új könyv: konyv_v2.tex / konyv_v2.pdf.
+
+### DISPATCH (Subagent-Driven Development)
+- Pilot fejezet-ügynök: konyv_v2.tex — E8 gyökrendszer fejezet, tudományos cikkszint, a skill formátumával (bal magyar / jobb angol / középen TikZ / alul Idris-kód + bizonyítás + Wikipedia-link), a számok a F2 futásból (GAUGE: main_kimenet.txt, maradekok.csv — Δ=0 mindenhol).
