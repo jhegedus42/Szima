@@ -34,3 +34,7 @@ source/ai/
 
 # titok — SOHA nem commitoljuk (push protection)
 source/obsidian-web-clipper-settings.json
+
+# Sziámi hangfájlok — NEM mennek a gitbe (a repó nehezedne; §20: nem törlendők,
+# csak kívül maradnak; az elemzés-eredmények PNG/doc viszont commitolhatók)
+zene_es_zaj/sziami_audio/

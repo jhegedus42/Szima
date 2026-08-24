@@ -238,3 +238,20 @@ liszt es bartok zeneit ugyanigy"
 ### STÁTUSZ (2026-08-23)
 - Élő: 3D nyelv 4 réteg; muszerefal_v2 (72 kártya) a Pages-en; W4–W9 kész; W11 terv kész (pilot F2 vár).
 - Pusholásra vár: JozsefAttila_TizenotVers_Tanulas.md (15 vers), Sziami_Dalok_Tanulas.md (12 dal), napló.
+
+## Bejegyzés 16 (2026-08-24, a ritmus/prozódia réteg EREDMÉNYEI)
+
+### HIMNUSZ (docs/Himnusz_Kotta_Szotagolas.md)
+- Első versszak: 53 énekelt szótag (soronként 7-6-7-6-7-7-7-6), 56 dallamhang (minden sor pontosan 7); hangnem a forráskottában G-moll (eredeti Erkel Esz-dúr; hivatalos Dohnányi/olimpiai B-dúr); 4/4, negyed=60; hangterjedelem B♭3 (233,08 Hz) – E♭5 (622,25 Hz) = 17 félhang; 16 ütem = 64 negyed. Hz-értékeket Idris 2 számolta (hangHz, A4=440).
+- KULCS-TANULSÁG: a prozódia maga hibajavítás — Erkel a 7-6 szótagszámú sorokat kötőives melizmákkal („ség", „ven") és a „ho-ozz" hajlítással EGYENLÍTETTE KI 7 egyforma dallamhangú sorra: redundancia → koherencia, épp a [[7,1,3]] elve.
+
+### LISZT + BARTÓK (docs/Liszt_Bartok_ZeneiTanulas.md, 241 sor)
+- 11 mű (5 Liszt + 6 Bartók), IMSLP-kottákkal; Hz-tábla Idris-számítással.
+- Bartók-aranyarány (Lendvai): 89=55+34 ütem; III. tételi xilofon: 1,1,2,3,5,8,5,3,2,1,1 (Fibonacci) — DE Howat cáfolata (88 ütem, tonális csúcs a 44.-ben) a §17 mérési hiba-kötelezettség zenei tükre. A Coldea 2010 E8/φ mért fizika; a Bartók-φ zenei analógia — közös mechanizmus NINCS bizonyítva, őszintén jelölve.
+- Bolgár 4+2+3 ritmus = additív időkódolás — prototípus a Mondat-réteg ritmus-láncához.
+
+### SZIÁMI MÉRÉS (docs/ZeneElemzes_Sziami_v1.md + szima_ter/modul/SziamiRitmus_v1.idr + 25 PNG)
+- 6 kulcsdal letöltve (Testből testbe, Világegyetemista, Olyan vagy!!!, Hungarikum, Zuhanórepülés, Apokalipszis itt és most; yt-dlp telepítve, ffmpeg 9.0.1-re javítva; hangok a git-en KÍVÜL, .gitignore-olva; a rossz „teljes album" találat §20 szerint átnevezve megőrizve).
+- A §1.0 minta ÉL: az SziamiRitmus_v1.idr main-je GENERÁLTA a sziami_elemzo.py-t és futtatta; build 0 hiba; 25 PNG.
+- MÉRT BPM-ek: 141,4 · 161,1 · 60,5 · 100,0 · 72,6 · 171,1.
+- 3 MATEMATIKAI MEGFIGYELÉS: (1) eseményráta-megmaradás — BPM-tartomány 60,5–171,1 (2,8×), az onset-sűrűség mégis szűk: 3,26–4,22 db/s (±13%) — a kvantálási ráta állandó, az ütemszint szabad paraméter; (2) oktáv-hierarchia — a 60,5 és 72,6 a dupla tempó felezett leolvasata, a ritmus rácsa 2-hatványokban lép; (3) szótag⟷onset híd — a Testből testbe 10 szótagos refrénja 3,39 db/s mellett 6,96 ütem ≈ pontosan két 4/4-es ütem: a nyelvi és zenei kvantum MÉRHETŐEN egybeesik.
