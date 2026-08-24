@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: false
       - name: Pages beállítása
         id: pages
         uses: actions/configure-pages@v5
