@@ -282,3 +282,20 @@ Csak-olvasó review-ügynök a két cursor-ágra (ütközés-elemzés + merge-ja
    - `cursor/idris-javitasok-d1f8` (18 commit, +3332 sor): önálló E8→Steane-levezetési csomag az `osveny_index/FuggetlenLevezetes/`-ben ([8,4,4]→[7,4,3]→[[7,1,3]] véges felsorolással, paritásbuborék, affin E₈-karakter, magyar ternáris tetrakód). Worktree-ben KIPRÓBÁLVA: fordul (6/6 modul, exit 0). Minden fájl ÚJ → KONFLIKTUSMENTES. Javaslat: MERGE egészben (ékezet nélküli azonosítók utólagos _v2-hullámmal).
    - `cursor/literature-aaa6` (4 commit, +987 sor): literatúra-térkép + literatura.html; a vercel.json Vercel ÁG-PREVIEW-t konfigurál (build: docs/scripts/vercel-build.sh, output: docs/, cleanUrls) + új Pages-workflow és banner 6 HTML-ben. 2 TRIVIÁLIS ÜTKÖZÉS (.gitignore, docs/index.html — mindkét oldal megtartása) + DUBLA Pages-deploy a master pages.yml-jével → EGY utat választani. Javaslat: MERGE kis javítással.
 2. **W11 pilot F2 ügynök ELHASALT** (usage limit: „Usage limit reached for 5 hour. Your limit will reset at 2026-08-24 13:43:39") — nem hozott létre fájlt; újraindítva.
+
+## Bejegyzés 19 (2026-08-24, a pilot F2 ELLENŐRZÉSE — ELFOGADHATÓ)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"go on"
+
+### AZ ELLENŐRZÉS EREDMÉNYE (a főügynök saját, célzott ellenőrzése — az ellenőrző alügynök két hálózati hiba után kiesett, §2 szerint nem találgattunk tovább)
+1. Build: `idris2 --build szima.ipkg` → EXIT 0 ✓; a modul ipkg-tag ✓.
+2. Grafikonok: 180 PNG (36 kártya × 5), mind >1KB (0 darab üres) ✓.
+3. §1.0 betartva: a grafikon_gen.py fejléce maga mondja: „EZT A FÁJLT AZ IDRIS GENERÁLTA (KonyvAdat_E8Gyokrendszer_v1.main, §1.0: az Idris írja a Pythont — kéz nem írt sort)" ✓.
+4. KÉT-ÚT-EGYEZÉS (a main_kimenet.txt maradéktáblája, szimuláció ⟷ kernel): típus-1 112=112 Δ=0 · típus-2 128=128 Δ=0 · E8 gyökök 240=240 Δ=0 · C(8,2)=28 Δ=0 · 2⁸=256 Δ=0 · rossz norma² 0 · rossz belső szorzat 0 · Weyl-zárási hiba 0 · 8!=40320 két úton Δ=0 · W(D8)=2⁷·8!=5 160 960 Δ=0 · trialitás 135 Δ=0 · W(E8)=696 729 600 Δ=0 — MINDENHOL Δ=0 ✓.
+5. adat.js (101 619 bájt) + fejezet.html (13 035 bájt): a fejezet.html betölt böngészőben, címe „F2 — E8 gyökrendszer és W(E8) · Kristálytiszta Könyv", 180 képhivatkozás, 16 373 karakter szövegtörzs ✓ (az egyetlen konzolüzenet a file://-origin sajátossága — https-en nem jelenik meg).
+6. VERDIKTUM: **ELFOGADHATÓ** — a pilot minta a további 10 fejezethez.
+
+### NYITVA
+- A két cursor-ág merge-döntése (a review: mindkettő merge-ölendő; a literature-ágban a dupla Pages-deploy eldöntése) — a felhasználóra vár.
+- A fejezet.html a Pages-en: https://jhegedus42.github.io/Szima/konyv/e8gyokrendszer/fejezet.html (a következő docs-push után él).
