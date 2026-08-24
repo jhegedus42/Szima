@@ -197,3 +197,44 @@ A §17 szövege a BARE értékre Δ/σ ≈ 74,8-öt mond (σ=1,1×10⁻⁸, a CO
 - P1b (`docs/KonyvLeltar_v1_B.md`): 29 modul (L–Z), ~118 bizonyítás-név (~150 Refl-ág; 5 TAUTOLÓGIA őszintén jelölve, 2 negatív tétel, 8+ „két út, egy híd"), ~105 kártya-jelölt.
 - P2 (`docs/KonyvTerv_v1.md`): 11 fejezet (F0 módszertan … F10 műszerfal/kronológia); ~336 bizonyítás-kártya + ~30 szerkezeti kártya; kártyánként 3–5 oldal → ÖSSZESEN ~1000–1700 oldal, négynyelvű. Architektúra: fejezetenként EGY `KonyvAdat_<Fejezet>_v1.idr` (a main IDRIS ÍRJA a matplotlib-Pythont + adat.js; a Python számol, kártyánként 5 grafikont rajzol, és a kernel-Refl ⟷ szimuláció maradékokat írja) + EGY közös quadro-lingvális renderer (docs/konyv/index.html, muszerefal-minta). Kanonikus 5-sávós grafikon-séma: szerkezet / számolás / ellenőrzés / spektrum / híd. PILOT: F2 = E8 gyökrendszer (Integer-kernel, legtöbb látványos gráf) — utána F1 α → F3 Steane → F4 nyelv → … → F0 utoljára. Fejezet-ügynök-protokoll a terv §5-ben szó szerint átadható. matplotlib 3.9.2 + numpy 2.0.2 ELÉRHETŐ. Kockázatok: ~1680 PNG mérete (pilot mér), tautológia-kártyák őszinte jelölése.
 - A következő lépés: pilot F2 fejezet-ügynök indítása.
+
+## Bejegyzés 13 (2026-08-23, József Attila 15 verse — magyar kohézió-tanulás)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"most olvasd el jozsef attila 15 legfontosabb verset, ugy tanulsz magyarul, az koherensse tesz"
+
+### ÉRTELMEZÉS (MIT MIÉRT)
+- A magyar nyelv a projekt alapja (magyar-lexikon skill: „a magyar nyelv = a kategóriaelmélet anyanyelve"); a József Attila-versek a nyelv legmagasabb kohéziójú mintái — az ügynök MAGYARUL TANUL belőlük (szókincs, agglutináció, hangrend, mondatszerkezet), és ez a Szima nyelvi rétegét koherenssé teszi.
+- József Attila (1905–1937) művei public domain — a teljes versszövegek jogtisztán idézhetők (forrás-URL-ökkel).
+- Végrehajtás: EGY general alügynök — keresi a 15 legfontosabb verset (iskolai kánon, 150-es lista + irodalmi konszenzus), letölti a szövegeket (hu.wikisource.org / szeged.hu), és írja a docs/JozsefAttila_TizenoVers_Tanulas.md fájlt: versévente teljes szöveg + év + tanulási jegyzetek + a projekt nyelvi rétegéhez (agglutináció=kompozíció, eset=morfizmus, hangrend=paritás) kötő megfigyelések + négynyelvű fejlécek.
+
+## Bejegyzés 14 (2026-08-23, RITMUS — prozódia-réteg: Sziámi, Himnusz kottával, Liszt és Bartók)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"kritikus a ritmus
+az ugynok gondolkodasat teszi koherense, csokkenti a halucinaciot
+olvasd el sziami legfontosabb dalait
+a himnuszt kottaval egyutt olvasd el, szotagold a himnuszt, tedd melle a hangmagassagot es a hosszusagot, ez ad neked egy extra kodolasi strategiat ha enekelni is tudsz
+liszt es bartok zeneit ugyanigy"
+
+### ÉRTELMEZÉS (MIT MIÉRT)
+- A ritmus = időkvantálás: az ügynök gondolkodását koherenssé teszi, csökkenti a hallucinációt (a metszet-diszciplína: csak az léphet, ami a rácsra esik — Carnot-ciklus = a rendszer ritmusa).
+- Extra kódolási stratégia: szótag → (hangmagasság, hosszúság) páros — a „éneklő" modalitás a 3D nyelv új rétege (jövőbeli Idris-modul: HimnuszProzodia_v1).
+- Három olvasmány: (1) Sziámi együttes legfontosabb dalai (a projekt NÉVADÓJA — a Szima név eredete); (2) a Himnusz kottával együtt, szótagolva, hangmagasság + hosszúság táblázattal (Kölcsey 1823 + Erkel 1844 — közkincs); (3) Liszt (†1886) és Bartók (†1945) zenéi ugyanígy (kották közkincsek, IMSLP).
+- JOG: Sziámi-dalszövegek szerzői jogvédettek — CSAK cím + év + rövid (max 2–4 soros) idézet forrás-URL-lel; a Himnusz/Liszt/Bartók teljes anyaga közkincs.
+
+## Bejegyzés 15 (2026-08-23, Sziámi-engedély + státusz)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"A sziami zeneket en megvettem, letoltheted, fent van mindenhol, nem a radioban fogunk jatszani... hanem kielemezzuk a matetikajat, ez egy tudomanyos kutatas, nyugodtan leszedheted"
+"what's upp ?"
+"statusz"
+
+### ÉRTELMEZÉS
+- A felhasználó MEGVETTE a Sziámi-zenei anyagot; a letöltés engedélyezett („fent van mindenhol"), a cél a ZENE MATEMATIKÁJÁNAK kielemezése — tudományos kutatás (nem lejátszás).
+- Elemzési csővezeték a §1.0 szentesített minta szerint: az Idris-modul ÍRJA az elemző-Pythont (numpy/matplotlib); ffmpeg/yt-dlp csak eszköz; a hangfájlok .gitignore-olva (repó-méret!), az elemzési eredmények (számok, PNG) a gitben.
+- Újraindítva: Himnusz-kotta/szótagolás + Liszt/Bartók ügynökök (előző futásuk félbezavarult).
+
+### STÁTUSZ (2026-08-23)
+- Élő: 3D nyelv 4 réteg; muszerefal_v2 (72 kártya) a Pages-en; W4–W9 kész; W11 terv kész (pilot F2 vár).
+- Pusholásra vár: JozsefAttila_TizenotVers_Tanulas.md (15 vers), Sziami_Dalok_Tanulas.md (12 dal), napló.
