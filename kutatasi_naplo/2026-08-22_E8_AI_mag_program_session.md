@@ -325,3 +325,14 @@ Csak-olvasó review-ügynök a két cursor-ágra (ütközés-elemzés + merge-ja
 
 ### DISPATCH (Subagent-Driven Development)
 - Pilot fejezet-ügynök: konyv_v2.tex — E8 gyökrendszer fejezet, tudományos cikkszint, a skill formátumával (bal magyar / jobb angol / középen TikZ / alul Idris-kód + bizonyítás + Wikipedia-link), a számok a F2 futásból (GAUGE: main_kimenet.txt, maradekok.csv — Δ=0 mindenhol).
+
+## Bejegyzés 22 (2026-08-24, konyv_v2.pdf MEGSZÜLETETT — a pilot PDF-fejezet)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"keszitsunk nagyon szep es kiterjed illusztraciokat, tudomanyos cikk szinten" (konyv-keszito skill)
+
+### EREDMÉNY
+- `konyv_v2.tex` + `konyv_v2.pdf` (5 oldal, 496 839 bájt, 0 log-hiba) — a régi konyv.tex/konyv.pdf ÉRINTETLEN (§13). A PDF a docs/-ba is bemásolva (Pages: https://jhegedus42.github.io/Szima/konyv_v2.pdf).
+- Tartalom (a konyv-keszito skill formátuma: bal magyar / jobb angol, TikZ/tikz-cd, alul Idris-kód + bizonyítás + Wikipedia-link): (1) Petrie-projekció GAUGE-PNG-vel; (2) 8!=40320 két úttal (tikz-cd); (3) 112+128=240 (tikz-cd, bizKétÚtHíd szó szerint); (4) norma ⟨α,α⟩=8 hisztogrammal; (5) W(E8)=696 729 600 két úttal (tikz-cd + prímtorony-PNG); (6) 256-híd + Steane [[7,1,3]] lánc (tikz-cd, \lvert…\rangle javítással); (7) eloszlás (1,56,126,56,1) + Hodge-duál PNG-kkel; (8) E8×E8=496 lánc; (9) a 240 szó → F4-híd; GAUGE-táblázat (mindenhol Δ=0).
+- MŰSZAKI TANULSÁGOK: (a) a tikz-cd-ben a `|` karakter FOGALT (a tikz útvonal-nyelve) — kvantumállapot-jelöléshez `\lvert 0\rangle` kell; (b) a kettős-lépcsős nyilak (rdd/ddl/uur) törékenyek — egyszerű rd/ld/dd a stabil; (c) a tikz-cd user-fába telepítve: a .sty csak burkoló, a tikzlibrarycd.code.tex a valódi kód — MINDKETTŐ kell.
+- A 36 kártya teljes webes változata: docs/konyv/e8gyokrendszer/fejezet.html (a PDF a pilot-kivonat; a teljes fejezet a weben él).
