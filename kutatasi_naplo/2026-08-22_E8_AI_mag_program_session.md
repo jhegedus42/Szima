@@ -255,3 +255,19 @@ liszt es bartok zeneit ugyanigy"
 - A §1.0 minta ÉL: az SziamiRitmus_v1.idr main-je GENERÁLTA a sziami_elemzo.py-t és futtatta; build 0 hiba; 25 PNG.
 - MÉRT BPM-ek: 141,4 · 161,1 · 60,5 · 100,0 · 72,6 · 171,1.
 - 3 MATEMATIKAI MEGFIGYELÉS: (1) eseményráta-megmaradás — BPM-tartomány 60,5–171,1 (2,8×), az onset-sűrűség mégis szűk: 3,26–4,22 db/s (±13%) — a kvantálási ráta állandó, az ütemszint szabad paraméter; (2) oktáv-hierarchia — a 60,5 és 72,6 a dupla tempó felezett leolvasata, a ritmus rácsa 2-hatványokban lép; (3) szótag⟷onset híd — a Testből testbe 10 szótagos refrénja 3,39 db/s mellett 6,96 ütem ≈ pontosan két 4/4-es ütem: a nyelvi és zenei kvantum MÉRHETŐEN egybeesik.
+
+## Bejegyzés 17 (2026-08-24, branch-audit + W11 pilot indul)
+
+### KÉRDÉS (a felhasználó szó szerint)
+"folytassuk, de elotte nezzuk meg milyen mas branch-ok vannak fent"
+
+### BRANCH-AUDIT (2026-08-24, fetch --prune után)
+- copilot/feature-improve-user-experience (08-01): 0 commit a master előtt — beolvadt, nincs teendő.
+- copilot/research-idris-files (07-31): 0 commit — beolvadt.
+- cursor/idris-javitasok-d1f8 (08-20, Cursor Agent): 18 commit, +3332 sor, 10 fájl (pl. PauliOsztalyProba.idr a tanulsagokban) — VALÓDI, be nem olvasztott munka; merge-döntés a felhasználóé.
+- cursor/literature-aaa6 (08-21, Cursor Agent): 4 commit, +987 sor, 18 fájl (vercel.json = ág-specifikus Vercel-preview + irodalmi docok) — be nem olvasztott; merge-döntés a felhasználóé.
+- probe-test-1786417478 (08-11): 1 commit „x" — probe-maradvány, §20 szerint NEM töröljük.
+- Helyi ág: csak master (a40208c), szinkronban.
+
+### TEENDŐ
+Csak-olvasó review-ügynök a két cursor-ágra (ütközés-elemzés + merge-javaslat); párhuzamosan W11 pilot F2 (E8 gyökrendszer fejezet) indul.
